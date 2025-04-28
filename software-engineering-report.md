@@ -1,6 +1,8 @@
-Mini-Report: Introduction to Key Software Engineering Tools and Practices
-1. Versioning Tools and Hosting Platforms
-Definition: Tools like Git and SVN (Subversion) are version control systems that manage changes to source code over time, allowing multiple developers to collaborate effectively.
+# Introduction to Key Software Engineering Tools and Practices
+
+## 1. Versioning Tools and Hosting Platforms
+
+|> Definition: Tools like Git and SVN (Subversion) are version control systems that manage changes to source code over time, allowing multiple developers to collaborate effectively.
 
 Hosting Platforms:
 
@@ -9,7 +11,8 @@ GitHub, GitLab, and Bitbucket host repositories, support DevOps practices (CI/CD
 Relationship with Project:
 We use Git and GitHub to manage our project’s codebase, track changes, and collaborate as a team while ensuring code integrity.
 
-2. Project Management Approaches and Tools
+## 2. Project Management Approaches and Tools
+
 Definition: Project management methods like Agile or Scrum organize the development process into manageable tasks and iterations.
 
 Tools:
@@ -21,7 +24,8 @@ Trello: Simple, visual Kanban board for organizing tasks and tracking progress.
 Relationship with Project:
 Trello helps us plan and distribute tasks, visualize project progress, and stay synchronized as a team.
 
-3. Communication Tools
+## 3. Communication Tools
+
 Definition: Tools that facilitate real-time collaboration and discussions among team members, regardless of location.
 
 Examples:
@@ -33,7 +37,8 @@ Discord: Offers voice channels, chat, and screen sharing, especially popular wit
 Relationship with Project:
 We use Teams/Discord for daily communication, quick troubleshooting, and efficient coordination between developers.
 
-4. Development Environments and Debugging Tools
+## 4. Development Environments and Debugging Tools
+
 Definition: Development Environments (IDEs) are tools that help programmers write, test, and debug their code more easily.
 
 Examples:
@@ -47,7 +52,7 @@ Debugging Tools: Built-in debuggers, breakpoints, log analysis.
 Relationship with Project:
 We use Visual Studio Code and Node.js framework for rapid development. Debugging tools ensure quick identification and resolution of errors.
 
-5. Other Insights: DevOps Integration
+## 5. Other Insights: DevOps Integration
 DevOps Culture:
 The collaboration between development and operations enhances software delivery speed and reliability. Tools like GitHub Actions or GitLab CI/CD automate testing and deployment pipelines.
 
