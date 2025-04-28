@@ -67,7 +67,39 @@ A - B - C - D   main
 
 We can also have a remote branch is just an external repo with *mostly* the same Git history as our local repo. And now that we now what Git is, let's introduce Github.
 
-### Hosting Platforms:
+### Hosting Platforms
+
+(Github)[https://github.com/] is the most popular website for Git repositories online. That is for hosting "remotes" on a central websites. Github serves several purposes:
+
+* As a backup of all our code in the cloud in case something wrong happens
+* As a central place to share our code and collaborate on it with others
+* As a public portfolio for our projects
+
+> Git != Github
+
+Git and Github are not the same, git is an open source command line tool for managing code files. Github and its primary competitors, (GitLab)[https://gitlab.com/] and (Bitbucket)[https://bitbucket.org/], are commercial web products that *use* Git.
+
+In Github, such as GitLab and Bitbucket, we can create repo, push our changes and pull changes of others.
+
+### DevOps Implementation
+
+(DevOps)[https://about.gitlab.com/topics/devops/] is the combination of Development (Dev) and Operations (Ops) to increase the efficiency, speed, and security of software development and delivery compared to traditional processes.
+
+The DevOps methodology comprises 4 principles:
+
+1. Automation of the software development cycle
+2. Collaboration and communication
+3. Continuous improvement and minimization of waste
+4. Hyperfocus on user needs with short feedback loops
+
+As you can see Git, Github and their counterparts are deeply tied with DevOps.
+
+These 2 tools together allows us to have:
+
+* Version control
+* CI/CD pipelines
+* Issue tracking
+* Code review
 
 GitHub, GitLab, and Bitbucket host repositories, support DevOps practices (CI/CD pipelines, issue tracking, code review), and help in automating deployments.
 
