@@ -4,7 +4,7 @@
 
 ### Git
 
-To introduce you to versioning, there is nothing better than Git. 
+To introduce you to versioning, there is nothing better than Git. Of course, there are other VCS such as SVN, which is practically the same apart that Git allows you to modify previous commits.
 
 [Git](https://git-scm.com/) is the distributed [version control system](https://git-scm.com/book/en/v2/Getting-Started-About-Version-Control) (VCS).
 Nearly every developer in the world uses it to manage their code.
@@ -100,11 +100,6 @@ These 2 tools together allows us to have:
 * CI/CD pipelines
 * Issue tracking
 * Code review
-
-GitHub, GitLab, and Bitbucket host repositories, support DevOps practices (CI/CD pipelines, issue tracking, code review), and help in automating deployments.
-
-Relationship with Project:
-We use Git and GitHub to manage our project’s codebase, track changes, and collaborate as a team while ensuring code integrity.
 
 ## 2. Project Management Approaches and Tools
 
