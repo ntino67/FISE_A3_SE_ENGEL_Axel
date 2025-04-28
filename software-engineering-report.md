@@ -4,6 +4,43 @@
 
 |> Definition: Tools like Git and SVN (Subversion) are version control systems that manage changes to source code over time, allowing multiple developers to collaborate effectively.
 
+### Git
+
+To introduce you to versioning, there is nothing better than Git. 
+
+(Git)[https://git-scm.com/] is the distributed (version control system)[https://git-scm.com/book/en/v2/Getting-Started-About-Version-Control] (VCS).
+Nearly every developer in the world uses it to manage their code.
+It has quite a monopoly on VCS. Developers use Git to :
+
+* Keep a history of their code changes
+* Revert mistakes made in their code
+* Collaborate with other developers
+* Make backups of their codes
+* And much more
+
+To familiarize yourself with Git, RTFM.
+
+More seriously, one of the best part of Git, is that all the documentation is fantastic.
+
+Just run `man git` in your terminal and you'll have access to the entirety of this amazing documentation.
+
+#### Porcelain and Plumbing
+
+In Git, commands are divided into high-level (porcelain) commands and low-level (plumbing) commands. The porcelain commands are the ones that you will use most often as a developer to interact with your code. Some porcelain commands are :
+
+* `git status`
+* `git add`
+* `git commit`
+* `git push`
+* `git pull`
+* `git log`
+
+Some examples of plumbig commands are:
+
+* `git apply`
+* `git commit-tree`
+* `git hash-object`
+
 Hosting Platforms:
 
 GitHub, GitLab, and Bitbucket host repositories, support DevOps practices (CI/CD pipelines, issue tracking, code review), and help in automating deployments.
