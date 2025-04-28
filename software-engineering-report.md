@@ -39,7 +39,7 @@ Some examples of plumbing commands are:
 * `git commit-tree`
 * `git hash-object`
 
-#### Repositoy
+#### Repository
 
 The very first step of any project is to create a repository. A git "repository" or "repo" represent a single project.
 
@@ -69,7 +69,7 @@ We can also have a remote branch is just an external repo with *mostly* the same
 
 ### Hosting Platforms
 
-(Github)[https://github.com/] is the most popular website for Git repositories online. That is for hosting "remotes" on a central websites. Github serves several purposes:
+[Github](https://github.com/) is the most popular website for Git repositories online. That is for hosting "remotes" on a central websites. Github serves several purposes:
 
 * As a backup of all our code in the cloud in case something wrong happens
 * As a central place to share our code and collaborate on it with others
@@ -77,13 +77,13 @@ We can also have a remote branch is just an external repo with *mostly* the same
 
 > Git != Github
 
-Git and Github are not the same, git is an open source command line tool for managing code files. Github and its primary competitors, (GitLab)[https://gitlab.com/] and (Bitbucket)[https://bitbucket.org/], are commercial web products that *use* Git.
+Git and Github are not the same, git is an open source command line tool for managing code files. Github and its primary competitors, [GitLab](https://gitlab.com/) and [Bitbucket](https://bitbucket.org/), are commercial web products that *use* Git.
 
 In Github, such as GitLab and Bitbucket, we can create repo, push our changes and pull changes of others.
 
 ### DevOps Implementation
 
-(DevOps)[https://about.gitlab.com/topics/devops/] is the combination of Development (Dev) and Operations (Ops) to increase the efficiency, speed, and security of software development and delivery compared to traditional processes.
+[DevOps](https://about.gitlab.com/topics/devops/) is the combination of Development (Dev) and Operations (Ops) to increase the efficiency, speed, and security of software development and delivery compared to traditional processes.
 
 The DevOps methodology comprises 4 principles:
 
