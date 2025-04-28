@@ -2,8 +2,6 @@
 
 ## 1. Versioning Tools and Hosting Platforms
 
-|> Definition: Tools like Git and SVN (Subversion) are version control systems that manage changes to source code over time, allowing multiple developers to collaborate effectively.
-
 ### Git
 
 To introduce you to versioning, there is nothing better than Git. 
@@ -127,23 +125,12 @@ Everyone can easily see who is working on what and what remains to be completed.
 
 Effective communication is crucial in software engineering projects, especially within teams. Tools like Microsoft Teams and Discord have become integral in facilitating seamless collaboration, each offering unique features tailored to different team dynamics.
 
-<<<<<<< HEAD
 ### Microsoft Teams
 
 Microsoft Teams is a comprehensive collaboration platform that integrates chat, video conferencing, file sharing, and app integration, all within the Microsoft 365 ecosystem.
 
 **Key Features:**
 
-=======
-Effective communication is crucial in software engineering projects, especially within teams. Tools like Microsoft Teams and Discord have become integral in facilitating seamless collaboration, each offering unique features tailored to different team dynamics.
-
-### Microsoft Teams
-
-Microsoft Teams is a comprehensive collaboration platform that integrates chat, video conferencing, file sharing, and app integration, all within the Microsoft 365 ecosystem.
-
-**Key Features:**
-
->>>>>>> 0fc96d2 (Add part 3 communication tools in SE report)
 - **Persistent Chat and Channels:** Organize conversations by topics, projects, or departments, allowing for structured and searchable communication.
 
 - **Video Conferencing:** Host meetings with features like screen sharing, meeting recordings, live captions, and breakout rooms for subgroup discussions.
