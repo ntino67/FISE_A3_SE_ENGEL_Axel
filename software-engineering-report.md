@@ -39,7 +39,35 @@ Some examples of plumbing commands are:
 * `git commit-tree`
 * `git hash-object`
 
-Hosting Platforms:
+#### Repositoy
+
+The very first step of any project is to create a repository. A git "repository" or "repo" represent a single project.
+
+A repo is essentially just a directory that contins a project. The only difference is that it also contains a hidden `.git` directory. And this hidden directory contains all of its internal tracking and versioning information for the project.
+
+You can do a lot of things but essentially you can see the status of a git repo with `git status`, you can stage changes with `git add`, and commit with `git commit`.
+
+Those 3 commands are the 3 main commands of git.
+
+#### Branching
+
+A git branch allows you to keep track of different changes separately.
+
+Instead of changing the entire project directly, you can create a new branch and work on it. When you're done, if you like the changes, you can merge your branch with the main one. If you don't like the changes, you can simply deletes the changes.
+
+Example:
+
+```
+       G - H    lanes_branch
+      /
+A - B - C - D   main
+  \
+   E - F        primes_branch
+```
+
+We can also have a remote branch is just an external repo with *mostly* the same Git history as our local repo. And now that we now what Git is, let's introduce Github.
+
+### Hosting Platforms:
 
 GitHub, GitLab, and Bitbucket host repositories, support DevOps practices (CI/CD pipelines, issue tracking, code review), and help in automating deployments.
 
