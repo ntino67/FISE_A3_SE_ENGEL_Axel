@@ -50,16 +50,78 @@ We use Git and GitHub to manage our project’s codebase, track changes, and col
 
 ## 2. Project Management Approaches and Tools
 
-Definition: Project management methods like Agile or Scrum organize the development process into manageable tasks and iterations.
+In software engineering, project management is essential to organize, plan, and track the progress of development work. It ensures that the project meets its goals on time and within scope.
 
-Tools:
+### Project Management Approaches:
+**Agile:**
 
-Jira: Comprehensive tool for Agile teams — managing backlogs, sprints, and epics.
+A flexible methodology that emphasizes iterative progress and frequent client feedback.
 
-Trello: Simple, visual Kanban board for organizing tasks and tracking progress.
+Focuses on adaptability to changes during the project.
 
-Relationship with Project:
-Trello helps us plan and distribute tasks, visualize project progress, and stay synchronized as a team.
+**Scrum:**
+
+A specific Agile framework that organizes work into sprints (typically 2–4 weeks).
+
+Each sprint delivers a usable increment of the product.
+
+Includes practices like daily stand-ups, backlog grooming, and retrospectives.
+
+**Example:**
+In Scrum, a team might plan a 2-week sprint to design a login page and develop an API. They meet every morning for a short update (daily stand-up).
+
+🔵 **Note:**
+Other approaches also exist, such as:
+
+**Waterfall**: A sequential, traditional method where each phase must be completed before the next starts.
+
+Kanban: Focuses on continuous delivery and visualizing work, limiting work in progress.
+
+### Project Management Tools:
+**Jira:**
+
+A powerful platform mainly used by Agile and Scrum teams.
+
+**Manages:**
+
+Backlogs (task lists)
+
+Sprints (short development cycles)
+
+Tickets (individual work items or issues)
+
+**Trello:**
+
+A simpler, visual tool based on Kanban boards.
+
+Tasks are represented as cards moving across columns like "To Do", "In Progress", and "Done".
+
+**Example:**
+In Trello, a "Frontend Tasks" board could include:
+
+"Design landing page" → To Do
+
+"Implement user login" → In Progress
+
+"Fix mobile responsiveness" → Done
+
+🔵 **Note:**
+Other popular tools include:
+
+__Asana__: Focused on task tracking and team organization.
+
+__Monday.com__: A visual project management platform combining Kanban, calendars, and timelines.
+
+__ClickUp__: A flexible, all-in-one project management solution.
+
+### Relationship with Our Project:
+For our project, we might chose Trello because:
+
+It offers a simple, visual way to manage our tasks.
+
+It helps us clearly assign tasks, monitor progress, and stay organized as a team.
+
+Everyone can easily see who is working on what and what remains to be completed.
 
 ## 3. Communication Tools
 
