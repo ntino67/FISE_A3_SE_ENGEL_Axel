@@ -1,5 +1,8 @@
-public enum BackupType
+namespace EasySave.Models
 {
-    Full,
-    Differential
+    public enum BackupType
+    {
+        Full,
+        Differential
+    }
 }
