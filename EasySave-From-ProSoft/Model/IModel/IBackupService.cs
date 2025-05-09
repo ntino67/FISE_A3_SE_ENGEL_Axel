@@ -1,5 +1,8 @@
+using EasySave.Model.ImplementIModel;
+using System.Collections.Generic;
+
 namespace EasySave.Interface.IModel
-}
+{
     public interface IBackupService
     {
         public BackupResult ExecuteBackupJob(string idName);

@@ -1,3 +1,7 @@
+using EasySave.Interface.IModel;
+using EasySave.Interfaces;
+using System.Collections.Generic;
+
 namespace EasySave.Model.ImplementIModel
 {
     public class BackupManager {

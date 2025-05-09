@@ -1,3 +1,6 @@
+using EasySave.Model.ImplementIModel;
+using System.Collections.Generic;
+
 namespace EasySave.Interface.IModel
 {
     public interface IConfigurationManager
