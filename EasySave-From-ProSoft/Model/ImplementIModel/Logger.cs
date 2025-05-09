@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Text.Json;
 using EasySave_From_ProSoft.Model.IModel;
 using EasySave.Model.ImplementIModel;
 
@@ -8,23 +9,39 @@ namespace EasySave_From_ProSoft.Model.ImplementIModel
 {
     public sealed class Logger : ILogger
     {
-        private Logger() { }
-
+        private static readonly object LockObj = new{};
         private static Logger _instance { get; set; }
-        public string logFilePath { get; set; }
+
+        public string logFilePath { get; set; } = "logs.json";
+
+        private Logger() { }
 
         public static Logger GetInstance()
         {
-            if (_instance == null)
+            lock (LockObj)
             {
-                _instance = new Logger();
+                _instance ??= new Logger();
+                return _instance;
             }
-            return _instance;
         }
 
         public void Log(LogEntry entry)
         {
-            throw new Exception("not implemented yet");
+            List<LogEntry> logList = new List<LogEntry>;
+
+            if (File.Exists(logFilePath))
+            {
+                string existingJson = File.ReadAllText(logFilePath);
+                if (!string.IsNullOrWhiteSpace(existingJson))
+                {
+                    logList = JsonSerializer.Deserializer<List<LogEntry>>(existingJson) ?? new List<LogEntry>();
+                }
+            }
+
+            logList.Add(LogEntry);
+
+            string updatedJson = JsonSerializer.Serialize(logList, new JsonSerializerOptions { WriteIndented = true });
+            File.WriteAllText(LogFilePath, updatedJson);
         }
         
         public List<LogEntry> LoadLog(DateTime date)
