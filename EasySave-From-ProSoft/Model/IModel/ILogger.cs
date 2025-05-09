@@ -1,4 +1,8 @@
-namespace EasySave.Interface.IModel
+using System;
+using System.Collections.Generic;
+using EasySave.Model.ImplementIModel;
+
+namespace EasySave_From_ProSoft.Model.IModel
 {
     public interface ILogger
     {
