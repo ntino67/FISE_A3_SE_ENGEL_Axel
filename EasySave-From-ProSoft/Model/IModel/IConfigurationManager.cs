@@ -1,4 +1,4 @@
-namespace EasySave.Interfaces
+namespace EasySave.Interface.IModel
 {
     public interface IConfigurationManager
     {

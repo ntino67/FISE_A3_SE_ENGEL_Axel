@@ -1,5 +1,5 @@
-namespace EasySave.Interfaces
-{
+namespace EasySave.Interface.IModel
+}
     public interface IBackupService
     {
         public BackupResult ExecuteBackupJob(string idName);
