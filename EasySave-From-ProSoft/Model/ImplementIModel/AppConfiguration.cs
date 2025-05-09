@@ -1,6 +1,4 @@
-using System.Collections.Generic;
-
-namespace EasySave.Models
+namespace EasySave.Model.ImplementIModel
 {
     public class AppConfiguration
     {
