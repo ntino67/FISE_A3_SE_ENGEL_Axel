@@ -7,6 +7,6 @@ namespace EasySave.Models
         public string sourcePath { set; get; }
         public string targetPath { set; get; }
         public long fileSize { set; get; }
-        public long transferSize { set; get; }
+        public long transferTime { set; get; }
     }
 }
