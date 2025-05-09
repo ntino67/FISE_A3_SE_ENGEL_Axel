@@ -1,3 +1,5 @@
+using System;
+
 namespace EasySave.Models
 {
     public class LogEntry
