@@ -1,4 +1,4 @@
-namespace EasySave.Interface.IModel
+namespace EasySave_From_ProSoft.Interface.IModel
 }
     public interface IBackupService
     {

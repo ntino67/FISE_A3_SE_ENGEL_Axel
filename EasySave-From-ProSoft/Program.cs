@@ -1,12 +1,19 @@
 ﻿using System;
+using Spectre.Console;
 
 namespace EasySave_From_ProSoft
 {
-    internal class Program
+    using EasySave_From_ProSoft.View;
+    using Spectre.Console;
+    using System.Linq;
+
+    public static class Program
     {
-        static void Main(string[] args)
+        public static void Main(string[] args)
         {
-            Console.WriteLine("Hello World!");
+            IConsoleView consoleView = new ConsoleView();
+            consoleView.SelectLanguage();
+            bool result = consoleView.Confirm("Confirmer ?");
         }
     }
 }
