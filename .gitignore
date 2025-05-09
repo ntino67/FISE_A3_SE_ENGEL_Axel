@@ -52,12 +52,11 @@ CodeCoverage/
 *.VisualState.xml
 TestResult.xml
 nunit-*.xml
-EasySave-From-ProSoft/.vs/EasySave-From-ProSoft/CopilotIndices/17.13.444.19527/CodeChunks.db
 EasySave-From-ProSoft/.vs/EasySave-From-ProSoft/CopilotIndices/17.13.444.19527/CodeChunks.db-shm
 EasySave-From-ProSoft/.vs/EasySave-From-ProSoft/CopilotIndices/17.13.444.19527/CodeChunks.db-wal
 EasySave-From-ProSoft/.vs/EasySave-From-ProSoft/CopilotIndices/17.13.444.19527/SemanticSymbols.db
-EasySave-From-ProSoft/.vs/EasySave-From-ProSoft/CopilotIndices/17.13.444.19527/SemanticSymbols.db-shm
-EasySave-From-ProSoft/.vs/EasySave-From-ProSoft/CopilotIndices/17.13.444.19527/SemanticSymbols.db-wal
+EasySave-From-ProSoft/.vs/EasySave-From-ProSoft/CopilotIndices
 EasySave-From-ProSoft/.vs/EasySave-From-ProSoft/FileContentIndex/c0c7b1d6-2d06-42f8-bf16-a968ceec627a.vsidx
 EasySave-From-ProSoft/.vs/ProjectSettings.json
 EasySave-From-ProSoft/.vs/slnx.sqlite
+EasySave-From-ProSoft/.vs/EasySave-From-ProSoft/FileContentIndex
