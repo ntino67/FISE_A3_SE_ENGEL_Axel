@@ -2,10 +2,10 @@
 <Project ToolsVersion="Current" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup />
   <ItemGroup>
-    <EmbeddedResource Update="ViewModel\Language\Lang.fr-FR.resx">
+    <EmbeddedResource Update="Utils\Language\Lang.fr-FR.resx">
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Update="ViewModel\Language\Lang.resx">
+    <EmbeddedResource Update="Utils\Language\Lang.resx">
       <SubType>Designer</SubType>
     </EmbeddedResource>
   </ItemGroup>

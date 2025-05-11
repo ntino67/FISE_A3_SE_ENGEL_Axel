@@ -12,27 +12,31 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Compile Update="ViewModel\Language\Lang.fr-FR.Designer.cs">
+    <ProjectReference Include="..\EasySave.Core\EasySave.Core.csproj" />
+    <ProjectReference Include="..\EasySave.Services\EasySave.Services.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Update="Utils\Language\Lang.fr-FR.Designer.cs">
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
       <DependentUpon>Lang.fr-FR.resx</DependentUpon>
     </Compile>
-    <Compile Update="ViewModel\Language\Lang.Designer.cs">
+    <Compile Update="Utils\Language\Lang.Designer.cs">
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
       <DependentUpon>Lang.resx</DependentUpon>
     </Compile>
   </ItemGroup>
 
-  <ItemGroup>
-    <EmbeddedResource Update="ViewModel\Language\Lang.fr-FR.resx">
-      <Generator>ResXFileCodeGenerator</Generator>
-      <LastGenOutput>Lang.fr-FR.Designer.cs</LastGenOutput>
-    </EmbeddedResource>
-    <EmbeddedResource Update="ViewModel\Language\Lang.resx">
-      <Generator>ResXFileCodeGenerator</Generator>
-      <LastGenOutput>Lang.Designer.cs</LastGenOutput>
-    </EmbeddedResource>
-  </ItemGroup>
+	<ItemGroup>
+		<EmbeddedResource Update="Utils\Language\Lang.resx">
+			<Generator>ResXFileCodeGenerator</Generator>
+			<LastGenOutput>Lang.Designer.cs</LastGenOutput>
+		</EmbeddedResource>
+		<EmbeddedResource Update="Utils\Language\Lang.fr-FR.resx">
+			<DependentUpon>Lang.resx</DependentUpon>
+		</EmbeddedResource>
+	</ItemGroup>
 
 </Project>

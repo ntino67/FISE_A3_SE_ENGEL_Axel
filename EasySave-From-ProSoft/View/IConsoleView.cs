@@ -7,7 +7,7 @@ namespace EasySave_From_ProSoft.View
     internal interface IConsoleView
     {
         public void SelectLanguage();
-        public void MainMenu();
+        public string MainMenu();
         public void MainOptions();
         public void SelectJob();
         public void JobOptions();

@@ -1,0 +1,195 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+	<xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+		<xsd:element name="root" msdata:IsDataSet="true">
+			<xsd:complexType>
+				<xsd:choice maxOccurs="unbounded">
+					<xsd:element name="data">
+						<xsd:complexType>
+							<xsd:sequence>
+								<xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+								<xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+							</xsd:sequence>
+							<xsd:attribute name="name" type="xsd:string" msdata:Ordinal="1" />
+							<xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+							<xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+						</xsd:complexType>
+					</xsd:element>
+					<xsd:element name="resheader">
+						<xsd:complexType>
+							<xsd:sequence>
+								<xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+							</xsd:sequence>
+							<xsd:attribute name="name" type="xsd:string" use="required" />
+						</xsd:complexType>
+					</xsd:element>
+				</xsd:choice>
+			</xsd:complexType>
+		</xsd:element>
+	</xsd:schema>
+	<resheader name="resmimetype">
+		<value>text/microsoft-resx</value>
+	</resheader>
+	<resheader name="version">
+		<value>2.0</value>
+	</resheader>
+	<resheader name="reader">
+		<value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+	</resheader>
+	<resheader name="writer">
+		<value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+	</resheader>
+	<data name="Yes" xml:space="preserve">
+    <value>Oui</value>
+  </data>
+	<data name="No" xml:space="preserve">
+    <value>Non</value>
+  </data>
+	<data name="SelectLanguage" xml:space="preserve">
+    <value>Sélectionnez votre langue</value>
+  </data>
+	<data name="LanguageSelected" xml:space="preserve">
+    <value>Langue sélectionnée :</value>
+  </data>
+	<data name="MainMenu" xml:space="preserve">
+    <value>Menu Principal</value>
+  </data>
+	<data name="SelectJob" xml:space="preserve">
+    <value>Sélectionner ou Créer un Job</value>
+  </data>
+	<data name="RunAllJobs" xml:space="preserve">
+    <value>Exécuter Tous les Jobs</value>
+  </data>
+	<data name="Options" xml:space="preserve">
+    <value>Options</value>
+  </data>
+	<data name="Exit" xml:space="preserve">
+    <value>Quitter</value>
+  </data>
+	<data name="SelectedOption" xml:space="preserve">
+    <value>Option sélectionnée :</value>
+  </data>
+	<data name="JobOptions" xml:space="preserve">
+    <value>Options du Job</value>
+  </data>
+	<data name="RenameJob" xml:space="preserve">
+    <value>Renommer le Job</value>
+  </data>
+	<data name="DefineSourcePath" xml:space="preserve">
+    <value>Définir le Chemin Source</value>
+  </data>
+	<data name="DefineTargetPath" xml:space="preserve">
+    <value>Définir le Chemin Cible</value>
+  </data>
+	<data name="DefineSaveMode" xml:space="preserve">
+    <value>Définir le Type de Sauvegarde</value>
+  </data>
+	<data name="CreateBackup" xml:space="preserve">
+    <value>Exécuter la Sauvegarde</value>
+  </data>
+	<data name="ResetJob" xml:space="preserve">
+    <value>Réinitialiser le Job</value>
+  </data>
+	<data name="BackToMainMenu" xml:space="preserve">
+    <value>Retour au Menu Principal</value>
+  </data>
+	<data name="SelectJobPrompt" xml:space="preserve">
+    <value>Sélectionnez un job ou créez-en un nouveau</value>
+  </data>
+	<data name="CreateNewJob" xml:space="preserve">
+    <value>Créer un Nouveau Job</value>
+  </data>
+	<data name="EnterJobName" xml:space="preserve">
+    <value>Entrez le nom du job :</value>
+  </data>
+	<data name="MaxJobsReached" xml:space="preserve">
+    <value>Nombre maximum de jobs (5) atteint</value>
+  </data>
+	<data name="JobCreated" xml:space="preserve">
+    <value>Job créé avec succès</value>
+  </data>
+	<data name="ChangeLanguage" xml:space="preserve">
+    <value>Changer de Langue</value>
+  </data>
+	<data name="ShowLogs" xml:space="preserve">
+    <value>Afficher les Logs</value>
+  </data>
+	<data name="NoLogsAvailable" xml:space="preserve">
+    <value>Aucun log disponible pour aujourd'hui</value>
+  </data>
+	<data name="Timestamp" xml:space="preserve">
+    <value>Heure</value>
+  </data>
+	<data name="JobName" xml:space="preserve">
+    <value>Nom du Job</value>
+  </data>
+	<data name="SourcePath" xml:space="preserve">
+    <value>Source</value>
+  </data>
+	<data name="DestinationPath" xml:space="preserve">
+    <value>Destination</value>
+  </data>
+	<data name="FileSize" xml:space="preserve">
+    <value>Taille</value>
+  </data>
+	<data name="TransferTime" xml:space="preserve">
+    <value>Temps de Transfert</value>
+  </data>
+	<data name="Status" xml:space="preserve">
+    <value>Statut</value>
+  </data>
+	<data name="PressEnterToContinue" xml:space="preserve">
+    <value>Appuyez sur Entrée pour continuer...</value>
+  </data>
+	<data name="EnterNewName" xml:space="preserve">
+    <value>Entrez le nouveau nom du job :</value>
+  </data>
+	<data name="JobRenamed" xml:space="preserve">
+    <value>Job renommé avec succès</value>
+  </data>
+	<data name="EnterSourcePath" xml:space="preserve">
+    <value>Entrez le chemin du répertoire source :</value>
+  </data>
+	<data name="SourcePathUpdated" xml:space="preserve">
+    <value>Chemin source mis à jour avec succès</value>
+  </data>
+	<data name="EnterTargetPath" xml:space="preserve">
+    <value>Entrez le chemin du répertoire cible :</value>
+  </data>
+	<data name="TargetPathUpdated" xml:space="preserve">
+    <value>Chemin cible mis à jour avec succès</value>
+  </data>
+	<data name="FullBackup" xml:space="preserve">
+    <value>Sauvegarde Complète</value>
+  </data>
+	<data name="DifferentialBackup" xml:space="preserve">
+    <value>Sauvegarde Différentielle</value>
+  </data>
+	<data name="SelectBackupType" xml:space="preserve">
+    <value>Sélectionnez le type de sauvegarde :</value>
+  </data>
+	<data name="BackupTypeUpdated" xml:space="preserve">
+    <value>Type de sauvegarde mis à jour avec succès</value>
+  </data>
+	<data name="RunningBackup" xml:space="preserve">
+    <value>Exécution de la sauvegarde...</value>
+  </data>
+	<data name="BackupCompleted" xml:space="preserve">
+    <value>Sauvegarde terminée avec succès</value>
+  </data>
+	<data name="BackupFailed" xml:space="preserve">
+    <value>Échec de la sauvegarde</value>
+  </data>
+	<data name="ConfirmReset" xml:space="preserve">
+    <value>Êtes-vous sûr de vouloir réinitialiser ce job ?</value>
+  </data>
+	<data name="JobReset" xml:space="preserve">
+    <value>Le job a été réinitialisé</value>
+  </data>
+	<data name="RunningAllJobs" xml:space="preserve">
+    <value>Exécution de tous les jobs de sauvegarde...</value>
+  </data>
+	<data name="JobsCompleted" xml:space="preserve">
+    <value>Jobs terminés</value>
+  </data>
+</root>

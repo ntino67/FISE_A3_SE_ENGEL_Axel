@@ -120,9 +120,6 @@
   <data name="BackToMainMenu" xml:space="preserve">
     <value>Back to main menu</value>
   </data>
-  <data name="CreateBackup" xml:space="preserve">
-    <value>Create backup</value>
-  </data>
   <data name="DefineSaveMode" xml:space="preserve">
     <value>Define save mode</value>
   </data>
@@ -164,5 +161,114 @@
   </data>
   <data name="Yes" xml:space="preserve">
     <value>Yes</value>
+  </data>
+  <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
+  <data name="SelectedOption" type="System.Resources.ResXNullRef, System.Windows.Forms">
+    <value />
+  </data>
+  <data name="CreateBackup" xml:space="preserve">
+    <value>Create backup</value>
+  </data>
+  <data name="ResetJob" xml:space="preserve">
+    <value>Reset job</value>
+  </data>
+  <data name="SelectJobPrompt" xml:space="preserve">
+    <value>Select job prompt</value>
+  </data>
+  <data name="CreateNewJob" xml:space="preserve">
+    <value>Create new job</value>
+  </data>
+  <data name="EnterJobName" xml:space="preserve">
+    <value>Enter job name : </value>
+  </data>
+  <data name="MaxJobsReached" xml:space="preserve">
+    <value>Max jobs reached</value>
+  </data>
+  <data name="JobCreated" xml:space="preserve">
+    <value>Job created</value>
+  </data>
+  <data name="ChangeLanguage" xml:space="preserve">
+    <value>Change language</value>
+  </data>
+  <data name="ShowLogs" xml:space="preserve">
+    <value>Show logs</value>
+  </data>
+  <data name="NoLogsAvailable" xml:space="preserve">
+    <value>No logs available</value>
+  </data>
+  <data name="Timestamp" xml:space="preserve">
+    <value>Timestamp</value>
+  </data>
+  <data name="JobName" xml:space="preserve">
+    <value>Job name</value>
+  </data>
+  <data name="SourcePath" xml:space="preserve">
+    <value>Source path</value>
+  </data>
+  <data name="DestinationPath" xml:space="preserve">
+    <value>Destination path</value>
+  </data>
+  <data name="FileSize" xml:space="preserve">
+    <value>File size</value>
+  </data>
+  <data name="TransferTime" xml:space="preserve">
+    <value>Transfer time</value>
+  </data>
+  <data name="Status" xml:space="preserve">
+    <value>Status</value>
+  </data>
+  <data name="PressEnterToContinue" xml:space="preserve">
+    <value>Press enter to continue</value>
+  </data>
+  <data name="EnterNewName" xml:space="preserve">
+    <value>Enter new name : </value>
+  </data>
+  <data name="JobRenamed" xml:space="preserve">
+    <value>Job renamed</value>
+  </data>
+  <data name="EnterSourcePath" xml:space="preserve">
+    <value>Enter source path : </value>
+  </data>
+  <data name="SourcePathUpdated" xml:space="preserve">
+    <value>Source path updated</value>
+  </data>
+  <data name="EnterTargetPath" xml:space="preserve">
+    <value>Enter target path : </value>
+  </data>
+  <data name="TargetPathUpdated" xml:space="preserve">
+    <value>Target path updated</value>
+  </data>
+  <data name="FullBackup" xml:space="preserve">
+    <value>Full backup</value>
+  </data>
+  <data name="DifferentialBackup" xml:space="preserve">
+    <value>Differential backup</value>
+  </data>
+  <data name="SelectBackupType" xml:space="preserve">
+    <value>Select backup type</value>
+  </data>
+  <data name="BackupTypeUpdated" xml:space="preserve">
+    <value>Bacup type updated</value>
+  </data>
+  <data name="RunningBackup" xml:space="preserve">
+    <value>Running backup</value>
+  </data>
+  <data name="BackupCompleted" xml:space="preserve">
+    <value>Backup completed</value>
+  </data>
+  <data name="BackupFailed" xml:space="preserve">
+    <value>Backup failed</value>
+  </data>
+  <data name="ConfirmReset" xml:space="preserve">
+    <value>Confirm reset</value>
+  </data>
+  <data name="JobReset" xml:space="preserve">
+    <value>Job reset</value>
+  </data>
+  <data name="RunningAllJobs" xml:space="preserve">
+    <value>Running all jobs</value>
+  </data>
+  <data name="JobsCompleted" xml:space="preserve">
+    <value>Jobs completed</value>
   </data>
 </root>
