@@ -1,11 +1,11 @@
-namespace EasySave.Model.ImplementIModel
+namespace EasySave_From_ProSoft.Model.ImplementIModel
 {
     public class BackupJob
     {
-        public string idName { get; set; }
-        public string displayName { get; set; }
-        public string source { get; set; }
-        public string target { get; set; }
+        public string IdName { get; set; }
+        public string DisplayName { get; set; }
+        public string Source { get; set; }
+        public string Target { get; set; }
         public BackupType Type { get; set; }
     }
 }
