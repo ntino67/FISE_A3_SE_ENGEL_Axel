@@ -138,8 +138,14 @@
   <data name="JobOptions" xml:space="preserve">
     <value>Options d'action de sauvegarde</value>
   </data>
+  <data name="Language" xml:space="preserve">
+    <value>Langue</value>
+  </data>
   <data name="LanguageSelected" xml:space="preserve">
     <value>Vous avez choisi</value>
+  </data>
+  <data name="LogPath" xml:space="preserve">
+    <value>Chemin d'accès aux logs</value>
   </data>
   <data name="MainMenu" xml:space="preserve">
     <value>Menu Principal</value>
@@ -149,6 +155,9 @@
   </data>
   <data name="Options" xml:space="preserve">
     <value>Options</value>
+  </data>
+  <data name="OptionsMenu" xml:space="preserve">
+    <value>Menu des options</value>
   </data>
   <data name="RenameJob" xml:space="preserve">
     <value>Renommer l'action de sauvegarde</value>
@@ -161,6 +170,9 @@
   </data>
   <data name="SelectLanguage" xml:space="preserve">
     <value>Choisissez la langue</value>
+  </data>
+  <data name="StatusPath" xml:space="preserve">
+    <value>Chemin d'accès aux Status</value>
   </data>
   <data name="Yes" xml:space="preserve">
     <value>Oui</value>
