@@ -66,7 +66,7 @@ namespace EasySave_From_ProSoft.View
             string selectedValue = jobOptionsChoices.First(kvp => kvp.Key == jobOptionsSelected).Value;
 
             // Display the selected value
-            AnsiConsole.MarkupLine($"{LangHelper.GetString("SelectedOption")} [green]{selectedValue}[/]");
+            naviguate(selectedValue);
         }
 
         public void MainMenu()
@@ -95,12 +95,35 @@ namespace EasySave_From_ProSoft.View
             string selectedValue = mainMenuChoices.First(kvp => kvp.Key == MainMenuSelected).Value;
 
             // Display the selected value
-            AnsiConsole.MarkupLine($"{LangHelper.GetString("SelectedOption")} [green]{selectedValue}[/]");
+            naviguate(selectedValue);
         }
 
         public void MainOptions()
         {
-            throw new NotImplementedException();
+            Dictionary<string, string> mainMenuOptions = new Dictionary<string, string>
+            {
+                { LangHelper.GetString("Language"), "Language" },
+                { LangHelper.GetString("LogPath"), "LogPath" },
+                { LangHelper.GetString("StatusPath"), "StatusPath" },
+                { LangHelper.GetString("BackToMainMenu"), "BackToMainMenu" }
+            };
+
+            // Main menu prompt
+            string MainMenuSelected = AnsiConsole.Prompt(
+                new SelectionPrompt<string>()
+                    .Title($"{LangHelper.GetString("OptionsMenu")}")
+                    .PageSize(10)
+                    .AddChoices(new[] {
+                        LangHelper.GetString("Language"),
+                        LangHelper.GetString("LogPath"),
+                        LangHelper.GetString("StatusPath"),
+                        LangHelper.GetString("BackToMainMenu")
+                    }));
+            // Get the selected value from the dictionary
+            string selectedValue = mainMenuOptions.First(kvp => kvp.Key == MainMenuSelected).Value;
+
+            // Display the selected value
+            naviguate(selectedValue);
         }
 
         public void SelectJob()
@@ -116,16 +139,50 @@ namespace EasySave_From_ProSoft.View
                 { "Français", "fr-FR" }
             };
 
-        // Ask for the user language
-        string language = AnsiConsole.Prompt(
-                new SelectionPrompt<string>()
-                    .Title($"{LangHelper.GetString("SelectLanguage")}")
-                    .PageSize(10)
-                    .AddChoices(Languages.Keys));
+            // Ask for the user language
+            string language = AnsiConsole.Prompt(
+                    new SelectionPrompt<string>()
+                        .Title($"{LangHelper.GetString("SelectLanguage")}")
+                        .PageSize(10)
+                        .AddChoices(Languages.Keys));
             string selectedLanguageCode = Languages.First(kvp => kvp.Key == language).Value;
             LangHelper.ChangeLanguage(selectedLanguageCode);
 
-            AnsiConsole.MarkupLine($"{LangHelper.GetString("LanguageSelected")} [green]{LangHelper.GetCurrentLanguage()}[/]");
+            naviguate("Options");
+        }
+
+        public void naviguate(string key)
+        {
+            switch (key)
+            {
+                case "SelectJob":
+                    {
+                        SelectJob();
+                        break;
+                    }
+                case "BackToMainMenu":
+                    {
+                        MainMenu();
+                        break;
+                    }
+                case "Options":
+                    {
+                        MainOptions();
+                        break;
+                    }
+                case "Language":
+                {
+                    SelectLanguage();
+                    break;
                 }
+                default:
+                {
+                    AnsiConsole.MarkupLine($"{LangHelper.GetString(key)}");
+                    break;
+                    }
+
+
             }
         }
+    }
+}
