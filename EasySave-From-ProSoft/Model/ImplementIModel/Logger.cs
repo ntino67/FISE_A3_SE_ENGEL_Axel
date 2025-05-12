@@ -2,29 +2,49 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using EasySave_From_ProSoft.Model.IModel;
-using EasySave.Model.ImplementIModel;
+using Newtonsoft.Json;
+using EasySave_From_ProSoft.Model.ImplementIModel;
 
 namespace EasySave_From_ProSoft.Model.ImplementIModel
 {
     public sealed class Logger : ILogger
     {
+        private static readonly object LockObj = new{};
+        private static Logger _instance { get; set; }
+
+        public string logFilePath { get; set; } = "logs.json";
+
         private Logger() { }
 
-        private static Logger _instance { get; set; }
-        public string logFilePath { get; set; }
-
-        public static Logger GetInstance()
+        public static Logger Instance
         {
-            if (_instance == null)
+            get
             {
-                _instance = new Logger();
+                lock (LockObj)
+                {
+                    _instance ??= new Logger();
+                    return _instance;
+                }
             }
-            return _instance;
         }
 
         public void Log(LogEntry entry)
         {
-            throw new Exception("not implemented yet");
+            List<LogEntry> logList = new List<LogEntry>();
+
+            if (File.Exists(logFilePath))
+            {
+                string existingJson = File.ReadAllText(logFilePath);
+                if (!string.IsNullOrWhiteSpace(existingJson))
+                {
+                    logList = JsonConvert.DeserializeObject<List<LogEntry>>(existingJson) ?? new List<LogEntry>();
+                }
+            }
+
+            logList.Add(entry);
+
+            string updatedJson = JsonConvert.SerializeObject(logList, Formatting.Indented);
+            File.WriteAllText(logFilePath, updatedJson);
         }
         
         public List<LogEntry> LoadLog(DateTime date)

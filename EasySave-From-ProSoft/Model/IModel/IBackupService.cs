@@ -1,5 +1,8 @@
-namespace EasySave_From_ProSoft.Interface.IModel
-}
+using EasySave_From_ProSoft.Model.ImplementIModel;
+using System.Collections.Generic;
+
+namespace EasySave_From_ProSoft.Model.IModel
+{
     public interface IBackupService
     {
         public BackupResult ExecuteBackupJob(string idName);

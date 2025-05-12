@@ -1,6 +1,6 @@
 using System;
 
-namespace EasySave.Model.ImplementIModel
+namespace EasySave_From_ProSoft.Model.ImplementIModel
 {
     public class BackupResult
     {
