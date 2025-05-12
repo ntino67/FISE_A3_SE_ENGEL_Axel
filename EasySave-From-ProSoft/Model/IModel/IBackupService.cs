@@ -1,7 +1,7 @@
-using EasySave.Model.ImplementIModel;
+using EasySave_From_ProSoft.Model.ImplementIModel;
 using System.Collections.Generic;
 
-namespace EasySave.Interface.IModel
+namespace EasySave_From_ProSoft.Model.IModel
 {
     public interface IBackupService
     {

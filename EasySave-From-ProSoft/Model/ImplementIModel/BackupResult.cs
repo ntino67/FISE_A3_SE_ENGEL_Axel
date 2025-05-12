@@ -1,11 +1,11 @@
 using System;
 
-namespace EasySave.Model.ImplementIModel
+namespace EasySave_From_ProSoft.Model.ImplementIModel
 {
     public class BackupResult
     {
-        public bool success { get; set; }
-        public string message { get; set; }
-        public TimeSpan duration { get; set; }
+        public bool Success { get; set; }
+        public string Message { get; set; }
+        public TimeSpan Duration { get; set; }
     }
 }

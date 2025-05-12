@@ -1,13 +1,13 @@
-using EasySave.Model.ImplementIModel;
+using EasySave_From_ProSoft.Model.ImplementIModel;
 using System.Collections.Generic;
 
-namespace EasySave.Interface.IModel
+namespace EasySave_From_ProSoft.Model.IModel
 {
     public interface IConfigurationManager
     {
         public List<BackupJob> LoadJobConfig();
-        public void saveJobConfigs(List<BackupJob> config);
+        public void SaveJobConfigs(List<BackupJob> config);
         public AppConfiguration LoadAppConfig();
-        public void saveAppConfig(AppConfiguration config);
+        public void SaveAppConfig(AppConfiguration config);
     }
 }
