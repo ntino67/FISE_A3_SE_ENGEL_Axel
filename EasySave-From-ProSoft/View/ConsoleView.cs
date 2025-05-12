@@ -2,13 +2,16 @@
 using Spectre.Console;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace EasySave_From_ProSoft.View
 {
     internal class ConsoleView : IConsoleView
     {
+
         public bool Confirm(string message)
         {
             Dictionary<string, bool> keyValuePairs = new Dictionary<string, bool>
@@ -75,7 +78,7 @@ namespace EasySave_From_ProSoft.View
             Dictionary<string, string> mainMenuChoices = new Dictionary<string, string>
             {
                 { LangHelper.GetString("SelectJob"), "SelectJob" },
-                { LangHelper.GetString("RunAllJobs"), "RunAllJobs" },
+                { LangHelper.GetString("SelectMultipleJobs"), "SelectMultipleJobs" },
                 { LangHelper.GetString("Options"), "Options" },
                 { LangHelper.GetString("Exit"), "Exit" }
             };
@@ -87,7 +90,7 @@ namespace EasySave_From_ProSoft.View
                     .PageSize(10)
                     .AddChoices(new[] {
                         LangHelper.GetString("SelectJob"),
-                        LangHelper.GetString("RunAllJobs"),
+                        LangHelper.GetString("SelectMultipleJobs"),
                         LangHelper.GetString("Options"),
                         LangHelper.GetString("Exit")
                     }));
@@ -170,6 +173,51 @@ namespace EasySave_From_ProSoft.View
             navigate("Options");
         }
 
+        public string BrowseFolders()
+        {
+            string currentPath = Directory.GetCurrentDirectory();
+
+            while (true)
+            {
+                string[] directories = Directory.GetDirectories(currentPath);
+                List<string> choices = new List<string>
+            {
+                ".. (Go backward)"
+            };
+
+                foreach (string dir in directories)
+                {
+                    choices.Add(Path.GetFileName(dir));
+                }
+
+                choices.Add("[green]Validate this folder[/]");
+                choices.Add("[red]Cancel[/]");
+
+                string selection = AnsiConsole.Prompt(
+                    new SelectionPrompt<string>()
+                        .Title($"[blue]{LangHelper.GetString("CurrentFolder")}[/] : [yellow]{currentPath}[/]")
+                        .PageSize(15)
+                        .AddChoices(choices)
+                );
+
+                switch (selection)
+                {
+                    case ".. (Go backward)":
+                        currentPath = Directory.GetParent(currentPath)?.FullName ?? currentPath;
+                        break;
+
+                    case "[green]Validate this folder[/]":
+                        return currentPath;
+
+                    case "[red]Cancel[/]":
+                        return null;
+
+                    default:
+                        currentPath = Path.Combine(currentPath, selection);
+                        break;
+                }
+            }
+        }
         public void navigate(string key)
         {
             switch (key)
@@ -177,6 +225,11 @@ namespace EasySave_From_ProSoft.View
                 case "SelectJob":
                     {
                         SelectJob();
+                        break;
+                    }
+                case "SelectMultipleJobs":
+                    {
+                        SelectMultipleJobs();
                         break;
                     }
                 case "BackToMainMenu":
@@ -194,6 +247,11 @@ namespace EasySave_From_ProSoft.View
                     SelectLanguage();
                     break;
                 }
+                case "LogPath":
+                    {
+                        Console.WriteLine(BrowseFolders());
+                        break;
+                    }
                 default:
                 {
                     AnsiConsole.MarkupLine($"{LangHelper.GetString(key)}");
@@ -202,6 +260,50 @@ namespace EasySave_From_ProSoft.View
 
 
             }
+        }
+
+        async public void SelectMultipleJobs()
+        {
+            Dictionary<string, string> jobOptions = new Dictionary<string, string> // Get registered jobs from ViewModel
+            {
+                { "MyFirstJob", "Job1" },
+                { "MySecondJob", "Job2" },
+                { "MyThirdJob", "Job3" },
+            };
+
+            // Job options prompt
+            var jobOptionsSelected = AnsiConsole.Prompt(
+            new MultiSelectionPrompt<string>()
+                .Title(LangHelper.GetString("WhatJobsList"))
+                .PageSize(10)
+                .InstructionsText(
+                    LangHelper.GetString("JobsListIndication"))
+                .AddChoices(jobOptions.Keys));
+
+            await AnsiConsole.Progress()
+            .StartAsync(async ctx =>
+            {
+                // Define tasks
+                var task1 = ctx.AddTask("[green]Reticulating splines[/]");
+                var task2 = ctx.AddTask("[green]Folding space[/]");
+
+                while (!ctx.IsFinished)
+                {
+                    // Simulate some work
+                    await Task.Delay(250);
+
+                    // Increment
+                    task1.Increment(1.5);
+                    task2.Increment(0.5);
+                }
+            });
+            // Get the selected value from the dictionary
+            Console.WriteLine("Runned jobs:");
+            foreach (var job in jobOptionsSelected)
+            {
+                Console.WriteLine(job);
+            }
+            
         }
     }
 }
