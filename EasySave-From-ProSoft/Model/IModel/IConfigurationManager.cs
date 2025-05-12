@@ -6,8 +6,8 @@ namespace EasySave_From_ProSoft.Model.IModel
     public interface IConfigurationManager
     {
         public List<BackupJob> LoadJobConfig();
-        public void saveJobConfigs(List<BackupJob> config);
+        public void SaveJobConfigs(List<BackupJob> config);
         public AppConfiguration LoadAppConfig();
-        public void saveAppConfig(AppConfiguration config);
+        public void SaveAppConfig(AppConfiguration config);
     }
 }

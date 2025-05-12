@@ -12,7 +12,7 @@ namespace EasySave_From_ProSoft.Model.ImplementIModel
         private static readonly object LockObj = new{};
         private static Logger _instance { get; set; }
 
-        public string logFilePath { get; set; } = "logs.json";
+        public string LogFilePath { get; set; } = "logs.json";
 
         private Logger() { }
 
@@ -32,9 +32,9 @@ namespace EasySave_From_ProSoft.Model.ImplementIModel
         {
             List<LogEntry> logList = new List<LogEntry>();
 
-            if (File.Exists(logFilePath))
+            if (File.Exists(LogFilePath))
             {
-                string existingJson = File.ReadAllText(logFilePath);
+                string existingJson = File.ReadAllText(LogFilePath);
                 if (!string.IsNullOrWhiteSpace(existingJson))
                 {
                     logList = JsonConvert.DeserializeObject<List<LogEntry>>(existingJson) ?? new List<LogEntry>();
@@ -44,7 +44,7 @@ namespace EasySave_From_ProSoft.Model.ImplementIModel
             logList.Add(entry);
 
             string updatedJson = JsonConvert.SerializeObject(logList, Formatting.Indented);
-            File.WriteAllText(logFilePath, updatedJson);
+            File.WriteAllText(LogFilePath, updatedJson);
         }
         
         public List<LogEntry> LoadLog(DateTime date)
