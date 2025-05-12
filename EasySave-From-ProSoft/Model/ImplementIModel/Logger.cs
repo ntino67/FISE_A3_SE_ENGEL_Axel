@@ -12,8 +12,6 @@ namespace EasySave_From_ProSoft.Model.ImplementIModel
         private static readonly object LockObj = new{};
         private static Logger _instance { get; set; }
 
-        public string LogFilePath { get; set; } = "logs.json";
-
         private Logger() { }
 
         public static Logger Instance
@@ -30,11 +28,13 @@ namespace EasySave_From_ProSoft.Model.ImplementIModel
 
         public void Log(LogEntry entry)
         {
+            string logFilePath = GetLogFilePath(entry.Timestamp);
+            
             List<LogEntry> logList = new List<LogEntry>();
 
-            if (File.Exists(LogFilePath))
+            if (File.Exists(logFilePath))
             {
-                string existingJson = File.ReadAllText(LogFilePath);
+                string existingJson = File.ReadAllText(logFilePath);
                 if (!string.IsNullOrWhiteSpace(existingJson))
                 {
                     logList = JsonConvert.DeserializeObject<List<LogEntry>>(existingJson) ?? new List<LogEntry>();
@@ -44,12 +44,29 @@ namespace EasySave_From_ProSoft.Model.ImplementIModel
             logList.Add(entry);
 
             string updatedJson = JsonConvert.SerializeObject(logList, Formatting.Indented);
-            File.WriteAllText(LogFilePath, updatedJson);
+            File.WriteAllText(logFilePath, updatedJson);
         }
         
         public List<LogEntry> LoadLog(DateTime date)
         {
-            throw new Exception("not implemented yet");
+            string logPath = $"logs/log-{date:yyyy-MM-dd}.json";
+            
+            if (!File.Exists(logPath))
+            {
+                return new List<LogEntry>();
+            }
+
+            string json = File.ReadAllText(logPath);
+            var allLogs = JsonConvert.DeserializeObject<List<LogEntry>>(json) ?? new List<LogEntry>();
+            
+            return allLogs;
+        }
+        
+        private string GetLogFilePath(DateTime date)
+        {
+            string folder = "logs";
+            Directory.CreateDirectory(folder);
+            return Path.Combine(folder, $"log-{date:yyyy-MM-dd}.json");
         }
     }
 }
