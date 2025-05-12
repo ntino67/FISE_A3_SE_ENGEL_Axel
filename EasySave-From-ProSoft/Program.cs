@@ -13,7 +13,7 @@ namespace EasySave_From_ProSoft
         public static void Main(string[] args)
         {
             IConsoleView consoleView = new ConsoleView();
-            AnsiConsole.MarkupLine($"Nothing is implemented yet, go to [green]ConsoleView[/] for showing things to user.");
+            consoleView.MainMenu();
         }
     }
 }

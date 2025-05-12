@@ -124,11 +124,29 @@ namespace EasySave_From_ProSoft.ViewModel.Language {
         }
         
         /// <summary>
+        ///   Recherche une chaîne localisée semblable à Language.
+        /// </summary>
+        internal static string Language {
+            get {
+                return ResourceManager.GetString("Language", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Recherche une chaîne localisée semblable à You&apos;ve selected.
         /// </summary>
         internal static string LanguageSelected {
             get {
                 return ResourceManager.GetString("LanguageSelected", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une chaîne localisée semblable à Path of log files.
+        /// </summary>
+        internal static string LogPath {
+            get {
+                return ResourceManager.GetString("LogPath", resourceCulture);
             }
         }
         
@@ -156,6 +174,15 @@ namespace EasySave_From_ProSoft.ViewModel.Language {
         internal static string Options {
             get {
                 return ResourceManager.GetString("Options", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une chaîne localisée semblable à Options menu.
+        /// </summary>
+        internal static string OptionsMenu {
+            get {
+                return ResourceManager.GetString("OptionsMenu", resourceCulture);
             }
         }
         
@@ -192,6 +219,15 @@ namespace EasySave_From_ProSoft.ViewModel.Language {
         internal static string SelectLanguage {
             get {
                 return ResourceManager.GetString("SelectLanguage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une chaîne localisée semblable à Path of Status files.
+        /// </summary>
+        internal static string StatusPath {
+            get {
+                return ResourceManager.GetString("StatusPath", resourceCulture);
             }
         }
         
