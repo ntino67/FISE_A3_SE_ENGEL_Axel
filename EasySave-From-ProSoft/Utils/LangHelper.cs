@@ -7,7 +7,7 @@ using System.Globalization;
 using Spectre.Console;
 using System.Linq;
 
-namespace EasySave_From_ProSoft.ViewModel
+namespace EasySave_From_ProSoft.Utils
 {
     internal class LangHelper
     {
@@ -15,7 +15,7 @@ namespace EasySave_From_ProSoft.ViewModel
         //static constructor
         static LangHelper()
         {
-            _rm = new ResourceManager("EasySave_From_ProSoft.ViewModel.Language.Lang", Assembly.GetExecutingAssembly());
+            _rm = new ResourceManager("EasySave_From_ProSoft.Utils.Language.Lang", Assembly.GetExecutingAssembly());
             CultureInfo.DefaultThreadCurrentCulture = new CultureInfo("en_US");
             CultureInfo.DefaultThreadCurrentUICulture = new CultureInfo("en_US");
         }

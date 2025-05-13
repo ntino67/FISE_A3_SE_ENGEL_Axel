@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace EasySave_From_ProSoft.ViewModel.Language {
+namespace EasySave_From_ProSoft.Utils.Language {
     using System;
     
     
@@ -39,7 +39,7 @@ namespace EasySave_From_ProSoft.ViewModel.Language {
         internal static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
-                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("EasySave_From_ProSoft.ViewModel.Language.Lang", typeof(Lang).Assembly);
+                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("EasySave_From_ProSoft.Utils.Language.Lang", typeof(Lang).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;
@@ -88,6 +88,15 @@ namespace EasySave_From_ProSoft.ViewModel.Language {
         }
         
         /// <summary>
+        ///   Recherche une chaîne localisée semblable à Create a new job.
+        /// </summary>
+        internal static string CreateNewJob {
+            get {
+                return ResourceManager.GetString("CreateNewJob", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Recherche une chaîne localisée semblable à Current folder.
         /// </summary>
         internal static string CurrentFolder {
@@ -120,6 +129,15 @@ namespace EasySave_From_ProSoft.ViewModel.Language {
         internal static string DefineTargetPath {
             get {
                 return ResourceManager.GetString("DefineTargetPath", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une chaîne localisée semblable à Please enter new job name.
+        /// </summary>
+        internal static string EnterJobName {
+            get {
+                return ResourceManager.GetString("EnterJobName", resourceCulture);
             }
         }
         

@@ -118,75 +118,81 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="BackToMainMenu" xml:space="preserve">
-    <value>Retour au menu principal</value>
+    <value>Back to main menu</value>
   </data>
   <data name="CreateBackup" xml:space="preserve">
-    <value>Créer une sauvegarde</value>
+    <value>Create backup</value>
   </data>
   <data name="DefineSaveMode" xml:space="preserve">
-    <value>Définir le mode de sauvegarde</value>
+    <value>Define save mode</value>
   </data>
   <data name="DefineSourcePath" xml:space="preserve">
-    <value>Définir le chemin de source</value>
+    <value>Define source path</value>
   </data>
   <data name="DefineTargetPath" xml:space="preserve">
-    <value>Définir le chemin cible</value>
+    <value>Define target path</value>
   </data>
   <data name="Exit" xml:space="preserve">
-    <value>Quitter</value>
+    <value>Exit</value>
   </data>
   <data name="JobOptions" xml:space="preserve">
-    <value>Options d'action de sauvegarde</value>
+    <value>Backup job Options</value>
   </data>
   <data name="Language" xml:space="preserve">
-    <value>Langue</value>
+    <value>Language</value>
   </data>
   <data name="LanguageSelected" xml:space="preserve">
-    <value>Vous avez choisi</value>
+    <value>You've selected</value>
   </data>
   <data name="LogPath" xml:space="preserve">
-    <value>Chemin d'accès aux logs</value>
+    <value>Path of log files</value>
   </data>
   <data name="MainMenu" xml:space="preserve">
-    <value>Menu Principal</value>
+    <value>Main menu</value>
   </data>
   <data name="No" xml:space="preserve">
-    <value>Non</value>
+    <value>No</value>
   </data>
   <data name="Options" xml:space="preserve">
     <value>Options</value>
   </data>
   <data name="OptionsMenu" xml:space="preserve">
-    <value>Menu des options</value>
+    <value>Options menu</value>
   </data>
   <data name="RenameJob" xml:space="preserve">
-    <value>Renommer l'action de sauvegarde</value>
+    <value>Rename job</value>
   </data>
   <data name="SelectMultipleJobs" xml:space="preserve">
-    <value>Executer plusieurs actions de sauvegarde</value>
+    <value>Select multiple jobs</value>
   </data>
   <data name="SelectJob" xml:space="preserve">
-    <value>Selectionner une action de sauvegarde</value>
+    <value>Select a backup job</value>
   </data>
   <data name="SelectLanguage" xml:space="preserve">
-    <value>Choisissez la langue</value>
+    <value>Select your language</value>
   </data>
   <data name="StatusPath" xml:space="preserve">
-    <value>Chemin d'accès aux Status</value>
+    <value>Path of Status files</value>
   </data>
   <data name="Yes" xml:space="preserve">
-    <value>Oui</value>
+    <value>Yes</value>
   </data>
   <data name="CurrentFolder" xml:space="preserve">
-    <value>Dossier actuel</value>
+    <value>Current folder</value>
   </data>
   <data name="WhatJobsList" xml:space="preserve">
-    <value>Quels [green]actions[/] voulez vous executer?</value>
+    <value>What [green]jobs[/] do you want to run?</value>
   </data>
   <data name="JobsListIndication" xml:space="preserve">
-    <value>[grey](Appuez sur [blue]&lt;espace&gt;[/] pour selectionner une action, [green]&lt;entrer&gt;[/] pour executer les actions séléctionnées)[/]</value>
+    <value>[grey](Press [blue]&lt;space&gt;[/] to toggle a job, [green]&lt;enter&gt;[/] to run selected jobs)[/]</value>
   </data>
   <data name="BackToMainMenuAndDoNothing" xml:space="preserve">
-    <value />
+    <value>Go back to main menu and do nothing </value>
+  </data>
+  <data name="CreateNewJob" xml:space="preserve">
+    <value>Create a new job</value>
+  </data>
+  <data name="EnterJobName" xml:space="preserve">
+    <value>Please enter new job name</value>
   </data>
 </root>

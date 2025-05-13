@@ -1,4 +1,4 @@
-﻿using EasySave_From_ProSoft.Model.ImplementIModel;
+﻿using EasySave_From_ProSoft.Utils;
 using EasySave_From_ProSoft.ViewModel;
 using Spectre.Console;
 using System;
@@ -7,6 +7,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using EasySave_From_ProSoft.Model;
 
 namespace EasySave_From_ProSoft.View
 {
@@ -37,6 +38,12 @@ namespace EasySave_From_ProSoft.View
             // Display the selected value
             AnsiConsole.MarkupLine($"{LangHelper.GetString("SelectedOption")} [green]{selectedValue}[/]");
             return selectedValue;
+        }
+
+        public string InputString(string message)
+        {
+            string input = AnsiConsole.Ask<string>($"{message}");
+            return input;
         }
 
         public void JobOptions()
@@ -147,13 +154,12 @@ namespace EasySave_From_ProSoft.View
                 }
 
                 // Demander le nom du nouveau job
-                string jobName = AnsiConsole.Ask<string>(LangHelper.GetString("EnterJobName"));
+                string jobName = InputString(LangHelper.GetString("EnterJobName"));
 
                 try
                 {
                     // Créer le nouveau job
                     ViewModelLocator.GetJobViewModel().CreateNewJob(jobName);
-                    AnsiConsole.MarkupLine($"[green]{LangHelper.GetString("JobCreated")}[/]");
 
                     // Afficher les options du job
                     navigate("JobOptions");
@@ -165,7 +171,7 @@ namespace EasySave_From_ProSoft.View
             }
             else if (selected == LangHelper.GetString("BackToMainMenu"))
             {
-                // Ne rien faire, retourner au menu principal
+                navigate("BackToMainMenu");
             }
             else
             {
@@ -348,7 +354,7 @@ namespace EasySave_From_ProSoft.View
             {
                 AnsiConsole.MarkupLine($"[red]{ex.Message}[/]");
             }
-            JobOptions(); // Retourner au menu des options du job
+            navigate("JobOptions"); // Retourner au menu des options du job
         }
 
         private async Task CreateBackup()
@@ -442,6 +448,11 @@ namespace EasySave_From_ProSoft.View
                 case "ResetJob":
                     ResetJob();
                     break;
+                case "Exit":
+                    {
+                        Environment.Exit(0);
+                        break;
+                    }
                 default:
                 {
                     AnsiConsole.MarkupLine($"{LangHelper.GetString(key)}");

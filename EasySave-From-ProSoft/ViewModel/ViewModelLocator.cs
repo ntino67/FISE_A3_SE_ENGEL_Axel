@@ -1,8 +1,6 @@
 ﻿using System;
 using System.IO;
-using EasySave_From_ProSoft.Model.IModel;
 using EasySave_From_ProSoft.Model.Implementations;
-using EasySave_From_ProSoft.Model.ImplementIModel;
 using EasySave_From_ProSoft.Model.Interfaces;
 
 namespace EasySave_From_ProSoft.ViewModel
