@@ -1,4 +1,5 @@
-﻿using EasySave_From_ProSoft.ViewModel;
+﻿using EasySave_From_ProSoft.Model.ImplementIModel;
+using EasySave_From_ProSoft.ViewModel;
 using Spectre.Console;
 using System;
 using System.Collections.Generic;
@@ -56,17 +57,10 @@ namespace EasySave_From_ProSoft.View
                 new SelectionPrompt<string>()
                     .Title($"[bold]{LangHelper.GetString("JobOptions")}[/]")
                     .PageSize(10)
-                    .AddChoices(new[] {
-                        LangHelper.GetString("RenameJob"),
-                        LangHelper.GetString("DefineSourcePath"),
-                        LangHelper.GetString("DefineTargetPath"),
-                        LangHelper.GetString("DefineSaveMode"),
-                        LangHelper.GetString("CreateBackup"),
-                        LangHelper.GetString("ResetJob"),
-                        LangHelper.GetString("BackToMainMenu")
-                    }));
+                    .AddChoices(jobOptionsChoices.Keys));
             // Get the selected value from the dictionary
-            string selectedValue = jobOptionsChoices.First(kvp => kvp.Key == jobOptionsSelected).Value;
+            string selectedValue = jobOptionsChoices[jobOptionsSelected];
+
 
             // Display the selected value
             navigate(selectedValue);
@@ -88,22 +82,16 @@ namespace EasySave_From_ProSoft.View
                 new SelectionPrompt<string>()
                     .Title($"[bold]{LangHelper.GetString("MainMenu")}[/]")
                     .PageSize(10)
-                    .AddChoices(new[] {
-                        LangHelper.GetString("SelectJob"),
-                        LangHelper.GetString("SelectMultipleJobs"),
-                        LangHelper.GetString("Options"),
-                        LangHelper.GetString("Exit")
-                    }));
+                    .AddChoices(mainMenuChoices.Keys));
             // Get the selected value from the dictionary
-            string selectedValue = mainMenuChoices.First(kvp => kvp.Key == MainMenuSelected).Value;
-
+            string selectedValue = mainMenuChoices[MainMenuSelected];
             // Display the selected value
             navigate(selectedValue);
         }
 
         public void MainOptions()
         {
-            Dictionary<string, string> mainMenuOptions = new Dictionary<string, string>
+            Dictionary<string, string> optionsChoices = new Dictionary<string, string>
             {
                 { LangHelper.GetString("Language"), "Language" },
                 { LangHelper.GetString("LogPath"), "LogPath" },
@@ -112,46 +100,85 @@ namespace EasySave_From_ProSoft.View
             };
 
             // Main menu prompt
-            string MainMenuSelected = AnsiConsole.Prompt(
+            string optionSelected = AnsiConsole.Prompt(
                 new SelectionPrompt<string>()
                     .Title($"[bold] {LangHelper.GetString("OptionsMenu")} [/]")
                     .PageSize(10)
-                    .AddChoices(new[] {
-                        LangHelper.GetString("Language"),
-                        LangHelper.GetString("LogPath"),
-                        LangHelper.GetString("StatusPath"),
-                        LangHelper.GetString("BackToMainMenu")
-                    }));
-            // Get the selected value from the dictionary
-            string selectedValue = mainMenuOptions.First(kvp => kvp.Key == MainMenuSelected).Value;
+                    .AddChoices(optionsChoices.Keys));
+
+            string selectedValue = optionsChoices[optionSelected];
 
             // Display the selected value
             navigate(selectedValue);
         }
 
+        // Implémentation de la méthode SelectJob()
         public void SelectJob()
         {
-            Dictionary<string, string> jobOptions = new Dictionary<string, string> // Get registered jobs from ViewModel
+            // Obtenir tous les jobs disponibles
+            List<BackupJob> jobs = ViewModelLocator.GetJobViewModel().GetAllJobs();
+
+            List<string> choices = new List<string>();
+
+            // Ajouter les jobs existants
+            foreach (BackupJob job in jobs)
             {
-                { "MyFirstJob", "Job1" },
-                { "MySecondJob", "Job2" },
-                { "MyThirdJob", "Job3" },
-            };
-            jobOptions.Add(LangHelper.GetString("BackToMainMenu"), "BackToMainMenu");
+                choices.Add(job.Name);
+            }
 
-            // Job options prompt
-            string jobOptionsSelected = AnsiConsole.Prompt(
+            // Ajouter les options supplémentaires
+            choices.Add(LangHelper.GetString("CreateNewJob"));
+            choices.Add(LangHelper.GetString("BackToMainMenu"));
+
+            // Afficher le menu de sélection
+            string selected = AnsiConsole.Prompt(
                 new SelectionPrompt<string>()
-                    .Title($"[bold] {LangHelper.GetString("SelectJob")} [/]")
+                    .Title(LangHelper.GetString("SelectJobPrompt"))
                     .PageSize(10)
-                    .AddChoices(jobOptions.Keys));
+                    .AddChoices(choices));
 
-            // Get the selected value from the dictionary
-            string selectedValue = jobOptions.First(kvp => kvp.Key == jobOptionsSelected).Value;
+            if (selected == LangHelper.GetString("CreateNewJob"))
+            {
+                // Vérifier si le nombre maximum de jobs est atteint
+                if (jobs.Count >= 5)
+                {
+                    AnsiConsole.MarkupLine($"[red]{LangHelper.GetString("MaxJobsReached")}[/]");
+                    return;
+                }
 
-            // Display the selected value
-            navigate(selectedValue);
+                // Demander le nom du nouveau job
+                string jobName = AnsiConsole.Ask<string>(LangHelper.GetString("EnterJobName"));
+
+                try
+                {
+                    // Créer le nouveau job
+                    ViewModelLocator.GetJobViewModel().CreateNewJob(jobName);
+                    AnsiConsole.MarkupLine($"[green]{LangHelper.GetString("JobCreated")}[/]");
+
+                    // Afficher les options du job
+                    navigate("JobOptions");
+                }
+                catch (Exception ex)
+                {
+                    AnsiConsole.MarkupLine($"[red]{ex.Message}[/]");
+                }
+            }
+            else if (selected == LangHelper.GetString("BackToMainMenu"))
+            {
+                // Ne rien faire, retourner au menu principal
+            }
+            else
+            {
+                // Sélectionner le job existant
+                var job = jobs.FirstOrDefault(j => j.Name == selected);
+                if (job != null)
+                {
+                    ViewModelLocator.GetJobViewModel().SetCurrentJob(job);
+                    navigate("JobOptions");
+                }
+            }
         }
+
 
         public void SelectLanguage()
         {
@@ -167,7 +194,8 @@ namespace EasySave_From_ProSoft.View
                         .Title($"[bold]{LangHelper.GetString("SelectLanguage")}[/]")
                         .PageSize(10)
                         .AddChoices(Languages.Keys));
-            string selectedLanguageCode = Languages.First(kvp => kvp.Key == language).Value;
+
+            string selectedLanguageCode = Languages[language];
             LangHelper.ChangeLanguage(selectedLanguageCode);
 
             navigate("Options");
@@ -218,6 +246,150 @@ namespace EasySave_From_ProSoft.View
                 }
             }
         }
+
+        // Méthode utilitaire pour raccourcir les chemins trop longs
+        private string ShortenPath(string path, int maxLength)
+        {
+            if (string.IsNullOrEmpty(path))
+                return string.Empty;
+
+            if (path.Length <= maxLength)
+                return path;
+
+            int startLength = maxLength / 2 - 2;
+            int endLength = maxLength / 2 - 1;
+
+            return path.Substring(0, startLength) + "..." + path.Substring(path.Length - endLength);
+        }
+
+        // Méthode utilitaire pour formater la taille des fichiers
+        private string FormatFileSize(long bytes)
+        {
+            string[] sizes = { "B", "KB", "MB", "GB", "TB" };
+            double len = bytes;
+            int order = 0;
+
+            while (len >= 1024 && order < sizes.Length - 1)
+            {
+                order++;
+                len = len / 1024;
+            }
+
+            return $"{len:0.##} {sizes[order]}";
+        }
+
+
+        private void RenameJob()
+        {
+            try
+            {
+                string newName = AnsiConsole.Ask<string>(LangHelper.GetString("EnterNewName"));
+                ViewModelLocator.GetJobViewModel().UpdateJobName(newName);
+                AnsiConsole.MarkupLine($"[green]{LangHelper.GetString("JobRenamed")}[/]");
+            }
+            catch (Exception ex)
+            {
+                AnsiConsole.MarkupLine($"[red]{ex.Message}[/]");
+            }
+            navigate("JobOptions"); // Retourner au menu des options du job
+        }
+
+        private void DefineSourcePath()
+        {
+            try
+            {
+                string sourcePath = AnsiConsole.Ask<string>(LangHelper.GetString("EnterSourcePath"));
+                ViewModelLocator.GetJobViewModel().UpdateSourcePath(sourcePath);
+                AnsiConsole.MarkupLine($"[green]{LangHelper.GetString("SourcePathUpdated")}[/]");
+            }
+            catch (Exception ex)
+            {
+                AnsiConsole.MarkupLine($"[red]{ex.Message}[/]");
+            }
+            navigate("JobOptions"); // Retourner au menu des options du job
+        }
+
+        private void DefineTargetPath()
+        {
+            try
+            {
+                string targetPath = AnsiConsole.Ask<string>(LangHelper.GetString("EnterTargetPath"));
+                ViewModelLocator.GetJobViewModel().UpdateTargetPath(targetPath);
+                AnsiConsole.MarkupLine($"[green]{LangHelper.GetString("TargetPathUpdated")}[/]");
+            }
+            catch (Exception ex)
+            {
+                AnsiConsole.MarkupLine($"[red]{ex.Message}[/]");
+            }
+            navigate("JobOptions"); // Retourner au menu des options du job
+        }
+
+        private void DefineSaveMode()
+        {
+            Dictionary<string, BackupType> saveModeChoices = new Dictionary<string, BackupType>
+            {
+                { LangHelper.GetString("FullBackup"), BackupType.Full },
+                { LangHelper.GetString("DifferentialBackup"), BackupType.Differential }
+            };
+
+            string selected = AnsiConsole.Prompt(
+                new SelectionPrompt<string>()
+                    .Title(LangHelper.GetString("SelectBackupType"))
+                    .PageSize(10)
+                    .AddChoices(saveModeChoices.Keys));
+
+            try
+            {
+                BackupType selectedType = saveModeChoices[selected];
+                ViewModelLocator.GetJobViewModel().UpdateBackupType(selectedType);
+                AnsiConsole.MarkupLine($"[green]{LangHelper.GetString("BackupTypeUpdated")}[/]");
+            }
+            catch (Exception ex)
+            {
+                AnsiConsole.MarkupLine($"[red]{ex.Message}[/]");
+            }
+            JobOptions(); // Retourner au menu des options du job
+        }
+
+        private async Task CreateBackup()
+        {
+            try
+            {
+                AnsiConsole.MarkupLine($"[yellow]{LangHelper.GetString("RunningBackup")}[/]");
+                bool result = await ViewModelLocator.GetJobViewModel().ExecuteCurrentJob();
+
+                if (result)
+                    AnsiConsole.MarkupLine($"[green]{LangHelper.GetString("BackupCompleted")}[/]");
+                else
+                    AnsiConsole.MarkupLine($"[red]{LangHelper.GetString("BackupFailed")}[/]");
+            }
+            catch (Exception ex)
+            {
+                AnsiConsole.MarkupLine($"[red]{ex.Message}[/]");
+            }
+
+            AnsiConsole.MarkupLine($"\n{LangHelper.GetString("PressEnterToContinue")}");
+            Console.ReadLine();
+
+            navigate("JobOptions");
+        }
+
+        private void ResetJob()
+        {
+            try
+            {
+                if (Confirm(LangHelper.GetString("ConfirmReset")))
+                {
+                    ViewModelLocator.GetJobViewModel().ResetCurrentJob();
+                    AnsiConsole.MarkupLine($"[green]{LangHelper.GetString("JobReset")}[/]");
+                }
+            }
+            catch (Exception ex)
+            {
+                AnsiConsole.MarkupLine($"[red]{ex.Message}[/]");
+            }
+            navigate("JobOptions");
+        }
         public void navigate(string key)
         {
             switch (key)
@@ -252,6 +424,24 @@ namespace EasySave_From_ProSoft.View
                         Console.WriteLine(BrowseFolders());
                         break;
                     }
+                case "RenameJob":
+                    RenameJob();
+                    break;
+                case "DefineSourcePath":
+                    DefineSourcePath();
+                    break;
+                case "DefineTargetPath":
+                    DefineTargetPath();
+                    break;
+                case "DefineSaveMode":
+                    DefineSaveMode();
+                    break;
+                case "CreateBackup":
+                    CreateBackup().Wait();
+                    break;
+                case "ResetJob":
+                    ResetJob();
+                    break;
                 default:
                 {
                     AnsiConsole.MarkupLine($"{LangHelper.GetString(key)}");
