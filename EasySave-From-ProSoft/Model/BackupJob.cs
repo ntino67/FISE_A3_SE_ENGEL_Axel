@@ -1,12 +1,12 @@
 ﻿using System;
-using System.Text.Json.Serialization;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
+using System.Text.Json.Serialization;
 using EasySave_From_ProSoft.Utils;
 
 namespace EasySave_From_ProSoft.Model
 {
-    public class BackupJob : INotifyPropertychanged
+    public class BackupJob : INotifyPropertyChanged
     {
         public event PropertyChangedEventHandler PropertyChanged;
 
@@ -16,9 +16,19 @@ namespace EasySave_From_ProSoft.Model
         }
 
         private string _name;
+        private string _sourceDirectory;
+        private string _targetDirectory;
+        private BackupType _type;
+        private DateTime? _lastRunTime;
+        private JobStatus _status = JobStatus.Ready;
+
+        // Non-editable property: GUID
+        [JsonPropertyName("id")]
+        public string Id { get; set; } = Guid.NewGuid().ToString();
+
 
         [JsonPropertyName("name")]
-        public string Name 
+        public string Name
         {
             get => _name;
             set
@@ -31,8 +41,6 @@ namespace EasySave_From_ProSoft.Model
             }
         }
 
-        private string _sourceDirectory;
-
         [JsonPropertyName("sourceDirectory")]
         public string SourceDirectory
         {
@@ -42,11 +50,10 @@ namespace EasySave_From_ProSoft.Model
                 if (_sourceDirectory != value)
                 {
                     _sourceDirectory = value;
+                    OnPropertyChanged();
                 }
             }
         }
-
-        private string _targetDirectory;
 
         [JsonPropertyName("targetDirectory")]
         public string TargetDirectory
@@ -54,14 +61,13 @@ namespace EasySave_From_ProSoft.Model
             get => _targetDirectory;
             set
             {
-                if (_targetDirectorya != value)
+                if (_targetDirectory != value)
                 {
                     _targetDirectory = value;
+                    OnPropertyChanged();
                 }
             }
         }
-
-        private BackupType _type;
 
         [JsonPropertyName("type")]
         [JsonConverter(typeof(JsonStringEnumConverter))]
@@ -73,14 +79,10 @@ namespace EasySave_From_ProSoft.Model
                 if (_type != value)
                 {
                     _type = value;
+                    OnPropertyChanged();
                 }
             }
         }
-
-        [JsonPropertyName("id")]
-        public string Id { get; set; } = Guid.NewGuid().ToString();
-
-        private DateTime? _lastRunTime;
 
         [JsonPropertyName("lastRunTime")]
         public DateTime? LastRunTime
@@ -91,11 +93,10 @@ namespace EasySave_From_ProSoft.Model
                 if (_lastRunTime != value)
                 {
                     _lastRunTime = value;
+                    OnPropertyChanged();
                 }
             }
         }
-
-        private JobStatus _status = JobStatus.Ready;
 
         [JsonPropertyName("state")]
         [JsonConverter(typeof(JsonStringEnumConverter))]
@@ -107,11 +108,11 @@ namespace EasySave_From_ProSoft.Model
                 if (_status != value)
                 {
                     _status = value;
+                    OnPropertyChanged();
                 }
             }
         }
 
-        // Méthode de validation du job
         public bool IsValid()
         {
             return !string.IsNullOrEmpty(Name) &&
@@ -119,7 +120,6 @@ namespace EasySave_From_ProSoft.Model
                    !string.IsNullOrEmpty(TargetDirectory);
         }
 
-        // Réinitialiser le job
         public void Reset()
         {
             SourceDirectory = string.Empty;
