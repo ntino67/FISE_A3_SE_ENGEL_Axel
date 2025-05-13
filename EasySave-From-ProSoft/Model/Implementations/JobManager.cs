@@ -61,7 +61,7 @@ namespace EasySave_From_ProSoft.Model.Implementations
 
         public List<BackupJob> GetAllJobs()
         {
-            return _jobs.ToList();
+            return _jobs;
         }
 
         public BackupJob GetJob(string jobId)

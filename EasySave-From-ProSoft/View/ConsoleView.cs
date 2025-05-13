@@ -35,8 +35,6 @@ namespace EasySave_From_ProSoft.View
             // Get the selected value from the dictionary
             bool selectedValue = keyValuePairs.First(kvp => kvp.Key == confirmationSelected).Value;
 
-            // Display the selected value
-            AnsiConsole.MarkupLine($"{LangHelper.GetString("SelectedOption")} [green]{selectedValue}[/]");
             return selectedValue;
         }
 
@@ -51,8 +49,8 @@ namespace EasySave_From_ProSoft.View
             Dictionary<string, string> jobOptionsChoices = new Dictionary<string, string>
             {
                 { LangHelper.GetString("RenameJob"), "RenameJob" },
-                { LangHelper.GetString("DefineSourcePath"), "DefineSourcePath" },
-                { LangHelper.GetString("DefineTargetPath"), "DefineTargetPath" },
+                { LangHelper.GetString("DefineSourcePath")+$" {ViewModelLocator.GetJobViewModel().GetSourcePath()}", "DefineSourcePath" },
+                { LangHelper.GetString("DefineTargetPath")+$" {ViewModelLocator.GetJobViewModel().GetTargetPath()}", "DefineTargetPath" },
                 { LangHelper.GetString("DefineSaveMode"), "DefineSaveMode" },
                 { LangHelper.GetString("CreateBackup"), "CreateBackup" },
                 { LangHelper.GetString("ResetJob"), "ResetJob" },
@@ -143,7 +141,6 @@ namespace EasySave_From_ProSoft.View
                     .Title(LangHelper.GetString("SelectJobPrompt"))
                     .PageSize(10)
                     .AddChoices(choices));
-
             if (selected == LangHelper.GetString("CreateNewJob"))
             {
                 // Vérifier si le nombre maximum de jobs est atteint
@@ -180,7 +177,7 @@ namespace EasySave_From_ProSoft.View
                 if (job != null)
                 {
                     ViewModelLocator.GetJobViewModel().SetCurrentJob(job);
-                    navigate("JobOptions");
+                    JobOptions();
                 }
             }
         }
@@ -289,7 +286,7 @@ namespace EasySave_From_ProSoft.View
         {
             try
             {
-                string newName = AnsiConsole.Ask<string>(LangHelper.GetString("EnterNewName"));
+                string newName = InputString(LangHelper.GetString("EnterNewName"));
                 ViewModelLocator.GetJobViewModel().UpdateJobName(newName);
                 AnsiConsole.MarkupLine($"[green]{LangHelper.GetString("JobRenamed")}[/]");
             }
@@ -304,7 +301,7 @@ namespace EasySave_From_ProSoft.View
         {
             try
             {
-                string sourcePath = AnsiConsole.Ask<string>(LangHelper.GetString("EnterSourcePath"));
+                string sourcePath = BrowseFolders();
                 ViewModelLocator.GetJobViewModel().UpdateSourcePath(sourcePath);
                 AnsiConsole.MarkupLine($"[green]{LangHelper.GetString("SourcePathUpdated")}[/]");
             }
@@ -319,7 +316,7 @@ namespace EasySave_From_ProSoft.View
         {
             try
             {
-                string targetPath = AnsiConsole.Ask<string>(LangHelper.GetString("EnterTargetPath"));
+                string targetPath = BrowseFolders();
                 ViewModelLocator.GetJobViewModel().UpdateTargetPath(targetPath);
                 AnsiConsole.MarkupLine($"[green]{LangHelper.GetString("TargetPathUpdated")}[/]");
             }
@@ -403,6 +400,11 @@ namespace EasySave_From_ProSoft.View
                 case "SelectJob":
                     {
                         SelectJob();
+                        break;
+                    }
+                case "JobOptions":
+                    {
+                        JobOptions();
                         break;
                     }
                 case "SelectMultipleJobs":

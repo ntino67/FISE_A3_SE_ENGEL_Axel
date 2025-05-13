@@ -79,6 +79,15 @@ namespace EasySave_From_ProSoft.Utils.Language {
         }
         
         /// <summary>
+        ///   Recherche une chaîne localisée semblable à Are you sure you want to reset this job ? (Every settings will be deleted).
+        /// </summary>
+        internal static string ConfirmReset {
+            get {
+                return ResourceManager.GetString("ConfirmReset", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Recherche une chaîne localisée semblable à Create backup.
         /// </summary>
         internal static string CreateBackup {
@@ -241,11 +250,29 @@ namespace EasySave_From_ProSoft.Utils.Language {
         }
         
         /// <summary>
+        ///   Recherche une chaîne localisée semblable à Reset this job /!\.
+        /// </summary>
+        internal static string ResetJob {
+            get {
+                return ResourceManager.GetString("ResetJob", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Recherche une chaîne localisée semblable à Select a backup job.
         /// </summary>
         internal static string SelectJob {
             get {
                 return ResourceManager.GetString("SelectJob", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une chaîne localisée semblable à Select a job.
+        /// </summary>
+        internal static string SelectJobPrompt {
+            get {
+                return ResourceManager.GetString("SelectJobPrompt", resourceCulture);
             }
         }
         

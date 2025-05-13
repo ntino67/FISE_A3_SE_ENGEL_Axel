@@ -195,4 +195,13 @@
   <data name="EnterJobName" xml:space="preserve">
     <value>Veuillez entrer le nom de la nouvelle action</value>
   </data>
+  <data name="ResetJob" xml:space="preserve">
+    <value>Réinitialiser cette action /!\</value>
+  </data>
+  <data name="SelectJobPrompt" xml:space="preserve">
+    <value>Sélectionnez une action</value>
+  </data>
+  <data name="ConfirmReset" xml:space="preserve">
+    <value>Êtes vous sûr de vouloir réinitialiser cette action ? (Toutes les options relatives à l'action seront supprimées)</value>
+  </data>
 </root>

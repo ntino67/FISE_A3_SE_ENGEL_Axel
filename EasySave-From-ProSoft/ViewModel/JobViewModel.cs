@@ -96,6 +96,20 @@ namespace EasySave_From_ProSoft.ViewModel
             _jobManager.UpdateBackupJob(_currentJob);
         }
 
+        public string GetSourcePath()
+        {
+            if (_currentJob == null)
+                throw new InvalidOperationException("Aucun job n'est sélectionné.");
+            return _currentJob.SourceDirectory;
+        }
+
+        public string GetTargetPath()
+        {
+            if (_currentJob == null)
+                throw new InvalidOperationException("Aucun job n'est sélectionné.");
+            return _currentJob.TargetDirectory;
+        }
+
         public List<BackupJob> GetAllJobs()
         {
             return _jobManager.GetAllJobs();

@@ -195,4 +195,13 @@
   <data name="EnterJobName" xml:space="preserve">
     <value>Please enter new job name</value>
   </data>
+  <data name="ResetJob" xml:space="preserve">
+    <value>Reset this job /!\</value>
+  </data>
+  <data name="SelectJobPrompt" xml:space="preserve">
+    <value>Select a job</value>
+  </data>
+  <data name="ConfirmReset" xml:space="preserve">
+    <value>Are you sure you want to reset this job ? (Every settings will be deleted)</value>
+  </data>
 </root>
