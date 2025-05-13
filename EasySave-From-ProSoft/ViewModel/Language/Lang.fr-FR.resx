@@ -186,4 +186,7 @@
   <data name="JobsListIndication" xml:space="preserve">
     <value>[grey](Appuez sur [blue]&lt;espace&gt;[/] pour selectionner une action, [green]&lt;entrer&gt;[/] pour executer les actions séléctionnées)[/]</value>
   </data>
+  <data name="BackToMainMenuAndDoNothing" xml:space="preserve">
+    <value />
+  </data>
 </root>

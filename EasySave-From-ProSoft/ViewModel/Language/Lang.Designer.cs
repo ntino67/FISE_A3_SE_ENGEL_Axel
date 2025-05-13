@@ -70,6 +70,15 @@ namespace EasySave_From_ProSoft.ViewModel.Language {
         }
         
         /// <summary>
+        ///   Recherche une chaîne localisée semblable à Go back to main menu and do nothing .
+        /// </summary>
+        internal static string BackToMainMenuAndDoNothing {
+            get {
+                return ResourceManager.GetString("BackToMainMenuAndDoNothing", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Recherche une chaîne localisée semblable à Create backup.
         /// </summary>
         internal static string CreateBackup {

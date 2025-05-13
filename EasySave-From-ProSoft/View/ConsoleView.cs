@@ -54,7 +54,7 @@ namespace EasySave_From_ProSoft.View
             // Job options prompt
             string jobOptionsSelected = AnsiConsole.Prompt(
                 new SelectionPrompt<string>()
-                    .Title($"{LangHelper.GetString("JobOptions")}")
+                    .Title($"[bold]{LangHelper.GetString("JobOptions")}[/]")
                     .PageSize(10)
                     .AddChoices(new[] {
                         LangHelper.GetString("RenameJob"),
@@ -86,7 +86,7 @@ namespace EasySave_From_ProSoft.View
             // Main menu prompt
             string MainMenuSelected = AnsiConsole.Prompt(
                 new SelectionPrompt<string>()
-                    .Title($"{LangHelper.GetString("MainMenu")}")
+                    .Title($"[bold]{LangHelper.GetString("MainMenu")}[/]")
                     .PageSize(10)
                     .AddChoices(new[] {
                         LangHelper.GetString("SelectJob"),
@@ -114,7 +114,7 @@ namespace EasySave_From_ProSoft.View
             // Main menu prompt
             string MainMenuSelected = AnsiConsole.Prompt(
                 new SelectionPrompt<string>()
-                    .Title($"{LangHelper.GetString("OptionsMenu")}")
+                    .Title($"[bold] {LangHelper.GetString("OptionsMenu")} [/]")
                     .PageSize(10)
                     .AddChoices(new[] {
                         LangHelper.GetString("Language"),
@@ -142,7 +142,7 @@ namespace EasySave_From_ProSoft.View
             // Job options prompt
             string jobOptionsSelected = AnsiConsole.Prompt(
                 new SelectionPrompt<string>()
-                    .Title($"{LangHelper.GetString("SelectJob")}")
+                    .Title($"[bold] {LangHelper.GetString("SelectJob")} [/]")
                     .PageSize(10)
                     .AddChoices(jobOptions.Keys));
 
@@ -164,7 +164,7 @@ namespace EasySave_From_ProSoft.View
             // Ask for the user language
             string language = AnsiConsole.Prompt(
                     new SelectionPrompt<string>()
-                        .Title($"{LangHelper.GetString("SelectLanguage")}")
+                        .Title($"[bold]{LangHelper.GetString("SelectLanguage")}[/]")
                         .PageSize(10)
                         .AddChoices(Languages.Keys));
             string selectedLanguageCode = Languages.First(kvp => kvp.Key == language).Value;
@@ -262,41 +262,32 @@ namespace EasySave_From_ProSoft.View
             }
         }
 
-        async public void SelectMultipleJobs()
+        public void SelectMultipleJobs()
         {
             Dictionary<string, string> jobOptions = new Dictionary<string, string> // Get registered jobs from ViewModel
             {
                 { "MyFirstJob", "Job1" },
                 { "MySecondJob", "Job2" },
                 { "MyThirdJob", "Job3" },
+                { LangHelper.GetString("BackToMainMenuAndDoNothing"), "BackToMainMenu" }
             };
 
             // Job options prompt
             var jobOptionsSelected = AnsiConsole.Prompt(
             new MultiSelectionPrompt<string>()
-                .Title(LangHelper.GetString("WhatJobsList"))
+                .Title($"[bold]{LangHelper.GetString("WhatJobsList")}[/]")
                 .PageSize(10)
                 .InstructionsText(
                     LangHelper.GetString("JobsListIndication"))
                 .AddChoices(jobOptions.Keys));
 
-            await AnsiConsole.Progress()
-            .StartAsync(async ctx =>
+            // Si "Retour au menu principal" est sélectionné → retour immédiat
+            if (jobOptionsSelected.Contains(LangHelper.GetString("BackToMainMenuAndDoNothing")))
             {
-                // Define tasks
-                var task1 = ctx.AddTask("[green]Reticulating splines[/]");
-                var task2 = ctx.AddTask("[green]Folding space[/]");
+                navigate("BackToMainMenu");
+                return;
+            }
 
-                while (!ctx.IsFinished)
-                {
-                    // Simulate some work
-                    await Task.Delay(250);
-
-                    // Increment
-                    task1.Increment(1.5);
-                    task2.Increment(0.5);
-                }
-            });
             // Get the selected value from the dictionary
             Console.WriteLine("Runned jobs:");
             foreach (var job in jobOptionsSelected)

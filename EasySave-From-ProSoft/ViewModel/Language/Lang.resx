@@ -186,4 +186,7 @@
   <data name="JobsListIndication" xml:space="preserve">
     <value>[grey](Press [blue]&lt;space&gt;[/] to toggle a job, [green]&lt;enter&gt;[/] to run selected jobs)[/]</value>
   </data>
+  <data name="BackToMainMenuAndDoNothing" xml:space="preserve">
+    <value>Go back to main menu and do nothing </value>
+  </data>
 </root>
