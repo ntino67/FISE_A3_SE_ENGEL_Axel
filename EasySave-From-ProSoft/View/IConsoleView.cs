@@ -13,6 +13,8 @@ namespace EasySave_From_ProSoft.View
         public void JobOptions();
         public bool Confirm(string message);
         public void navigate(string key);
+        public string BrowseFolders();
+        public void SelectMultipleJobs();
 
     }
 }

@@ -70,11 +70,29 @@ namespace EasySave_From_ProSoft.ViewModel.Language {
         }
         
         /// <summary>
+        ///   Recherche une chaîne localisée semblable à Go back to main menu and do nothing .
+        /// </summary>
+        internal static string BackToMainMenuAndDoNothing {
+            get {
+                return ResourceManager.GetString("BackToMainMenuAndDoNothing", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Recherche une chaîne localisée semblable à Create backup.
         /// </summary>
         internal static string CreateBackup {
             get {
                 return ResourceManager.GetString("CreateBackup", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une chaîne localisée semblable à Current folder.
+        /// </summary>
+        internal static string CurrentFolder {
+            get {
+                return ResourceManager.GetString("CurrentFolder", resourceCulture);
             }
         }
         
@@ -120,6 +138,15 @@ namespace EasySave_From_ProSoft.ViewModel.Language {
         internal static string JobOptions {
             get {
                 return ResourceManager.GetString("JobOptions", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une chaîne localisée semblable à [grey](Press [blue]&lt;space&gt;[/] to toggle a job, [green]&lt;enter&gt;[/] to run selected jobs)[/].
+        /// </summary>
+        internal static string JobsListIndication {
+            get {
+                return ResourceManager.GetString("JobsListIndication", resourceCulture);
             }
         }
         
@@ -196,15 +223,6 @@ namespace EasySave_From_ProSoft.ViewModel.Language {
         }
         
         /// <summary>
-        ///   Recherche une chaîne localisée semblable à Run all backup jobs.
-        /// </summary>
-        internal static string RunAllJobs {
-            get {
-                return ResourceManager.GetString("RunAllJobs", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Recherche une chaîne localisée semblable à Select a backup job.
         /// </summary>
         internal static string SelectJob {
@@ -223,11 +241,29 @@ namespace EasySave_From_ProSoft.ViewModel.Language {
         }
         
         /// <summary>
+        ///   Recherche une chaîne localisée semblable à Select multiple jobs.
+        /// </summary>
+        internal static string SelectMultipleJobs {
+            get {
+                return ResourceManager.GetString("SelectMultipleJobs", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Recherche une chaîne localisée semblable à Path of Status files.
         /// </summary>
         internal static string StatusPath {
             get {
                 return ResourceManager.GetString("StatusPath", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une chaîne localisée semblable à What [green]jobs[/] do you want to run?.
+        /// </summary>
+        internal static string WhatJobsList {
+            get {
+                return ResourceManager.GetString("WhatJobsList", resourceCulture);
             }
         }
         

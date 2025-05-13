@@ -13,6 +13,7 @@ namespace EasySave_From_ProSoft
         public static void Main(string[] args)
         {
             IConsoleView consoleView = new ConsoleView();
+
             consoleView.MainMenu();
         }
     }

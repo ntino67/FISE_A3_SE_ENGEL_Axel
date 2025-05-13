@@ -162,8 +162,8 @@
   <data name="RenameJob" xml:space="preserve">
     <value>Rename job</value>
   </data>
-  <data name="RunAllJobs" xml:space="preserve">
-    <value>Run all backup jobs</value>
+  <data name="SelectMultipleJobs" xml:space="preserve">
+    <value>Select multiple jobs</value>
   </data>
   <data name="SelectJob" xml:space="preserve">
     <value>Select a backup job</value>
@@ -176,5 +176,17 @@
   </data>
   <data name="Yes" xml:space="preserve">
     <value>Yes</value>
+  </data>
+  <data name="CurrentFolder" xml:space="preserve">
+    <value>Current folder</value>
+  </data>
+  <data name="WhatJobsList" xml:space="preserve">
+    <value>What [green]jobs[/] do you want to run?</value>
+  </data>
+  <data name="JobsListIndication" xml:space="preserve">
+    <value>[grey](Press [blue]&lt;space&gt;[/] to toggle a job, [green]&lt;enter&gt;[/] to run selected jobs)[/]</value>
+  </data>
+  <data name="BackToMainMenuAndDoNothing" xml:space="preserve">
+    <value>Go back to main menu and do nothing </value>
   </data>
 </root>
