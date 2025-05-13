@@ -19,7 +19,7 @@ namespace EasySave_From_ProSoft.Model.Implementations
 
         public void LogBackupOperation(string jobName, string sourcePath, string destinationPath, long fileSize, long transferTimeMs, string status)
         {
-            var logEntry = new LogEntry
+            LogEntry logEntry = new LogEntry
             {
                 Timestamp = DateTime.Now,
                 JobName = jobName,
@@ -35,7 +35,7 @@ namespace EasySave_From_ProSoft.Model.Implementations
 
         public void LogBackupStart(BackupJob job)
         {
-            var logEntry = new LogEntry
+            LogEntry logEntry = new LogEntry
             {
                 Timestamp = DateTime.Now,
                 JobName = job.Name,
@@ -51,7 +51,7 @@ namespace EasySave_From_ProSoft.Model.Implementations
 
         public void LogBackupEnd(BackupJob job, bool success, TimeSpan duration)
         {
-            var logEntry = new LogEntry
+            LogEntry logEntry = new LogEntry
             {
                 Timestamp = DateTime.Now,
                 JobName = job.Name,

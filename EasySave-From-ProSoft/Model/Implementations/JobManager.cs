@@ -36,7 +36,7 @@ namespace EasySave_From_ProSoft.Model.Implementations
 
         public void UpdateBackupJob(BackupJob job)
         {
-            var existingJob = _jobs.FirstOrDefault(j => j.Id == job.Id);
+            BackupJob existingJob = _jobs.FirstOrDefault(j => j.Id == job.Id);
             if (existingJob == null)
                 throw new InvalidOperationException($"Le job avec l'ID {job.Id} n'existe pas.");
 
@@ -51,7 +51,7 @@ namespace EasySave_From_ProSoft.Model.Implementations
 
         public void DeleteBackupJob(string jobId)
         {
-            var job = _jobs.FirstOrDefault(j => j.Id == jobId);
+            BackupJob job = _jobs.FirstOrDefault(j => j.Id == jobId);
             if (job == null)
                 return;
 
@@ -81,7 +81,7 @@ namespace EasySave_From_ProSoft.Model.Implementations
 
         public async Task<bool> ExecuteBackupJob(string jobId)
         {
-            var job = _jobs.FirstOrDefault(j => j.Id == jobId);
+            BackupJob job = _jobs.FirstOrDefault(j => j.Id == jobId);
             if (job == null)
                 return false;
 
@@ -144,6 +144,7 @@ namespace EasySave_From_ProSoft.Model.Implementations
                 _logger.LogBackupEnd(job, false, duration);
 
                 return false;
+                throw ex;
             }
         }
 
@@ -151,10 +152,10 @@ namespace EasySave_From_ProSoft.Model.Implementations
         {
             try
             {
-                var sourceDir = new DirectoryInfo(job.SourceDirectory);
-                var files = sourceDir.GetFiles("*", SearchOption.AllDirectories);
+                DirectoryInfo sourceDir = new DirectoryInfo(job.SourceDirectory);
+                FileInfo[] files = sourceDir.GetFiles("*", SearchOption.AllDirectories);
 
-                foreach (var file in files)
+                foreach (FileInfo file in files)
                 {
                     string relativePath = file.FullName.Substring(sourceDir.FullName.Length + 1);
                     string targetPath = Path.Combine(job.TargetDirectory, relativePath);
@@ -171,9 +172,10 @@ namespace EasySave_From_ProSoft.Model.Implementations
 
                 return true;
             }
-            catch (Exception)
+            catch (Exception e)
             {
                 return false;
+                throw new Exception($"Error : {e}");
             }
         }
 
@@ -181,8 +183,8 @@ namespace EasySave_From_ProSoft.Model.Implementations
         {
             try
             {
-                var sourceDir = new DirectoryInfo(job.SourceDirectory);
-                var targetDir = new DirectoryInfo(job.TargetDirectory);
+                DirectoryInfo sourceDir = new DirectoryInfo(job.SourceDirectory);
+                DirectoryInfo targetDir = new DirectoryInfo(job.TargetDirectory);
 
                 if (!targetDir.Exists)
                 {
@@ -190,9 +192,9 @@ namespace EasySave_From_ProSoft.Model.Implementations
                     return await ExecuteFullBackup(job);
                 }
 
-                var files = sourceDir.GetFiles("*", SearchOption.AllDirectories);
+                FileInfo[] files = sourceDir.GetFiles("*", SearchOption.AllDirectories);
 
-                foreach (var file in files)
+                foreach (FileInfo file in files)
                 {
                     string relativePath = file.FullName.Substring(sourceDir.FullName.Length + 1);
                     string targetPath = Path.Combine(job.TargetDirectory, relativePath);
@@ -220,9 +222,10 @@ namespace EasySave_From_ProSoft.Model.Implementations
 
                 return true;
             }
-            catch (Exception)
+            catch (Exception e)
             {
                 return false;
+                throw new Exception($"Error : {e}");
             }
         }
 
