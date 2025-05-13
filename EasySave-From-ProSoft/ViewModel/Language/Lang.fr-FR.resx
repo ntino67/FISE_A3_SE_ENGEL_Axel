@@ -162,8 +162,8 @@
   <data name="RenameJob" xml:space="preserve">
     <value>Renommer l'action de sauvegarde</value>
   </data>
-  <data name="RunAllJobs" xml:space="preserve">
-    <value>Executer toutes les actions de sauvegarde</value>
+  <data name="SelectMultipleJobs" xml:space="preserve">
+    <value>Executer plusieurs actions de sauvegarde</value>
   </data>
   <data name="SelectJob" xml:space="preserve">
     <value>Selectionner une action de sauvegarde</value>
@@ -176,5 +176,17 @@
   </data>
   <data name="Yes" xml:space="preserve">
     <value>Oui</value>
+  </data>
+  <data name="CurrentFolder" xml:space="preserve">
+    <value>Dossier actuel</value>
+  </data>
+  <data name="WhatJobsList" xml:space="preserve">
+    <value>Quels [green]actions[/] voulez vous executer?</value>
+  </data>
+  <data name="JobsListIndication" xml:space="preserve">
+    <value>[grey](Appuez sur [blue]&lt;espace&gt;[/] pour selectionner une action, [green]&lt;entrer&gt;[/] pour executer les actions séléctionnées)[/]</value>
+  </data>
+  <data name="BackToMainMenuAndDoNothing" xml:space="preserve">
+    <value />
   </data>
 </root>
