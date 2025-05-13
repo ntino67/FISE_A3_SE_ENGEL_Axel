@@ -14,14 +14,47 @@ namespace EasySave_From_ProSoft.ViewModel
     {
         private readonly IBackupService _jobManager;
         private BackupJob _currentJob;
-        
+
+        public string SourcePath => CurrentJob?.SourceDirectory;
+        public string TargetPath => CurrentJob?.TargetDirectory;
         public event PropertyChangedEventHandler PropertyChanged;
         public ObservableCollection<BackupJob> Jobs { get; private set; }
+
+        public RelayCommand RunBackupCommand { get; private set; }
+        public RelayCommand RunBackupCommand { get; private set; }
+        public RelayCommand ResetJobCommand { get; private set; }
+        public RelayCommand CreateJobCommand { get; private set; }
+
 
         public JobViewModel(IBackupService jobManager)
         {
             _jobManager = jobManager;
             Jobs = new ObservableCollection<BackupJob>(_jobManager.GetAllJobs());
+            RunBackupCommand = new RelayCommand(
+                async _ => await ExecuteCurrentJob(),
+                _ => CurrentJob?.IsValid() == true
+            );
+
+            ResetJobCommand = new RelayCommand(
+                _ => ResetCurrentJob(),
+                _ => CurrentJob != null
+            );
+
+            CreateJobCommand = new RelayCommand(
+                param =>
+                {
+                    string name = param as string;
+                    if (!string.IsNullOrWhiteSpace(name))
+                        CreateNewJob(name);
+                },
+                param =>
+                {
+                    string name = param as string;
+                    return !string.IsNullOrWhiteSpace(name) 
+                        && !_jobManager.JobExists(name) 
+                        && _jobManager.GetJobCount() < 5;
+                }
+            );
         }
 
 
@@ -54,6 +87,7 @@ namespace EasySave_From_ProSoft.ViewModel
                 throw new InvalidOperationException($"Un job avec le nom {name} existe déjà.");
 
             var job = new BackupJob { Name = name };
+            _jobManager.AddBackupJob(job);
 
             Jobs.Add(job);
             CurrentJob = job;
@@ -120,18 +154,6 @@ namespace EasySave_From_ProSoft.ViewModel
             if (_currentJob == null)
                 throw new InvalidOperationException("Aucun job n'est sélectionné.");
             return _currentJob.SourceDirectory;
-        }
-
-        public string GetTargetPath()
-        {
-            if (_currentJob == null)
-                throw new InvalidOperationException("Aucun job n'est sélectionné.");
-            return _currentJob.TargetDirectory;
-        }
-
-        public async Task<List<bool>> ExecuteAllJobs()
-        {
-            return await _jobManager.ExecuteAllBackupJobs();
         }
     }
 }
