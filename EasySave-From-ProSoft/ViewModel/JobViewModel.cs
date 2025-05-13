@@ -1,30 +1,48 @@
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using System.ComponentModel;
+using System.Runtime.CompilerServices;
+using System.Collections.ObjectModel;
 using EasySave_From_ProSoft.Model;
 using EasySave_From_ProSoft.Model.Interfaces;
 using EasySave_From_ProSoft.Utils;
 
 namespace EasySave_From_ProSoft.ViewModel
 {
-    public class JobViewModel
+    public class JobViewModel : INotifyPropertyChanged
     {
         private readonly IBackupService _jobManager;
         private BackupJob _currentJob;
+        
+        public event PropertyChangedEventHandler PropertyChanged;
+        public ObservableCollection<BackupJob> Jobs { get; private set; }
 
         public JobViewModel(IBackupService jobManager)
         {
             _jobManager = jobManager;
+            Jobs = new ObservableCollection<BackupJob>(_jobManager.GetAllJobs());
+        }
+
+
+        protected void OnPropertyChanged([CallerMemberName] string propertyName = null)
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
 
         public BackupJob CurrentJob
         {
-            get { return _currentJob; }
+            get => _currentJob;
+            private set 
+            {
+                _currentJob = value;
+                OnPropertyChanged();
+            }
         }
 
         public void SetCurrentJob(BackupJob job)
         {
-            _currentJob = job;
+            CurrentJob = job;
         }
 
         public void CreateNewJob(string name)
@@ -36,8 +54,9 @@ namespace EasySave_From_ProSoft.ViewModel
                 throw new InvalidOperationException($"Un job avec le nom {name} existe déjà.");
 
             var job = new BackupJob { Name = name };
-            _jobManager.AddBackupJob(job);
-            _currentJob = job;
+
+            Jobs.Add(job);
+            CurrentJob = job;
         }
 
         public void UpdateJobName(string newName)
@@ -108,11 +127,6 @@ namespace EasySave_From_ProSoft.ViewModel
             if (_currentJob == null)
                 throw new InvalidOperationException("Aucun job n'est sélectionné.");
             return _currentJob.TargetDirectory;
-        }
-
-        public List<BackupJob> GetAllJobs()
-        {
-            return _jobManager.GetAllJobs();
         }
 
         public async Task<List<bool>> ExecuteAllJobs()
