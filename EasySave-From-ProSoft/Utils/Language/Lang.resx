@@ -204,4 +204,10 @@
   <data name="ConfirmReset" xml:space="preserve">
     <value>Are you sure you want to reset this job ? (Every settings will be deleted)</value>
   </data>
+  <data name="PressAKeyToContinue" xml:space="preserve">
+    <value>Press a key to continue</value>
+  </data>
+  <data name="SuccessfullBackup" xml:space="preserve">
+    <value>Backup successfully done</value>
+  </data>
 </root>

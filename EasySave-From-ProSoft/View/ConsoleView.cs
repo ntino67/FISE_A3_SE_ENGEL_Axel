@@ -371,10 +371,9 @@ namespace EasySave_From_ProSoft.View
                 AnsiConsole.MarkupLine($"[red]{ex.Message}[/]");
             }
 
-            AnsiConsole.MarkupLine($"\n{LangHelper.GetString("PressEnterToContinue")}");
-            Console.ReadLine();
+            AnsiConsole.MarkupLine($"\n{LangHelper.GetString("SuccessfullBackup")}");
 
-            navigate("JobOptions");
+            JobOptions();
         }
 
         private void ResetJob()

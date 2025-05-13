@@ -241,6 +241,15 @@ namespace EasySave_From_ProSoft.Utils.Language {
         }
         
         /// <summary>
+        ///   Recherche une chaîne localisée semblable à Press a key to continue.
+        /// </summary>
+        internal static string PressAKeyToContinue {
+            get {
+                return ResourceManager.GetString("PressAKeyToContinue", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Recherche une chaîne localisée semblable à Rename job.
         /// </summary>
         internal static string RenameJob {
@@ -300,6 +309,15 @@ namespace EasySave_From_ProSoft.Utils.Language {
         internal static string StatusPath {
             get {
                 return ResourceManager.GetString("StatusPath", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une chaîne localisée semblable à Backup successfully done.
+        /// </summary>
+        internal static string SuccessfullBackup {
+            get {
+                return ResourceManager.GetString("SuccessfullBackup", resourceCulture);
             }
         }
         

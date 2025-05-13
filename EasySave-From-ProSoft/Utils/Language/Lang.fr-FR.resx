@@ -204,4 +204,10 @@
   <data name="ConfirmReset" xml:space="preserve">
     <value>Êtes vous sûr de vouloir réinitialiser cette action ? (Toutes les options relatives à l'action seront supprimées)</value>
   </data>
+  <data name="PressAKeyToContinue" xml:space="preserve">
+    <value>Appuyez sur une touche pour continuer</value>
+  </data>
+  <data name="SuccessfullBackup" xml:space="preserve">
+    <value>Sauvegarde effctuée avec succès</value>
+  </data>
 </root>
