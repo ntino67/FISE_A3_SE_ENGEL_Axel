@@ -1,4 +1,5 @@
 ﻿using System;
+using EasySave_From_ProSoft.Controller;
 using Spectre.Console;
 
 namespace EasySave_From_ProSoft
@@ -12,13 +13,10 @@ namespace EasySave_From_ProSoft
     {
         public static void Main(string[] args)
         {
-            IConsoleView consoleView = new ConsoleView();
-            // Initialiser le ViewModelLocator
             ViewModelLocator.Initialize();
-            bool exit = false;
-            while (!exit) {
-            consoleView.MainMenu();
-            }
+            var view = new ConsoleView();
+            var flow = new ConsoleFlow(view, ViewModelLocator.GetJobViewModel());
+            flow.Run();
         }
     }
 }
