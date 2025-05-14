@@ -15,12 +15,16 @@ namespace EasySave_From_ProSoft.Model.Implementations
 
         public ConfigurationManager(string configDirectory)
         {
-            _configDirectory = configDirectory;
-            _stateFilePath = Path.Combine(configDirectory, "state.json");
-            _logDirectory = Path.Combine(configDirectory, "logs");
-            _settingsFilePath = Path.Combine(configDirectory, "settings.json");
+            // Use the base directory of the application if no config directory is provided
+            string baseDirectory = AppDomain.CurrentDomain.BaseDirectory;
 
-            Directory.CreateDirectory(configDirectory);
+            _configDirectory = baseDirectory;
+            _stateFilePath = Path.Combine(baseDirectory, "state.json");
+
+            // Store logs in a subdirectory named "logs" within the config directory
+            _logDirectory = Path.Combine(baseDirectory, "logs");
+            _settingsFilePath = Path.Combine(baseDirectory, "settings.json");
+
             Directory.CreateDirectory(_logDirectory);
         }
 
