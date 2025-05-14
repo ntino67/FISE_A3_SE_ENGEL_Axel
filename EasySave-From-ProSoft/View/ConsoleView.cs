@@ -14,28 +14,22 @@ namespace EasySave_From_ProSoft.View
     internal class ConsoleView : IConsoleView
     {
 
-        public bool Confirm(string message)
+        public bool Confirm(string message, string yesLabel, string noLabel)
         {
             Dictionary<string, bool> keyValuePairs = new Dictionary<string, bool>
             {
-                { LangHelper.GetString("Yes"), true },
-                { LangHelper.GetString("No"), false }
+                { yesLabel, true },
+                { noLabel, false }
             };
 
             // Confirmation prompt
-            string confirmationSelected = AnsiConsole.Prompt(
+            string selected = AnsiConsole.Prompt(
                 new SelectionPrompt<string>()
-                    .Title($"{message}")
-                    .PageSize(10)
-                    .AddChoices(new[] {
-                        LangHelper.GetString("Yes"),
-                        LangHelper.GetString("No")
-                    }));
+                    .Title(message)
+                    .PageSize(2)
+                    .AddChoices(choices.Keys);
 
-            // Get the selected value from the dictionary
-            bool selectedValue = keyValuePairs.First(kvp => kvp.Key == confirmationSelected).Value;
-
-            return selectedValue;
+            return choices[selected];
         }
 
         public string InputString(string message)

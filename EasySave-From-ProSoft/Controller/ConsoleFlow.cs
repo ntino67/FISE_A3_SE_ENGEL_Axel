@@ -3,6 +3,7 @@ using EasySave_From_ProSoft.ViewModel;
 using EasySave_From_ProSoft.Utils;
 using EasySave_From_ProSoft.Model;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace EasySave_From_ProSoft.Controller
@@ -130,7 +131,7 @@ namespace EasySave_From_ProSoft.Controller
 
                     case "BackupType":
                         {
-                            string selectedType = _view.SelectBackupType(
+                            BackupType selectedType = _view.SelectBackupType(
                                 LangHelper.GetString("SelectBackupType"),
                                 LangHelper.GetString("FullBackup"),
                                 LangHelper.GetString("DifferentialBackup")
@@ -146,8 +147,15 @@ namespace EasySave_From_ProSoft.Controller
                         break;
 
                     case "Reset":
-                        if (_view.Confirm("Are you sure you want to reset this job?"))
+                        if (_view.Confirm(
+                            LangHelper.GetString("ConfirmReset"),
+                            LangHelper.GetString("Yes"),
+                            LangHelper.GetString("No")
+                        ))
+                        {
                             _vm.ResetCurrentJob();
+                            _view.ShowMessage($"[green]{LangHelper.GetString("JobReset")}[/]");
+                        }
                         break;
 
                     case "Back":
