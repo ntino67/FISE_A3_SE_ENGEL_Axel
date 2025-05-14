@@ -103,46 +103,52 @@ namespace EasySave_From_ProSoft.View
 
         public string BrowseFolders(string currentFolderLabel, string validateLabel, string cancelLabel)
         {
-            string currentPath = Directory.GetCurrentDirectory();
+            string currentPath = Path.GetFullPath(Path.Combine(AppContext.BaseDirectory, @"..\..\..")); // Go to project root
 
             while (true)
             {
+                if (!Directory.Exists(currentPath))
+                {
+                    ShowError("Directory does not exist.");
+                    return null;
+                }
+
                 string[] directories = Directory.GetDirectories(currentPath);
-                List<string> choices = new List<string>
-            {
-                ".. (Go backward)"
-            };
+                List<string> choices = new List<string>();
+                choices.Add(".. Go up one level");
+                choices.Add($"[green]{validateLabel}");
+                choices.Add($"[red]{cancelLabel}");
 
                 foreach (string dir in directories)
                 {
                     choices.Add(Path.GetFileName(dir));
                 }
 
-                choices.Add($"[green]{validateLabel}[/]");
-                choices.Add($"[red]{cancelLabel}[/]");
-
                 string selection = AnsiConsole.Prompt(
                     new SelectionPrompt<string>()
-                        .Title($"[blue]{currentFolderLabel}[/] : [yellow]{currentPath}[/]")
+                        .Title($"[blue]{currentFolderLabel}[/]: [yellow]{currentPath}[/]")
                         .PageSize(15)
                         .AddChoices(choices)
                 );
 
-                switch (selection)
+                if (selection == null)
+                    continue;
+
+                if (selection == ".. Go up one level")
                 {
-                    case ".. (Go backward)":
-                        currentPath = Directory.GetParent(currentPath)?.FullName ?? currentPath;
-                        break;
-
-                    case string s when s.Contains(validateLabel):
-                        return currentPath;
-
-                    case string s when s.Contains(cancelLabel):
-                        return null;
-
-                    default:
-                        currentPath = Path.Combine(currentPath, selection);
-                        break;
+                    currentPath = Directory.GetParent(currentPath)?.FullName ?? currentPath;
+                }
+                else if (selection.StartsWith(validateLabel))
+                {
+                    return currentPath;
+                }
+                else if (selection.StartsWith(cancelLabel))
+                {
+                    return null;
+                }
+                else
+                {
+                    currentPath = Path.Combine(currentPath, selection);
                 }
             }
         }

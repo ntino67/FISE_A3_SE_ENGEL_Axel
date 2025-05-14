@@ -210,4 +210,10 @@
   <data name="SuccessfullBackup" xml:space="preserve">
     <value>Backup successfully done</value>
   </data>
+  <data name="ValidateFolder" xml:space="preserve">
+    <value>Select this folder</value>
+  </data>
+  <data name="Cancel" xml:space="preserve">
+    <value>Cancel</value>
+  </data>
 </root>
