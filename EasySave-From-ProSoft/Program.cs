@@ -1,12 +1,16 @@
-﻿using System;
-
-namespace EasySave_From_ProSoft
+﻿namespace EasySave_From_ProSoft
 {
-    internal class Program
+    using EasySave_From_ProSoft.View;
+    using EasySave_From_ProSoft.ViewModel;
+
+    public static class Program
     {
-        static void Main(string[] args)
+        public static void Main(string[] args)
         {
-            Console.WriteLine("Hello World!");
+            ViewModelLocator.Initialize();
+            var view = new ConsoleView();
+            var flow = new ConsoleFlow(view, ViewModelLocator.GetJobViewModel());
+            flow.Run();
         }
     }
 }

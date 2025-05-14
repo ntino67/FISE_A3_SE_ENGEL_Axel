@@ -1,4 +1,4 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <OutputType>Exe</OutputType>
@@ -7,18 +7,17 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
     <PackageReference Include="Spectre.Console" Version="0.50.0" />
     <PackageReference Include="Spectre.Console.Cli" Version="0.50.0" />
   </ItemGroup>
 
   <ItemGroup>
-    <Compile Update="Utils\Language\Lang.fr-FR.Designer.cs">
+    <Compile Update="ViewModel\Language\Lang.fr-FR.Designer.cs">
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
       <DependentUpon>Lang.fr-FR.resx</DependentUpon>
     </Compile>
-    <Compile Update="Utils\Language\Lang.Designer.cs">
+    <Compile Update="ViewModel\Language\Lang.Designer.cs">
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
       <DependentUpon>Lang.resx</DependentUpon>
@@ -26,11 +25,11 @@
   </ItemGroup>
 
   <ItemGroup>
-    <EmbeddedResource Update="Utils\Language\Lang.fr-FR.resx">
+    <EmbeddedResource Update="ViewModel\Language\Lang.fr-FR.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Lang.fr-FR.Designer.cs</LastGenOutput>
     </EmbeddedResource>
-    <EmbeddedResource Update="Utils\Language\Lang.resx">
+    <EmbeddedResource Update="ViewModel\Language\Lang.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Lang.Designer.cs</LastGenOutput>
     </EmbeddedResource>
