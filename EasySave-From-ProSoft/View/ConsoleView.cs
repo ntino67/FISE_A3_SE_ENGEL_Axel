@@ -13,6 +13,16 @@ namespace EasySave_From_ProSoft.View
 {
     internal class ConsoleView : IConsoleView
     {
+        public void ShowLogPaths(string logDirectory, string stateFilePath)
+        {
+            AnsiConsole.MarkupLine($"[grey]{LangHelper.GetString("FileLocation")}[/]");
+            AnsiConsole.MarkupLine($"[blue]{LangHelper.GetString("LogPath")}[/]: [yellow]{logDirectory}[/]");
+            AnsiConsole.MarkupLine($"[blue]{LangHelper.GetString("StatusPath")}[/]: [yellow]{stateFilePath}[/]");
+
+            AnsiConsole.MarkupLine("\n");
+            AnsiConsole.MarkupLine($"[grey]{LangHelper.GetString("PressAKeyToContinue")}[/]");
+            Console.ReadKey();
+        }
         public void SelectLanguage()
         {
             var languages = new Dictionary<string, string>
@@ -127,11 +137,11 @@ namespace EasySave_From_ProSoft.View
                     continue;
                 }
 
-                List<string> choices = new List<string>
+                Dictionary<string, string> choices = new Dictionary<string, string>
                 {
-                    ".. Go up one level",
-                    "Select this folder",
-                    "Cancel"
+                    { "[gray].. Go up one level[/]", ".." },
+                    { "[green]Select this folder[/]", "select" },
+                    { "[red]Cancel[/]", "cancel" }
                 };
 
                 foreach (string dir in directories)
@@ -139,39 +149,57 @@ namespace EasySave_From_ProSoft.View
                     string folderName = Path.GetFileName(dir);
                     if (!string.IsNullOrWhiteSpace(folderName))
                     {
-                        choices.Add(Markup.Escape(folderName));
+                        choices[Markup.Escape(folderName)] = dir;
                     }
                 }
+
 
                 string selection = AnsiConsole.Prompt(
                     new SelectionPrompt<string>()
                         .Title($"[blue]{currentFolderLabel}[/]: [yellow]{currentPath}[/]")
                         .PageSize(15)
-                        .AddChoices(choices)
+                        .AddChoices(choices.Keys)
                 );
 
-                if (selection == "Cancel")
-                    return null;
-
-                if (selection == "Select this folder")
-                    return currentPath;
-
-                if (selection == ".. Go up one level")
+                switch(choices[selection])
                 {
-                    currentPath = Directory.GetParent(currentPath)?.FullName ?? currentPath;
+                    case "select":
+                        return currentPath;
+                    case "cancel":
+                        return null;
+                    case "..":
+                        currentPath = Directory.GetParent(currentPath)?.FullName ?? null;
+                        break;
+                    default:
+                        // Append subfolder to path
+                        currentPath = Path.Combine(currentPath, selection);
+                        break;
+                }
+
+                if (currentPath == null)
+                {
+                    // User is at a drive root, show all available drives
+                    Dictionary<string, string> driveChoices = new Dictionary<string, string>();
+                    foreach (DriveInfo drive in DriveInfo.GetDrives().Where(d => d.IsReady))
+                    {
+                        driveChoices[$"[blue]{drive.Name}[/]"] = drive.RootDirectory.FullName;
+                    }
+                    driveChoices["[red]Cancel[/]"] = "cancel";
+
+                    string driveSelection = AnsiConsole.Prompt(
+                        new SelectionPrompt<string>()
+                            .Title("[yellow]Select a drive[/]")
+                            .AddChoices(driveChoices.Keys)
+                    );
+
+                    if (driveChoices[driveSelection] == "cancel")
+                        return null;
+
+                    currentPath = driveChoices[driveSelection];
                     continue;
                 }
 
-                // Append subfolder to path
-                string selectedPath = Path.Combine(currentPath, selection);
-                if (Directory.Exists(selectedPath))
-                {
-                    currentPath = selectedPath;
-                }
-                else
-                {
-                    ShowError("Directory does not exist.");
-                }
+
             }
         }
 

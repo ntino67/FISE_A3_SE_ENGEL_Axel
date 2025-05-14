@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Text.Json;
+using Newtonsoft.Json;
 using EasySave_From_ProSoft.Model.Interfaces;
 
 namespace EasySave_From_ProSoft.Model.Implementations
@@ -15,19 +15,23 @@ namespace EasySave_From_ProSoft.Model.Implementations
 
         public ConfigurationManager(string configDirectory)
         {
-            _configDirectory = configDirectory;
-            _stateFilePath = Path.Combine(configDirectory, "state.json");
-            _logDirectory = Path.Combine(configDirectory, "logs");
-            _settingsFilePath = Path.Combine(configDirectory, "settings.json");
+            // Use the base directory of the application if no config directory is provided
+            string baseDirectory = AppDomain.CurrentDomain.BaseDirectory;
 
-            Directory.CreateDirectory(configDirectory);
+            _configDirectory = baseDirectory;
+            _stateFilePath = Path.Combine(baseDirectory, "state.json");
+
+            // Store logs in a subdirectory named "logs" within the config directory
+            _logDirectory = Path.Combine(baseDirectory, "logs");
+            _settingsFilePath = Path.Combine(baseDirectory, "settings.json");
+
             Directory.CreateDirectory(_logDirectory);
         }
 
         public void SaveJobs(List<BackupJob> jobs)
         {
-            var options = new JsonSerializerOptions { WriteIndented = true };
-            string json = JsonSerializer.Serialize(jobs, options);
+            
+            string json = JsonConvert.SerializeObject(jobs, Formatting.Indented);
             File.WriteAllText(_stateFilePath, json);
         }
 
@@ -39,7 +43,7 @@ namespace EasySave_From_ProSoft.Model.Implementations
             string json = File.ReadAllText(_stateFilePath);
             try
             {
-                return JsonSerializer.Deserialize<List<BackupJob>>(json) ?? new List<BackupJob>();
+                return JsonConvert.DeserializeObject<List<BackupJob>>(json) ?? new List<BackupJob>();
             }
             catch
             {
@@ -83,7 +87,7 @@ namespace EasySave_From_ProSoft.Model.Implementations
             string json = File.ReadAllText(_settingsFilePath);
             try
             {
-                return JsonSerializer.Deserialize<Settings>(json) ?? new Settings();
+                return JsonConvert.DeserializeObject<Settings>(json) ?? new Settings();
             }
             catch
             {
@@ -93,14 +97,14 @@ namespace EasySave_From_ProSoft.Model.Implementations
 
         private void SaveSettings(Settings settings)
         {
-            var options = new JsonSerializerOptions { WriteIndented = true };
-            string json = JsonSerializer.Serialize(settings, options);
+            string json = JsonConvert.SerializeObject(settings, Formatting.Indented);
             File.WriteAllText(_settingsFilePath, json);
         }
 
         private class Settings
         {
             public string Language { get; set; } = "en-US";
+ 
         }
     }
 }

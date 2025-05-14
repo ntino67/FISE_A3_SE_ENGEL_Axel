@@ -145,7 +145,7 @@
     <value>You've selected</value>
   </data>
   <data name="LogPath" xml:space="preserve">
-    <value>Path of log files</value>
+    <value>Path of daily log files</value>
   </data>
   <data name="MainMenu" xml:space="preserve">
     <value>Main menu</value>
@@ -170,9 +170,6 @@
   </data>
   <data name="SelectLanguage" xml:space="preserve">
     <value>Select your language</value>
-  </data>
-  <data name="StatusPath" xml:space="preserve">
-    <value>Path of Status files</value>
   </data>
   <data name="Yes" xml:space="preserve">
     <value>Yes</value>
@@ -233,5 +230,15 @@
   </data>
   <data name="JobCreated" xml:space="preserve">
     <value>The job {0} has been created.</value>
+
+  <data name="StatusPath" xml:space="preserve">
+    <value>Path to the state log file</value>
+  </data>
+  <data name="FileLocation" xml:space="preserve">
+    <value>Location of the files</value>
+  </data>
+  <data name="LogPaths" xml:space="preserve">
+    <value>View log paths</value>
+
   </data>
 </root>

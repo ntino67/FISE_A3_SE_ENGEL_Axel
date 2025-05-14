@@ -145,7 +145,7 @@
     <value>Vous avez choisi</value>
   </data>
   <data name="LogPath" xml:space="preserve">
-    <value>Chemin d'accès aux logs</value>
+    <value>Chemin d'accès aux daily logs</value>
   </data>
   <data name="MainMenu" xml:space="preserve">
     <value>Menu Principal</value>
@@ -170,9 +170,6 @@
   </data>
   <data name="SelectLanguage" xml:space="preserve">
     <value>Choisissez la langue</value>
-  </data>
-  <data name="StatusPath" xml:space="preserve">
-    <value>Chemin d'accès aux Status</value>
   </data>
   <data name="Yes" xml:space="preserve">
     <value>Oui</value>
@@ -222,6 +219,7 @@
   <data name="DifferentialBackup" xml:space="preserve">
     <value>Sauvegarde Differentielle</value>
   </data>
+
   <data name="DeleteJob" xml:space="preserve">
     <value>Supprimer le job</value>
   </data>
@@ -233,5 +231,14 @@
   </data>
   <data name="JobCreated" xml:space="preserve">
     <value>Le job {0} a été créé</value>
+
+  <data name="StatusPath" xml:space="preserve">
+    <value>Chemin d'accès au fichier log status</value>
+  </data>
+  <data name="FileLocation" xml:space="preserve">
+    <value>Emplacement des fichiers </value>
+  </data>
+  <data name="LogPaths" xml:space="preserve">
+    <value>Voir chemins fichiers de logs</value>
   </data>
 </root>

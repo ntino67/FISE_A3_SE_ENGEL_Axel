@@ -268,12 +268,13 @@ namespace EasySave_From_ProSoft.Controller
                 var options = new Dictionary<string, string>
                 {
                     { "Lang", LangHelper.GetString("SelectLanguage") },
+                    { "LogPaths", LangHelper.GetString("LogPaths") },
                     { "Back", LangHelper.GetString("BackToMainMenu") }
                 };
 
                 string selected = AnsiConsole.Prompt(
                     new SelectionPrompt<string>()
-                        .Title("[bold]Global Options[/]")
+                        .Title($"[bold]{LangHelper.GetString("OptionsMenu")}[/]")
                         .PageSize(5)
                         .AddChoices(options.Values)
                 );
@@ -281,6 +282,13 @@ namespace EasySave_From_ProSoft.Controller
                 if (selected == options["Lang"])
                 {
                     _view.SelectLanguage();
+                }
+                else if (selected == options["LogPaths"])
+                {
+                    // Show log paths   
+                    var configManager = ViewModelLocator.GetConfigurationManager();
+                    _view.ShowLogPaths(configManager.GetLogDirectory(), configManager.GetStateFilePath());
+
                 }
                 else if (selected == options["Back"])
                 {

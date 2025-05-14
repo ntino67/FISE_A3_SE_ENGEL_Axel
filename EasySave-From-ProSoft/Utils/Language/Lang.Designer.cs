@@ -160,6 +160,7 @@ namespace EasySave_From_ProSoft.Utils.Language {
         }
         
         /// <summary>
+
         ///   Recherche une chaîne localisée semblable à Delete Job.
         /// </summary>
         internal static string DeleteJob {
@@ -169,6 +170,8 @@ namespace EasySave_From_ProSoft.Utils.Language {
         }
         
         /// <summary>
+
+
         ///   Recherche une chaîne localisée semblable à Differential Backup.
         /// </summary>
         internal static string DifferentialBackup {
@@ -196,6 +199,17 @@ namespace EasySave_From_ProSoft.Utils.Language {
         }
         
         /// <summary>
+
+        ///   Recherche une chaîne localisée semblable à Location of the files.
+        /// </summary>
+        internal static string FileLocation {
+            get {
+                return ResourceManager.GetString("FileLocation", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+
         ///   Recherche une chaîne localisée semblable à Full Backup.
         /// </summary>
         internal static string FullBackup {
@@ -259,11 +273,22 @@ namespace EasySave_From_ProSoft.Utils.Language {
         }
         
         /// <summary>
+
         ///   Recherche une chaîne localisée semblable à Path of log files.
+
         /// </summary>
         internal static string LogPath {
             get {
                 return ResourceManager.GetString("LogPath", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une chaîne localisée semblable à View log paths.
+        /// </summary>
+        internal static string LogPaths {
+            get {
+                return ResourceManager.GetString("LogPaths", resourceCulture);
             }
         }
         
@@ -367,7 +392,7 @@ namespace EasySave_From_ProSoft.Utils.Language {
         }
         
         /// <summary>
-        ///   Recherche une chaîne localisée semblable à Path of Status files.
+        ///   Recherche une chaîne localisée semblable à Path to the state log file.
         /// </summary>
         internal static string StatusPath {
             get {

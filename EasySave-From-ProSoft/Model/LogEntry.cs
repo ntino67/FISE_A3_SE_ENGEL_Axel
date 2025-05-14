@@ -1,29 +1,29 @@
 ﻿using System;
-using System.Text.Json.Serialization;
+using Newtonsoft.Json;
 
 namespace EasySave_From_ProSoft.Model
 {
     public class LogEntry
     {
-        [JsonPropertyName("timestamp")]
+        [JsonProperty("timestamp")]
         public DateTime Timestamp { get; set; }
 
-        [JsonPropertyName("jobName")]
+        [JsonProperty("jobName")]
         public string JobName { get; set; }
 
-        [JsonPropertyName("sourcePath")]
+        [JsonProperty("sourcePath")]
         public string SourcePath { get; set; }
 
-        [JsonPropertyName("destinationPath")]
+        [JsonProperty("destinationPath")]
         public string DestinationPath { get; set; }
 
-        [JsonPropertyName("fileSize")]
+        [JsonProperty("fileSize")]
         public long FileSize { get; set; }
 
-        [JsonPropertyName("transferTimeMs")]
+        [JsonProperty("transferTimeMs")]
         public long TransferTimeMs { get; set; }
 
-        [JsonPropertyName("status")]
+        [JsonProperty("status")]
         public string Status { get; set; }
     }
 }
