@@ -96,10 +96,10 @@ namespace EasySave_From_ProSoft.ViewModel
         public void UpdateJobName(string newName)
         {
             if (_currentJob == null)
-                throw new InvalidOperationException("Aucun job n'est s�lectionn�.");
+                throw new InvalidOperationException("Aucun job n'est sélectionné.");
 
             if (_jobManager.JobExists(newName) && _currentJob.Name != newName)
-                throw new InvalidOperationException($"Un job avec le nom {newName} existe d�j�.");
+                throw new InvalidOperationException($"Un job avec le nom {newName} existe déjà.");
 
             _currentJob.Name = newName;
             _jobManager.UpdateBackupJob(_currentJob);
@@ -108,7 +108,7 @@ namespace EasySave_From_ProSoft.ViewModel
         public void UpdateSourcePath(string sourcePath)
         {
             if (_currentJob == null)
-                throw new InvalidOperationException("Aucun job n'est s�lectionn�.");
+                throw new InvalidOperationException("Aucun job n'est sélectionné.");
 
             _currentJob.SourceDirectory = sourcePath;
             _jobManager.UpdateBackupJob(_currentJob);
@@ -117,7 +117,7 @@ namespace EasySave_From_ProSoft.ViewModel
         public void UpdateTargetPath(string targetPath)
         {
             if (_currentJob == null)
-                throw new InvalidOperationException("Aucun job n'est s�lectionn�.");
+                throw new InvalidOperationException("Aucun job n'est sélectionné.");
 
             _currentJob.TargetDirectory = targetPath;
             _jobManager.UpdateBackupJob(_currentJob);
@@ -126,7 +126,7 @@ namespace EasySave_From_ProSoft.ViewModel
         public void UpdateBackupType(BackupType type)
         {
             if (_currentJob == null)
-                throw new InvalidOperationException("Aucun job n'est s�lectionn�.");
+                throw new InvalidOperationException("Aucun job n'est sélectionné.");
 
             _currentJob.Type = type;
             _jobManager.UpdateBackupJob(_currentJob);
@@ -135,7 +135,7 @@ namespace EasySave_From_ProSoft.ViewModel
         public async Task<bool> ExecuteCurrentJob()
         {
             if (_currentJob == null)
-                throw new InvalidOperationException("Aucun job n'est s�lectionn�.");
+                throw new InvalidOperationException("Aucun job n'est sélectionné.");
 
             return await _jobManager.ExecuteBackupJob(_currentJob.Id);
         }
@@ -143,7 +143,7 @@ namespace EasySave_From_ProSoft.ViewModel
         public void ResetCurrentJob()
         {
             if (_currentJob == null)
-                throw new InvalidOperationException("Aucun job n'est s�lectionn�.");
+                throw new InvalidOperationException("Aucun job n'est sélectionné.");
 
             _currentJob.Reset();
             _jobManager.UpdateBackupJob(_currentJob);
@@ -152,7 +152,7 @@ namespace EasySave_From_ProSoft.ViewModel
         public string GetSourcePath()
         {
             if (_currentJob == null)
-                throw new InvalidOperationException("Aucun job n'est s�lectionn�.");
+                throw new InvalidOperationException("Aucun job n'est sélectionné.");
             return _currentJob.SourceDirectory;
         }
 

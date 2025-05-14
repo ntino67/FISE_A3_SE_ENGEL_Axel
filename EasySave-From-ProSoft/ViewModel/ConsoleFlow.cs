@@ -249,6 +249,7 @@ namespace EasySave_From_ProSoft.ViewModel
                                 string deletedName = job.Name;
                                 _vm.DeleteJob(job.Id);
                                 _view.ShowMessage($"[green]{string.Format(LangHelper.GetString("JobDeleted"), deletedName)}[/]");
+                                return;
                             }
                             break;
                         }

@@ -178,7 +178,7 @@
     <value>Dossier actuel</value>
   </data>
   <data name="WhatJobsList" xml:space="preserve">
-    <value>Voulez-vous executer des [green]actions[/].</value>
+    <value>Êtes vous sûr de vouloir exectuer plusieurs [green]jobs[/] (aucun retour possible) ?</value>
   </data>
   <data name="JobsListIndication" xml:space="preserve">
     <value>[grey](Appuez sur [blue]&lt;espace&gt;[/] pour selectionner une action, [green]&lt;entrer&gt;[/] pour executer les actions séléctionnées)[/]</value>
@@ -196,7 +196,7 @@
     <value>Réinitialiser cette action /!\</value>
   </data>
   <data name="SelectJobPrompt" xml:space="preserve">
-    <value>Sélectionnez une action</value>
+    <value>Selectionner un job</value>
   </data>
   <data name="ConfirmReset" xml:space="preserve">
     <value>Êtes vous sûr de vouloir réinitialiser cette action ? (Toutes les options relatives à l'action seront supprimées)</value>
@@ -219,7 +219,6 @@
   <data name="DifferentialBackup" xml:space="preserve">
     <value>Sauvegarde Differentielle</value>
   </data>
-
   <data name="DeleteJob" xml:space="preserve">
     <value>Supprimer le job</value>
   </data>

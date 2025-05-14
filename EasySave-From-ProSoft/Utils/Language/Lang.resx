@@ -178,7 +178,7 @@
     <value>Current folder</value>
   </data>
   <data name="WhatJobsList" xml:space="preserve">
-    <value>Do you want to run [green]jobs[/].</value>
+    <value>Are you sure you want to run [green]multiple jobs[/] (no comeback) ?</value>
   </data>
   <data name="JobsListIndication" xml:space="preserve">
     <value>[grey](Press [blue]&lt;space&gt;[/] to toggle a job, [green]&lt;enter&gt;[/] to run selected jobs)[/]</value>
@@ -196,7 +196,7 @@
     <value>Reset this job /!\</value>
   </data>
   <data name="SelectJobPrompt" xml:space="preserve">
-    <value>Select a job</value>
+    <value>Select a backup job</value>
   </data>
   <data name="ConfirmReset" xml:space="preserve">
     <value>Are you sure you want to reset this job ? (Every settings will be deleted)</value>
@@ -228,7 +228,7 @@
   <data name="JobDeleted" xml:space="preserve">
     <value>The job {0} has been deleted</value>
   </data>
-	<data name="JobCreated" xml:space="preserve">
+  <data name="JobCreated" xml:space="preserve">
     <value>The job {0} has been created.</value>
   </data>
   <data name="StatusPath" xml:space="preserve">
@@ -239,6 +239,5 @@
   </data>
   <data name="LogPaths" xml:space="preserve">
     <value>View log paths</value>
-
   </data>
 </root>

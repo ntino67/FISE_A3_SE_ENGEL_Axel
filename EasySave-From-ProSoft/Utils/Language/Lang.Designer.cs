@@ -358,7 +358,7 @@ namespace EasySave_From_ProSoft.Utils.Language {
         }
         
         /// <summary>
-        ///   Recherche une chaîne localisée semblable à Select a job.
+        ///   Recherche une chaîne localisée semblable à Select a backup job.
         /// </summary>
         internal static string SelectJobPrompt {
             get {
@@ -412,7 +412,7 @@ namespace EasySave_From_ProSoft.Utils.Language {
         }
         
         /// <summary>
-        ///   Recherche une chaîne localisée semblable à Do you want to run [green]jobs[/]..
+        ///   Recherche une chaîne localisée semblable à Are you sure you want to run [green]multiple jobs[/] (no comeback) ?.
         /// </summary>
         internal static string WhatJobsList {
             get {
