@@ -16,7 +16,7 @@ namespace EasySave_From_ProSoft.View
 
         public bool Confirm(string message, string yesLabel, string noLabel)
         {
-            Dictionary<string, bool> keyValuePairs = new Dictionary<string, bool>
+            Dictionary<string, bool> choices = new Dictionary<string, bool>
             {
                 { yesLabel, true },
                 { noLabel, false }
@@ -27,7 +27,8 @@ namespace EasySave_From_ProSoft.View
                 new SelectionPrompt<string>()
                     .Title(message)
                     .PageSize(2)
-                    .AddChoices(choices.Keys);
+                    .AddChoices(choices.Keys)
+            );
 
             return choices[selected];
         }
@@ -221,6 +222,15 @@ namespace EasySave_From_ProSoft.View
             return choices[selected];
         }
 
+        public void ShowMessage(string message)
+        {
+            AnsiConsole.MarkupLine(message);
+        }
+
+        public void ShowError(string message)
+        {
+            AnsiConsole.MarkupLine($"[red]{message}[/]");
+        }
 
         // Méthode utilitaire pour raccourcir les chemins trop longs
         private string ShortenPath(string path, int maxLength)
