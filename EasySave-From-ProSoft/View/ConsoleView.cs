@@ -33,7 +33,7 @@ namespace EasySave_From_ProSoft.View
 
             string selected = AnsiConsole.Prompt(
                 new SelectionPrompt<string>()
-                    .Title("[bold]Select your language[/]")
+                    .Title("[bold]Select yourBackupType SelectBackupType(string prompt, string fullLabel, string diffLabel); language[/]")
                     .PageSize(5)
                     .AddChoices(languages.Keys)
             );
@@ -68,8 +68,8 @@ namespace EasySave_From_ProSoft.View
                 { $"{labels["Target"]} (Current: {ShortenPath(job.TargetDirectory, 40)})", "Target" },
                 { $"{labels["BackupType"]} (Current: {job.Type})", "BackupType" },
                 { labels["Backup"], "Backup" },
-                { labels["Reset"], "Reset" },
                 { labels["Delete"], "Delete" },
+                { labels["Reset"], "Reset" },
                 { labels["Back"], "Back" }
             };
 
