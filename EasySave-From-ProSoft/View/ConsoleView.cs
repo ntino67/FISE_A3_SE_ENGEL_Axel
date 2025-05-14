@@ -56,7 +56,7 @@ namespace EasySave_From_ProSoft.View
                 { $"{labels["Rename"]} (Current: {job.Name})", "Rename" },
                 { $"{labels["Source"]} (Current: {ShortenPath(job.SourceDirectory, 40)})", "Source" },
                 { $"{labels["Target"]} (Current: {ShortenPath(job.TargetDirectory, 40)})", "Target" },
-                { labels["BackupType"], "BackupType" },
+                { $"{labels["BackupType"]} (Current: {job.Type})", "BackupType" },
                 { labels["Backup"], "Backup" },
                 { labels["Reset"], "Reset" },
                 { labels["Back"], "Back" }
@@ -102,25 +102,44 @@ namespace EasySave_From_ProSoft.View
 
         public string BrowseFolders(string currentFolderLabel, string validateLabel, string cancelLabel)
         {
-            string currentPath = Path.GetFullPath(Path.Combine(AppContext.BaseDirectory, @"..\..\..")); // Go to project root
+            string currentPath = Path.GetFullPath(Path.Combine(AppContext.BaseDirectory, @"..\..\.."));
 
             while (true)
             {
+                // Only check existence when necessary
                 if (!Directory.Exists(currentPath))
                 {
                     ShowError("Directory does not exist.");
-                    return null;
+                    currentPath = Directory.GetParent(currentPath)?.FullName ?? AppContext.BaseDirectory;
+                    continue;
                 }
 
-                string[] directories = Directory.GetDirectories(currentPath);
-                List<string> choices = new List<string>();
-                choices.Add(".. Go up one level");
-                choices.Add($"[green]{validateLabel}");
-                choices.Add($"[red]{cancelLabel}");
+                string[] directories;
+                try
+                {
+                    directories = Directory.GetDirectories(currentPath);
+                }
+                catch
+                {
+                    ShowError("Cannot access directory.");
+                    currentPath = Directory.GetParent(currentPath)?.FullName ?? AppContext.BaseDirectory;
+                    continue;
+                }
+
+                List<string> choices = new List<string>
+                {
+                    ".. Go up one level",
+                    "Select this folder",
+                    "Cancel"
+                };
 
                 foreach (string dir in directories)
                 {
-                    choices.Add(Path.GetFileName(dir));
+                    string folderName = Path.GetFileName(dir);
+                    if (!string.IsNullOrWhiteSpace(folderName))
+                    {
+                        choices.Add(Markup.Escape(folderName));
+                    }
                 }
 
                 string selection = AnsiConsole.Prompt(
@@ -130,24 +149,27 @@ namespace EasySave_From_ProSoft.View
                         .AddChoices(choices)
                 );
 
-                if (selection == null)
-                    continue;
+                if (selection == "Cancel")
+                    return null;
+
+                if (selection == "Select this folder")
+                    return currentPath;
 
                 if (selection == ".. Go up one level")
                 {
                     currentPath = Directory.GetParent(currentPath)?.FullName ?? currentPath;
+                    continue;
                 }
-                else if (selection.StartsWith(validateLabel))
+
+                // Append subfolder to path
+                string selectedPath = Path.Combine(currentPath, selection);
+                if (Directory.Exists(selectedPath))
                 {
-                    return currentPath;
-                }
-                else if (selection.StartsWith(cancelLabel))
-                {
-                    return null;
+                    currentPath = selectedPath;
                 }
                 else
                 {
-                    currentPath = Path.Combine(currentPath, selection);
+                    ShowError("Directory does not exist.");
                 }
             }
         }
