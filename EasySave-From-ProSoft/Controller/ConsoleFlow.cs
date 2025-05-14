@@ -5,6 +5,7 @@ using EasySave_From_ProSoft.Model;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Spectre.Console;
 
 namespace EasySave_From_ProSoft.Controller
 {
@@ -21,21 +22,48 @@ namespace EasySave_From_ProSoft.Controller
 
         public void Run()
         {
+            
             // Select language
             _view.SelectLanguage();
 
             while (true)
             {
-                string action = _view.ShowMainMenu(); // You'll refactor this too
+                string action = ShowMainMenu();
+
                 switch (action)
                 {
                     case "SelectJob":
                         HandleJobSelection();
                         break;
+                    case "SelectMultipleJobs":
+                        HandleMultipleJobs();
+                        break;
+                    case "Options":
+                        break;
                     case "Exit":
                         return;
                 }
             }
+        }
+
+        private string ShowMainMenu()
+        {
+            var choices = new Dictionary<string, string>
+            {
+                { LangHelper.GetString("SelectJob"), "SelectJob" },
+                { LangHelper.GetString("SelectMultipleJobs"), "SelectMultipleJobs" },
+                { LangHelper.GetString("Options"), "Options" },
+                { LangHelper.GetString("Exit"), "Exit" }
+            };
+
+            string selected = AnsiConsole.Prompt(
+                new SelectionPrompt<string>()
+                    .Title($"[bold]{LangHelper.GetString("MainMenu")}[/]")
+                    .PageSize(10)
+                    .AddChoices(choices.Keys)
+            );
+
+            return choices[selected];
         }
 
         private void HandleJobSelection()
@@ -69,6 +97,35 @@ namespace EasySave_From_ProSoft.Controller
                 {
                     _vm.SetCurrentJob(job);
                     HandleJobOptions();
+                }
+            }
+        }
+
+        private async void HandleMultipleJobs()
+        {
+            var selectedNames = _view.SelectMultipleJobs(
+                _vm.Jobs.ToList(),
+                LangHelper.GetString("WhatJobsList"),
+                LangHelper.GetString("JobsListIndication"),
+                LangHelper.GetString("BackToMainMenuAndDoNothing")
+            );
+
+            if (selectedNames.Contains(LangHelper.GetString("BackToMainMenuAndDoNothing")))
+                return;
+
+            foreach (var name in selectedNames)
+            {
+                var job = _vm.Jobs.FirstOrDefault(j => j.Name == name);
+                if (job != null)
+                {
+                    _vm.SetCurrentJob(job);
+                    _view.ShowMessage($"[yellow]Running job: {job.Name}...[/]");
+                    var result = await _vm.ExecuteCurrentJob();
+                    string resultText = result
+                        ? LangHelper.GetString("BackupCompleted")
+                        : LangHelper.GetString("BackupFailed");
+
+                    _view.ShowMessage($"[green]{resultText}[/]");
                 }
             }
         }

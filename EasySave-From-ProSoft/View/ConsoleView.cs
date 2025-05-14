@@ -13,6 +13,23 @@ namespace EasySave_From_ProSoft.View
 {
     internal class ConsoleView : IConsoleView
     {
+        public void SelectLanguage()
+        {
+            var languages = new Dictionary<string, string>
+            {
+                { "English", "en-US" },
+                { "Français", "fr-FR" }
+            };
+
+            string selected = AnsiConsole.Prompt(
+                new SelectionPrompt<string>()
+                    .Title("[bold]Select your language[/]")
+                    .PageSize(5)
+                    .AddChoices(languages.Keys)
+            );
+
+            LangHelper.ChangeLanguage(languages[selected]); // Still okay here for now
+        }
 
         public bool Confirm(string message, string yesLabel, string noLabel)
         {
@@ -31,12 +48,6 @@ namespace EasySave_From_ProSoft.View
             );
 
             return choices[selected];
-        }
-
-        public string InputString(string message)
-        {
-            string input = AnsiConsole.Ask<string>($"{message}");
-            return input;
         }
 
         public string ShowJobOptions(BackupJob job, Dictionary<string, string> labels)
@@ -62,53 +73,6 @@ namespace EasySave_From_ProSoft.View
             return choices[selected];
         }
 
-        public void MainMenu()
-        {
-
-            Dictionary<string, string> mainMenuChoices = new Dictionary<string, string>
-            {
-                { LangHelper.GetString("SelectJob"), "SelectJob" },
-                { LangHelper.GetString("SelectMultipleJobs"), "SelectMultipleJobs" },
-                { LangHelper.GetString("Options"), "Options" },
-                { LangHelper.GetString("Exit"), "Exit" }
-            };
-
-            // Main menu prompt
-            string MainMenuSelected = AnsiConsole.Prompt(
-                new SelectionPrompt<string>()
-                    .Title($"[bold]{LangHelper.GetString("MainMenu")}[/]")
-                    .PageSize(10)
-                    .AddChoices(mainMenuChoices.Keys));
-            // Get the selected value from the dictionary
-            string selectedValue = mainMenuChoices[MainMenuSelected];
-            // Display the selected value
-            navigate(selectedValue);
-        }
-
-        public void MainOptions()
-        {
-            Dictionary<string, string> optionsChoices = new Dictionary<string, string>
-            {
-                { LangHelper.GetString("Language"), "Language" },
-                { LangHelper.GetString("LogPath"), "LogPath" },
-                { LangHelper.GetString("StatusPath"), "StatusPath" },
-                { LangHelper.GetString("BackToMainMenu"), "BackToMainMenu" }
-            };
-
-            // Main menu prompt
-            string optionSelected = AnsiConsole.Prompt(
-                new SelectionPrompt<string>()
-                    .Title($"[bold] {LangHelper.GetString("OptionsMenu")} [/]")
-                    .PageSize(10)
-                    .AddChoices(optionsChoices.Keys));
-
-            string selectedValue = optionsChoices[optionSelected];
-
-            // Display the selected value
-            navigate(selectedValue);
-        }
-
-        // Implémentation de la méthode SelectJob()
         public string SelectJob(List<BackupJob> jobs, string newJobLabel, string backLabel)
         {
             List<string> choices = jobs.Select(job => job.Name).ToList();
@@ -136,27 +100,6 @@ namespace EasySave_From_ProSoft.View
         {
             return AnsiConsole.Ask<string>("[green]Please enter the name of the new backup job:[/]");
         }       
-
-        public void SelectLanguage()
-        {
-            Dictionary<string, string> Languages = new Dictionary<string, string>
-            {
-                { "English", "en-US" },
-                { "Français", "fr-FR" }
-            };
-
-            // Ask for the user language
-            string language = AnsiConsole.Prompt(
-                    new SelectionPrompt<string>()
-                        .Title($"[bold]{LangHelper.GetString("SelectLanguage")}[/]")
-                        .PageSize(10)
-                        .AddChoices(Languages.Keys));
-
-            string selectedLanguageCode = Languages[language];
-            LangHelper.ChangeLanguage(selectedLanguageCode);
-
-            navigate("Options");
-        }
 
         public string BrowseFolders(string currentFolderLabel, string validateLabel, string cancelLabel)
         {
@@ -232,253 +175,31 @@ namespace EasySave_From_ProSoft.View
             AnsiConsole.MarkupLine($"[red]{message}[/]");
         }
 
-        // Méthode utilitaire pour raccourcir les chemins trop longs
         private string ShortenPath(string path, int maxLength)
         {
-            if (string.IsNullOrEmpty(path))
-                return string.Empty;
-
-            if (path.Length <= maxLength)
+            if (string.IsNullOrEmpty(path) || path.Length <= maxLength)
                 return path;
 
-            int startLength = maxLength / 2 - 2;
-            int endLength = maxLength / 2 - 1;
+            int start = maxLength / 2 - 2;
+            int end = maxLength / 2 - 1;
 
-            return path.Substring(0, startLength) + "..." + path.Substring(path.Length - endLength);
+            return path.Substring(0, start) + "..." + path.Substring(path.Length - end);
         }
 
-        // Méthode utilitaire pour formater la taille des fichiers
-        private string FormatFileSize(long bytes)
+        public List<string> SelectMultipleJobs(List<BackupJob> jobs, string prompt, string instructions, string backLabel)
         {
-            string[] sizes = { "B", "KB", "MB", "GB", "TB" };
-            double len = bytes;
-            int order = 0;
+            var jobNames = jobs.Select(j => j.Name).ToList();
+            jobNames.Add(backLabel);
 
-            while (len >= 1024 && order < sizes.Length - 1)
-            {
-                order++;
-                len = len / 1024;
-            }
-
-            return $"{len:0.##} {sizes[order]}";
-        }
-
-
-        private void RenameJob()
-        {
-            try
-            {
-                string newName = InputString(LangHelper.GetString("EnterNewName"));
-                ViewModelLocator.GetJobViewModel().UpdateJobName(newName);
-                AnsiConsole.MarkupLine($"[green]{LangHelper.GetString("JobRenamed")}[/]");
-            }
-            catch (Exception ex)
-            {
-                AnsiConsole.MarkupLine($"[red]{ex.Message}[/]");
-            }
-            navigate("JobOptions"); // Retourner au menu des options du job
-        }
-
-        private void DefineSourcePath()
-        {
-            try
-            {
-                string sourcePath = BrowseFolders();
-                ViewModelLocator.GetJobViewModel().UpdateSourcePath(sourcePath);
-                AnsiConsole.MarkupLine($"[green]{LangHelper.GetString("SourcePathUpdated")}[/]");
-            }
-            catch (Exception ex)
-            {
-                AnsiConsole.MarkupLine($"[red]{ex.Message}[/]");
-            }
-            navigate("JobOptions"); // Retourner au menu des options du job
-        }
-
-        private void DefineTargetPath()
-        {
-            try
-            {
-                string targetPath = BrowseFolders();
-                ViewModelLocator.GetJobViewModel().UpdateTargetPath(targetPath);
-                AnsiConsole.MarkupLine($"[green]{LangHelper.GetString("TargetPathUpdated")}[/]");
-            }
-            catch (Exception ex)
-            {
-                AnsiConsole.MarkupLine($"[red]{ex.Message}[/]");
-            }
-            navigate("JobOptions"); // Retourner au menu des options du job
-        }
-
-        private void DefineSaveMode()
-        {
-            Dictionary<string, BackupType> saveModeChoices = new Dictionary<string, BackupType>
-            {
-                { LangHelper.GetString("FullBackup"), BackupType.Full },
-                { LangHelper.GetString("DifferentialBackup"), BackupType.Differential }
-            };
-
-            string selected = AnsiConsole.Prompt(
-                new SelectionPrompt<string>()
-                    .Title(LangHelper.GetString("SelectBackupType"))
+            var selected = AnsiConsole.Prompt(
+                new MultiSelectionPrompt<string>()
+                    .Title($"[bold]{prompt}[/]")
+                    .InstructionsText($"[grey]{instructions}[/]")
                     .PageSize(10)
-                    .AddChoices(saveModeChoices.Keys));
+                    .AddChoices(jobNames)
+            );
 
-            try
-            {
-                BackupType selectedType = saveModeChoices[selected];
-                ViewModelLocator.GetJobViewModel().UpdateBackupType(selectedType);
-                AnsiConsole.MarkupLine($"[green]{LangHelper.GetString("BackupTypeUpdated")}[/]");
-            }
-            catch (Exception ex)
-            {
-                AnsiConsole.MarkupLine($"[red]{ex.Message}[/]");
-            }
-            navigate("JobOptions"); // Retourner au menu des options du job
-        }
-
-        private async Task CreateBackup()
-        {
-            try
-            {
-                AnsiConsole.MarkupLine($"[yellow]{LangHelper.GetString("RunningBackup")}[/]");
-                bool result = await ViewModelLocator.GetJobViewModel().ExecuteCurrentJob();
-
-                if (result)
-                    AnsiConsole.MarkupLine($"[green]{LangHelper.GetString("BackupCompleted")}[/]");
-                else
-                    AnsiConsole.MarkupLine($"[red]{LangHelper.GetString("BackupFailed")}[/]");
-            }
-            catch (Exception ex)
-            {
-                AnsiConsole.MarkupLine($"[red]{ex.Message}[/]");
-            }
-
-            AnsiConsole.MarkupLine($"\n{LangHelper.GetString("SuccessfullBackup")}");
-
-            JobOptions();
-        }
-
-        private void ResetJob()
-        {
-            try
-            {
-                if (Confirm(LangHelper.GetString("ConfirmReset")))
-                {
-                    ViewModelLocator.GetJobViewModel().ResetCurrentJob();
-                    AnsiConsole.MarkupLine($"[green]{LangHelper.GetString("JobReset")}[/]");
-                }
-            }
-            catch (Exception ex)
-            {
-                AnsiConsole.MarkupLine($"[red]{ex.Message}[/]");
-            }
-            navigate("JobOptions");
-        }
-        public void navigate(string key)
-        {
-            switch (key)
-            {
-                case "SelectJob":
-                    {
-                        SelectJob();
-                        break;
-                    }
-                case "JobOptions":
-                    {
-                        JobOptions();
-                        break;
-                    }
-                case "SelectMultipleJobs":
-                    {
-                        SelectMultipleJobs();
-                        break;
-                    }
-                case "BackToMainMenu":
-                    {
-                        MainMenu();
-                        break;
-                    }
-                case "Options":
-                    {
-                        MainOptions();
-                        break;
-                    }
-                case "Language":
-                {
-                    SelectLanguage();
-                    break;
-                }
-                case "LogPath":
-                    {
-                        Console.WriteLine(BrowseFolders());
-                        break;
-                    }
-                case "RenameJob":
-                    RenameJob();
-                    break;
-                case "DefineSourcePath":
-                    DefineSourcePath();
-                    break;
-                case "DefineTargetPath":
-                    DefineTargetPath();
-                    break;
-                case "DefineSaveMode":
-                    DefineSaveMode();
-                    break;
-                case "CreateBackup":
-                    CreateBackup().Wait();
-                    break;
-                case "ResetJob":
-                    ResetJob();
-                    break;
-                case "Exit":
-                    {
-                        Environment.Exit(0);
-                        break;
-                    }
-                default:
-                {
-                    AnsiConsole.MarkupLine($"{LangHelper.GetString(key)}");
-                    break;
-                    }
-
-
-            }
-        }
-
-        public void SelectMultipleJobs()
-        {
-            Dictionary<string, string> jobOptions = new Dictionary<string, string> // Get registered jobs from ViewModel
-            {
-                { "MyFirstJob", "Job1" },
-                { "MySecondJob", "Job2" },
-                { "MyThirdJob", "Job3" },
-                { LangHelper.GetString("BackToMainMenuAndDoNothing"), "BackToMainMenu" }
-            };
-
-            // Job options prompt
-            var jobOptionsSelected = AnsiConsole.Prompt(
-            new MultiSelectionPrompt<string>()
-                .Title($"[bold]{LangHelper.GetString("WhatJobsList")}[/]")
-                .PageSize(10)
-                .InstructionsText(
-                    LangHelper.GetString("JobsListIndication"))
-                .AddChoices(jobOptions.Keys));
-
-            // Si "Retour au menu principal" est sélectionné → retour immédiat
-            if (jobOptionsSelected.Contains(LangHelper.GetString("BackToMainMenuAndDoNothing")))
-            {
-                navigate("BackToMainMenu");
-                return;
-            }
-
-            // Get the selected value from the dictionary
-            Console.WriteLine("Runned jobs:");
-            foreach (var job in jobOptionsSelected)
-            {
-                Console.WriteLine(job);
-            }
-            
+            return selected;
         }
     }
 }
