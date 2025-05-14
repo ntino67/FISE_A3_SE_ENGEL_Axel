@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Text.Json;
+using Newtonsoft.Json;
 using EasySave_From_ProSoft.Model.Interfaces;
 
 namespace EasySave_From_ProSoft.Model.Implementations
@@ -75,7 +75,7 @@ namespace EasySave_From_ProSoft.Model.Implementations
             string json = File.ReadAllText(logFilePath);
             try
             {
-                return JsonSerializer.Deserialize<List<LogEntry>>(json) ?? new List<LogEntry>();
+                return JsonConvert.DeserializeObject<List<LogEntry>>(json) ?? new List<LogEntry>();
             }
             catch
             {
@@ -98,7 +98,7 @@ namespace EasySave_From_ProSoft.Model.Implementations
                 string json = File.ReadAllText(logFilePath);
                 try
                 {
-                    existingEntries = JsonSerializer.Deserialize<List<LogEntry>>(json) ?? new List<LogEntry>();
+                    existingEntries = JsonConvert.DeserializeObject<List<LogEntry>>(json) ?? new List<LogEntry>();
                 }
                 catch
                 {
@@ -108,8 +108,8 @@ namespace EasySave_From_ProSoft.Model.Implementations
 
             existingEntries.Add(entry);
 
-            var options = new JsonSerializerOptions { WriteIndented = true };
-            string updatedJson = JsonSerializer.Serialize(existingEntries, options);
+          
+            string updatedJson = JsonConvert.SerializeObject(existingEntries, Formatting.Indented);
             File.WriteAllText(logFilePath, updatedJson);
         }
     }

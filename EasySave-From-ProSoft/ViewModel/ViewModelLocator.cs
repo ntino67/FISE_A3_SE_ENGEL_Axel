@@ -56,5 +56,11 @@ namespace EasySave_From_ProSoft.ViewModel
 
             return _logger;
         }
+
+        public static IConfigurationManager GetConfigurationManager()
+        {
+            return _configManager;
+        }
+
     }
 }

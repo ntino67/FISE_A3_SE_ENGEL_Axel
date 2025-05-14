@@ -13,6 +13,16 @@ namespace EasySave_From_ProSoft.View
 {
     internal class ConsoleView : IConsoleView
     {
+        public void ShowLogPaths(string logDirectory, string stateFilePath)
+        {
+            AnsiConsole.MarkupLine($"[grey]{LangHelper.GetString("FileLocation")}[/]");
+            AnsiConsole.MarkupLine($"[blue]{LangHelper.GetString("LogPath")}[/]: [yellow]{logDirectory}[/]");
+            AnsiConsole.MarkupLine($"[blue]{LangHelper.GetString("StatusPath")}[/]: [yellow]{stateFilePath}[/]");
+
+            AnsiConsole.MarkupLine("\n");
+            AnsiConsole.MarkupLine($"[grey]{LangHelper.GetString("PressAKeyToContinue")}[/]");
+            Console.ReadKey();
+        }
         public void SelectLanguage()
         {
             var languages = new Dictionary<string, string>
