@@ -43,7 +43,6 @@ namespace EasySave_From_ProSoft.View
             string selected = AnsiConsole.Prompt(
                 new SelectionPrompt<string>()
                     .Title(message)
-                    .PageSize(2)
                     .AddChoices(choices.Keys)
             );
 
@@ -57,7 +56,7 @@ namespace EasySave_From_ProSoft.View
                 { $"{labels["Rename"]} (Current: {job.Name})", "Rename" },
                 { $"{labels["Source"]} (Current: {ShortenPath(job.SourceDirectory, 40)})", "Source" },
                 { $"{labels["Target"]} (Current: {ShortenPath(job.TargetDirectory, 40)})", "Target" },
-                { labels["BackupType"], "BackupType" },
+                { $"{labels["BackupType"]} (Current: {job.Type})", "BackupType" },
                 { labels["Backup"], "Backup" },
                 { labels["Reset"], "Reset" },
                 { labels["Back"], "Back" }
@@ -103,46 +102,74 @@ namespace EasySave_From_ProSoft.View
 
         public string BrowseFolders(string currentFolderLabel, string validateLabel, string cancelLabel)
         {
-            string currentPath = Directory.GetCurrentDirectory();
+            string currentPath = Path.GetFullPath(Path.Combine(AppContext.BaseDirectory, @"..\..\.."));
 
             while (true)
             {
-                string[] directories = Directory.GetDirectories(currentPath);
+                // Only check existence when necessary
+                if (!Directory.Exists(currentPath))
+                {
+                    ShowError("Directory does not exist.");
+                    currentPath = Directory.GetParent(currentPath)?.FullName ?? AppContext.BaseDirectory;
+                    continue;
+                }
+
+                string[] directories;
+                try
+                {
+                    directories = Directory.GetDirectories(currentPath);
+                }
+                catch
+                {
+                    ShowError("Cannot access directory.");
+                    currentPath = Directory.GetParent(currentPath)?.FullName ?? AppContext.BaseDirectory;
+                    continue;
+                }
+
                 List<string> choices = new List<string>
-            {
-                ".. (Go backward)"
-            };
+                {
+                    ".. Go up one level",
+                    "Select this folder",
+                    "Cancel"
+                };
 
                 foreach (string dir in directories)
                 {
-                    choices.Add(Path.GetFileName(dir));
+                    string folderName = Path.GetFileName(dir);
+                    if (!string.IsNullOrWhiteSpace(folderName))
+                    {
+                        choices.Add(Markup.Escape(folderName));
+                    }
                 }
-
-                choices.Add($"[green]{validateLabel}[/]");
-                choices.Add($"[red]{cancelLabel}[/]");
 
                 string selection = AnsiConsole.Prompt(
                     new SelectionPrompt<string>()
-                        .Title($"[blue]{currentFolderLabel}[/] : [yellow]{currentPath}[/]")
+                        .Title($"[blue]{currentFolderLabel}[/]: [yellow]{currentPath}[/]")
                         .PageSize(15)
                         .AddChoices(choices)
                 );
 
-                switch (selection)
+                if (selection == "Cancel")
+                    return null;
+
+                if (selection == "Select this folder")
+                    return currentPath;
+
+                if (selection == ".. Go up one level")
                 {
-                    case ".. (Go backward)":
-                        currentPath = Directory.GetParent(currentPath)?.FullName ?? currentPath;
-                        break;
+                    currentPath = Directory.GetParent(currentPath)?.FullName ?? currentPath;
+                    continue;
+                }
 
-                    case string s when s.Contains(validateLabel):
-                        return currentPath;
-
-                    case string s when s.Contains(cancelLabel):
-                        return null;
-
-                    default:
-                        currentPath = Path.Combine(currentPath, selection);
-                        break;
+                // Append subfolder to path
+                string selectedPath = Path.Combine(currentPath, selection);
+                if (Directory.Exists(selectedPath))
+                {
+                    currentPath = selectedPath;
+                }
+                else
+                {
+                    ShowError("Directory does not exist.");
                 }
             }
         }
@@ -186,20 +213,15 @@ namespace EasySave_From_ProSoft.View
             return path.Substring(0, start) + "..." + path.Substring(path.Length - end);
         }
 
-        public List<string> SelectMultipleJobs(List<BackupJob> jobs, string prompt, string instructions, string backLabel)
+        public List<string> SelectMultipleJobs(List<BackupJob> jobs)
         {
-            var jobNames = jobs.Select(j => j.Name).ToList();
-            jobNames.Add(backLabel);
-
-            var selected = AnsiConsole.Prompt(
+            return AnsiConsole.Prompt(
                 new MultiSelectionPrompt<string>()
-                    .Title($"[bold]{prompt}[/]")
-                    .InstructionsText($"[grey]{instructions}[/]")
+                    .Title("[bold]Select jobs to run[/]")
+                    .InstructionsText("[grey](Use space to toggle, enter to run selected jobs)[/]")
                     .PageSize(10)
-                    .AddChoices(jobNames)
+                    .AddChoices(jobs.Select(j => j.Name))
             );
-
-            return selected;
         }
     }
 }

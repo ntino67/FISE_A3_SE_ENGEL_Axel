@@ -38,7 +38,7 @@ namespace EasySave_From_ProSoft.Controller
                         HandleMultipleJobs();
                         break;
                     case "Options":
-                        HandleJobOptions();
+                        HandleGlobalOptions();
                         break;
                     case "Exit":
                         return;
@@ -103,15 +103,24 @@ namespace EasySave_From_ProSoft.Controller
 
         private async void HandleMultipleJobs()
         {
-            var selectedNames = _view.SelectMultipleJobs(
-                _vm.Jobs.ToList(),
+            if (_vm.Jobs.Count == 0)
+            {
+                _view.ShowMessage("[yellow]No jobs available.[/]");
+                return;
+            }
+
+            // Confirm before showing the list
+            bool proceed = _view.Confirm(
                 LangHelper.GetString("WhatJobsList"),
-                LangHelper.GetString("JobsListIndication"),
+                LangHelper.GetString("Yes"),
                 LangHelper.GetString("BackToMainMenuAndDoNothing")
             );
 
-            if (selectedNames.Contains(LangHelper.GetString("BackToMainMenuAndDoNothing")))
+            if (!proceed)
                 return;
+
+            // Show multiselect (clean, no back option here)
+            var selectedNames = _view.SelectMultipleJobs(_vm.Jobs.ToList());
 
             foreach (var name in selectedNames)
             {
@@ -229,6 +238,34 @@ namespace EasySave_From_ProSoft.Controller
 
                     case "Back":
                         return;
+                }
+            }
+        }
+        
+        private void HandleGlobalOptions()
+        {
+            while (true)
+            {
+                var options = new Dictionary<string, string>
+                {
+                    { "Lang", LangHelper.GetString("SelectLanguage") },
+                    { "Back", LangHelper.GetString("BackToMainMenu") }
+                };
+
+                string selected = AnsiConsole.Prompt(
+                    new SelectionPrompt<string>()
+                        .Title("[bold]Global Options[/]")
+                        .PageSize(5)
+                        .AddChoices(options.Values)
+                );
+
+                if (selected == options["Lang"])
+                {
+                    _view.SelectLanguage();
+                }
+                else if (selected == options["Back"])
+                {
+                    return;
                 }
             }
         }

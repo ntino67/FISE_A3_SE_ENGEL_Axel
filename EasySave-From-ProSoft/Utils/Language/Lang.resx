@@ -181,7 +181,7 @@
     <value>Current folder</value>
   </data>
   <data name="WhatJobsList" xml:space="preserve">
-    <value>What [green]jobs[/] do you want to run?</value>
+    <value>Do you want to run [green]jobs[/].</value>
   </data>
   <data name="JobsListIndication" xml:space="preserve">
     <value>[grey](Press [blue]&lt;space&gt;[/] to toggle a job, [green]&lt;enter&gt;[/] to run selected jobs)[/]</value>
@@ -209,5 +209,17 @@
   </data>
   <data name="SuccessfullBackup" xml:space="preserve">
     <value>Backup successfully done</value>
+  </data>
+  <data name="ValidateFolder" xml:space="preserve">
+    <value>Select this folder</value>
+  </data>
+  <data name="Cancel" xml:space="preserve">
+    <value>Cancel</value>
+  </data>
+  <data name="FullBackup" xml:space="preserve">
+    <value>Full Backup</value>
+  </data>
+  <data name="DifferentialBackup" xml:space="preserve">
+    <value>Differential Backup</value>
   </data>
 </root>

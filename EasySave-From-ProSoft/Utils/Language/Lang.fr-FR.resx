@@ -181,7 +181,7 @@
     <value>Dossier actuel</value>
   </data>
   <data name="WhatJobsList" xml:space="preserve">
-    <value>Quels [green]actions[/] voulez vous executer?</value>
+    <value>Voulez-vous executer des [green]actions[/].</value>
   </data>
   <data name="JobsListIndication" xml:space="preserve">
     <value>[grey](Appuez sur [blue]&lt;espace&gt;[/] pour selectionner une action, [green]&lt;entrer&gt;[/] pour executer les actions séléctionnées)[/]</value>
@@ -209,5 +209,17 @@
   </data>
   <data name="SuccessfullBackup" xml:space="preserve">
     <value>Sauvegarde effctuée avec succès</value>
+  </data>
+  <data name="ValidateFolder" xml:space="preserve">
+    <value>Utilise ce dossier</value>
+  </data>
+  <data name="Cancel" xml:space="preserve">
+    <value>Annuler</value>
+  </data>
+  <data name="FullBackup" xml:space="preserve">
+    <value>Sauvegarde completes</value>
+  </data>
+  <data name="DifferentialBackup" xml:space="preserve">
+    <value>Sauvegarde Differentielle</value>
   </data>
 </root>
