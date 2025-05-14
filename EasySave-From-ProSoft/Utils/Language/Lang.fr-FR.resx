@@ -231,7 +231,7 @@
   </data>
   <data name="JobCreated" xml:space="preserve">
     <value>Le job {0} a été créé</value>
-
+  </data>
   <data name="StatusPath" xml:space="preserve">
     <value>Chemin d'accès au fichier log status</value>
   </data>

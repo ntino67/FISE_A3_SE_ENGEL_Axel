@@ -1,13 +1,7 @@
-﻿using System;
-using EasySave_From_ProSoft.Controller;
-using Spectre.Console;
-
-namespace EasySave_From_ProSoft
+﻿namespace EasySave_From_ProSoft
 {
     using EasySave_From_ProSoft.View;
     using EasySave_From_ProSoft.ViewModel;
-    using Spectre.Console;
-    using System.Linq;
 
     public static class Program
     {

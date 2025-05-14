@@ -160,7 +160,6 @@ namespace EasySave_From_ProSoft.Utils.Language {
         }
         
         /// <summary>
-
         ///   Recherche une chaîne localisée semblable à Delete Job.
         /// </summary>
         internal static string DeleteJob {
@@ -170,8 +169,6 @@ namespace EasySave_From_ProSoft.Utils.Language {
         }
         
         /// <summary>
-
-
         ///   Recherche une chaîne localisée semblable à Differential Backup.
         /// </summary>
         internal static string DifferentialBackup {
@@ -199,7 +196,6 @@ namespace EasySave_From_ProSoft.Utils.Language {
         }
         
         /// <summary>
-
         ///   Recherche une chaîne localisée semblable à Location of the files.
         /// </summary>
         internal static string FileLocation {
@@ -209,7 +205,6 @@ namespace EasySave_From_ProSoft.Utils.Language {
         }
         
         /// <summary>
-
         ///   Recherche une chaîne localisée semblable à Full Backup.
         /// </summary>
         internal static string FullBackup {
@@ -273,9 +268,7 @@ namespace EasySave_From_ProSoft.Utils.Language {
         }
         
         /// <summary>
-
-        ///   Recherche une chaîne localisée semblable à Path of log files.
-
+        ///   Recherche une chaîne localisée semblable à Path of daily log files.
         /// </summary>
         internal static string LogPath {
             get {

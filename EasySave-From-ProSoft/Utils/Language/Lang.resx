@@ -228,9 +228,9 @@
   <data name="JobDeleted" xml:space="preserve">
     <value>The job {0} has been deleted</value>
   </data>
-  <data name="JobCreated" xml:space="preserve">
+	<data name="JobCreated" xml:space="preserve">
     <value>The job {0} has been created.</value>
-
+  </data>
   <data name="StatusPath" xml:space="preserve">
     <value>Path to the state log file</value>
   </data>
