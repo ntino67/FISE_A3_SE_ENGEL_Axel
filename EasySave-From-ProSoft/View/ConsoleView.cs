@@ -44,31 +44,27 @@ namespace EasySave_From_ProSoft.View
             return input;
         }
 
-        public void JobOptions()
+        public string ShowJobOptions(BackupJob job, Dictionary<string, string> labels)
         {
-            Dictionary<string, string> jobOptionsChoices = new Dictionary<string, string>
+            var choices = new Dictionary<string, string>
             {
-                { LangHelper.GetString("RenameJob"), "RenameJob" },
-                { LangHelper.GetString("DefineSourcePath")+$" {ViewModelLocator.GetJobViewModel().GetSourcePath()}", "DefineSourcePath" },
-                { LangHelper.GetString("DefineTargetPath")+$" {ViewModelLocator.GetJobViewModel().GetTargetPath()}", "DefineTargetPath" },
-                { LangHelper.GetString("DefineSaveMode"), "DefineSaveMode" },
-                { LangHelper.GetString("CreateBackup"), "CreateBackup" },
-                { LangHelper.GetString("ResetJob"), "ResetJob" },
-                { LangHelper.GetString("BackToMainMenu"), "BackToMainMenu" }
+                { $"{labels["Rename"]} (Current: {job.Name})", "Rename" },
+                { $"{labels["Source"]} (Current: {ShortenPath(job.SourceDirectory, 40)})", "Source" },
+                { $"{labels["Target"]} (Current: {ShortenPath(job.TargetDirectory, 40)})", "Target" },
+                { labels["BackupType"], "BackupType" },
+                { labels["Backup"], "Backup" },
+                { labels["Reset"], "Reset" },
+                { labels["Back"], "Back" }
             };
 
-            // Job options prompt
-            string jobOptionsSelected = AnsiConsole.Prompt(
+            string selected = AnsiConsole.Prompt(
                 new SelectionPrompt<string>()
-                    .Title($"[bold]{LangHelper.GetString("JobOptions")}[/]")
-                    .PageSize(10)
-                    .AddChoices(jobOptionsChoices.Keys));
-            // Get the selected value from the dictionary
-            string selectedValue = jobOptionsChoices[jobOptionsSelected];
+                .Title("[bold]Job options[/]")
+                .PageSize(10)
+                .AddChoices(choices.Keys)
+            );
 
-
-            // Display the selected value
-            navigate(selectedValue);
+            return choices[selected];
         }
 
         public void MainMenu()
@@ -141,6 +137,10 @@ namespace EasySave_From_ProSoft.View
             return selected;
         }
 
+        public string AskForJobName()
+        {
+            return AnsiConsole.Ask<string>("[green]Please enter the name of the new backup job:[/]");
+        }       
 
         public void SelectLanguage()
         {

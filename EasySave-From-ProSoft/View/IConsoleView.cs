@@ -11,6 +11,8 @@ namespace EasySave_From_ProSoft.View
         public void MainMenu();
         public void MainOptions();
         public string SelectJob(List<BackupJob> jobs, string newJobLabel, string backLabel);
+        public string AskForJobName();
+        public string ShowJobOptions(BackupJob job, Dictionary<string, string> labels);
         public void JobOptions();
         public bool Confirm(string message);
         public void navigate(string key);

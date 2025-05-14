@@ -74,9 +74,45 @@ namespace EasySave_From_ProSoft.Controller
 
         private void HandleJobOptions()
         {
-            _view.ShowMessage($"[green]Job Selected: {_vm.CurrentJob.Name}[/]");
+            while (true)
+            {
+                string action = _view.ShowJobOptions(_vm.CurrentJob);
 
-            // This will later call _view.ShowJobOptions(...) and respond to menu options
+                switch (action)
+                {
+                    case "Rename":
+                        string newName = _view.AskForJobName();
+                        _vm.UpdateJobName(newName);
+                        break;
+
+                    case "Source":
+                        string source = _view.BrowseFolders();
+                        _vm.UpdateSourcePath(source);
+                        break;
+
+                    case "Target":
+                        string target = _view.BrowseFolders();
+                        _vm.UpdateTargetPath(target);
+                        break;
+
+                    case "BackupType":
+                        var type = _view.SelectBackupType();
+                        _vm.UpdateBackupType(type);
+                        break;
+
+                    case "Backup":
+                        _vm.RunBackupCommand.Execute(null);
+                        break;
+
+                    case "Reset":
+                        if (_view.Confirm("Are you sure you want to reset this job?"))
+                            _vm.ResetCurrentJob();
+                        break;
+
+                    case "Back":
+                        return;
+                }
+            }
         }
     }
 }
