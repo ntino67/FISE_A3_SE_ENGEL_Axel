@@ -357,7 +357,7 @@ namespace EasySave_From_ProSoft.Utils.Language {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to What [green]jobs[/] do you want to run?.
+        ///   Looks up a localized string similar to Do you want to run [green]jobs[/]..
         /// </summary>
         internal static string WhatJobsList {
             get {

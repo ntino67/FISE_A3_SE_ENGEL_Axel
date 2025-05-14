@@ -181,7 +181,7 @@
     <value>Dossier actuel</value>
   </data>
   <data name="WhatJobsList" xml:space="preserve">
-    <value>Quels [green]actions[/] voulez vous executer?</value>
+    <value>Voulez-vous executer des [green]actions[/].</value>
   </data>
   <data name="JobsListIndication" xml:space="preserve">
     <value>[grey](Appuez sur [blue]&lt;espace&gt;[/] pour selectionner une action, [green]&lt;entrer&gt;[/] pour executer les actions séléctionnées)[/]</value>

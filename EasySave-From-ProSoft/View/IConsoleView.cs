@@ -17,6 +17,6 @@ namespace EasySave_From_ProSoft.View
         public void ShowMessage(string message);
         public void ShowError(string message);
         string BrowseFolders(string currentFolderLabel, string validateLabel, string cancelLabel);
-        public List<string> SelectMultipleJobs(List<BackupJob> jobs, string prompt, string instructions, string backLabel);
+        public List<string> SelectMultipleJobs(List<BackupJob> jobs);
     }
 }

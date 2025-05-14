@@ -191,20 +191,15 @@ namespace EasySave_From_ProSoft.View
             return path.Substring(0, start) + "..." + path.Substring(path.Length - end);
         }
 
-        public List<string> SelectMultipleJobs(List<BackupJob> jobs, string prompt, string instructions, string backLabel)
+        public List<string> SelectMultipleJobs(List<BackupJob> jobs)
         {
-            var jobNames = jobs.Select(j => j.Name).ToList();
-            jobNames.Add(backLabel);
-
-            var selected = AnsiConsole.Prompt(
+            return AnsiConsole.Prompt(
                 new MultiSelectionPrompt<string>()
-                    .Title($"[bold]{prompt}[/]")
-                    .InstructionsText($"[grey]{instructions}[/]")
+                    .Title("[bold]Select jobs to run[/]")
+                    .InstructionsText("[grey](Use space to toggle, enter to run selected jobs)[/]")
                     .PageSize(10)
-                    .AddChoices(jobNames)
+                    .AddChoices(jobs.Select(j => j.Name))
             );
-
-            return selected;
         }
     }
 }

@@ -103,15 +103,24 @@ namespace EasySave_From_ProSoft.Controller
 
         private async void HandleMultipleJobs()
         {
-            var selectedNames = _view.SelectMultipleJobs(
-                _vm.Jobs.ToList(),
+            if (_vm.Jobs.Count == 0)
+            {
+                _view.ShowMessage("[yellow]No jobs available.[/]");
+                return;
+            }
+
+            // Confirm before showing the list
+            bool proceed = _view.Confirm(
                 LangHelper.GetString("WhatJobsList"),
-                LangHelper.GetString("JobsListIndication"),
+                LangHelper.GetString("Yes"),
                 LangHelper.GetString("BackToMainMenuAndDoNothing")
             );
 
-            if (selectedNames.Contains(LangHelper.GetString("BackToMainMenuAndDoNothing")))
+            if (!proceed)
                 return;
+
+            // Show multiselect (clean, no back option here)
+            var selectedNames = _view.SelectMultipleJobs(_vm.Jobs.ToList());
 
             foreach (var name in selectedNames)
             {
