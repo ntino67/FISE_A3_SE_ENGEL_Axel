@@ -6,6 +6,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using Spectre.Console;
+using System.Threading.Tasks;
 
 namespace EasySave_From_ProSoft.Controller
 {
@@ -35,7 +36,7 @@ namespace EasySave_From_ProSoft.Controller
                         HandleJobSelection();
                         break;
                     case "SelectMultipleJobs":
-                        HandleMultipleJobs();
+                        HandleMultipleJobs().GetAwaiter().GetResult();
                         break;
                     case "Options":
                         HandleGlobalOptions();
@@ -83,6 +84,7 @@ namespace EasySave_From_ProSoft.Controller
                 try
                 {
                     _vm.CreateNewJob(jobName);
+                    _view.ShowMessage($"[green]{string.Format(LangHelper.GetString("JobCreated"), jobName)}[/]");
                     HandleJobOptions();
                 }
                 catch (Exception ex)
@@ -101,7 +103,7 @@ namespace EasySave_From_ProSoft.Controller
             }
         }
 
-        private async void HandleMultipleJobs()
+        private async Task HandleMultipleJobs()
         {
             if (_vm.Jobs.Count == 0)
             {
@@ -151,6 +153,7 @@ namespace EasySave_From_ProSoft.Controller
                 { "BackupType", LangHelper.GetString("DefineSaveMode") },
                 { "Backup", LangHelper.GetString("CreateBackup") },
                 { "Reset", LangHelper.GetString("ResetJob") },
+                { "Delete", LangHelper.GetString("DeleteJob") },
                 { "Back", LangHelper.GetString("BackToMainMenu") }
             };
 
@@ -235,6 +238,22 @@ namespace EasySave_From_ProSoft.Controller
                         }
                         break;
                     }
+
+                    case "Delete":
+                        {
+                            bool confirm = _view.Confirm(
+                                LangHelper.GetString("ConfirmDelete"),
+                                LangHelper.GetString("Yes"),
+                                LangHelper.GetString("No")
+                            );
+                            if (confirm)
+                            {
+                                string deletedName = job.Name;
+                                _vm.DeleteJob(job.Id);
+                                _view.ShowMessage($"[green]{string.Format(LangHelper.GetString("JobDeleted"), deletedName)}[/]");
+                            }
+                            break;
+                        }
 
                     case "Back":
                         return;

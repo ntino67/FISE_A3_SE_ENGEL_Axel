@@ -7,6 +7,7 @@ using System.Collections.ObjectModel;
 using EasySave_From_ProSoft.Model;
 using EasySave_From_ProSoft.Model.Interfaces;
 using EasySave_From_ProSoft.Utils;
+using System.Linq;
 
 namespace EasySave_From_ProSoft.ViewModel
 {
@@ -153,6 +154,19 @@ namespace EasySave_From_ProSoft.ViewModel
             if (_currentJob == null)
                 throw new InvalidOperationException("Aucun job n'est s�lectionn�.");
             return _currentJob.SourceDirectory;
+        }
+
+        public void DeleteJob(string jobId)
+        {
+            var job = Jobs.FirstOrDefault(j => j.Id == jobId);
+            if (job == null)
+                throw new InvalidOperationException("Le job spécifié n'existe pas.");
+
+            _jobManager.DeleteBackupJob(jobId);
+            Jobs.Remove(job);
+
+            if (CurrentJob != null && CurrentJob.Id == jobId)
+                CurrentJob = null;
         }
     }
 }

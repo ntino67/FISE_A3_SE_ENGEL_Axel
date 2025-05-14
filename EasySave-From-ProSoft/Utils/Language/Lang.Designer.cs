@@ -88,6 +88,15 @@ namespace EasySave_From_ProSoft.Utils.Language {
         }
         
         /// <summary>
+        ///   Recherche une chaîne localisée semblable à Confirm delete.
+        /// </summary>
+        internal static string ConfirmDelete {
+            get {
+                return ResourceManager.GetString("ConfirmDelete", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Recherche une chaîne localisée semblable à Are you sure you want to reset this job ? (Every settings will be deleted).
         /// </summary>
         internal static string ConfirmReset {
@@ -151,6 +160,18 @@ namespace EasySave_From_ProSoft.Utils.Language {
         }
         
         /// <summary>
+
+        ///   Recherche une chaîne localisée semblable à Delete Job.
+        /// </summary>
+        internal static string DeleteJob {
+            get {
+                return ResourceManager.GetString("DeleteJob", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+
+
         ///   Recherche une chaîne localisée semblable à Differential Backup.
         /// </summary>
         internal static string DifferentialBackup {
@@ -178,6 +199,7 @@ namespace EasySave_From_ProSoft.Utils.Language {
         }
         
         /// <summary>
+
         ///   Recherche une chaîne localisée semblable à Location of the files.
         /// </summary>
         internal static string FileLocation {
@@ -187,6 +209,7 @@ namespace EasySave_From_ProSoft.Utils.Language {
         }
         
         /// <summary>
+
         ///   Recherche une chaîne localisée semblable à Full Backup.
         /// </summary>
         internal static string FullBackup {
@@ -196,7 +219,25 @@ namespace EasySave_From_ProSoft.Utils.Language {
         }
         
         /// <summary>
-        ///   Recherche une chaîne localisée semblable à Backup job Options.
+        ///   Recherche une chaîne localisée semblable à The job {0} has been created..
+        /// </summary>
+        internal static string JobCreated {
+            get {
+                return ResourceManager.GetString("JobCreated", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une chaîne localisée semblable à The job {0} has been deleted.
+        /// </summary>
+        internal static string JobDeleted {
+            get {
+                return ResourceManager.GetString("JobDeleted", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une chaîne localisée semblable à Backup job options.
         /// </summary>
         internal static string JobOptions {
             get {
@@ -232,7 +273,9 @@ namespace EasySave_From_ProSoft.Utils.Language {
         }
         
         /// <summary>
-        ///   Recherche une chaîne localisée semblable à Path of daily log files.
+
+        ///   Recherche une chaîne localisée semblable à Path of log files.
+
         /// </summary>
         internal static string LogPath {
             get {
