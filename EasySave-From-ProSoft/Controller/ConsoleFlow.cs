@@ -76,7 +76,18 @@ namespace EasySave_From_ProSoft.Controller
         {
             while (true)
             {
-                string action = _view.ShowJobOptions(_vm.CurrentJob);
+                var jobMenuLabels = new Dictionary<string, string>
+                {
+                    { "Rename", LangHelper.GetString("RenameJob") },
+                    { "Source", LangHelper.GetString("DefineSourcePath") },
+                    { "Target", LangHelper.GetString("DefineTargetPath") },
+                    { "BackupType", LangHelper.GetString("DefineSaveMode") },
+                    { "Backup", LangHelper.GetString("CreateBackup") },
+                    { "Reset", LangHelper.GetString("ResetJob") },
+                    { "Back", LangHelper.GetString("BackToMainMenu") }
+                };
+
+                string action = _view.ShowJobOptions(_vm.CurrentJob, jobMenuLabels);
 
                 switch (action)
                 {
