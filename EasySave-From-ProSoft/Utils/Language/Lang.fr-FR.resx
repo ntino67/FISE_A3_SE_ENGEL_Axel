@@ -223,7 +223,7 @@
     <value>Supprimer le job</value>
   </data>
   <data name="ConfirmDelete" xml:space="preserve">
-    <value>Confirmer la sélection du job</value>
+    <value>Confirmer la suppression (Ceci ne supprimera pas vous fichiers ni dans le chemin Source/Cible)</value>
   </data>
   <data name="JobDeleted" xml:space="preserve">
     <value>Le job {0} a été supprimé</value>
@@ -239,5 +239,17 @@
   </data>
   <data name="LogPaths" xml:space="preserve">
     <value>Voir chemins fichiers de logs</value>
+  </data>
+  <data name="BackupCompleted" xml:space="preserve">
+    <value>Sauvegarde effectué !</value>
+  </data>
+  <data name="RunningBackup" xml:space="preserve">
+    <value>Sauvegarde de vos fichiers...</value>
+  </data>
+  <data name="BackupFailed" xml:space="preserve">
+    <value>Sauvegarde échoue, impossible à effectuer</value>
+  </data>
+  <data name="AskJobName" xml:space="preserve">
+    <value>Entrer le nom du nouveau job</value>
   </data>
 </root>

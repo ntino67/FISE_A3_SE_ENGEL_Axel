@@ -92,7 +92,7 @@ namespace EasySave_From_ProSoft.View
             
             string selected = AnsiConsole.Prompt(
                 new SelectionPrompt<string>()
-                    .Title("[bold]Select a job[/]")
+                    .Title($"[bold]{LangHelper.GetString("SelectJob")}[/]")
                     .PageSize(10)
                     .AddChoices(choices)
             );
@@ -108,7 +108,7 @@ namespace EasySave_From_ProSoft.View
 
         public string AskForJobName()
         {
-            return AnsiConsole.Ask<string>("[green]Please enter the name of the new backup job:[/]");
+            return AnsiConsole.Ask<string>($"[green]{LangHelper.GetString("AskJobName")}[/]");
         }       
 
         public string BrowseFolders(string currentFolderLabel, string validateLabel, string cancelLabel)

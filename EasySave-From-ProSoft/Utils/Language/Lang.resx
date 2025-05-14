@@ -223,7 +223,7 @@
     <value>Delete Job</value>
   </data>
   <data name="ConfirmDelete" xml:space="preserve">
-    <value>Confirm delete</value>
+    <value>Confirm Delete (This will not delete your files neither in Source/Target path)</value>
   </data>
   <data name="JobDeleted" xml:space="preserve">
     <value>The job {0} has been deleted</value>
@@ -239,5 +239,17 @@
   </data>
   <data name="LogPaths" xml:space="preserve">
     <value>View log paths</value>
+  </data>
+  <data name="BackupCompleted" xml:space="preserve">
+    <value>Backup done !</value>
+  </data>
+  <data name="RunningBackup" xml:space="preserve">
+    <value>Backuping your files...</value>
+  </data>
+  <data name="BackupFailed" xml:space="preserve">
+    <value>Backup failed, unable to complete</value>
+  </data>
+  <data name="AskJobName" xml:space="preserve">
+    <value>Enter the new job name</value>
   </data>
 </root>

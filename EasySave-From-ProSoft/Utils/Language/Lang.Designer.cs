@@ -61,6 +61,15 @@ namespace EasySave_From_ProSoft.Utils.Language {
         }
         
         /// <summary>
+        ///   Recherche une chaîne localisée semblable à Enter the new job name.
+        /// </summary>
+        internal static string AskJobName {
+            get {
+                return ResourceManager.GetString("AskJobName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Recherche une chaîne localisée semblable à Back to main menu.
         /// </summary>
         internal static string BackToMainMenu {
@@ -79,6 +88,24 @@ namespace EasySave_From_ProSoft.Utils.Language {
         }
         
         /// <summary>
+        ///   Recherche une chaîne localisée semblable à Backup done !.
+        /// </summary>
+        internal static string BackupCompleted {
+            get {
+                return ResourceManager.GetString("BackupCompleted", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une chaîne localisée semblable à Backup failed, unable to complete.
+        /// </summary>
+        internal static string BackupFailed {
+            get {
+                return ResourceManager.GetString("BackupFailed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Recherche une chaîne localisée semblable à Cancel.
         /// </summary>
         internal static string Cancel {
@@ -88,7 +115,7 @@ namespace EasySave_From_ProSoft.Utils.Language {
         }
         
         /// <summary>
-        ///   Recherche une chaîne localisée semblable à Confirm delete.
+        ///   Recherche une chaîne localisée semblable à Confirm Delete (This will not delete your files neither in Source/Target path).
         /// </summary>
         internal static string ConfirmDelete {
             get {
@@ -345,6 +372,15 @@ namespace EasySave_From_ProSoft.Utils.Language {
         internal static string ResetJob {
             get {
                 return ResourceManager.GetString("ResetJob", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une chaîne localisée semblable à Backuping your files....
+        /// </summary>
+        internal static string RunningBackup {
+            get {
+                return ResourceManager.GetString("RunningBackup", resourceCulture);
             }
         }
         
