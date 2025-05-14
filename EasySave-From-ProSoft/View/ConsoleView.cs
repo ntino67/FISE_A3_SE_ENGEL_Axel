@@ -118,68 +118,27 @@ namespace EasySave_From_ProSoft.View
         }
 
         // Implémentation de la méthode SelectJob()
-        public void SelectJob()
+        public string SelectJob(List<BackupJob> jobs, string newJobLabel, string backLabel)
         {
-            // Obtenir tous les jobs disponibles
-            List<BackupJob> jobs = ViewModelLocator.GetJobViewModel().GetAllJobs();
+            List<string> choices = jobs.Select(job => job.Name).ToList();
 
-            List<string> choices = new List<string>();
-
-            // Ajouter les jobs existants
-            foreach (BackupJob job in jobs)
-            {
-                choices.Add(job.Name);
-            }
-
-            // Ajouter les options supplémentaires
-            choices.Add(LangHelper.GetString("CreateNewJob"));
-            choices.Add(LangHelper.GetString("BackToMainMenu"));
-
-            // Afficher le menu de sélection
+            choices.Add(newJobLabel);
+            choices.Add(backLabel);
+            
             string selected = AnsiConsole.Prompt(
                 new SelectionPrompt<string>()
-                    .Title(LangHelper.GetString("SelectJobPrompt"))
+                    .Title("[bold]Select a job[/]")
                     .PageSize(10)
-                    .AddChoices(choices));
-            if (selected == LangHelper.GetString("CreateNewJob"))
-            {
-                // Vérifier si le nombre maximum de jobs est atteint
-                if (jobs.Count >= 5)
-                {
-                    AnsiConsole.MarkupLine($"[red]{LangHelper.GetString("MaxJobsReached")}[/]");
-                    return;
-                }
+                    .AddChoices(choices)
+            );
+            
+            if (selected == newJobLabel)
+                return "New";
 
-                // Demander le nom du nouveau job
-                string jobName = InputString(LangHelper.GetString("EnterJobName"));
+            if (selected == backLabel)
+                return "Back";
 
-                try
-                {
-                    // Créer le nouveau job
-                    ViewModelLocator.GetJobViewModel().CreateNewJob(jobName);
-
-                    // Afficher les options du job
-                    navigate("JobOptions");
-                }
-                catch (Exception ex)
-                {
-                    AnsiConsole.MarkupLine($"[red]{ex.Message}[/]");
-                }
-            }
-            else if (selected == LangHelper.GetString("BackToMainMenu"))
-            {
-                navigate("BackToMainMenu");
-            }
-            else
-            {
-                // Sélectionner le job existant
-                var job = jobs.FirstOrDefault(j => j.Name == selected);
-                if (job != null)
-                {
-                    ViewModelLocator.GetJobViewModel().SetCurrentJob(job);
-                    JobOptions();
-                }
-            }
+            return selected;
         }
 
 

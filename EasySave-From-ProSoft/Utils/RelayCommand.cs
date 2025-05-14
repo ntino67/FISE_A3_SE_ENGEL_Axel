@@ -8,11 +8,12 @@ namespace EasySave_From_ProSoft.Utils
         private readonly Action<object> _execute;
         private readonly Predicate<object> _canExecute;
 
-        public event EventHandler CanExecuteChanged
-        {
-            add    { CommandManager.RequerySuggested += value; }
-            remove { CommandManager.RequerySuggested -= value; }
-        }
+        public event EventHandler CanExecuteChanged;
+        // Remove comment when moving to WPF
+        //{
+        //    add    { CommandManager.RequerySuggested += value; }
+        //    remove { CommandManager.RequerySuggested -= value; }
+        //}
 
         public RelayCommand(Action<object> execute, Predicate<object> canExecute = null)
         {
