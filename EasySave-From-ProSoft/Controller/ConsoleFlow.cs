@@ -22,7 +22,6 @@ namespace EasySave_From_ProSoft.Controller
 
         public void Run()
         {
-            
             // Select language
             _view.SelectLanguage();
 
@@ -39,6 +38,7 @@ namespace EasySave_From_ProSoft.Controller
                         HandleMultipleJobs();
                         break;
                     case "Options":
+                        HandleJobOptions();
                         break;
                     case "Exit":
                         return;
@@ -132,88 +132,100 @@ namespace EasySave_From_ProSoft.Controller
 
         private void HandleJobOptions()
         {
+            var job = _vm.CurrentJob;
+
+            var jobMenuLabels = new Dictionary<string, string>
+            {
+                { "Rename", LangHelper.GetString("RenameJob") },
+                { "Source", LangHelper.GetString("DefineSourcePath") },
+                { "Target", LangHelper.GetString("DefineTargetPath") },
+                { "BackupType", LangHelper.GetString("DefineSaveMode") },
+                { "Backup", LangHelper.GetString("CreateBackup") },
+                { "Reset", LangHelper.GetString("ResetJob") },
+                { "Back", LangHelper.GetString("BackToMainMenu") }
+            };
+
             while (true)
             {
-                var jobMenuLabels = new Dictionary<string, string>
-                {
-                    { "Rename", LangHelper.GetString("RenameJob") },
-                    { "Source", LangHelper.GetString("DefineSourcePath") },
-                    { "Target", LangHelper.GetString("DefineTargetPath") },
-                    { "BackupType", LangHelper.GetString("DefineSaveMode") },
-                    { "Backup", LangHelper.GetString("CreateBackup") },
-                    { "Reset", LangHelper.GetString("ResetJob") },
-                    { "Back", LangHelper.GetString("BackToMainMenu") }
-                };
-
-                string action = _view.ShowJobOptions(_vm.CurrentJob, jobMenuLabels);
+                string action = _view.ShowJobOptions(job, jobMenuLabels);
 
                 switch (action)
                 {
                     case "Rename":
+                    {
                         string newName = _view.AskForJobName();
                         _vm.UpdateJobName(newName);
+                        _view.ShowMessage($"[green]{LangHelper.GetString("JobRenamed")}[/]");
                         break;
+                    }
 
                     case "Source":
+                    {
+                        string folder = _view.BrowseFolders(
+                            LangHelper.GetString("CurrentFolder"),
+                            LangHelper.GetString("ValidateFolder"),
+                            LangHelper.GetString("Cancel")
+                        );
+                        if (folder != null)
                         {
-                            string folder = _view.BrowseFolders(
-                                    LangHelper.GetString("CurrentFolder"),
-                                    LangHelper.GetString("ValidateFolder"),
-                                    LangHelper.GetString("Cancel")
-                            );
-
-                            if (folder != null)
-                            {
-                                _vm.UpdateSourcePath(folder);
-                                _view.ShowMessage("[green]Source path updated.[/]");
-                            }
-                            break;
+                            _vm.UpdateSourcePath(folder);
+                            _view.ShowMessage($"[green]{LangHelper.GetString("SourcePathUpdated")}[/]");
                         }
+                        break;
+                    }
 
                     case "Target":
+                    {
+                        string folder = _view.BrowseFolders(
+                            LangHelper.GetString("CurrentFolder"),
+                            LangHelper.GetString("ValidateFolder"),
+                            LangHelper.GetString("Cancel")
+                        );
+                        if (folder != null)
                         {
-                            string folder = _view.BrowseFolders(
-                                    LangHelper.GetString("CurrentFolder"),
-                                    LangHelper.GetString("ValidateFolder"),
-                                    LangHelper.GetString("Cancel")
-                            );
-
-                            if (folder != null)
-                            {
-                                _vm.UpdateTargetPath(folder);
-                                _view.ShowMessage("[green]Target path updated.[/]");
-                            }
-                            break;
+                            _vm.UpdateTargetPath(folder);
+                            _view.ShowMessage($"[green]{LangHelper.GetString("TargetPathUpdated")}[/]");
                         }
+                        break;
+                    }
 
                     case "BackupType":
-                        {
-                            BackupType selectedType = _view.SelectBackupType(
-                                LangHelper.GetString("SelectBackupType"),
-                                LangHelper.GetString("FullBackup"),
-                                LangHelper.GetString("DifferentialBackup")
-                            );
-
-                            _vm.UpdateBackupType(selectedType);
-                            _view.ShowMessage($"[green]{LangHelper.GetString("BackupTypeUpdated")}[/]");
-                            break;
-                        }
+                    {
+                        BackupType selected = _view.SelectBackupType(
+                            LangHelper.GetString("SelectBackupType"),
+                            LangHelper.GetString("FullBackup"),
+                            LangHelper.GetString("DifferentialBackup")
+                        );
+                        _vm.UpdateBackupType(selected);
+                        _view.ShowMessage($"[green]{LangHelper.GetString("BackupTypeUpdated")}[/]");
+                        break;
+                    }
 
                     case "Backup":
-                        _vm.RunBackupCommand.Execute(null);
+                    {
+                        _view.ShowMessage($"[yellow]{LangHelper.GetString("RunningBackup")}[/]");
+                        bool result = _vm.ExecuteCurrentJob().Result;
+                        string resultMsg = result
+                            ? LangHelper.GetString("BackupCompleted")
+                            : LangHelper.GetString("BackupFailed");
+                        _view.ShowMessage($"[green]{resultMsg}[/]");
                         break;
+                    }
 
                     case "Reset":
-                        if (_view.Confirm(
+                    {
+                        bool confirm = _view.Confirm(
                             LangHelper.GetString("ConfirmReset"),
                             LangHelper.GetString("Yes"),
                             LangHelper.GetString("No")
-                        ))
+                        );
+                        if (confirm)
                         {
                             _vm.ResetCurrentJob();
                             _view.ShowMessage($"[green]{LangHelper.GetString("JobReset")}[/]");
                         }
                         break;
+                    }
 
                     case "Back":
                         return;
