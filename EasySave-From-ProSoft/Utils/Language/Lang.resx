@@ -216,4 +216,10 @@
   <data name="Cancel" xml:space="preserve">
     <value>Cancel</value>
   </data>
+  <data name="FullBackup" xml:space="preserve">
+    <value>Full Backup</value>
+  </data>
+  <data name="DifferentialBackup" xml:space="preserve">
+    <value>Differential Backup</value>
+  </data>
 </root>

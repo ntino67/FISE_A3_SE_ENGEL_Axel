@@ -43,7 +43,6 @@ namespace EasySave_From_ProSoft.View
             string selected = AnsiConsole.Prompt(
                 new SelectionPrompt<string>()
                     .Title(message)
-                    .PageSize(2)
                     .AddChoices(choices.Keys)
             );
 

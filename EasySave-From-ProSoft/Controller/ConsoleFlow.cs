@@ -38,7 +38,7 @@ namespace EasySave_From_ProSoft.Controller
                         HandleMultipleJobs();
                         break;
                     case "Options":
-                        HandleJobOptions();
+                        HandleGlobalOptions();
                         break;
                     case "Exit":
                         return;
@@ -229,6 +229,34 @@ namespace EasySave_From_ProSoft.Controller
 
                     case "Back":
                         return;
+                }
+            }
+        }
+        
+        private void HandleGlobalOptions()
+        {
+            while (true)
+            {
+                var options = new Dictionary<string, string>
+                {
+                    { "Lang", LangHelper.GetString("SelectLanguage") },
+                    { "Back", LangHelper.GetString("BackToMainMenu") }
+                };
+
+                string selected = AnsiConsole.Prompt(
+                    new SelectionPrompt<string>()
+                        .Title("[bold]Global Options[/]")
+                        .PageSize(5)
+                        .AddChoices(options.Values)
+                );
+
+                if (selected == options["Lang"])
+                {
+                    _view.SelectLanguage();
+                }
+                else if (selected == options["Back"])
+                {
+                    return;
                 }
             }
         }

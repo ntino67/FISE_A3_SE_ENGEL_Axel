@@ -150,6 +150,15 @@ namespace EasySave_From_ProSoft.Utils.Language {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Differential Backup.
+        /// </summary>
+        internal static string DifferentialBackup {
+            get {
+                return ResourceManager.GetString("DifferentialBackup", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Please enter new job name.
         /// </summary>
         internal static string EnterJobName {
@@ -164,6 +173,15 @@ namespace EasySave_From_ProSoft.Utils.Language {
         internal static string Exit {
             get {
                 return ResourceManager.GetString("Exit", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Full Backup.
+        /// </summary>
+        internal static string FullBackup {
+            get {
+                return ResourceManager.GetString("FullBackup", resourceCulture);
             }
         }
         
