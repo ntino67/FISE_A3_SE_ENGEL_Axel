@@ -59,6 +59,7 @@ namespace EasySave_From_ProSoft.View
                 { $"{labels["BackupType"]} (Current: {job.Type})", "BackupType" },
                 { labels["Backup"], "Backup" },
                 { labels["Reset"], "Reset" },
+                { labels["Delete"], "Delete" },
                 { labels["Back"], "Back" }
             };
 

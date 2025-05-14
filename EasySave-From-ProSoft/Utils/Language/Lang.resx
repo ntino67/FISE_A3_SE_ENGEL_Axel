@@ -136,7 +136,7 @@
     <value>Exit</value>
   </data>
   <data name="JobOptions" xml:space="preserve">
-    <value>Backup job Options</value>
+    <value>Backup job options</value>
   </data>
   <data name="Language" xml:space="preserve">
     <value>Language</value>
@@ -221,5 +221,17 @@
   </data>
   <data name="DifferentialBackup" xml:space="preserve">
     <value>Differential Backup</value>
+  </data>
+  <data name="DeleteJob" xml:space="preserve">
+    <value>Delete Job</value>
+  </data>
+  <data name="ConfirmDelete" xml:space="preserve">
+    <value>Confirm delete</value>
+  </data>
+  <data name="JobDeleted" xml:space="preserve">
+    <value>The job {0} has been deleted</value>
+  </data>
+  <data name="JobCreated" xml:space="preserve">
+    <value>The job {0} has been created.</value>
   </data>
 </root>
