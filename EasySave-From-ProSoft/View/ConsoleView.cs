@@ -33,7 +33,7 @@ namespace EasySave_From_ProSoft.View
 
             string selected = AnsiConsole.Prompt(
                 new SelectionPrompt<string>()
-                    .Title("[bold]Select yourBackupType SelectBackupType(string prompt, string fullLabel, string diffLabel); language[/]")
+                    .Title($"[bold]{LangHelper.GetString("SelectLanguage")}[/]")
                     .PageSize(5)
                     .AddChoices(languages.Keys)
             );
