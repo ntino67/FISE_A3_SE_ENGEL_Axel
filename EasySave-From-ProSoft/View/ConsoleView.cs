@@ -163,7 +163,7 @@ namespace EasySave_From_ProSoft.View
             navigate("Options");
         }
 
-        public string BrowseFolders()
+        public string BrowseFolders(string currentFolderLabel, string validateLabel, string cancelLabel)
         {
             string currentPath = Directory.GetCurrentDirectory();
 
@@ -180,12 +180,12 @@ namespace EasySave_From_ProSoft.View
                     choices.Add(Path.GetFileName(dir));
                 }
 
-                choices.Add("[green]Validate this folder[/]");
-                choices.Add("[red]Cancel[/]");
+                choices.Add($"[green]{validateLabel}[/]");
+                choices.Add($"[red]{cancelLabel}[/]");
 
                 string selection = AnsiConsole.Prompt(
                     new SelectionPrompt<string>()
-                        .Title($"[blue]{LangHelper.GetString("CurrentFolder")}[/] : [yellow]{currentPath}[/]")
+                        .Title($"[blue]{currentFolderLabel}[/] : [yellow]{currentPath}[/]")
                         .PageSize(15)
                         .AddChoices(choices)
                 );
@@ -196,10 +196,10 @@ namespace EasySave_From_ProSoft.View
                         currentPath = Directory.GetParent(currentPath)?.FullName ?? currentPath;
                         break;
 
-                    case "[green]Validate this folder[/]":
+                    case string s when s.Contains(validateLabel):
                         return currentPath;
 
-                    case "[red]Cancel[/]":
+                    case string s when s.Contains(cancelLabel):
                         return null;
 
                     default:
@@ -208,6 +208,25 @@ namespace EasySave_From_ProSoft.View
                 }
             }
         }
+
+        public BackupType SelectBackupType(string prompt, string fullLabel, string diffLabel)
+        {
+            var choices = new Dictionary<string, BackupType>
+            {
+                { fullLabel, BackupType.Full },
+                { diffLabel, BackupType.Differential },
+            };
+
+            string selected = AnsiConsole.Prompt(
+                new SelectionPrompt<string>()
+                    .Title($"[bold]{prompt}[/]")
+                    .PageSize(10)
+                    .AddChoices(choices.Keys)
+            );
+
+            return choices[selected];
+        }
+
 
         // Méthode utilitaire pour raccourcir les chemins trop longs
         private string ShortenPath(string path, int maxLength)

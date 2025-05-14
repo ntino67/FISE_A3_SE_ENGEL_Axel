@@ -129,17 +129,9 @@ namespace EasySave_From_ProSoft.Controller
                         }
 
                     case "BackupType":
-                        {
-                            string selectedType = _view.SelectBackupType(
-                                LangHelper.GetString("SelectBackupType"),
-                                LangHelper.GetString("FullBackup"),
-                                LangHelper.GetString("DifferentialBackup")
-                            );
-
-                            _vm.UpdateBackupType(selectedType);
-                            _view.ShowMessage($"[green]{LangHelper.GetString("BackupTypeUpdated")}[/]");
-                            break;
-                        }
+                        var type = _view.SelectBackupType();
+                        _vm.UpdateBackupType(type);
+                        break;
 
                     case "Backup":
                         _vm.RunBackupCommand.Execute(null);

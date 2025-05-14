@@ -13,10 +13,10 @@ namespace EasySave_From_ProSoft.View
         public string SelectJob(List<BackupJob> jobs, string newJobLabel, string backLabel);
         public string AskForJobName();
         public string ShowJobOptions(BackupJob job, Dictionary<string, string> labels);
-        public void JobOptions();
+        public BackupType SelectBackupType(string prompt, string fullLabel, string diffLabel);
         public bool Confirm(string message);
         public void navigate(string key);
-        public string BrowseFolders();
+        string BrowseFolders(string currentFolderLabel, string validateLabel, string cancelLabel);
         public void SelectMultipleJobs();
 
     }
