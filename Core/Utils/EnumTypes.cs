@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace EasySave_From_ProSoft.Utils
+namespace Core.Utils
 {
     public enum BackupType
     {

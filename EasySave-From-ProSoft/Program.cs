@@ -1,10 +1,16 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace EasySave_From_ProSoft
+﻿namespace EasySave_From_ProSoft
 {
-    internal class Program
+    using EasySave_From_ProSoft.View;
+    using EasySave_From_ProSoft.ViewModel;
+
+    public static class Program
     {
+        public static void Main(string[] args)
+        {
+            ViewModelLocator.Initialize();
+            var view = new ConsoleView();
+            var flow = new ConsoleFlow(view, ViewModelLocator.GetJobViewModel());
+            flow.Run();
+        }
     }
 }

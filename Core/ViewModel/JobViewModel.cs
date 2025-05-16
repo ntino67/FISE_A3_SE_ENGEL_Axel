@@ -4,12 +4,12 @@ using System.Threading.Tasks;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using System.Collections.ObjectModel;
-using EasySave_From_ProSoft.Model;
-using EasySave_From_ProSoft.Model.Interfaces;
-using EasySave_From_ProSoft.Utils;
+using Core.Model;
+using Core.Model.Interfaces;
+using Core.Utils;
 using System.Linq;
 
-namespace EasySave_From_ProSoft.ViewModel
+namespace Core.ViewModel
 {
     public class JobViewModel : INotifyPropertyChanged
     {

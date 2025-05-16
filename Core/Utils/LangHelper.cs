@@ -7,7 +7,7 @@ using System.Globalization;
 using Spectre.Console;
 using System.Linq;
 
-namespace EasySave_From_ProSoft.Utils
+namespace Core.Utils
 {
     internal class LangHelper
     {

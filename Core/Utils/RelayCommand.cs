@@ -1,7 +1,7 @@
 using System;
 using System.Windows.Input;
 
-namespace EasySave_From_ProSoft.Utils
+namespace Core.Utils
 {
     public class RelayCommand : ICommand
     {

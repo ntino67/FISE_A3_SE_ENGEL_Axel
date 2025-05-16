@@ -1,12 +1,12 @@
-using EasySave_From_ProSoft.View;
-using EasySave_From_ProSoft.Utils;
+using CLI.View;
+using Core.Utils;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using Spectre.Console;
 using System.Threading.Tasks;
 
-namespace EasySave_From_ProSoft.ViewModel
+namespace Core.ViewModel
 {
     public class ConsoleFlow
     {

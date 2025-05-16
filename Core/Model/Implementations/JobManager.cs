@@ -3,10 +3,10 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
-using EasySave_From_ProSoft.Model.Interfaces;
-using EasySave_From_ProSoft.Utils;
+using Core.Model.Interfaces;
+using Core.Utils;
 
-namespace EasySave_From_ProSoft.Model.Implementations
+namespace Core.Model.Implementations
 {
     public class JobManager : IBackupService
     {

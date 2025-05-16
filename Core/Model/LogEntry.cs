@@ -1,7 +1,7 @@
 ﻿using System;
 using Newtonsoft.Json;
 
-namespace EasySave_From_ProSoft.Model
+namespace Core.Model
 {
     public class LogEntry
     {

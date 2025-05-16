@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
-using EasySave_From_ProSoft.Model;
+using Core.Model;
 
-namespace EasySave_From_ProSoft.Model.Interfaces
+namespace Core.Model.Interfaces
 {
     public interface IConfigurationManager
     {

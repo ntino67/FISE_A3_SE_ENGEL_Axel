@@ -2,9 +2,9 @@
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using System.Text.Json.Serialization;
-using EasySave_From_ProSoft.Utils;
+using Core.Utils;
 
-namespace EasySave_From_ProSoft.Model
+namespace Core.Model
 {
     public class BackupJob : INotifyPropertyChanged
     {

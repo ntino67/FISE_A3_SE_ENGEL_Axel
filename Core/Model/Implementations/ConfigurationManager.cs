@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using System.IO;
 using Newtonsoft.Json;
-using EasySave_From_ProSoft.Model.Interfaces;
+using Core.Model.Interfaces;
 
-namespace EasySave_From_ProSoft.Model.Implementations
+namespace Core.Model.Implementations
 {
     public class ConfigurationManager : IConfigurationManager
     {

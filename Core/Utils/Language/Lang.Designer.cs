@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace EasySave_From_ProSoft.Utils.Language {
+namespace Core.Utils.Language {
     using System;
     
     
@@ -39,7 +39,7 @@ namespace EasySave_From_ProSoft.Utils.Language {
         internal static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
-                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("EasySave_From_ProSoft.Utils.Language.Lang", typeof(Lang).Assembly);
+                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("Core.Utils.Language.Lang", typeof(Lang).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;

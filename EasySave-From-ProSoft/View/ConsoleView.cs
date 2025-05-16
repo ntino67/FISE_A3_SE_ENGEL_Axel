@@ -1,5 +1,5 @@
-﻿using EasySave_From_ProSoft.Utils;
-using EasySave_From_ProSoft.ViewModel;
+﻿using Core.Utils;
+using Core.ViewModel;
 using Spectre.Console;
 using System;
 using System.Collections.Generic;
@@ -7,7 +7,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using EasySave_From_ProSoft.Model;
+using Core.Model;
 
 namespace EasySave_From_ProSoft.View
 {

@@ -1,9 +1,9 @@
 ﻿using System;
 using System.IO;
-using EasySave_From_ProSoft.Model.Implementations;
-using EasySave_From_ProSoft.Model.Interfaces;
+using Core.Model.Implementations;
+using Core.Model.Interfaces;
 
-namespace EasySave_From_ProSoft.ViewModel
+namespace Core.ViewModel
 {
     public static class ViewModelLocator
     {

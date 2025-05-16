@@ -1,8 +1,8 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
-using EasySave_From_ProSoft.Model;
+using Core.Model;
 
-namespace EasySave_From_ProSoft.Model.Interfaces
+namespace Core.Model.Interfaces
 {
     public interface IBackupService
     {

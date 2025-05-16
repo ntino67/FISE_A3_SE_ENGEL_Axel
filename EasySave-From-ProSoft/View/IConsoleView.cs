@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
-using EasySave_From_ProSoft.Model;
-using EasySave_From_ProSoft.Utils;
+using Core.Model;
+using Core.Utils;
 
 namespace EasySave_From_ProSoft.View
 {
