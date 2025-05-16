@@ -5,8 +5,9 @@ using System.Collections.Generic;
 using System.Linq;
 using Spectre.Console;
 using System.Threading.Tasks;
+using Core.ViewModel;
 
-namespace Core.ViewModel
+namespace CLI.ViewModel
 {
     public class ConsoleFlow
     {

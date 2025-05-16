@@ -1,7 +1,8 @@
 ﻿namespace EasySave_From_ProSoft
 {
-    using EasySave_From_ProSoft.View;
-    using EasySave_From_ProSoft.ViewModel;
+    using CLI.View;
+    using CLI.ViewModel;
+    using Core.ViewModel;
 
     public static class Program
     {

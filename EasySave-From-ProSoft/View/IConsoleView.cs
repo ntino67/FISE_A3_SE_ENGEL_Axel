@@ -4,7 +4,7 @@ using System.Text;
 using Core.Model;
 using Core.Utils;
 
-namespace EasySave_From_ProSoft.View
+namespace CLI.View
 {
     public interface IConsoleView
     {

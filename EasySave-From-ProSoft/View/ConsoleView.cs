@@ -1,15 +1,12 @@
 ﻿using Core.Utils;
-using Core.ViewModel;
+using Core.Model;
 using Spectre.Console;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Core.Model;
 
-namespace EasySave_From_ProSoft.View
+namespace CLI.View
 {
     internal class ConsoleView : IConsoleView
     {
