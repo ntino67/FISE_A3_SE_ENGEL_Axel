@@ -7,8 +7,4 @@
     <UseWPF>true</UseWPF>
   </PropertyGroup>
 
-  <ItemGroup>
-    <ProjectReference Include="..\EasySave-From-ProSoft\EasySave-From-ProSoft.csproj" />
-  </ItemGroup>
-
 </Project>
