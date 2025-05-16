@@ -5,6 +5,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Compile Update="Utils\Language\Lang.Designer.cs">
       <DependentUpon>Lang.resx</DependentUpon>
       <DesignTime>True</DesignTime>
