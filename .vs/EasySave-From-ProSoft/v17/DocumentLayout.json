@@ -1,0 +1,379 @@
+{
+  "Version": 1,
+  "WorkspaceRootPath": "C:\\WorkDirMQ\\FISE_A3_SE_ENGEL_Axel\\",
+  "Documents": [
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\WorkDirMQ\\FISE_A3_SE_ENGEL_Axel\\EasySave-2.0-from-ProSoft\\WPF.csproj||{FA3CD31E-987B-443A-9B81-186104E8DAC1}|",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:EasySave-2.0-from-ProSoft\\WPF.csproj||{FA3CD31E-987B-443A-9B81-186104E8DAC1}|"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Program Files\\dotnet\\sdk\\9.0.203\\Sdks\\Microsoft.NET.Sdk\\targets\\Microsoft.NET.EolTargetFrameworks.targets||{FA3CD31E-987B-443A-9B81-186104E8DAC1}|"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\WorkDirMQ\\FISE_A3_SE_ENGEL_Axel\\Wpf-EasySave-From-ProSoft\\MainWindow.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:Wpf-EasySave-From-ProSoft\\MainWindow.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\WorkDirMQ\\FISE_A3_SE_ENGEL_Axel\\EasySave-2.0-from-ProSoft\\EasySave-2.0-from-ProSoft.csproj||{FA3CD31E-987B-443A-9B81-186104E8DAC1}|",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:EasySave-2.0-from-ProSoft\\EasySave-2.0-from-ProSoft.csproj||{FA3CD31E-987B-443A-9B81-186104E8DAC1}|"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\WorkDirMQ\\FISE_A3_SE_ENGEL_Axel\\Core\\Class1.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:Core\\Class1.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\WorkDirMQ\\FISE_A3_SE_ENGEL_Axel\\Wpf-EasySave-From-ProSoft\\MainWindow.xaml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:Wpf-EasySave-From-ProSoft\\MainWindow.xaml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\WorkDirMQ\\FISE_A3_SE_ENGEL_Axel\\EasySave-2.0-from-ProSoft\\StatusPage.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:EasySave-2.0-from-ProSoft\\StatusPage.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\WorkDirMQ\\FISE_A3_SE_ENGEL_Axel\\EasySave-2.0-from-ProSoft\\SettingsPage.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:EasySave-2.0-from-ProSoft\\SettingsPage.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\WorkDirMQ\\FISE_A3_SE_ENGEL_Axel\\EasySave-2.0-from-ProSoft\\MainWindow.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:EasySave-2.0-from-ProSoft\\MainWindow.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\WorkDirMQ\\FISE_A3_SE_ENGEL_Axel\\EasySave-2.0-from-ProSoft\\LogsPage.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:EasySave-2.0-from-ProSoft\\LogsPage.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\WorkDirMQ\\FISE_A3_SE_ENGEL_Axel\\EasySave-2.0-from-ProSoft\\AssemblyInfo.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:EasySave-2.0-from-ProSoft\\AssemblyInfo.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\WorkDirMQ\\FISE_A3_SE_ENGEL_Axel\\EasySave-2.0-from-ProSoft\\App.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:EasySave-2.0-from-ProSoft\\App.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\WorkDirMQ\\FISE_A3_SE_ENGEL_Axel\\EasySave-From-ProSoft\\CLI.csproj||{FA3CD31E-987B-443A-9B81-186104E8DAC1}|",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:EasySave-From-ProSoft\\CLI.csproj||{FA3CD31E-987B-443A-9B81-186104E8DAC1}|"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\WorkDirMQ\\FISE_A3_SE_ENGEL_Axel\\EasySave-From-ProSoft\\View\\ConsoleView.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:EasySave-From-ProSoft\\View\\ConsoleView.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\WorkDirMQ\\FISE_A3_SE_ENGEL_Axel\\EasySave-From-ProSoft\\ViewModel\\ConsoleFlow.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:EasySave-From-ProSoft\\ViewModel\\ConsoleFlow.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\WorkDirMQ\\FISE_A3_SE_ENGEL_Axel\\EasySave-From-ProSoft\\Program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:EasySave-From-ProSoft\\Program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{DFCD37E5-9972-4343-B16F-EE1B305C4D80}|Core\\Core.csproj|c:\\workdirmq\\fise_a3_se_engel_axel\\core\\core.csproj||{FA3CD31E-987B-443A-9B81-186104E8DAC1}|",
+      "RelativeMoniker": "D:0:0:{DFCD37E5-9972-4343-B16F-EE1B305C4D80}|Core\\Core.csproj|solutionrelative:core\\core.csproj||{FA3CD31E-987B-443A-9B81-186104E8DAC1}|"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{59D238F1-61F6-495C-8D45-9CAC481FEEC4}|CryptoSoft\\CryptoSoft.csproj|c:\\workdirmq\\fise_a3_se_engel_axel\\cryptosoft\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{59D238F1-61F6-495C-8D45-9CAC481FEEC4}|CryptoSoft\\CryptoSoft.csproj|solutionrelative:cryptosoft\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{DFCD37E5-9972-4343-B16F-EE1B305C4D80}|Core\\Core.csproj|c:\\workdirmq\\fise_a3_se_engel_axel\\core\\utils\\relaycommand.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{DFCD37E5-9972-4343-B16F-EE1B305C4D80}|Core\\Core.csproj|solutionrelative:core\\utils\\relaycommand.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{DFCD37E5-9972-4343-B16F-EE1B305C4D80}|Core\\Core.csproj|c:\\workdirmq\\fise_a3_se_engel_axel\\core\\utils\\observableobject.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{DFCD37E5-9972-4343-B16F-EE1B305C4D80}|Core\\Core.csproj|solutionrelative:core\\utils\\observableobject.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{DFCD37E5-9972-4343-B16F-EE1B305C4D80}|Core\\Core.csproj|c:\\workdirmq\\fise_a3_se_engel_axel\\core\\model\\logentry.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{DFCD37E5-9972-4343-B16F-EE1B305C4D80}|Core\\Core.csproj|solutionrelative:core\\model\\logentry.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{DFCD37E5-9972-4343-B16F-EE1B305C4D80}|Core\\Core.csproj|c:\\workdirmq\\fise_a3_se_engel_axel\\core\\viewmodel\\viewmodellocator.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{DFCD37E5-9972-4343-B16F-EE1B305C4D80}|Core\\Core.csproj|solutionrelative:core\\viewmodel\\viewmodellocator.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{DFCD37E5-9972-4343-B16F-EE1B305C4D80}|Core\\Core.csproj|c:\\workdirmq\\fise_a3_se_engel_axel\\core\\viewmodel\\jobviewmodel.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{DFCD37E5-9972-4343-B16F-EE1B305C4D80}|Core\\Core.csproj|solutionrelative:core\\viewmodel\\jobviewmodel.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    }
+  ],
+  "DocumentGroupContainers": [
+    {
+      "Orientation": 0,
+      "VerticalTabListWidth": 256,
+      "DocumentGroups": [
+        {
+          "DockedWidth": 200,
+          "SelectedChildIndex": 0,
+          "Children": [
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "WPF.csproj",
+              "DocumentMoniker": "C:\\WorkDirMQ\\FISE_A3_SE_ENGEL_Axel\\EasySave-2.0-from-ProSoft\\WPF.csproj",
+              "RelativeDocumentMoniker": "EasySave-2.0-from-ProSoft\\WPF.csproj",
+              "ToolTip": "C:\\WorkDirMQ\\FISE_A3_SE_ENGEL_Axel\\EasySave-2.0-from-ProSoft\\WPF.csproj",
+              "RelativeToolTip": "EasySave-2.0-from-ProSoft\\WPF.csproj",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000758|",
+              "WhenOpened": "2025-05-19T12:10:45.432Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 6,
+              "Title": "StatusPage.xaml",
+              "DocumentMoniker": "C:\\WorkDirMQ\\FISE_A3_SE_ENGEL_Axel\\EasySave-2.0-from-ProSoft\\StatusPage.xaml",
+              "RelativeDocumentMoniker": "EasySave-2.0-from-ProSoft\\StatusPage.xaml",
+              "ToolTip": "C:\\WorkDirMQ\\FISE_A3_SE_ENGEL_Axel\\EasySave-2.0-from-ProSoft\\StatusPage.xaml",
+              "RelativeToolTip": "EasySave-2.0-from-ProSoft\\StatusPage.xaml",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003549|",
+              "WhenOpened": "2025-05-19T12:10:07.521Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 7,
+              "Title": "SettingsPage.xaml",
+              "DocumentMoniker": "C:\\WorkDirMQ\\FISE_A3_SE_ENGEL_Axel\\EasySave-2.0-from-ProSoft\\SettingsPage.xaml",
+              "RelativeDocumentMoniker": "EasySave-2.0-from-ProSoft\\SettingsPage.xaml",
+              "ToolTip": "C:\\WorkDirMQ\\FISE_A3_SE_ENGEL_Axel\\EasySave-2.0-from-ProSoft\\SettingsPage.xaml",
+              "RelativeToolTip": "EasySave-2.0-from-ProSoft\\SettingsPage.xaml",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003549|",
+              "WhenOpened": "2025-05-19T12:10:06.455Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 8,
+              "Title": "MainWindow.xaml",
+              "DocumentMoniker": "C:\\WorkDirMQ\\FISE_A3_SE_ENGEL_Axel\\EasySave-2.0-from-ProSoft\\MainWindow.xaml",
+              "RelativeDocumentMoniker": "EasySave-2.0-from-ProSoft\\MainWindow.xaml",
+              "ToolTip": "C:\\WorkDirMQ\\FISE_A3_SE_ENGEL_Axel\\EasySave-2.0-from-ProSoft\\MainWindow.xaml",
+              "RelativeToolTip": "EasySave-2.0-from-ProSoft\\MainWindow.xaml",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003549|",
+              "WhenOpened": "2025-05-19T12:10:03.132Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 9,
+              "Title": "LogsPage.xaml",
+              "DocumentMoniker": "C:\\WorkDirMQ\\FISE_A3_SE_ENGEL_Axel\\EasySave-2.0-from-ProSoft\\LogsPage.xaml",
+              "RelativeDocumentMoniker": "EasySave-2.0-from-ProSoft\\LogsPage.xaml",
+              "ToolTip": "C:\\WorkDirMQ\\FISE_A3_SE_ENGEL_Axel\\EasySave-2.0-from-ProSoft\\LogsPage.xaml",
+              "RelativeToolTip": "EasySave-2.0-from-ProSoft\\LogsPage.xaml",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003549|",
+              "WhenOpened": "2025-05-19T12:10:01.794Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 10,
+              "Title": "AssemblyInfo.cs",
+              "DocumentMoniker": "C:\\WorkDirMQ\\FISE_A3_SE_ENGEL_Axel\\EasySave-2.0-from-ProSoft\\AssemblyInfo.cs",
+              "RelativeDocumentMoniker": "EasySave-2.0-from-ProSoft\\AssemblyInfo.cs",
+              "ToolTip": "C:\\WorkDirMQ\\FISE_A3_SE_ENGEL_Axel\\EasySave-2.0-from-ProSoft\\AssemblyInfo.cs",
+              "RelativeToolTip": "EasySave-2.0-from-ProSoft\\AssemblyInfo.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-05-19T12:10:01.02Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 11,
+              "Title": "App.xaml",
+              "DocumentMoniker": "C:\\WorkDirMQ\\FISE_A3_SE_ENGEL_Axel\\EasySave-2.0-from-ProSoft\\App.xaml",
+              "RelativeDocumentMoniker": "EasySave-2.0-from-ProSoft\\App.xaml",
+              "ToolTip": "C:\\WorkDirMQ\\FISE_A3_SE_ENGEL_Axel\\EasySave-2.0-from-ProSoft\\App.xaml",
+              "RelativeToolTip": "EasySave-2.0-from-ProSoft\\App.xaml",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003549|",
+              "WhenOpened": "2025-05-19T12:09:57.323Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 16,
+              "Title": "Core.csproj",
+              "DocumentMoniker": "C:\\WorkDirMQ\\FISE_A3_SE_ENGEL_Axel\\Core\\Core.csproj",
+              "RelativeDocumentMoniker": "Core\\Core.csproj",
+              "ToolTip": "C:\\WorkDirMQ\\FISE_A3_SE_ENGEL_Axel\\Core\\Core.csproj",
+              "RelativeToolTip": "Core\\Core.csproj",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAA4AAAAdAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000758|",
+              "WhenOpened": "2025-05-19T12:05:37.153Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 12,
+              "Title": "CLI.csproj",
+              "DocumentMoniker": "C:\\WorkDirMQ\\FISE_A3_SE_ENGEL_Axel\\EasySave-From-ProSoft\\CLI.csproj",
+              "RelativeDocumentMoniker": "EasySave-From-ProSoft\\CLI.csproj",
+              "ToolTip": "C:\\WorkDirMQ\\FISE_A3_SE_ENGEL_Axel\\EasySave-From-ProSoft\\CLI.csproj",
+              "RelativeToolTip": "EasySave-From-ProSoft\\CLI.csproj",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAA4AAAA2AAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000758|",
+              "WhenOpened": "2025-05-19T12:05:26.488Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 17,
+              "Title": "Program.cs",
+              "DocumentMoniker": "C:\\WorkDirMQ\\FISE_A3_SE_ENGEL_Axel\\CryptoSoft\\Program.cs",
+              "RelativeDocumentMoniker": "CryptoSoft\\Program.cs",
+              "ToolTip": "C:\\WorkDirMQ\\FISE_A3_SE_ENGEL_Axel\\CryptoSoft\\Program.cs",
+              "RelativeToolTip": "CryptoSoft\\Program.cs",
+              "ViewState": "AgIAAA0AAAAAAAAAAAAqwFIAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-05-19T11:58:57.079Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 18,
+              "Title": "RelayCommand.cs",
+              "DocumentMoniker": "C:\\WorkDirMQ\\FISE_A3_SE_ENGEL_Axel\\Core\\Utils\\RelayCommand.cs",
+              "RelativeDocumentMoniker": "Core\\Utils\\RelayCommand.cs",
+              "ToolTip": "C:\\WorkDirMQ\\FISE_A3_SE_ENGEL_Axel\\Core\\Utils\\RelayCommand.cs",
+              "RelativeToolTip": "Core\\Utils\\RelayCommand.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-05-16T12:34:48.845Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 19,
+              "Title": "ObservableObject.cs",
+              "DocumentMoniker": "C:\\WorkDirMQ\\FISE_A3_SE_ENGEL_Axel\\Core\\Utils\\ObservableObject.cs",
+              "RelativeDocumentMoniker": "Core\\Utils\\ObservableObject.cs",
+              "ToolTip": "C:\\WorkDirMQ\\FISE_A3_SE_ENGEL_Axel\\Core\\Utils\\ObservableObject.cs",
+              "RelativeToolTip": "Core\\Utils\\ObservableObject.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-05-16T12:32:34.429Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "Microsoft.NET.EolTargetFrameworks.targets",
+              "DocumentMoniker": "C:\\Program Files\\dotnet\\sdk\\9.0.203\\Sdks\\Microsoft.NET.Sdk\\targets\\Microsoft.NET.EolTargetFrameworks.targets",
+              "RelativeDocumentMoniker": "..\\..\\Program Files\\dotnet\\sdk\\9.0.203\\Sdks\\Microsoft.NET.Sdk\\targets\\Microsoft.NET.EolTargetFrameworks.targets",
+              "ToolTip": "C:\\Program Files\\dotnet\\sdk\\9.0.203\\Sdks\\Microsoft.NET.Sdk\\targets\\Microsoft.NET.EolTargetFrameworks.targets",
+              "RelativeToolTip": "..\\..\\Program Files\\dotnet\\sdk\\9.0.203\\Sdks\\Microsoft.NET.Sdk\\targets\\Microsoft.NET.EolTargetFrameworks.targets",
+              "ViewState": "AgIAAA0AAAAAAAAAAAAWwB8AAAAEAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003801|",
+              "WhenOpened": "2025-05-16T12:19:21.84Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 20,
+              "Title": "LogEntry.cs",
+              "DocumentMoniker": "C:\\WorkDirMQ\\FISE_A3_SE_ENGEL_Axel\\Core\\Model\\LogEntry.cs",
+              "RelativeDocumentMoniker": "Core\\Model\\LogEntry.cs",
+              "ToolTip": "C:\\WorkDirMQ\\FISE_A3_SE_ENGEL_Axel\\Core\\Model\\LogEntry.cs",
+              "RelativeToolTip": "Core\\Model\\LogEntry.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAIAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-05-16T10:03:43.654Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 21,
+              "Title": "ViewModelLocator.cs",
+              "DocumentMoniker": "C:\\WorkDirMQ\\FISE_A3_SE_ENGEL_Axel\\Core\\ViewModel\\ViewModelLocator.cs",
+              "RelativeDocumentMoniker": "Core\\ViewModel\\ViewModelLocator.cs",
+              "ToolTip": "C:\\WorkDirMQ\\FISE_A3_SE_ENGEL_Axel\\Core\\ViewModel\\ViewModelLocator.cs",
+              "RelativeToolTip": "Core\\ViewModel\\ViewModelLocator.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-05-16T09:10:36.959Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 22,
+              "Title": "JobViewModel.cs",
+              "DocumentMoniker": "C:\\WorkDirMQ\\FISE_A3_SE_ENGEL_Axel\\Core\\ViewModel\\JobViewModel.cs",
+              "RelativeDocumentMoniker": "Core\\ViewModel\\JobViewModel.cs",
+              "ToolTip": "C:\\WorkDirMQ\\FISE_A3_SE_ENGEL_Axel\\Core\\ViewModel\\JobViewModel.cs",
+              "RelativeToolTip": "Core\\ViewModel\\JobViewModel.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-05-16T09:10:33.697Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 4,
+              "Title": "Class1.cs",
+              "DocumentMoniker": "C:\\WorkDirMQ\\FISE_A3_SE_ENGEL_Axel\\Core\\Class1.cs",
+              "RelativeDocumentMoniker": "Core\\Class1.cs",
+              "ToolTip": "C:\\WorkDirMQ\\FISE_A3_SE_ENGEL_Axel\\Core\\Class1.cs",
+              "RelativeToolTip": "Core\\Class1.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAgAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-05-16T09:08:16.59Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "MainWindow.xaml",
+              "DocumentMoniker": "C:\\WorkDirMQ\\FISE_A3_SE_ENGEL_Axel\\Wpf-EasySave-From-ProSoft\\MainWindow.xaml",
+              "RelativeDocumentMoniker": "Wpf-EasySave-From-ProSoft\\MainWindow.xaml",
+              "ToolTip": "C:\\WorkDirMQ\\FISE_A3_SE_ENGEL_Axel\\Wpf-EasySave-From-ProSoft\\MainWindow.xaml",
+              "RelativeToolTip": "Wpf-EasySave-From-ProSoft\\MainWindow.xaml",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003549|",
+              "WhenOpened": "2025-05-16T08:35:20.602Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 5,
+              "Title": "MainWindow.xaml.cs",
+              "DocumentMoniker": "C:\\WorkDirMQ\\FISE_A3_SE_ENGEL_Axel\\Wpf-EasySave-From-ProSoft\\MainWindow.xaml.cs",
+              "RelativeDocumentMoniker": "Wpf-EasySave-From-ProSoft\\MainWindow.xaml.cs",
+              "ToolTip": "C:\\WorkDirMQ\\FISE_A3_SE_ENGEL_Axel\\Wpf-EasySave-From-ProSoft\\MainWindow.xaml.cs",
+              "RelativeToolTip": "Wpf-EasySave-From-ProSoft\\MainWindow.xaml.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-05-16T08:35:19.617Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
+              "Title": "EasySave-2.0-from-ProSoft.csproj",
+              "DocumentMoniker": "C:\\WorkDirMQ\\FISE_A3_SE_ENGEL_Axel\\EasySave-2.0-from-ProSoft\\EasySave-2.0-from-ProSoft.csproj",
+              "RelativeDocumentMoniker": "EasySave-2.0-from-ProSoft\\EasySave-2.0-from-ProSoft.csproj",
+              "ToolTip": "C:\\WorkDirMQ\\FISE_A3_SE_ENGEL_Axel\\EasySave-2.0-from-ProSoft\\EasySave-2.0-from-ProSoft.csproj",
+              "RelativeToolTip": "EasySave-2.0-from-ProSoft\\EasySave-2.0-from-ProSoft.csproj",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000758|",
+              "WhenOpened": "2025-05-16T08:33:41.368Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 13,
+              "Title": "ConsoleView.cs",
+              "DocumentMoniker": "C:\\WorkDirMQ\\FISE_A3_SE_ENGEL_Axel\\EasySave-From-ProSoft\\View\\ConsoleView.cs",
+              "RelativeDocumentMoniker": "EasySave-From-ProSoft\\View\\ConsoleView.cs",
+              "ToolTip": "C:\\WorkDirMQ\\FISE_A3_SE_ENGEL_Axel\\EasySave-From-ProSoft\\View\\ConsoleView.cs",
+              "RelativeToolTip": "EasySave-From-ProSoft\\View\\ConsoleView.cs",
+              "ViewState": "AgIAABIAAAAAAAAAAAArwCYAAAAOAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-05-14T14:34:48.715Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 14,
+              "Title": "ConsoleFlow.cs",
+              "DocumentMoniker": "C:\\WorkDirMQ\\FISE_A3_SE_ENGEL_Axel\\EasySave-From-ProSoft\\ViewModel\\ConsoleFlow.cs",
+              "RelativeDocumentMoniker": "EasySave-From-ProSoft\\ViewModel\\ConsoleFlow.cs",
+              "ToolTip": "C:\\WorkDirMQ\\FISE_A3_SE_ENGEL_Axel\\EasySave-From-ProSoft\\ViewModel\\ConsoleFlow.cs",
+              "RelativeToolTip": "EasySave-From-ProSoft\\ViewModel\\ConsoleFlow.cs",
+              "ViewState": "AgIAAMoAAAAAAAAAAADgv9gAAABFAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-05-14T14:12:47.878Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 15,
+              "Title": "Program.cs",
+              "DocumentMoniker": "C:\\WorkDirMQ\\FISE_A3_SE_ENGEL_Axel\\EasySave-From-ProSoft\\Program.cs",
+              "RelativeDocumentMoniker": "EasySave-From-ProSoft\\Program.cs",
+              "ToolTip": "C:\\WorkDirMQ\\FISE_A3_SE_ENGEL_Axel\\EasySave-From-ProSoft\\Program.cs",
+              "RelativeToolTip": "EasySave-From-ProSoft\\Program.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-05-14T14:07:59.229Z"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
