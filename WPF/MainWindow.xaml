@@ -7,92 +7,175 @@
         AllowsTransparency="True" 
         Background="Transparent" 
         ResizeMode="NoResize">
-
     <Border Background="#1e1e2e"
             CornerRadius="20">
         <Grid>
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="200"/>
-                <ColumnDefinition/>
-            </Grid.ColumnDefinitions>
-
             <Grid.RowDefinitions>
                 <RowDefinition Height="50"/>
                 <RowDefinition/>
             </Grid.RowDefinitions>
 
+            <!-- BARRE SUPÉRIEURE PERSONNALISÉE -->
             <Border Grid.Row="0"
-        Grid.ColumnSpan="2"
-        Background="Transparent"
-        MouseLeftButtonDown="TopBar_MouseLeftButtonDown">
+                    Background="Transparent"
+                    CornerRadius="20,20,0,0"
+                    MouseLeftButtonDown="TopBar_MouseLeftButtonDown">
                 <Grid>
-                    <TextBlock Text="EasySave"
-                   VerticalAlignment="Center"
-                   HorizontalAlignment="Left"
-                   Margin="20 0 0 0"
-                   Foreground="#cdd6f4"
-                   FontSize="22"/>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="250"/>
+                        <!-- Logo + EasySave -->
+                        <ColumnDefinition Width="120"/>
+                        <!-- 3 boutons personnalisés -->
+                        <ColumnDefinition Width="*"/>
+                        <!-- Espace drag -->
+                        <ColumnDefinition Width="120"/>
+                        <!-- Boutons fenêtre -->
+                    </Grid.ColumnDefinitions>
+
+                    <!-- Logo + Nom du projet superposés -->
+                    <Grid Grid.Column="0" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="10,0,0,0">
+                        <Image Source="C:\Github Repos/logo.png"
+                               Width="36" Height="36"
+                               VerticalAlignment="Center"
+                               HorizontalAlignment="Left"/>
+                        <TextBlock Text="EasySave"
+                                   VerticalAlignment="Center"
+                                   HorizontalAlignment="Left"
+                                   Margin="44,0,0,0"
+                                   Foreground="#cdd6f4"
+                                   FontSize="22"
+                                   FontWeight="Bold"/>
+                    </Grid>
+
+                    <!-- 3 boutons personnalisés -->
+                    <StackPanel Grid.Column="1" Orientation="Horizontal" HorizontalAlignment="Left" VerticalAlignment="Center" Grid.ColumnSpan="2" Width="284">
+                        <Button Width="32" Height="32" Margin="2,0"
+                            Background="Transparent" BorderThickness="0"
+                            ToolTip="Paramètres"
+                            Click="SettingsButton_Click">
+                            <Viewbox Width="31" Height="24">
+                                <Canvas Width="24" Height="24">
+                                    <Path Stroke="#cdd6f4" StrokeThickness="2" StrokeLineJoin="Round" StrokeStartLineCap="Round" StrokeEndLineCap="Round" Fill="Transparent"
+                                     Data="M12.22,2 h-0.44 a2,2 0 0 0-2,2 v0.18 a2,2 0 0 1-1,1.73 l-0.43,0.25 a2,2 0 0 1-2,0 l-0.15,-0.08 a2,2 0 0 0-2.73,0.73 l-0.22,0.38 a2,2 0 0 0,0.73,2.73 l0.15,0.1 a2,2 0 0 1,1,1.72 v0.51 a2,2 0 0 1-1,1.74 l-0.15,0.09 a2,2 0 0 0-0.73,2.73 l0.22,0.38 a2,2 0 0 0,2.73,0.73 l0.15,-0.08 a2,2 0 0 1,2,0 l0.43,0.25 a2,2 0 0 1,1,1.73 V20 a2,2 0 0 0,2,2 h0.44 a2,2 0 0 0,2-2 v-0.18 a2,2 0 0 1,1-1.73 l0.43,-0.25 a2,2 0 0 1,2,0 l0.15,0.08 a2,2 0 0 0,2.73,-0.73 l0.22,-0.39 a2,2 0 0 0-0.73,-2.73 l-0.15,-0.08 a2,2 0 0 1-1,-1.74 v-0.5 a2,2 0 0 1,1-1.74 l0.15,-0.09 a2,2 0 0 0,0.73,-2.73 l-0.22,-0.38 a2,2 0 0 0-2.73,-0.73 l-0.15,0.08 a2,2 0 0 1-2,0 l-0.43,-0.25 a2,2 0 0 1-1,-1.73 V4 a2,2 0 0 0-2,-2 z"/>
+                                    <Ellipse Stroke="#cdd6f4" StrokeThickness="2" Fill="Transparent" Canvas.Left="9" Canvas.Top="9" Width="6" Height="6"/>
+                                </Canvas>
+                            </Viewbox>
+                        </Button>
+                        <Button Width="100" Height="32" Margin="2,0"
+                                Background="Transparent" BorderThickness="0"
+                                ToolTip="Bouton 2"
+                                Click="Bouton2_Click">
+                            <TextBlock Text="Logs" FontSize="20" Foreground="#cdd6f4"/>
+                        </Button>
+                        <Button Width="100" Height="32" Margin="2,0"
+                                Background="Transparent" BorderThickness="0"
+                                ToolTip="Bouton 3"
+                                Click="Bouton3_Click">
+                            <TextBlock Text="Status" FontSize="20" Foreground="#cdd6f4"/>
+                        </Button>
+                    </StackPanel>
+
+                    <!-- Espace vide pour drag (Grid.Column="2") -->
+                    <Grid Grid.Column="2"/>
+
+                    <!-- Boutons fenêtre -->
+                    <StackPanel Grid.Column="3" Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Center" Margin="0,0,10,0">
+                        <!-- Réduire -->
+                        <Button Width="32" Height="32" Margin="2,0"
+                                Background="Transparent" BorderThickness="0"
+                                ToolTip="Réduire"
+                                Click="MinimizeButton_Click">
+                            <TextBlock Text="&#x2212;" FontSize="20" Foreground="#cdd6f4"/>
+                        </Button>
+                        <!-- Agrandir/Restaurer -->
+                        <Button Width="32" Height="32" Margin="2,0"
+                                Background="Transparent" BorderThickness="0"
+                                ToolTip="Agrandir/Restaurer"
+                                Click="MaximizeButton_Click">
+                            <TextBlock Text="&#x25A1;" FontSize="16" Foreground="#cdd6f4"/>
+                        </Button>
+                        <!-- Fermer -->
+                        <Button Width="32" Height="32" Margin="2,0"
+                                Background="Transparent" BorderThickness="0"
+                                ToolTip="Fermer"
+                                Click="CloseButton_Click">
+                            <TextBlock Text="&#x2715;" FontSize="18" Foreground="#f38ba8"/>
+                        </Button>
+                    </StackPanel>
                 </Grid>
             </Border>
 
-            <!-- Scrollable List with CheckBoxes + Toggles -->
-            <ScrollViewer Grid.Column="0" Grid.Row="1" VerticalScrollBarVisibility="Auto">
-                <ItemsControl Name="JobList">
-                    <ItemsControl.ItemTemplate>
-                        <DataTemplate>
-                            <Border Background="#313244" 
-            CornerRadius="12"
-            Margin="10"
-            Padding="10">
-                                <Grid>
-                                    <Grid.RowDefinitions>
-                                        <RowDefinition Height="Auto"/>
-                                        <RowDefinition Height="*"/>
-                                    </Grid.RowDefinitions>
+            <!-- CONTENU PRINCIPAL -->
+            <Grid Grid.Row="1">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="200"/>
+                    <ColumnDefinition Width="311*"/>
+                    <ColumnDefinition Width="769*"/>
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
 
-                                    <CheckBox Grid.Row="0"
-                      Content="{Binding Name}"
-                      FontSize="18"
-                      FontWeight="Bold"
-                      Foreground="#cdd6f4"
-                      IsChecked="{Binding IsChecked}"
-                      Background="#45475a"
-                      Padding="10"
-                      BorderThickness="0"
-                      HorizontalContentAlignment="Center"
-                      VerticalContentAlignment="Center"
-                      HorizontalAlignment="Stretch"
-                      VerticalAlignment="Top"
-                      Height="80"
-                      Margin="0,0,0,10"
-                      Cursor="Hand"/>
+                <!-- Liste des jobs dans la colonne de gauche -->
+                <ScrollViewer Grid.Column="0" VerticalScrollBarVisibility="Auto">
+                    <ItemsControl x:Name="JobList">
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate>
+                                <Border Background="#313244" 
+                            CornerRadius="12"
+                            Margin="10"
+                            Padding="10">
+                                    <Grid>
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition Height="Auto"/>
+                                            <RowDefinition Height="*"/>
+                                        </Grid.RowDefinitions>
 
-                                    <!-- Full / Diff Toggle -->
-                                    <StackPanel Grid.Row="1" Orientation="Horizontal"
-                        HorizontalAlignment="Left"
-                        VerticalAlignment="Bottom"
-                        Margin="5,0,0,0">
-                                        <TextBlock Text="Full" Foreground="#cdd6f4" Margin="0,0,5,0"
-                           VerticalAlignment="Center"/>
-                                        <ToggleButton IsChecked="{Binding IsActive}"
-                              Width="50" Height="25"
-                              Background="#89b4fa"
-                              BorderThickness="0"
-                              Cursor="Hand"
-                              Margin="0,0,5,0"/>
-                                        <TextBlock Text="Diff" Foreground="#cdd6f4"
-                           VerticalAlignment="Center"/>
-                                    </StackPanel>
-                                </Grid>
-                            </Border>
-                        </DataTemplate>
+                                        <CheckBox Grid.Row="0"
+                                      Content="{Binding Name}"
+                                      FontSize="18"
+                                      FontWeight="Bold"
+                                      Foreground="#cdd6f4"
+                                      IsChecked="{Binding IsChecked}"
+                                      Background="#45475a"
+                                      Padding="10"
+                                      BorderThickness="0"
+                                      HorizontalContentAlignment="Center"
+                                      VerticalContentAlignment="Center"
+                                      HorizontalAlignment="Stretch"
+                                      VerticalAlignment="Top"
+                                      Height="80"
+                                      Margin="0,0,0,10"
+                                      Cursor="Hand"/>
 
-                    </ItemsControl.ItemTemplate>
-                </ItemsControl>
-            </ScrollViewer>
-            
+                                        <StackPanel Grid.Row="1" Orientation="Horizontal"
+                                        HorizontalAlignment="Left"
+                                        VerticalAlignment="Bottom"
+                                        Margin="5,0,0,0">
+                                            <TextBlock Text="Full" Foreground="#cdd6f4" Margin="0,0,5,0"
+                                           VerticalAlignment="Center"/>
+                                            <ToggleButton IsChecked="{Binding IsActive}"
+                                              Width="50" Height="25"
+                                              Background="#89b4fa"
+                                              BorderThickness="0"
+                                              Cursor="Hand"
+                                              Margin="0,0,5,0"/>
+                                            <TextBlock Text="Diff" Foreground="#cdd6f4"
+                                           VerticalAlignment="Center"/>
+                                        </StackPanel>
+                                    </Grid>
+                                </Border>
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
+                </ScrollViewer>
+
+                <!-- Frame pour afficher les pages -->
+                <Frame x:Name="MainFrame"
+                   Grid.Column="1"
+                   NavigationUIVisibility="Hidden"
+                   Background="Transparent" Grid.ColumnSpan="2"/>
+            </Grid>
         </Grid>
-
     </Border>
-    
 </Window>
