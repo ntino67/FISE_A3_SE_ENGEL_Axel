@@ -1,23 +1,19 @@
 ﻿using System;
 using System.IO;
-using System.Security.Cryptography;
 using System.Text;
 
 namespace CryptoSoft
 {
     class Program
     {
-        // Clé et IV (vecteur d'initialisation) – À sécuriser dans une vraie app !
-        private static readonly byte[] key = Encoding.UTF8.GetBytes("1234567890abcdef"); // 16 bytes = 128 bits
-        private static readonly byte[] iv = Encoding.UTF8.GetBytes("abcdef1234567890"); // 16 bytes
-
         static void Main(string[] args)
         {
-            if (args.Length != 2 || (args[0] != "-e" && args[0] != "-d"))
+            // Check if the correct number of arguments are provided (3 : operation, file path, key)
+            if (args.Length != 3 || (args[0] != "-e" && args[0] != "-d"))
             {
                 Console.WriteLine("Usage:");
-                Console.WriteLine("  CryptoSoft.exe -e <filepath>   : Encrypt file");
-                Console.WriteLine("  CryptoSoft.exe -d <filepath>   : Decrypt file");
+                Console.WriteLine("  CryptoSoft.exe -e <filepath> <secretKey>   : Encrypt file");
+                Console.WriteLine("  CryptoSoft.exe -d <filepath> <secretKey>  : Decrypt file");
                 return;
             }
 
@@ -27,13 +23,15 @@ namespace CryptoSoft
             {
                 if (args[0] == "-e")
                 {
-                    EncryptFile(filePath);
-                    Console.WriteLine($"Encrypted: {filePath}.aes");
+                    byte[] key = Encoding.UTF8.GetBytes(args[2]);
+                    EncryptFile(filePath, key);
+                    Console.WriteLine($"Encrypted: {filePath}.xor");
                 }
                 else
                 {
-                    DecryptFile(filePath);
-                    Console.WriteLine($"Decrypted: {filePath.Replace(".aes", "")}");
+                    byte[] key = Encoding.UTF8.GetBytes(args[2]);
+                    DecryptFile(filePath, key);
+                    Console.WriteLine($"Decrypted: {filePath.Replace(".xor", "")}");
                 }
             }
             catch (Exception ex)
@@ -42,43 +40,34 @@ namespace CryptoSoft
             }
         }
 
-        static void EncryptFile(string inputFile)
+        static void EncryptFile(string inputFile, byte[] key)
         {
-            string outputFile = inputFile + ".aes";
-
-            using (FileStream input = new FileStream(inputFile, FileMode.Open, FileAccess.Read))
-            using (FileStream output = new FileStream(outputFile, FileMode.Create, FileAccess.Write))
-            using (Aes aes = Aes.Create())
-            {
-                aes.Key = key;
-                aes.IV = iv;
-
-                using (CryptoStream cryptoStream = new CryptoStream(output, aes.CreateEncryptor(), CryptoStreamMode.Write))
-                {
-                    input.CopyTo(cryptoStream);
-                }
-            }
+            string outputFile = inputFile + ".xor";
+            byte[] inputBytes = File.ReadAllBytes(inputFile);
+            byte[] encryptedBytes = XorBytes(inputBytes, key);
+            File.WriteAllBytes(outputFile, encryptedBytes);
         }
 
-        static void DecryptFile(string inputFile)
+        static void DecryptFile(string inputFile, byte[] key)
         {
-            if (!inputFile.EndsWith(".aes"))
-                throw new Exception("File does not have .aes extension");
+            if (!inputFile.EndsWith(".xor"))
+                throw new Exception("File does not have .xor extension");
 
-            string outputFile = inputFile.Replace(".aes", "");
+            string outputFile = inputFile.Replace(".xor", "");
+            byte[] inputBytes = File.ReadAllBytes(inputFile);
+            byte[] decryptedBytes = XorBytes(inputBytes, key);
+            File.WriteAllBytes(outputFile, decryptedBytes);
+        }
 
-            using (FileStream input = new FileStream(inputFile, FileMode.Open, FileAccess.Read))
-            using (FileStream output = new FileStream(outputFile, FileMode.Create, FileAccess.Write))
-            using (Aes aes = Aes.Create())
+        static byte[] XorBytes(byte[] data, byte[] key)
+        {
+            byte[] result = new byte[data.Length];
+            for (int i = 0; i < data.Length; i++)
             {
-                aes.Key = key;
-                aes.IV = iv;
-
-                using (CryptoStream cryptoStream = new CryptoStream(input, aes.CreateDecryptor(), CryptoStreamMode.Read))
-                {
-                    cryptoStream.CopyTo(output);
-                }
+                byte mask = (byte)((i * 31 + 17) % 256); // Perturbateur simple
+                result[i] = (byte)(data[i] ^ key[i % key.Length] ^ mask);
             }
+            return result;
         }
 
     }
