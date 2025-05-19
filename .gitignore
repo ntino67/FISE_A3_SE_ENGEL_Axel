@@ -54,4 +54,4 @@ TestResult.xml
 nunit-*.xml
 EasySave-From-ProSoft/.vs/
 EasySave-From-ProSoft/Console/.vs/
-.vs/
+/.vs
