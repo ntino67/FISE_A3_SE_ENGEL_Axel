@@ -252,4 +252,10 @@
   <data name="AskJobName" xml:space="preserve">
     <value>Enter the new job name</value>
   </data>
+  <data name="Encrypt/Decrypt" xml:space="preserve">
+    <value>Encrypt/Decrypt</value>
+  </data>
+  <data name="EnterKey" xml:space="preserve">
+    <value>Enter your secret key</value>
+  </data>
 </root>

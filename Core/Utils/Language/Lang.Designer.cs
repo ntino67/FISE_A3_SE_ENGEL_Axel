@@ -205,11 +205,29 @@ namespace Core.Utils.Language {
         }
         
         /// <summary>
+        ///   Recherche une chaîne localisée semblable à Encrypt/Decrypt.
+        /// </summary>
+        internal static string Encrypt_Decrypt {
+            get {
+                return ResourceManager.GetString("Encrypt/Decrypt", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Recherche une chaîne localisée semblable à Please enter new job name.
         /// </summary>
         internal static string EnterJobName {
             get {
                 return ResourceManager.GetString("EnterJobName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une chaîne localisée semblable à Enter your secret key.
+        /// </summary>
+        internal static string EnterKey {
+            get {
+                return ResourceManager.GetString("EnterKey", resourceCulture);
             }
         }
         

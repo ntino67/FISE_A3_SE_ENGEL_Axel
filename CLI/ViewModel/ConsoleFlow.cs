@@ -151,6 +151,7 @@ namespace CLI.ViewModel
                 { "Target", LangHelper.GetString("DefineTargetPath") },
                 { "BackupType", LangHelper.GetString("DefineSaveMode") },
                 { "Backup", LangHelper.GetString("CreateBackup") },
+                { "Encrypt/Decrypt", LangHelper.GetString("Encrypt/Decrypt") },
                 { "Reset", LangHelper.GetString("ResetJob") },
                 { "Delete", LangHelper.GetString("DeleteJob") },
                 { "Back", LangHelper.GetString("BackToMainMenu") }
@@ -212,6 +213,25 @@ namespace CLI.ViewModel
                         break;
                     }
 
+                    case "Encrypt/Decrypt":
+                        //Ask the key to the user
+                        string key = AnsiConsole.Ask<string>($"[green]{LangHelper.GetString("EnterKey")}[/]");
+                        if (string.IsNullOrEmpty(key))
+                        {
+                            _view.ShowError("Key cannot be empty");
+                            break;
+                        }
+                        //Encrypt/Decrypt the job
+
+                        if (_vm.JobEncryption(key))
+                        {
+                            _view.ShowMessage($"[green]{LangHelper.GetString("JobEncrypted")}[/]");
+                        }
+                        else
+                        {
+                            _view.ShowMessage($"[green]{LangHelper.GetString("JobDecrypted")}[/]");
+                        }
+                            break;
                     case "Backup":
                     {
                         _view.ShowMessage($"[yellow]{LangHelper.GetString("RunningBackup")}[/]");

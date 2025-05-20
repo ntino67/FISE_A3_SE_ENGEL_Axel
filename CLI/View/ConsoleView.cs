@@ -64,6 +64,7 @@ namespace CLI.View
                 { $"{labels["Source"]} (Current: {ShortenPath(job.SourceDirectory, 40)})", "Source" },
                 { $"{labels["Target"]} (Current: {ShortenPath(job.TargetDirectory, 40)})", "Target" },
                 { $"{labels["BackupType"]} (Current: {job.Type})", "BackupType" },
+                { $"{labels["Encrypt/Decrypt"]}", "Encrypt/Decrypt" },
                 { labels["Backup"], "Backup" },
                 { labels["Delete"], "Delete" },
                 { labels["Reset"], "Reset" },

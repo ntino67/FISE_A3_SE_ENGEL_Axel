@@ -148,6 +148,7 @@ namespace Core.Model.Implementations
             }
         }
 
+
         private async Task<bool> ExecuteFullBackup(BackupJob job)
         {
             try
@@ -236,6 +237,16 @@ namespace Core.Model.Implementations
             {
                 await sourceStream.CopyToAsync(targetStream);
             }
+        }
+
+        internal static string Encrypt(string sourceDirectory)
+        {
+            throw new NotImplementedException();
+        }
+
+        internal static string Decrypt(string sourceDirectory)
+        {
+            throw new NotImplementedException();
         }
     }
 }
