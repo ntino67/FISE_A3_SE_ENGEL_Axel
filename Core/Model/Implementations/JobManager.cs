@@ -239,14 +239,26 @@ namespace Core.Model.Implementations
             }
         }
 
-        internal static string Encrypt(string sourceDirectory)
+        internal static void Encrypt(string Directory, string key)
         {
-            throw new NotImplementedException();
+            CryptoHelper.Encrypt(Directory, new[] { ".txt", ".docx", ".xlsx" }, key);
         }
 
-        internal static string Decrypt(string sourceDirectory)
+        internal static void Decrypt(string Directory, string key)
         {
-            throw new NotImplementedException();
+            CryptoHelper.Decrypt(Directory, key);
+        }
+
+        public void Encryption(bool isEncrypted, string Directory, string Key)
+        {
+            if (isEncrypted)
+            {
+                Encrypt(Directory, Key);
+            }
+            else
+            {
+                Decrypt(Directory, Key);
+            }
         }
     }
 }

@@ -172,18 +172,11 @@ namespace Core.ViewModel
         {
             if (_currentJob == null)
                 throw new InvalidOperationException("Aucun job n'est sélectionné.");
-            if (_currentJob.IsEncrypted)
-            {
-                _currentJob.IsEncrypted = false;
-                _jobManager.UpdateBackupJob(_currentJob);
-                return false;
-            }
-            else
-            {
-                _currentJob.IsEncrypted = true;
-                _jobManager.UpdateBackupJob(_currentJob);
-                return true;
-            }
+
+            _jobManager.Encryption(_currentJob.IsEncrypted, _currentJob.TargetDirectory, key); //Pass the encryption key to the job manager
+            _currentJob.IsEncrypted = !_currentJob.IsEncrypted; // Toggle the encryption status
+            _jobManager.UpdateBackupJob(_currentJob); // Update the job in the manager
+            return _currentJob.IsEncrypted; // Return the new encryption status
 
         }
     }

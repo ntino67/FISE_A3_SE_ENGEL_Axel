@@ -39,15 +39,6 @@ namespace Core.Model
                     _isEncrypted = value;
                     OnPropertyChanged();
                 }
-                //When setting the value, encrypt the source directory using the encryption key
-                if (value)
-                {
-                    _sourceDirectory = JobManager.Encrypt(_sourceDirectory);
-                }
-                else
-                {
-                    _sourceDirectory = JobManager.Decrypt(_sourceDirectory);
-                }
             }
         }
 
@@ -152,5 +143,6 @@ namespace Core.Model
             Status = JobStatus.Ready;
             LastRunTime = null;
         }
+
     }
 }

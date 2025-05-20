@@ -24,7 +24,7 @@ namespace WS_MultiThread
             _countdown.Wait();
 
             Console.ForegroundColor = ConsoleColor.Green;
-            Console.WriteLine("✅ Tous les threads ont terminé !");
+            Console.WriteLine("Tous les threads ont terminé !");
             Console.ResetColor();
         }
 
@@ -50,7 +50,7 @@ namespace WS_MultiThread
             else
             {
                 Console.ForegroundColor = ConsoleColor.Yellow;
-                Console.WriteLine("⏳ Thread {0} was too impatient and skipped the exclusive access", name);
+                Console.WriteLine("Thread {0} was too impatient and skipped the exclusive access", name);
                 Console.ForegroundColor = ConsoleColor.White;
             }
 

@@ -221,6 +221,11 @@ namespace CLI.ViewModel
                             _view.ShowError("Key cannot be empty");
                             break;
                         }
+                        if (_vm.TargetPath == null)
+                        {
+                            _view.ShowError("Target path cannot be null");
+                            break;
+                        }
                         //Encrypt/Decrypt the job
 
                         if (_vm.JobEncryption(key))

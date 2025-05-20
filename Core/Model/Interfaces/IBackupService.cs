@@ -15,5 +15,6 @@ namespace Core.Model.Interfaces
         BackupJob GetJob(string jobId);
         bool JobExists(string jobName);
         int GetJobCount();
+        void Encryption(bool isEncrypted,string Directory, string Key);
     }
 }
