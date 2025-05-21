@@ -57,7 +57,6 @@ namespace Core.ViewModel
             );
         }
 
-
         protected void OnPropertyChanged([CallerMemberName] string propertyName = null)
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
@@ -84,7 +83,7 @@ namespace Core.ViewModel
                 throw new InvalidOperationException("Le nombre maximum de jobs (5) est atteint.");
 
             if (_jobManager.JobExists(name))
-                throw new InvalidOperationException($"Un job avec le nom {name} existe d�j�.");
+                throw new InvalidOperationException($"Un job avec le nom {name} existe déjà.");
 
             var job = new BackupJob { Name = name };
             _jobManager.AddBackupJob(job);
@@ -167,6 +166,18 @@ namespace Core.ViewModel
 
             if (CurrentJob != null && CurrentJob.Id == jobId)
                 CurrentJob = null;
+        }
+
+        public bool JobEncryption(string key)
+        {
+            if (_currentJob == null)
+                throw new InvalidOperationException("Aucun job n'est sélectionné.");
+
+            _jobManager.Encryption(_currentJob.IsEncrypted, _currentJob.TargetDirectory, key); //Pass the encryption key to the job manager
+            _currentJob.IsEncrypted = !_currentJob.IsEncrypted; // Toggle the encryption status
+            _jobManager.UpdateBackupJob(_currentJob); // Update the job in the manager
+            return _currentJob.IsEncrypted; // Return the new encryption status
+
         }
     }
 }
