@@ -148,6 +148,7 @@ namespace Core.Model.Implementations
             }
         }
 
+
         private async Task<bool> ExecuteFullBackup(BackupJob job)
         {
             try
@@ -235,6 +236,28 @@ namespace Core.Model.Implementations
             using (FileStream targetStream = new FileStream(targetPath, FileMode.Create, FileAccess.Write, FileShare.None, 4096, true))
             {
                 await sourceStream.CopyToAsync(targetStream);
+            }
+        }
+
+        internal static void Encrypt(string Directory, string key)
+        {
+            CryptoHelper.Encrypt(Directory, new[] { ".txt", ".docx", ".xlsx", ".png" }, key);
+        }
+
+        internal static void Decrypt(string Directory, string key)
+        {
+            CryptoHelper.Decrypt(Directory, key);
+        }
+
+        public void Encryption(bool isEncrypted, string Directory, string Key)
+        {
+            if (isEncrypted)
+            {
+                Encrypt(Directory, Key);
+            }
+            else
+            {
+                Decrypt(Directory, Key);
             }
         }
     }
