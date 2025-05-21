@@ -36,7 +36,7 @@ namespace WPF
         }
 
         // Navigation vers SettingsPage
-        private void SettingsButton_Click(object sender, RoutedEventArgs e)
+        private void GlobalSettingsButton_Click(object sender, RoutedEventArgs e)
         {
             MainFrame.Navigate(new SettingsPage());
         }
@@ -68,12 +68,14 @@ namespace WPF
         {
             Close();
         }
-
-        private void CreateJobButton_Click(object sender, RoutedEventArgs e)
+        
+        private void JobSettingsButton_Click(object sender, RoutedEventArgs e)
         {
-            MainFrame.Navigate(new JobPage());
+            if (sender is Button btn && btn.DataContext is JobItem jobItem)
+            {
+                MainFrame.Navigate(new JobPage());
+            }
         }
-
         private void AddJobButton_Click(object sender, RoutedEventArgs e)
         {
             string jobName = SearchBox.Text?.Trim();

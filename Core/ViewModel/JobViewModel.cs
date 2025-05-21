@@ -8,6 +8,8 @@ using Core.Model;
 using Core.Model.Interfaces;
 using Core.Utils;
 using System.Linq;
+using System.Diagnostics;
+using System.IO;
 
 namespace Core.ViewModel
 {
@@ -57,6 +59,7 @@ namespace Core.ViewModel
             );
         }
 
+
         protected void OnPropertyChanged([CallerMemberName] string propertyName = null)
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
@@ -83,7 +86,7 @@ namespace Core.ViewModel
                 throw new InvalidOperationException("Le nombre maximum de jobs (5) est atteint.");
 
             if (_jobManager.JobExists(name))
-                throw new InvalidOperationException($"Un job avec le nom {name} existe déjà.");
+                throw new InvalidOperationException($"Un job avec le nom {name} existe d�j�.");
 
             var job = new BackupJob { Name = name };
             _jobManager.AddBackupJob(job);
@@ -167,17 +170,55 @@ namespace Core.ViewModel
             if (CurrentJob != null && CurrentJob.Id == jobId)
                 CurrentJob = null;
         }
-
-        public bool JobEncryption(string key)
+        
+        public void ToggleEncryption(string key = null)
         {
-            if (_currentJob == null)
-                throw new InvalidOperationException("Aucun job n'est sélectionné.");
+            if (CurrentJob == null)
+                return;
 
-            _jobManager.Encryption(_currentJob.IsEncrypted, _currentJob.TargetDirectory, key); //Pass the encryption key to the job manager
-            _currentJob.IsEncrypted = !_currentJob.IsEncrypted; // Toggle the encryption status
-            _jobManager.UpdateBackupJob(_currentJob); // Update the job in the manager
-            return _currentJob.IsEncrypted; // Return the new encryption status
+            string folder = CurrentJob.TargetDirectory;
 
+            if (!Directory.Exists(folder))
+                throw new DirectoryNotFoundException("Target directory not found.");
+
+            string[] files = Directory.GetFiles(folder);
+
+            foreach (string file in files)
+            {
+                if (file.EndsWith(".aes"))
+                {
+                    // Decrypt
+                    RunCryptoSoft("-d", file);
+                }
+                else
+                {
+                    // Encrypt
+                    RunCryptoSoft("-e", file);
+                }
+            }
+        }
+        
+        private void RunCryptoSoft(string mode, string filepath)
+        {
+            var startInfo = new ProcessStartInfo
+            {
+                FileName = "CryptoSoft.exe", 
+                Arguments = $"{mode} \"{filepath}\"",
+                UseShellExecute = false,
+                RedirectStandardOutput = true,
+                RedirectStandardError = true,
+                CreateNoWindow = true
+            };
+
+            using (var process = Process.Start(startInfo))
+            {
+                process.WaitForExit();
+                string output = process.StandardOutput.ReadToEnd();
+                string error = process.StandardError.ReadToEnd();
+
+                if (process.ExitCode != 0)
+                    throw new Exception($"CryptoSoft error: {error}");
+            }
         }
     }
 }

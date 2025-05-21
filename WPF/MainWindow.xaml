@@ -139,7 +139,7 @@
                     <StackPanel Grid.Column="1" Orientation="Horizontal" VerticalAlignment="Center" Height="70" Margin="0,0,12,0">
                         <Button Width="160" Height="70" Margin="10,0"
                                 ToolTip="Paramètres"
-                                Click="SettingsButton_Click">
+                                Click="GlobalSettingsButton_Click">
                             <TextBlock Text="Paramètres" FontSize="28" VerticalAlignment="Center" HorizontalAlignment="Center"/>
                         </Button>
                         <Button Width="100" Height="70" Margin="10,0"
@@ -269,8 +269,8 @@
                                                         HorizontalAlignment="Right"
                                                         VerticalAlignment="Top"
                                                         Margin="0,5,5,0"
-                                                        ToolTip="Paramètres"
-                                                        Click="SettingsButton_Click"/>
+                                                        ToolTip="Paramètres du job"
+                                                        Click="JobSettingsButton_Click" />
                                                 <!-- Texte Full/Diff + toggle en bas à droite -->
                                                 <StackPanel Grid.Row="1" Orientation="Vertical" HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="0,0,5,5">
                                                     <ToggleButton IsChecked="{Binding IsActive}" Style="{StaticResource DiffFullToggleStyle}"/>
