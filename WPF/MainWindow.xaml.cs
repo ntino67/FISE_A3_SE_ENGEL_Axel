@@ -1,41 +1,32 @@
-﻿using System;
+﻿using EasySave_2._0_from_ProSoft;
+using System;
 using System.Collections.Generic;
-using System.Configuration;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 
-namespace EasySave_2._0_from_ProSoft
+namespace WPF
 {
-    /// <summary>
-    /// Interaction logic for MainWindow.xaml
-    /// </summary>
     public partial class MainWindow : Window
     {
+        private List<JobItem> allJobs = new List<JobItem>();
+
         public MainWindow()
         {
             InitializeComponent();
+            MainFrame.Navigate(new LogoPage());
 
-            // Exemple de données
-            List<JobItem> JobsList = new List<JobItem>
+            for (int i = 1; i <= 10; i++)
             {
-                new JobItem { Name = "Backup 1", IsChecked = true, IsActive = false },
-                new JobItem { Name = "Backup 2", IsChecked = false, IsActive = true }
-            };
-                for (int i = 2; i < 100; i++)
+                allJobs.Add(new JobItem
                 {
-                    JobsList.Add(new JobItem { Name = "Backup " + (i + 1), IsChecked = false, IsActive = false });
-                }
-            JobList.ItemsSource = JobsList;
+                    Name = $"Job {i}",
+                    IsChecked = false,
+                    IsActive = (i % 2 == 0)
+                });
+            }
+            JobList.ItemsSource = allJobs;
         }
 
         private void TopBar_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
@@ -44,13 +35,99 @@ namespace EasySave_2._0_from_ProSoft
                 this.DragMove();
         }
 
+        // Navigation vers SettingsPage
+        private void SettingsButton_Click(object sender, RoutedEventArgs e)
+        {
+            MainFrame.Navigate(new SettingsPage());
+        }
+
+        private void Bouton2_Click(object sender, RoutedEventArgs e)
+        {
+            MainFrame.Navigate(new LogsPage());
+        }
+
+        private void Bouton3_Click(object sender, RoutedEventArgs e)
+        {
+            MainFrame.Navigate(new StatusPage());
+        }
+
+        private void MinimizeButton_Click(object sender, RoutedEventArgs e)
+        {
+            WindowState = WindowState.Minimized;
+        }
+
+        private void MaximizeButton_Click(object sender, RoutedEventArgs e)
+        {
+            if (WindowState == WindowState.Maximized)
+                WindowState = WindowState.Normal;
+            else
+                WindowState = WindowState.Maximized;
+        }
+
+        private void CloseButton_Click(object sender, RoutedEventArgs e)
+        {
+            Close();
+        }
+
+        private void CreateJobButton_Click(object sender, RoutedEventArgs e)
+        {
+            MainFrame.Navigate(new JobPage());
+        }
+
+        private void AddJobButton_Click(object sender, RoutedEventArgs e)
+        {
+            string jobName = SearchBox.Text?.Trim();
+            if (string.IsNullOrEmpty(jobName))
+            {
+                MessageBox.Show("Veuillez entrer un nom de job.", "Nom manquant", MessageBoxButton.OK, MessageBoxImage.Warning);
+                return;
+            }
+            if (allJobs.Any(j => j.Name.Equals(jobName, StringComparison.OrdinalIgnoreCase)))
+            {
+                MessageBox.Show("Ce nom de job existe déjà.", "Doublon", MessageBoxButton.OK, MessageBoxImage.Warning);
+                return;
+            }
+            var newJob = new JobItem
+            {
+                Name = jobName,
+                IsChecked = false,
+                IsActive = false
+            };
+            allJobs.Add(newJob);
+            JobList.ItemsSource = null;
+            JobList.ItemsSource = allJobs;
+            SearchBox.Text = "";
+        }
+
+        private void SearchJobButton_Click(object sender, RoutedEventArgs e)
+        {
+            string search = SearchBox.Text?.Trim().ToLower();
+            if (string.IsNullOrEmpty(search))
+            {
+                JobList.ItemsSource = allJobs;
+            }
+            else
+            {
+                JobList.ItemsSource = allJobs.Where(j => j.Name.ToLower().Contains(search)).ToList();
+            }
+        }
+
+        private void RunButton_Click(object sender, RoutedEventArgs e)
+        {
+            if (RunComboBox.SelectedIndex == 2)
+            {
+                foreach (var job in allJobs)
+                    job.IsChecked = false;
+                JobList.ItemsSource = null;
+                JobList.ItemsSource = allJobs;
+            }
+        }
     }
 
-}
-
-public class JobItem
-{
-    public string Name { get; set; }
-    public bool IsChecked { get; set; }
-    public bool IsActive { get; set; }
+    public class JobItem
+    {
+        public string Name { get; set; }
+        public bool IsChecked { get; set; }
+        public bool IsActive { get; set; }
+    }
 }

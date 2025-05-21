@@ -1,0 +1,69 @@
+﻿<Page x:Class="WPF.SettingsPage"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      Title="SettingsPage">
+    <Grid Background="White">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <!-- Barre supérieure -->
+        <Border Background="#FF2D2D30" Padding="10">
+            <TextBlock Text="OPTIONS"
+                       Foreground="White"
+                       FontSize="20"
+                       FontWeight="Bold"
+                       HorizontalAlignment="Center"
+                       VerticalAlignment="Center"/>
+        </Border>
+        <StackPanel Grid.Row="1"
+            VerticalAlignment="Center"
+            HorizontalAlignment="Center"
+            Margin="0,20,0,0"
+            Width="300"
+            Orientation="Vertical">
+            <StackPanel.Resources>
+                <Style TargetType="StackPanel">
+                    <Setter Property="Margin" Value="0,0,0,15"/>
+                </Style>
+            </StackPanel.Resources>
+
+            <!-- Élément 1 -->
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Left">
+                <TextBlock Text="▶"
+                   FontSize="16"
+                   Margin="0,0,10,0"/>
+                <TextBlock Text="LANGUAGE"
+                   FontSize="16"/>
+            </StackPanel>
+
+            <!-- Élément 2 -->
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Left">
+                <TextBlock Text="▶"
+                   FontSize="16"
+                   Margin="0,0,10,0"/>
+                <TextBlock Text="LOG PATH"
+                   FontSize="16"/>
+            </StackPanel>
+
+            <!-- Élément 3 -->
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Left">
+                <TextBlock Text="▶"
+                   FontSize="16"
+                   Margin="0,0,10,0"/>
+                <TextBlock Text="STATUS PATH"
+                   FontSize="16"/>
+            </StackPanel>
+
+            <!-- Élément 4 -->
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Left">
+                <TextBlock Text="▶"
+                   FontSize="16"
+                   Margin="0,0,10,0"/>
+                <TextBlock Text="ENCRYPTED EXTENSION"
+                   FontSize="16"/>
+            </StackPanel>
+        </StackPanel>
+    </Grid>
+</Page>

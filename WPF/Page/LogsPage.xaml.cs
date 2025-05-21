@@ -11,14 +11,14 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace EasySave_2._0_from_ProSoft
+namespace WPF.Page
 {
     /// <summary>
-    /// Logique d'interaction pour SettingsPage.xaml
+    /// Logique d'interaction pour LogsPage.xaml
     /// </summary>
-    public partial class SettingsPage : Page
+    public partial class LogsPage : JobPage
     {
-        public SettingsPage()
+        public LogsPage()
         {
             InitializeComponent();
         }

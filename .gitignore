@@ -357,6 +357,15 @@ ASALocalRun/
 # NVidia Nsight GPU debugger configuration file
 *.nvuser
 
+
+# NUnit
+*.VisualState.xml
+TestResult.xml
+nunit-*.xml
+EasySave-From-ProSoft/.vs/
+EasySave-From-ProSoft/Console/.vs/
+.vs
+
 # MFractors (Xamarin productivity tool) working folder
 .mfractor/
 
