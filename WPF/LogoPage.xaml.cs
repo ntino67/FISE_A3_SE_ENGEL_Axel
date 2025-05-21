@@ -11,16 +11,21 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace WPF.Page
+namespace WPF.page
 {
     /// <summary>
-    /// Logique d'interaction pour LogsPage.xaml
+    /// Logique d'interaction pour LogoPage.xaml
     /// </summary>
-    public partial class LogsPage : JobPage
+    public partial class LogoPage : System.Windows.Controls.Page // Fully qualify 'Page' to avoid ambiguity
     {
-        public LogsPage()
+        public LogoPage()
         {
             InitializeComponent();
+        }
+
+        private void InitializeComponent()
+        {
+            throw new NotImplementedException();
         }
     }
 }

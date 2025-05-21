@@ -3,20 +3,28 @@
   "WorkspaceRootPath": "C:\\Github Repos\\",
   "Documents": [
     {
+      "AbsoluteMoniker": "D:0:0:{BE45249E-B094-47F6-AAF7-5F91A5F98FD8}|WPF\\WPF.csproj|c:\\github repos\\wpf\\page\\jobpage.xaml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{BE45249E-B094-47F6-AAF7-5F91A5F98FD8}|WPF\\WPF.csproj|solutionrelative:wpf\\page\\jobpage.xaml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{BE45249E-B094-47F6-AAF7-5F91A5F98FD8}|WPF\\WPF.csproj|c:\\github repos\\wpf\\page\\settingspage.xaml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{BE45249E-B094-47F6-AAF7-5F91A5F98FD8}|WPF\\WPF.csproj|solutionrelative:wpf\\page\\settingspage.xaml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{BE45249E-B094-47F6-AAF7-5F91A5F98FD8}|WPF\\WPF.csproj|c:\\github repos\\wpf\\page\\logspage.xaml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{BE45249E-B094-47F6-AAF7-5F91A5F98FD8}|WPF\\WPF.csproj|solutionrelative:wpf\\page\\logspage.xaml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{BE45249E-B094-47F6-AAF7-5F91A5F98FD8}|WPF\\WPF.csproj|c:\\github repos\\wpf\\logopage.xaml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{BE45249E-B094-47F6-AAF7-5F91A5F98FD8}|WPF\\WPF.csproj|solutionrelative:wpf\\logopage.xaml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
       "AbsoluteMoniker": "D:0:0:{BE45249E-B094-47F6-AAF7-5F91A5F98FD8}|WPF\\WPF.csproj|c:\\github repos\\wpf\\mainwindow.xaml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{BE45249E-B094-47F6-AAF7-5F91A5F98FD8}|WPF\\WPF.csproj|solutionrelative:wpf\\mainwindow.xaml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{BE45249E-B094-47F6-AAF7-5F91A5F98FD8}|WPF\\WPF.csproj|c:\\github repos\\wpf\\mainwindow.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}",
       "RelativeMoniker": "D:0:0:{BE45249E-B094-47F6-AAF7-5F91A5F98FD8}|WPF\\WPF.csproj|solutionrelative:wpf\\mainwindow.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{BE45249E-B094-47F6-AAF7-5F91A5F98FD8}|WPF\\WPF.csproj|c:\\github repos\\wpf\\page\\settingspage.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}",
-      "RelativeMoniker": "D:0:0:{BE45249E-B094-47F6-AAF7-5F91A5F98FD8}|WPF\\WPF.csproj|solutionrelative:wpf\\page\\settingspage.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{BE45249E-B094-47F6-AAF7-5F91A5F98FD8}|WPF\\WPF.csproj|c:\\github repos\\wpf\\page\\settingspage.xaml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{BE45249E-B094-47F6-AAF7-5F91A5F98FD8}|WPF\\WPF.csproj|solutionrelative:wpf\\page\\settingspage.xaml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     }
   ],
   "DocumentGroupContainers": [
@@ -44,81 +52,87 @@
         },
         {
           "DockedHeight": 200,
-          "SelectedChildIndex": 3,
+          "SelectedChildIndex": 1,
           "Children": [
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
+              "Title": "LogoPage.xaml.cs",
+              "DocumentMoniker": "C:\\Github Repos\\WPF\\LogoPage.xaml.cs",
+              "RelativeDocumentMoniker": "WPF\\LogoPage.xaml.cs",
+              "ToolTip": "C:\\Github Repos\\WPF\\LogoPage.xaml.cs",
+              "RelativeToolTip": "WPF\\LogoPage.xaml.cs",
+              "ViewState": "AgIAAAwAAAAAAAAAAAAnwBIAAAAkAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-05-21T14:10:50.627Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "JobPage.xaml.cs",
+              "DocumentMoniker": "C:\\Github Repos\\WPF\\Page\\JobPage.xaml.cs",
+              "RelativeDocumentMoniker": "WPF\\Page\\JobPage.xaml.cs",
+              "ToolTip": "C:\\Github Repos\\WPF\\Page\\JobPage.xaml.cs*",
+              "RelativeToolTip": "WPF\\Page\\JobPage.xaml.cs*",
+              "ViewState": "AgIAAA4AAAAAAAAAAAAhwBYAAAAMAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-05-21T14:04:14.841Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "LogsPage.xaml.cs",
+              "DocumentMoniker": "C:\\Github Repos\\WPF\\Page\\LogsPage.xaml.cs",
+              "RelativeDocumentMoniker": "WPF\\Page\\LogsPage.xaml.cs",
+              "ToolTip": "C:\\Github Repos\\WPF\\Page\\LogsPage.xaml.cs",
+              "RelativeToolTip": "WPF\\Page\\LogsPage.xaml.cs",
+              "ViewState": "AgIAAAQAAAAAAAAAAAAQwBQAAAAZAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-05-21T14:04:10.273Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "SettingsPage.xaml.cs",
+              "DocumentMoniker": "C:\\Github Repos\\WPF\\Page\\SettingsPage.xaml.cs",
+              "RelativeDocumentMoniker": "WPF\\Page\\SettingsPage.xaml.cs",
+              "ToolTip": "C:\\Github Repos\\WPF\\Page\\SettingsPage.xaml.cs",
+              "RelativeToolTip": "WPF\\Page\\SettingsPage.xaml.cs",
+              "ViewState": "AgIAABQAAAAAAAAAAAA3wBIAAAAvAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-05-21T14:03:35.53Z",
+              "EditorCaption": ""
+            },
             {
               "$type": "Bookmark",
               "Name": "ST:0:0:{40ea2e6b-2121-4bb8-a43e-c83c04b51041}"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 2,
-              "Title": "SettingsPage.xaml",
-              "DocumentMoniker": "C:\\Github Repos\\WPF\\Page\\SettingsPage.xaml",
-              "RelativeDocumentMoniker": "WPF\\Page\\SettingsPage.xaml",
-              "ToolTip": "C:\\Github Repos\\WPF\\Page\\SettingsPage.xaml",
-              "RelativeToolTip": "WPF\\Page\\SettingsPage.xaml",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003549|",
-              "WhenOpened": "2025-05-19T21:40:39.579Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 3,
-              "Title": "SettingsPage.xaml.cs",
-              "DocumentMoniker": "C:\\Github Repos\\WPF\\Page\\SettingsPage.xaml.cs",
-              "RelativeDocumentMoniker": "WPF\\Page\\SettingsPage.xaml.cs",
-              "ToolTip": "C:\\Github Repos\\WPF\\Page\\SettingsPage.xaml.cs",
-              "RelativeToolTip": "WPF\\Page\\SettingsPage.xaml.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-05-19T21:40:38.089Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 0,
-              "Title": "MainWindow.xaml.cs",
-              "DocumentMoniker": "C:\\Github Repos\\WPF\\MainWindow.xaml.cs",
-              "RelativeDocumentMoniker": "WPF\\MainWindow.xaml.cs",
-              "ToolTip": "C:\\Github Repos\\WPF\\MainWindow.xaml.cs",
-              "RelativeToolTip": "WPF\\MainWindow.xaml.cs",
-              "ViewState": "AgIAACIAAAAAAAAAAAAUwCsAAAAQAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-05-19T21:01:49.142Z",
-              "EditorCaption": ""
-            }
-          ]
-        }
-      ]
-    },
-    {
-      "Orientation": 0,
-      "VerticalTabListWidth": 256,
-      "FloatingWindowState": {
-        "Id": "c40cad8d-4f9b-4d20-a3cd-add0ee33aea6",
-        "Display": 0,
-        "X": 339,
-        "Y": 489,
-        "Width": 1146,
-        "Height": 715,
-        "WindowState": 2
-      },
-      "DocumentGroups": [
-        {
-          "DockedWidth": 200,
-          "SelectedChildIndex": 0,
-          "Children": [
-            {
-              "$type": "Document",
-              "DocumentIndex": 1,
+              "DocumentIndex": 5,
               "Title": "MainWindow.xaml",
               "DocumentMoniker": "C:\\Github Repos\\WPF\\MainWindow.xaml",
               "RelativeDocumentMoniker": "WPF\\MainWindow.xaml",
               "ToolTip": "C:\\Github Repos\\WPF\\MainWindow.xaml",
               "RelativeToolTip": "WPF\\MainWindow.xaml",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003549|",
-              "WhenOpened": "2025-05-19T21:08:19.533Z",
+              "WhenOpened": "2025-05-21T10:13:23.662Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 4,
+              "Title": "MainWindow.xaml.cs",
+              "DocumentMoniker": "C:\\Github Repos\\WPF\\MainWindow.xaml.cs",
+              "RelativeDocumentMoniker": "WPF\\MainWindow.xaml.cs",
+              "ToolTip": "C:\\Github Repos\\WPF\\MainWindow.xaml.cs",
+              "RelativeToolTip": "WPF\\MainWindow.xaml.cs",
+              "ViewState": "AgIAABYAAAAAAAAAAAAQwHsAAAAJAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-05-19T21:01:49.142Z",
               "EditorCaption": ""
             }
           ]
