@@ -58,7 +58,23 @@ namespace Core.ViewModel
                 }
             );
         }
+        
+        private string TrimPath(string path, int maxLength = 40)
+        {
+            if (string.IsNullOrWhiteSpace(path))
+                return "[Not set]";
+            if (path.Length <= maxLength)
+                return path;
+    
+            // Keep only the last part
+            return "..." + path.Substring(path.Length - maxLength);
+        }
 
+        public string SourceDirectoryLabel =>
+            "📁 Source: " + TrimPath(CurrentJob?.SourceDirectory);
+
+        public string TargetDirectoryLabel =>
+            "🎯 Target: " + TrimPath(CurrentJob?.TargetDirectory);
 
         protected void OnPropertyChanged([CallerMemberName] string propertyName = null)
         {
@@ -115,6 +131,8 @@ namespace Core.ViewModel
 
             _currentJob.SourceDirectory = sourcePath;
             _jobManager.UpdateBackupJob(_currentJob);
+            OnPropertyChanged(nameof(SourceDirectoryLabel));
+            RunBackupCommand?.RaiseCanExecuteChanged();
         }
 
         public void UpdateTargetPath(string targetPath)
@@ -124,6 +142,8 @@ namespace Core.ViewModel
 
             _currentJob.TargetDirectory = targetPath;
             _jobManager.UpdateBackupJob(_currentJob);
+            OnPropertyChanged(nameof(TargetDirectoryLabel));
+            RunBackupCommand?.RaiseCanExecuteChanged();
         }
 
         public void UpdateBackupType(BackupType type)

@@ -49,8 +49,16 @@
 
         <!-- Body -->
         <StackPanel Grid.Row="1" Margin="0,20" HorizontalAlignment="Center" VerticalAlignment="Top">
-            <Button Content="Define source path" Click="OnSetSourcePathClick" Width="250" Height="45" Background="#89B4FA" Foreground="Black" Margin="0,5"/>
-            <Button Content="Define target path" Click="OnSetTargetPathClick" Width="250" Height="45" Background="#89B4FA" Foreground="Black" Margin="0,5"/>
+            <Button Content="{Binding SourceDirectoryLabel}"
+                    ToolTip="{Binding CurrentJob.SourceDirectory}"
+                    Click="OnSetSourcePathClick"
+                    Width="250" Height="45"
+                    Background="#89B4FA" Foreground="#232336" Margin="0,5"/>
+            <Button Content="{Binding TargetDirectoryLabel}"
+                    ToolTip="{Binding CurrentJob.TargetDirectory}"
+                    Click="OnSetTargetPathClick"
+                    Width="250" Height="45"
+                    Background="#89B4FA" Foreground="#232336" Margin="0,5"/>
             <ComboBox Width="250" Height="36"
                       ItemsSource="{Binding Source={StaticResource BackupTypeEnum}}"
                       SelectedItem="{Binding CurrentJob.Type, Mode=TwoWay}"
@@ -59,7 +67,6 @@
                       BorderBrush="#A6ADC8"
                       FontSize="16"
                       Margin="0,5"/>
-
 
             <!-- Encryption UI -->
             <TextBox x:Name="KeyInput"
