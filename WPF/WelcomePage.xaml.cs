@@ -11,16 +11,21 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace EasySave_2._0_from_ProSoft
+namespace WPF.page
 {
     /// <summary>
-    /// Logique d'interaction pour StatusPage.xaml
+    /// Logique d'interaction pour LogoPage.xaml
     /// </summary>
-    public partial class StatusPage : Page
+    public partial class WelcomePage : System.Windows.Controls.Page // Fully qualify 'Page' to avoid ambiguity
     {
-        public StatusPage()
+        public WelcomePage()
         {
             InitializeComponent();
+        }
+
+        private void InitializeComponent()
+        {
+            throw new NotImplementedException();
         }
     }
 }

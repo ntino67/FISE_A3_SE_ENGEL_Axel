@@ -23,6 +23,8 @@ namespace Core.Model
         private BackupType _type;
         private DateTime? _lastRunTime;
         private JobStatus _status = JobStatus.Ready;
+        private bool _isChecked;
+        private bool _isActive;
 
         // Non-editable property: GUID
         [JsonPropertyName("id")]
@@ -127,6 +129,39 @@ namespace Core.Model
                 }
             }
         }
+        
+        [JsonIgnore]
+        public bool IsChecked
+        {
+            get => _isChecked;
+            set
+            {
+                if (_isChecked != value)
+                {
+                    _isChecked = value;
+                    OnPropertyChanged();
+                }
+            }
+        }
+        
+        [JsonIgnore]
+        public bool IsActive
+        {
+            get => _isActive;
+            set
+            {
+                if (_isActive != value)
+                {
+                    _isActive = value;
+                    OnPropertyChanged();
+                }
+            }
+        }
+        
+        [JsonIgnore]
+        public bool IsReady => 
+            !string.IsNullOrWhiteSpace(SourceDirectory) &&
+            !string.IsNullOrWhiteSpace(TargetDirectory);
 
         public bool IsValid()
         {
@@ -143,6 +178,5 @@ namespace Core.Model
             Status = JobStatus.Ready;
             LastRunTime = null;
         }
-
     }
 }

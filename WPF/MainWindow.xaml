@@ -11,50 +11,43 @@
         <!-- Couleur Sapphire -->
         <SolidColorBrush x:Key="SapphireBrush" Color="#74c7ec"/>
         <!-- Style global pour tous les boutons -->
-        <Style TargetType="Button">
+        <Style x:Key="BaseControlStyle" TargetType="Control">
             <Setter Property="Background" Value="{StaticResource SapphireBrush}"/>
             <Setter Property="Foreground" Value="#232336"/>
-            <Setter Property="BorderThickness" Value="0"/>
             <Setter Property="FontWeight" Value="Bold"/>
+            <Setter Property="BorderThickness" Value="0"/>
         </Style>
+
+        <Style TargetType="Button" BasedOn="{StaticResource BaseControlStyle}" />
+        <Style TargetType="ComboBox" BasedOn="{StaticResource BaseControlStyle}" />
+        <Style TargetType="ComboBoxItem">
+            <Setter Property="Foreground" Value="#232336"/>
+            <Setter Property="FontWeight" Value="Bold"/>
+            <Setter Property="HorizontalContentAlignment" Value="Center"/>
+            <Setter Property="VerticalContentAlignment" Value="Center"/>
+        </Style>
+
         <!-- Style pour ToggleButton Differential/Full -->
         <Style x:Key="DiffFullToggleStyle" TargetType="ToggleButton">
-            <Setter Property="Width" Value="160"/>
-            <Setter Property="Height" Value="44"/>
+            <Setter Property="Width" Value="90"/>
+            <Setter Property="Height" Value="40"/>
             <Setter Property="Template">
                 <Setter.Value>
                     <ControlTemplate TargetType="ToggleButton">
                         <Grid>
+                            <!-- FOND -->
                             <Border x:Name="SwitchBorder"
-                            CornerRadius="22"
+                            Width="90" Height="40"
+                            CornerRadius="20"
                             Background="#45475a"
                             BorderBrush="#a6adc8"
-                            BorderThickness="2"
-                            Width="160" Height="44"/>
-                            <Grid>
-                                <TextBlock x:Name="DiffText"
-                                   Text="Differential"
-                                   FontWeight="Bold"
-                                   FontSize="18"
-                                   VerticalAlignment="Center"
-                                   HorizontalAlignment="Left"
-                                   Margin="18,0,0,0"
-                                   Foreground="#232336"
-                                   Visibility="Visible"/>
-                                <TextBlock x:Name="FullText"
-                                   Text="Full"
-                                   FontWeight="Bold"
-                                   FontSize="18"
-                                   VerticalAlignment="Center"
-                                   HorizontalAlignment="Right"
-                                   Margin="0,0,18,0"
-                                   Foreground="#232336"
-                                   Visibility="Collapsed"/>
-                            </Grid>
+                            BorderThickness="2"/>
+
+                            <!-- THUMB -->
                             <Border x:Name="SwitchThumb"
-                            Width="56" Height="36"
+                            Width="40" Height="32"
                             Background="#232336"
-                            CornerRadius="18"
+                            CornerRadius="16"
                             Margin="4"
                             HorizontalAlignment="Left"
                             VerticalAlignment="Center"
@@ -63,27 +56,51 @@
                                     <TranslateTransform X="0"/>
                                 </Border.RenderTransform>
                             </Border>
+
+                            <!-- TEXTES -->
+                            <Grid>
+                                <TextBlock x:Name="DiffText"
+                                   Text="Diff"
+                                   FontWeight="Bold"
+                                   FontSize="16"
+                                   VerticalAlignment="Center"
+                                   HorizontalAlignment="Left"
+                                   Margin="10,0,0,0"
+                                   Foreground="White"
+                                   Visibility="Visible"/>
+                                <TextBlock x:Name="FullText"
+                                   Text="Full"
+                                   FontWeight="Bold"
+                                   FontSize="16"
+                                   VerticalAlignment="Center"
+                                   HorizontalAlignment="Right"
+                                   Margin="0,0,10,0"
+                                   Foreground="White"
+                                   Visibility="Collapsed"/>
+                            </Grid>
                         </Grid>
                         <ControlTemplate.Triggers>
                             <Trigger Property="IsChecked" Value="True">
                                 <Setter TargetName="SwitchBorder" Property="Background" Value="#a6e3a1"/>
-                                <Setter TargetName="SwitchThumb" Property="Background" Value="#232336"/>
                                 <Setter TargetName="SwitchThumb" Property="HorizontalAlignment" Value="Right"/>
                                 <Setter TargetName="DiffText" Property="Visibility" Value="Collapsed"/>
                                 <Setter TargetName="FullText" Property="Visibility" Value="Visible"/>
+                                <Setter TargetName="FullText" Property="Foreground" Value="White"/>
                             </Trigger>
                             <Trigger Property="IsChecked" Value="False">
                                 <Setter TargetName="SwitchBorder" Property="Background" Value="#45475a"/>
-                                <Setter TargetName="SwitchThumb" Property="Background" Value="#232336"/>
                                 <Setter TargetName="SwitchThumb" Property="HorizontalAlignment" Value="Left"/>
                                 <Setter TargetName="DiffText" Property="Visibility" Value="Visible"/>
                                 <Setter TargetName="FullText" Property="Visibility" Value="Collapsed"/>
+                                <Setter TargetName="DiffText" Property="Foreground" Value="White"/>
                             </Trigger>
                         </ControlTemplate.Triggers>
                     </ControlTemplate>
                 </Setter.Value>
             </Setter>
         </Style>
+
+
         <!-- Style pour CheckBox (optionnel, inchangé) -->
         <Style TargetType="CheckBox">
             <Setter Property="Template">
@@ -139,7 +156,7 @@
                     <StackPanel Grid.Column="1" Orientation="Horizontal" VerticalAlignment="Center" Height="70" Margin="0,0,12,0">
                         <Button Width="160" Height="70" Margin="10,0"
                                 ToolTip="Paramètres"
-                                Click="SettingsButton_Click">
+                                Click="GlobalSettingsButton_Click">
                             <TextBlock Text="Paramètres" FontSize="28" VerticalAlignment="Center" HorizontalAlignment="Center"/>
                         </Button>
                         <Button Width="100" Height="70" Margin="10,0"
@@ -269,8 +286,8 @@
                                                         HorizontalAlignment="Right"
                                                         VerticalAlignment="Top"
                                                         Margin="0,5,5,0"
-                                                        ToolTip="Paramètres"
-                                                        Click="SettingsButton_Click"/>
+                                                        ToolTip="Paramètres du job"
+                                                        Click="JobSettingsButton_Click" />
                                                 <!-- Texte Full/Diff + toggle en bas à droite -->
                                                 <StackPanel Grid.Row="1" Orientation="Vertical" HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="0,0,5,5">
                                                     <ToggleButton IsChecked="{Binding IsActive}" Style="{StaticResource DiffFullToggleStyle}"/>
@@ -288,15 +305,24 @@
                             <ColumnDefinition Width="*"/>
                             <ColumnDefinition Width="Auto"/>
                         </Grid.ColumnDefinitions>
-                        <ComboBox x:Name="RunComboBox" Height="50" FontSize="20" VerticalAlignment="Bottom" HorizontalAlignment="Stretch"
-                                  Background="{StaticResource SapphireBrush}" Foreground="#232336" BorderThickness="0" SelectedIndex="0" Grid.Column="0">
+                        <ComboBox x:Name="RunComboBox"
+                              Height="50"
+                              FontSize="14"
+                              VerticalAlignment="Bottom"
+                              HorizontalAlignment="Stretch"
+                              BorderThickness="0"
+                              SelectedIndex="0"
+                              Padding="0"
+                              HorizontalContentAlignment="Center"
+                              VerticalContentAlignment="Center">
                             <ComboBoxItem Content="Run current selected"/>
                             <ComboBoxItem Content="Run all"/>
                             <ComboBoxItem Content="Reset selection"/>
                         </ComboBox>
+
                         <Button x:Name="RunButton" Content="Exécuter" Height="50" Width="110" Margin="10,0,0,0"
                                 VerticalAlignment="Bottom" Grid.Column="1"
-                                Click="RunButton_Click"/>
+                                Click="RunButton_Click" FontSize="20"/>
                     </Grid>
                 </Grid>
                 <!-- Frame pour afficher les pages, occupe 3/4 de la largeur -->
