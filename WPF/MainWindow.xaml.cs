@@ -191,22 +191,5 @@ namespace WPF
                 _vm.DeleteJob(job.Id);
             }
         }
-        
-        public async void ShowToast(string message, int durationMs = 3000)
-        {
-            ToastText.Text = message;
-            ToastHost.Visibility = Visibility.Visible;
-
-            var fadeIn = new DoubleAnimation(0, 1, new Duration(TimeSpan.FromMilliseconds(200)));
-            ToastHost.BeginAnimation(UIElement.OpacityProperty, fadeIn);
-
-            await Task.Delay(durationMs);
-
-            var fadeOut = new DoubleAnimation(1, 0, new Duration(TimeSpan.FromMilliseconds(300)));
-            ToastHost.BeginAnimation(UIElement.OpacityProperty, fadeOut);
-
-            await Task.Delay(300);
-            ToastHost.Visibility = Visibility.Collapsed;
-        }
     }
 } 
