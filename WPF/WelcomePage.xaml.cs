@@ -11,13 +11,21 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace WPF.Page
+namespace WPF.page
 {
-    public partial class LogoPage : Page
+    /// <summary>
+    /// Logique d'interaction pour LogoPage.xaml
+    /// </summary>
+    public partial class WelcomePage : System.Windows.Controls.Page // Fully qualify 'Page' to avoid ambiguity
     {
-        public LogoPage()
+        public WelcomePage()
         {
             InitializeComponent();
+        }
+
+        private void InitializeComponent()
+        {
+            throw new NotImplementedException();
         }
     }
 }

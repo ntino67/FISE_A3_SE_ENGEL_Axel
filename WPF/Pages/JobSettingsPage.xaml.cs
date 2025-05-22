@@ -4,16 +4,13 @@ using System.Windows.Controls;
 using WinForms = System.Windows.Forms;
 using Core.ViewModel;
 
-namespace WPF
+namespace WPF.Pages
 {
-    /// <summary>
-    /// Logique d'interaction pour JobPage.xaml
-    /// </summary>
-    public partial class JobPage : LogoPage
+    public partial class JobSettingsPage : System.Windows.Controls.Page
     {
         private readonly JobViewModel _vm;
 
-        public JobPage()
+        public JobSettingsPage()
         {
             InitializeComponent();
             _vm = ViewModelLocator.GetJobViewModel();
