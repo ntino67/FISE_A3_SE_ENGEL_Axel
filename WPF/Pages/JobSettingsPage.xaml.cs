@@ -6,14 +6,10 @@ using Core.ViewModel;
 
 namespace WPF.Pages
 {
-<<<<<<< HEAD:WPF/Page/JobPage.xaml.cs
     /// <summary>
     /// Logique d'interaction pour JobPage.xaml
     /// </summary>
-    public partial class JobPage : System.Windows.Controls.Page
-=======
     public partial class JobSettingsPage : System.Windows.Controls.Page
->>>>>>> 3d1f2a1a380d8e46a6b053e9e7300b45187f5f4f:WPF/Pages/JobSettingsPage.xaml.cs
     {
         private readonly JobViewModel _vm;
 
