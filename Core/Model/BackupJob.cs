@@ -157,6 +157,11 @@ namespace Core.Model
                 }
             }
         }
+        
+        [JsonIgnore]
+        public bool IsReady => 
+            !string.IsNullOrWhiteSpace(SourceDirectory) &&
+            !string.IsNullOrWhiteSpace(TargetDirectory);
 
         public bool IsValid()
         {
@@ -173,6 +178,5 @@ namespace Core.Model
             Status = JobStatus.Ready;
             LastRunTime = null;
         }
-
     }
 }

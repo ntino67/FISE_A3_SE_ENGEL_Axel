@@ -78,6 +78,7 @@ namespace Core.ViewModel
         public void SetCurrentJob(BackupJob job)
         {
             CurrentJob = job;
+            RunBackupCommand?.RaiseCanExecuteChanged();
         }
 
         public void CreateNewJob(string name)

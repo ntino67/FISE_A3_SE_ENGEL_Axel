@@ -72,7 +72,7 @@
             <Button Content="Encrypt / Decrypt" Click="OnToggleEncryptionClick" Width="250" Height="45" Background="#F9E2AF" Foreground="Black" Margin="0,5"/>
 
             <!-- Commands -->
-            <Button Content="Run" Command="{Binding RunBackupCommand}" Width="250" Height="45" Background="#A6E3A1" Foreground="Black" Margin="0,5"/>
+            <Button Content="Run" Command="{Binding RunBackupCommand}" IsEnabled="{Binding CurrentJob.IsReady}" Width="250" Height="45" Background="#A6E3A1" Foreground="Black" Margin="0,5"/>
             <Button Content="Delete" Click="OnDeleteJobClick" Width="250" Height="45" Background="#F38BA8" Foreground="Black" Margin="0,5"/>
             <Button Content="Reset" Command="{Binding ResetJobCommand}" Width="250" Height="45" Background="#89DCEB" Foreground="Black" Margin="0,5"/>
         </StackPanel>
