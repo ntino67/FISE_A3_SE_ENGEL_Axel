@@ -43,12 +43,12 @@ namespace WPF
             MainFrame.Navigate(new AppSettingsPage());
         }
 
-        private void Bouton2_Click(object sender, RoutedEventArgs e)
+        private void Logs_Click(object sender, RoutedEventArgs e)
         {
             MainFrame.Navigate(new LogsOverviewPage());
         }
 
-        private void Bouton3_Click(object sender, RoutedEventArgs e)
+        private void Status_Click(object sender, RoutedEventArgs e)
         {
             MainFrame.Navigate(new BackupStatusPage());
         }
@@ -116,6 +116,14 @@ namespace WPF
                     job.IsChecked = false;
                 JobList.ItemsSource = null;
                 JobList.ItemsSource = _vm.Jobs;
+            }
+        }
+
+        private void DeleteJobButton_Click(object sender, RoutedEventArgs e)
+        {
+            if (sender is Button btn && btn.DataContext is BackupJob job)
+            {
+                _vm.DeleteJob(job.Id);
             }
         }
         
