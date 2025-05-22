@@ -1,4 +1,4 @@
-﻿<Page x:Class="WPF.Page.LogoPage"
+﻿<Page x:Class="WPF.LogoPage"
       xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
       Title="LogoPage"

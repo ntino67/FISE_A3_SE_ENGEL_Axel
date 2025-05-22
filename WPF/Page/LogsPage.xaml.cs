@@ -16,11 +16,16 @@ namespace WPF.Page
     /// <summary>
     /// Logique d'interaction pour LogsPage.xaml
     /// </summary>
-    public partial class LogsPage : JobPage
+    public partial class LogsPage : Window
     {
         public LogsPage()
         {
             InitializeComponent();
+        }
+
+        private void InitializeComponent()
+        {
+            throw new NotImplementedException();
         }
     }
 }

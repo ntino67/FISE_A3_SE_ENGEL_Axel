@@ -11,12 +11,12 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace EasySave_2._0_from_ProSoft
+namespace WPF.Page
 {
     /// <summary>
     /// Logique d'interaction pour StatusPage.xaml
     /// </summary>
-    public partial class StatusPage : Page
+    public partial class StatusPage : Window
     {
         public StatusPage()
         {
