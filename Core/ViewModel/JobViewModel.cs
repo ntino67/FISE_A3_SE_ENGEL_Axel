@@ -76,6 +76,30 @@ namespace Core.ViewModel
 
         public string TargetDirectoryLabel =>
             "🎯 Target: " + TrimPath(CurrentJob?.TargetDirectory);
+        
+        public string EncryptionStatus
+        {
+            get
+            {
+                if (CurrentJob == null || string.IsNullOrWhiteSpace(CurrentJob.TargetDirectory))
+                    return "Status: Unknown";
+
+                if (!Directory.Exists(CurrentJob.TargetDirectory))
+                    return "Status: Folder missing";
+
+                string[] files = Directory.GetFiles(CurrentJob.TargetDirectory, "*", SearchOption.AllDirectories);
+                bool hasEncrypted = files.Any(f => f.EndsWith(".enc"));
+                bool hasPlain = files.Any(f => !f.EndsWith(".enc") && !f.EndsWith(".exe") && !f.EndsWith(".dll"));
+
+                return hasEncrypted && hasPlain
+                    ? "Status: ⚠️ Mixed"
+                    : hasEncrypted
+                        ? "Status: 🔒 Encrypted"
+                        : hasPlain
+                            ? "Status: 🔓 Decrypted"
+                            : "Status: Empty";
+            }
+        }
 
         protected void OnPropertyChanged([CallerMemberName] string propertyName = null)
         {
@@ -96,6 +120,7 @@ namespace Core.ViewModel
         {
             CurrentJob = job;
             RunBackupCommand?.RaiseCanExecuteChanged();
+            OnPropertyChanged(nameof(EncryptionStatus));
         }
 
         public void CreateNewJob(string name)
@@ -144,6 +169,7 @@ namespace Core.ViewModel
             _currentJob.TargetDirectory = targetPath;
             _jobManager.UpdateBackupJob(_currentJob);
             OnPropertyChanged(nameof(TargetDirectoryLabel));
+            OnPropertyChanged(nameof(EncryptionStatus));
             RunBackupCommand?.RaiseCanExecuteChanged();
         }
 
@@ -161,6 +187,7 @@ namespace Core.ViewModel
             if (_currentJob == null)
                 throw new InvalidOperationException("Aucun job n'est sélectionné.");
 
+            OnPropertyChanged(nameof(EncryptionStatus));
             return await _jobManager.ExecuteBackupJob(_currentJob.Id);
         }
 
@@ -171,6 +198,7 @@ namespace Core.ViewModel
 
             _currentJob.Reset();
             _jobManager.UpdateBackupJob(_currentJob);
+            OnPropertyChanged(nameof(EncryptionStatus));
         }
 
         public string GetSourcePath()
@@ -206,23 +234,26 @@ namespace Core.ViewModel
             string[] files = Directory.GetFiles(folder, "*", SearchOption.AllDirectories);
             byte[] keyBytes = Encoding.UTF8.GetBytes(key);
 
-            foreach (string file in files)
-            {
-                if (file.EndsWith(".enc"))
-                {
-                    // Decrypt
-                    CryptoSoft.XorEncryption.DecryptFile(file, keyBytes);
-                }
-                else
-                {
-                    // Skip .exe or .enc files during encryption
-                    if (file.EndsWith(".exe") || file.EndsWith(".dll") || file.EndsWith(".enc"))
-                        continue;
+            var encrypted = files.Where(f => f.EndsWith(".enc")).ToList();
+            var plain = files.Where(f => !f.EndsWith(".enc") && !f.EndsWith(".exe") && !f.EndsWith(".dll")).ToList();
 
-                    // Encrypt
-                    CryptoSoft.XorEncryption.EncryptFile(file, keyBytes);
-                }
+            if (encrypted.Count > 0 && plain.Count > 0)
+            {
+                throw new InvalidOperationException("Encryption aborted: mixed encrypted and non-encrypted files detected. Please clean the target folder.");
             }
+
+            if (encrypted.Count > 0)
+            {
+                foreach (var file in encrypted)
+                    CryptoSoft.XorEncryption.DecryptFile(file, keyBytes);
+            }
+            else
+            {
+                foreach (var file in plain)
+                    CryptoSoft.XorEncryption.EncryptFile(file, keyBytes);
+            }
+            
+            OnPropertyChanged(nameof(EncryptionStatus));
         }
     }
 }

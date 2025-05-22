@@ -71,6 +71,11 @@
             </Grid>
             <Button Content="Encrypt / Decrypt" Click="OnToggleEncryptionClick" Width="250" Height="45"
                     Background="#F9E2AF" Foreground="Black" Margin="0,5" />
+            <TextBlock Text="{Binding EncryptionStatus}"
+                       FontSize="14"
+                       Foreground="#CDD6F4"
+                       Margin="0,10,0,0"
+                       HorizontalAlignment="Center"/>
 
             <!-- Commands -->
             <Button Content="Run" Command="{Binding RunBackupCommand}" IsEnabled="{Binding CurrentJob.IsReady}"
