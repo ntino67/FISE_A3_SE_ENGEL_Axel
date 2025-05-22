@@ -1,5 +1,6 @@
 ﻿using System.Windows;
 using System.Windows.Controls;
+using Core.Utils;
 using Core.ViewModel;
 using WinForms = System.Windows.Forms;
 
@@ -38,12 +39,11 @@ namespace WPF.Pages
         private void OnToggleEncryptionClick(object sender, RoutedEventArgs e)
         {
             var key = KeyInput.Text;
-            MessageBox.Show($"KeyInput.Text = [{key}]");
 
             if (!string.IsNullOrEmpty(key))
                 _vm.ToggleEncryption(key);
             else
-                MessageBox.Show("Please enter a key first.");
+                ToastBridge.ShowToast?.Invoke("🔑 Please enter a key first", 3000);
         }
     }
 }

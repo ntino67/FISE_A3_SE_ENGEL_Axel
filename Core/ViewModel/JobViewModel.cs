@@ -71,6 +71,21 @@ namespace Core.ViewModel
             return "..." + path.Substring(path.Length - maxLength);
         }
 
+        private string _jobMessage;
+        public string JobMessage
+        {
+            get => _jobMessage;
+            set
+            {
+                _jobMessage = value;
+                OnPropertyChanged();
+                OnPropertyChanged(nameof(HasJobMessage));
+            }
+        }
+
+        public bool HasJobMessage => !string.IsNullOrWhiteSpace(JobMessage);
+
+
         public string SourceDirectoryLabel =>
             "📁 Source: " + TrimPath(CurrentJob?.SourceDirectory);
 
@@ -94,9 +109,9 @@ namespace Core.ViewModel
                 return hasEncrypted && hasPlain
                     ? "Status: ⚠️ Mixed"
                     : hasEncrypted
-                        ? "Status: 🔒 Encrypted"
+                        ? "Decrypt"
                         : hasPlain
-                            ? "Status: 🔓 Decrypted"
+                            ? "Encrypt"
                             : "Status: Empty";
             }
         }
@@ -114,6 +129,12 @@ namespace Core.ViewModel
                 _currentJob = value;
                 OnPropertyChanged();
             }
+        }
+        
+        private async void AutoClearJobMessage(int msDelay = 3000)
+        {
+            await Task.Delay(msDelay);
+            JobMessage = string.Empty;
         }
 
         public void SetCurrentJob(BackupJob job)
@@ -187,8 +208,12 @@ namespace Core.ViewModel
             if (_currentJob == null)
                 throw new InvalidOperationException("Aucun job n'est sélectionné.");
 
+            bool result = await _jobManager.ExecuteBackupJob(_currentJob.Id);
+
             OnPropertyChanged(nameof(EncryptionStatus));
-            return await _jobManager.ExecuteBackupJob(_currentJob.Id);
+            ToastBridge.ShowToast?.Invoke("✅ Backup complete!", 3000);
+
+            return result;
         }
 
         public void ResetCurrentJob()
@@ -246,11 +271,13 @@ namespace Core.ViewModel
             {
                 foreach (var file in encrypted)
                     CryptoSoft.XorEncryption.DecryptFile(file, keyBytes);
+                ToastBridge.ShowToast?.Invoke("🔓 Files decrypted", 3000);
             }
             else
             {
                 foreach (var file in plain)
                     CryptoSoft.XorEncryption.EncryptFile(file, keyBytes);
+                ToastBridge.ShowToast?.Invoke("🔒 Files encrypted", 3000);
             }
             
             OnPropertyChanged(nameof(EncryptionStatus));

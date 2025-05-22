@@ -3,8 +3,10 @@ using Core.ViewModel;
 using Microsoft.Win32;
 using System;
 using System.Linq;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Media.Animation;
 using WPF.Pages;
 
 namespace WPF
@@ -16,6 +18,7 @@ namespace WPF
         public MainWindow()
         {
             InitializeComponent();
+            Core.Utils.ToastBridge.ShowToast = ShowToast;
             MainFrame.Navigate(new WelcomePage());
 
             // For testing: create dummy jobs if none exist
@@ -114,6 +117,23 @@ namespace WPF
                 JobList.ItemsSource = null;
                 JobList.ItemsSource = _vm.Jobs;
             }
+        }
+        
+        public async void ShowToast(string message, int durationMs = 3000)
+        {
+            ToastText.Text = message;
+            ToastHost.Visibility = Visibility.Visible;
+
+            var fadeIn = new DoubleAnimation(0, 1, new Duration(TimeSpan.FromMilliseconds(200)));
+            ToastHost.BeginAnimation(UIElement.OpacityProperty, fadeIn);
+
+            await Task.Delay(durationMs);
+
+            var fadeOut = new DoubleAnimation(1, 0, new Duration(TimeSpan.FromMilliseconds(300)));
+            ToastHost.BeginAnimation(UIElement.OpacityProperty, fadeOut);
+
+            await Task.Delay(300);
+            ToastHost.Visibility = Visibility.Collapsed;
         }
     }
 } 

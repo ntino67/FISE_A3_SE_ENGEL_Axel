@@ -331,6 +331,27 @@
                        NavigationUIVisibility="Hidden"
                        Background="Transparent"/>
             </Grid>
+            <!-- Toast Notification -->
+            <Grid x:Name="ToastHost"
+                  HorizontalAlignment="Center"
+                  VerticalAlignment="Bottom"
+                  Margin="0,0,0,30"
+                  Visibility="Collapsed"
+                  Opacity="0"
+                  IsHitTestVisible="False"
+                  Panel.ZIndex="99">
+                <Border Background="#313244"
+                        Padding="14,10"
+                        CornerRadius="8"
+                        BorderBrush="#A6ADC8"
+                        BorderThickness="1">
+                    <TextBlock x:Name="ToastText"
+                               Foreground="#CDD6F4"
+                               FontSize="16"
+                               FontWeight="Bold"
+                               Text="Toast Message" />
+                </Border>
+            </Grid>
         </Grid>
     </Border>
 </Window>
