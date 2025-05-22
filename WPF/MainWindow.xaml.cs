@@ -5,7 +5,7 @@ using System;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
-using WPF.Page;
+using WPF.Pages;
 
 namespace WPF
 {
@@ -16,7 +16,7 @@ namespace WPF
         public MainWindow()
         {
             InitializeComponent();
-            MainFrame.Navigate(new LogoPage());
+            MainFrame.Navigate(new WelcomePage());
 
             // For testing: create dummy jobs if none exist
             if (!_vm.Jobs.Any())
@@ -37,17 +37,17 @@ namespace WPF
 
         private void GlobalSettingsButton_Click(object sender, RoutedEventArgs e)
         {
-            MainFrame.Navigate(new SettingsPage());
+            MainFrame.Navigate(new AppSettingsPage());
         }
 
         private void Bouton2_Click(object sender, RoutedEventArgs e)
         {
-            MainFrame.Navigate(new LogsPage());
+            MainFrame.Navigate(new LogsOverviewPage());
         }
 
         private void Bouton3_Click(object sender, RoutedEventArgs e)
         {
-            MainFrame.Navigate(new StatusPage());
+            MainFrame.Navigate(new BackupStatusPage());
         }
 
         private void MinimizeButton_Click(object sender, RoutedEventArgs e)
@@ -70,7 +70,7 @@ namespace WPF
             if (sender is Button btn && btn.DataContext is BackupJob job)
             {
                 _vm.SetCurrentJob(job);
-                MainFrame.Navigate(new JobPage());
+                MainFrame.Navigate(new JobSettingsPage());
             }
         }
 
