@@ -9,7 +9,7 @@ namespace WPF
     /// <summary>
     /// Logique d'interaction pour JobPage.xaml
     /// </summary>
-    public partial class JobPage : LogoPage
+    public partial class JobPage : System.Windows.Controls.Page
     {
         private readonly JobViewModel _vm;
 

@@ -16,7 +16,7 @@ namespace WPF.page
     /// <summary>
     /// Logique d'interaction pour SettingsPage.xaml
     /// </summary>
-    public partial class SettingsPage : Window  
+    public partial class SettingsPage : System.Windows.Controls.Page
     {
         public SettingsPage()
         {

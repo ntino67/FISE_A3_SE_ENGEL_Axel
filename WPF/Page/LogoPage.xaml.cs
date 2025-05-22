@@ -13,7 +13,7 @@ using System.Windows.Shapes;
 
 namespace WPF.Page
 {
-    public partial class LogoPage : Page
+    public partial class LogoPage : System.Windows.Controls.Page
     {
         public LogoPage()
         {

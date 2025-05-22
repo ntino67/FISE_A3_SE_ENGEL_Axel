@@ -16,7 +16,7 @@ namespace WPF.Page
     /// <summary>
     /// Logique d'interaction pour LogsPage.xaml
     /// </summary>
-    public partial class LogsPage : Window
+    public partial class LogsPage : System.Windows.Controls.Page
     {
         public LogsPage()
         {
