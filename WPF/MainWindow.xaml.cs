@@ -124,13 +124,61 @@ namespace WPF
             ToastText.Text = message;
             ToastHost.Visibility = Visibility.Visible;
 
-            var fadeIn = new DoubleAnimation(0, 1, new Duration(TimeSpan.FromMilliseconds(200)));
-            ToastHost.BeginAnimation(UIElement.OpacityProperty, fadeIn);
+            var fadeSlideIn = new Storyboard();
+
+            var fadeIn = new DoubleAnimation
+            {
+                From = 0,
+                To = 1,
+                Duration = TimeSpan.FromMilliseconds(200)
+            };
+
+            var slideIn = new ThicknessAnimation
+            {
+                From = new Thickness(0, 0, 0, -50),
+                To = new Thickness(0, 0, 0, 30),
+                Duration = TimeSpan.FromMilliseconds(200),
+                EasingFunction = new QuadraticEase { EasingMode = EasingMode.EaseOut }
+            };
+
+            Storyboard.SetTarget(fadeIn, ToastHost);
+            Storyboard.SetTargetProperty(fadeIn, new PropertyPath("Opacity"));
+
+            Storyboard.SetTarget(slideIn, ToastHost);
+            Storyboard.SetTargetProperty(slideIn, new PropertyPath("Margin"));
+
+            fadeSlideIn.Children.Add(fadeIn);
+            fadeSlideIn.Children.Add(slideIn);
+            fadeSlideIn.Begin();
 
             await Task.Delay(durationMs);
 
-            var fadeOut = new DoubleAnimation(1, 0, new Duration(TimeSpan.FromMilliseconds(300)));
-            ToastHost.BeginAnimation(UIElement.OpacityProperty, fadeOut);
+            var fadeSlideOut = new Storyboard();
+
+            var fadeOut = new DoubleAnimation
+            {
+                From = 1,
+                To = 0,
+                Duration = TimeSpan.FromMilliseconds(300)
+            };
+
+            var slideOut = new ThicknessAnimation
+            {
+                From = new Thickness(0, 0, 0, 30),
+                To = new Thickness(0, 0, 0, -50),
+                Duration = TimeSpan.FromMilliseconds(300),
+                EasingFunction = new QuadraticEase { EasingMode = EasingMode.EaseIn }
+            };
+
+            Storyboard.SetTarget(fadeOut, ToastHost);
+            Storyboard.SetTargetProperty(fadeOut, new PropertyPath("Opacity"));
+
+            Storyboard.SetTarget(slideOut, ToastHost);
+            Storyboard.SetTargetProperty(slideOut, new PropertyPath("Margin"));
+
+            fadeSlideOut.Children.Add(fadeOut);
+            fadeSlideOut.Children.Add(slideOut);
+            fadeSlideOut.Begin();
 
             await Task.Delay(300);
             ToastHost.Visibility = Visibility.Collapsed;
