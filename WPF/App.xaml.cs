@@ -1,5 +1,6 @@
 ﻿using System.Windows;
 using Core.ViewModel;
+using WPF.Infrastructure;
 
 namespace WPF
 {

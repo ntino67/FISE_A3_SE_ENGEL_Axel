@@ -1,12 +1,12 @@
 ﻿using Core.Model;
 using Core.ViewModel;
-using Microsoft.Win32;
 using System;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media.Animation;
+using WPF.Infrastructure;
 using WPF.Pages;
 
 namespace WPF
@@ -18,6 +18,9 @@ namespace WPF
         public MainWindow()
         {
             InitializeComponent();
+            
+            DataContext = _vm;
+            
             Core.Utils.ToastBridge.ShowToast = ShowToast;
             MainFrame.Navigate(new WelcomePage());
 
@@ -75,24 +78,6 @@ namespace WPF
                 _vm.SetCurrentJob(job);
                 MainFrame.Navigate(new JobSettingsPage());
             }
-        }
-
-        private void AddJobButton_Click(object sender, RoutedEventArgs e)
-        {
-            string jobName = SearchBox.Text?.Trim();
-            if (string.IsNullOrEmpty(jobName))
-            {
-                MessageBox.Show("Veuillez entrer un nom de job.", "Nom manquant", MessageBoxButton.OK, MessageBoxImage.Warning);
-                return;
-            }
-            if (_vm.Jobs.Any(j => j.Name.Equals(jobName, StringComparison.OrdinalIgnoreCase)))
-            {
-                MessageBox.Show("Ce nom de job existe déjà.", "Doublon", MessageBoxButton.OK, MessageBoxImage.Warning);
-                return;
-            }
-
-            _vm.CreateNewJob(jobName);
-            SearchBox.Text = "";
         }
 
         private void SearchJobButton_Click(object sender, RoutedEventArgs e)
@@ -183,13 +168,10 @@ namespace WPF
             await Task.Delay(300);
             ToastHost.Visibility = Visibility.Collapsed;
         }
-
-        private void DeleteJobButton_Click(object sender, RoutedEventArgs e)
+        
+        private void SearchBox_TextChanged(object sender, TextChangedEventArgs e)
         {
-            if (sender is Button btn && btn.DataContext is BackupJob job)
-            {
-                _vm.DeleteJob(job.Id);
-            }
+            _vm.CreateJobCommand?.RaiseCanExecuteChanged();
         }
     }
 } 

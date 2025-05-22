@@ -10,7 +10,6 @@ namespace Core.Model.Implementations
 {
     public class JobManager : IBackupService
     {
-        private const int MaxJobs = 5;
         private List<BackupJob> _jobs;
         private readonly ILogger _logger;
         private readonly IConfigurationManager _configManager;
@@ -24,9 +23,6 @@ namespace Core.Model.Implementations
 
         public void AddBackupJob(BackupJob job)
         {
-            if (_jobs.Count >= MaxJobs)
-                throw new InvalidOperationException("Le nombre maximum de jobs (5) est atteint.");
-
             if (JobExists(job.Name))
                 throw new InvalidOperationException($"Un job avec le nom {job.Name} existe déjà.");
 

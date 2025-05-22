@@ -2,6 +2,7 @@
 using System.Windows.Controls;
 using Core.Utils;
 using Core.ViewModel;
+using WPF.Infrastructure;
 using WinForms = System.Windows.Forms;
 
 namespace WPF.Pages
@@ -28,12 +29,6 @@ namespace WPF.Pages
             using var dialog = new WinForms.FolderBrowserDialog();
             if (dialog.ShowDialog() == WinForms.DialogResult.OK)
                 _vm.UpdateTargetPath(dialog.SelectedPath);
-        }
-
-        private void OnDeleteJobClick(object sender, RoutedEventArgs e)
-        {
-            if (_vm.CurrentJob != null)
-                _vm.DeleteJob(_vm.CurrentJob.Id);
         }
 
         private void OnToggleEncryptionClick(object sender, RoutedEventArgs e)
