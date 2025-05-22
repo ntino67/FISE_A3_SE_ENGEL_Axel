@@ -1,42 +1,40 @@
-﻿using EasySave_2._0_from_ProSoft;
+﻿using Core.Model;
+using Core.ViewModel;
+using Microsoft.Win32;
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Input;
 
 namespace WPF
 {
     public partial class MainWindow : Window
     {
-        private List<JobItem> allJobs = new List<JobItem>();
+        private readonly JobViewModel _vm = ViewModelLocator.JobViewModel;
 
         public MainWindow()
         {
             InitializeComponent();
             MainFrame.Navigate(new LogoPage());
 
-            for (int i = 1; i <= 10; i++)
+            // For testing: create dummy jobs if none exist
+            if (!_vm.Jobs.Any())
             {
-                allJobs.Add(new JobItem
-                {
-                    Name = $"Job {i}",
-                    IsChecked = false,
-                    IsActive = (i % 2 == 0)
-                });
+                _vm.CreateNewJob("Job 1");
+                _vm.CreateNewJob("Job 2");
+                _vm.CreateNewJob("Job 3");
             }
-            JobList.ItemsSource = allJobs;
+
+            JobList.ItemsSource = _vm.Jobs;
         }
 
-        private void TopBar_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        private void TopBar_MouseLeftButtonDown(object sender, System.Windows.Input.MouseButtonEventArgs e)
         {
-            if (e.ChangedButton == MouseButton.Left)
+            if (e.ChangedButton == System.Windows.Input.MouseButton.Left)
                 this.DragMove();
         }
 
-        // Navigation vers SettingsPage
-        private void SettingsButton_Click(object sender, RoutedEventArgs e)
+        private void GlobalSettingsButton_Click(object sender, RoutedEventArgs e)
         {
             MainFrame.Navigate(new SettingsPage());
         }
@@ -58,10 +56,7 @@ namespace WPF
 
         private void MaximizeButton_Click(object sender, RoutedEventArgs e)
         {
-            if (WindowState == WindowState.Maximized)
-                WindowState = WindowState.Normal;
-            else
-                WindowState = WindowState.Maximized;
+            WindowState = WindowState == WindowState.Maximized ? WindowState.Normal : WindowState.Maximized;
         }
 
         private void CloseButton_Click(object sender, RoutedEventArgs e)
@@ -69,9 +64,13 @@ namespace WPF
             Close();
         }
 
-        private void CreateJobButton_Click(object sender, RoutedEventArgs e)
+        private void JobSettingsButton_Click(object sender, RoutedEventArgs e)
         {
-            MainFrame.Navigate(new JobPage());
+            if (sender is Button btn && btn.DataContext is BackupJob job)
+            {
+                _vm.SetCurrentJob(job);
+                MainFrame.Navigate(new JobPage());
+            }
         }
 
         private void AddJobButton_Click(object sender, RoutedEventArgs e)
@@ -82,20 +81,13 @@ namespace WPF
                 MessageBox.Show("Veuillez entrer un nom de job.", "Nom manquant", MessageBoxButton.OK, MessageBoxImage.Warning);
                 return;
             }
-            if (allJobs.Any(j => j.Name.Equals(jobName, StringComparison.OrdinalIgnoreCase)))
+            if (_vm.Jobs.Any(j => j.Name.Equals(jobName, StringComparison.OrdinalIgnoreCase)))
             {
                 MessageBox.Show("Ce nom de job existe déjà.", "Doublon", MessageBoxButton.OK, MessageBoxImage.Warning);
                 return;
             }
-            var newJob = new JobItem
-            {
-                Name = jobName,
-                IsChecked = false,
-                IsActive = false
-            };
-            allJobs.Add(newJob);
-            JobList.ItemsSource = null;
-            JobList.ItemsSource = allJobs;
+
+            _vm.CreateNewJob(jobName);
             SearchBox.Text = "";
         }
 
@@ -104,11 +96,11 @@ namespace WPF
             string search = SearchBox.Text?.Trim().ToLower();
             if (string.IsNullOrEmpty(search))
             {
-                JobList.ItemsSource = allJobs;
+                JobList.ItemsSource = _vm.Jobs;
             }
             else
             {
-                JobList.ItemsSource = allJobs.Where(j => j.Name.ToLower().Contains(search)).ToList();
+                JobList.ItemsSource = _vm.Jobs.Where(j => j.Name.ToLower().Contains(search)).ToList();
             }
         }
 
@@ -116,18 +108,11 @@ namespace WPF
         {
             if (RunComboBox.SelectedIndex == 2)
             {
-                foreach (var job in allJobs)
+                foreach (var job in _vm.Jobs)
                     job.IsChecked = false;
                 JobList.ItemsSource = null;
-                JobList.ItemsSource = allJobs;
+                JobList.ItemsSource = _vm.Jobs;
             }
         }
     }
-
-    public class JobItem
-    {
-        public string Name { get; set; }
-        public bool IsChecked { get; set; }
-        public bool IsActive { get; set; }
-    }
-}
+} 

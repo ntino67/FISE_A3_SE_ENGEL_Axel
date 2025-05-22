@@ -2,8 +2,18 @@
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:local="clr-namespace:WPF"
+             xmlns:utils="clr-namespace:Core.Utils;assembly=Core"
+             xmlns:sys="clr-namespace:System;assembly=mscorlib"
              StartupUri="MainWindow.xaml">
     <Application.Resources>
         <local:FullDiffConverter x:Key="FullDiffConverter"/>
+        <ObjectDataProvider x:Key="BackupTypeEnum"
+                            MethodName="GetValues"
+                            ObjectType="{x:Type sys:Enum}">
+            <ObjectDataProvider.MethodParameters>
+                <x:Type TypeName="utils:BackupType"/>
+            </ObjectDataProvider.MethodParameters>
+        </ObjectDataProvider>
+
     </Application.Resources>
 </Application>

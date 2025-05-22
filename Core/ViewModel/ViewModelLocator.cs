@@ -11,6 +11,16 @@ namespace Core.ViewModel
         private static IConfigurationManager _configManager;
         private static ILogger _logger;
         private static JobViewModel _jobViewModel;
+        
+        public static JobViewModel JobViewModel
+        {
+            get
+            {
+                if (_jobViewModel == null)
+                    throw new InvalidOperationException("ViewModelLocator has not been initialized. Call Initialize() first.");
+                return _jobViewModel;
+            }
+        }
 
         public static void Initialize()
         {
@@ -24,43 +34,10 @@ namespace Core.ViewModel
 
             _jobViewModel = new JobViewModel(_jobManager);
         }
-
-        public static JobViewModel GetJobViewModel()
-        {
-            if (_jobViewModel == null)
-                throw new InvalidOperationException("ViewModelLocator n'a pas été initialisé. Appelez Initialize() avant d'utiliser GetJobViewModel().");
-
-            return _jobViewModel;
-        }
-
-        public static IBackupService GetJobManager()
-        {
-            if (_jobManager == null)
-                throw new InvalidOperationException("ViewModelLocator n'a pas été initialisé. Appelez Initialize() avant d'utiliser GetJobManager().");
-
-            return _jobManager;
-        }
-
-        public static IConfigurationManager GetConfigManager()
-        {
-            if (_configManager == null)
-                throw new InvalidOperationException("ViewModelLocator n'a pas été initialisé. Appelez Initialize() avant d'utiliser GetConfigManager().");
-
-            return _configManager;
-        }
-
-        public static ILogger GetLogger()
-        {
-            if (_logger == null)
-                throw new InvalidOperationException("ViewModelLocator n'a pas été initialisé. Appelez Initialize() avant d'utiliser GetLogger().");
-
-            return _logger;
-        }
-
-        public static IConfigurationManager GetConfigurationManager()
-        {
-            return _configManager;
-        }
-
+        
+        public static JobViewModel GetJobViewModel() => JobViewModel;
+        public static IBackupService GetJobManager() => _jobManager ?? throw new InvalidOperationException("Call Initialize() first.");
+        public static IConfigurationManager GetConfigurationManager() => _configManager ?? throw new InvalidOperationException("Call Initialize() first.");
+        public static ILogger GetLogger() => _logger ?? throw new InvalidOperationException("Call Initialize() first.");
     }
 }
