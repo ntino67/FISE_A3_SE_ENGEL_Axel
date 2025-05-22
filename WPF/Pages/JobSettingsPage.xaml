@@ -6,9 +6,9 @@
       Title="JobPage"
       Background="#1E1E2E"
       DataContext="{x:Static viewModel:ViewModelLocator.JobViewModel}">
-    
+
     <Page.Resources>
-        <conv:BoolToVisibilityConverter x:Key="BoolToVisibility"/>
+        <conv:BoolToVisibilityConverter x:Key="BoolToVisibility" />
 
         <Style TargetType="TextBox" x:Key="PlaceholderStyle">
             <Setter Property="Template">
@@ -19,13 +19,13 @@
                                      Background="Transparent"
                                      Text="{TemplateBinding Text}"
                                      Foreground="{TemplateBinding Foreground}"
-                                     BorderThickness="0"/>
+                                     BorderThickness="0" />
                             <TextBlock Text="Enter encryption key..."
                                        Foreground="#6C7086"
                                        Margin="5,0,0,0"
                                        IsHitTestVisible="False"
                                        VerticalAlignment="Center"
-                                       Visibility="{Binding Text, ElementName=tb, Converter={StaticResource BoolToVisibility}}"/>
+                                       Visibility="{Binding Text, ElementName=tb, Converter={StaticResource BoolToVisibility}}" />
                         </Grid>
                     </ControlTemplate>
                 </Setter.Value>
@@ -33,18 +33,17 @@
         </Style>
     </Page.Resources>
 
-    
     <Grid Margin="20">
         <Grid.RowDefinitions>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
         </Grid.RowDefinitions>
 
         <!-- Header -->
         <Border Grid.Row="0" Background="#313244" Padding="20" CornerRadius="10">
-            <TextBox Text="{Binding CurrentJob.Name, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
-                     FontSize="28" Foreground="#CDD6F4" Background="Transparent" 
-                     BorderThickness="0" HorizontalAlignment="Center"/>
+            <TextBox Text="{Binding CurrentJob.Name, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                     FontSize="28" Foreground="#CDD6F4" Background="Transparent"
+                     BorderThickness="0" HorizontalAlignment="Center" />
         </Border>
 
         <!-- Body -->
@@ -53,20 +52,21 @@
                     ToolTip="{Binding CurrentJob.SourceDirectory}"
                     Click="OnSetSourcePathClick"
                     Width="250" Height="45"
-                    Background="#89B4FA" Foreground="#232336" Margin="0,5"/>
+                    Background="#89B4FA" Foreground="#232336" Margin="0,5" />
             <Button Content="{Binding TargetDirectoryLabel}"
                     ToolTip="{Binding CurrentJob.TargetDirectory}"
                     Click="OnSetTargetPathClick"
                     Width="250" Height="45"
-                    Background="#89B4FA" Foreground="#232336" Margin="0,5"/>
+                    Background="#89B4FA" Foreground="#232336" Margin="0,5" />
+
             <ComboBox Width="250" Height="36"
                       ItemsSource="{Binding Source={StaticResource BackupTypeEnum}}"
                       SelectedItem="{Binding CurrentJob.Type, Mode=TwoWay}"
                       Background="#313244"
-                      Foreground="#CDD6F4"
+                      Foreground="#313244"
                       BorderBrush="#A6ADC8"
                       FontSize="16"
-                      Margin="0,5"/>
+                      Margin="0,5" />
 
             <!-- Encryption UI -->
             <TextBox x:Name="KeyInput"
@@ -76,12 +76,16 @@
                      BorderBrush="#A6ADC8"
                      FontSize="16"
                      Style="{StaticResource PlaceholderStyle}" />
-            <Button Content="Encrypt / Decrypt" Click="OnToggleEncryptionClick" Width="250" Height="45" Background="#F9E2AF" Foreground="Black" Margin="0,5"/>
+            <Button Content="Encrypt / Decrypt" Click="OnToggleEncryptionClick" Width="250" Height="45"
+                    Background="#F9E2AF" Foreground="Black" Margin="0,5" />
 
             <!-- Commands -->
-            <Button Content="Run" Command="{Binding RunBackupCommand}" IsEnabled="{Binding CurrentJob.IsReady}" Width="250" Height="45" Background="#A6E3A1" Foreground="Black" Margin="0,5"/>
-            <Button Content="Delete" Click="OnDeleteJobClick" Width="250" Height="45" Background="#F38BA8" Foreground="Black" Margin="0,5"/>
-            <Button Content="Reset" Command="{Binding ResetJobCommand}" Width="250" Height="45" Background="#89DCEB" Foreground="Black" Margin="0,5"/>
+            <Button Content="Run" Command="{Binding RunBackupCommand}" IsEnabled="{Binding CurrentJob.IsReady}"
+                    Width="250" Height="45" Background="#A6E3A1" Foreground="Black" Margin="0,5" />
+            <Button Content="Delete" Click="OnDeleteJobClick" Width="250" Height="45" Background="#F38BA8"
+                    Foreground="Black" Margin="0,5" />
+            <Button Content="Reset" Command="{Binding ResetJobCommand}" Width="250" Height="45" Background="#89DCEB"
+                    Foreground="Black" Margin="0,5" />
         </StackPanel>
     </Grid>
 </Page>

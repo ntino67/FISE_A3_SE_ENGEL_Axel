@@ -1,12 +1,11 @@
-﻿using Microsoft.Win32;
-using System.Windows;
+﻿using System.Windows;
 using System.Windows.Controls;
-using WinForms = System.Windows.Forms;
 using Core.ViewModel;
+using WinForms = System.Windows.Forms;
 
 namespace WPF.Pages
 {
-   public partial class JobSettingsPage : System.Windows.Controls.Page
+    public partial class JobSettingsPage : Page
     {
         private readonly JobViewModel _vm;
 
@@ -38,16 +37,12 @@ namespace WPF.Pages
 
         private void OnToggleEncryptionClick(object sender, RoutedEventArgs e)
         {
-            string key = KeyInput.Text;
+            var key = KeyInput.Text;
             if (!string.IsNullOrEmpty(key))
-            {
                 // XOR encryption logic (assume implemented elsewhere)
                 _vm.ToggleEncryption(key);
-            }
             else
-            {
-                System.Windows.MessageBox.Show("Please enter a key first.");
-            }
+                MessageBox.Show("Please enter a key first.");
         }
     }
 }

@@ -7,6 +7,9 @@
              StartupUri="MainWindow.xaml">
     <Application.Resources>
         <local:FullDiffConverter x:Key="FullDiffConverter"/>
+        <Style TargetType="Control">
+            <Setter Property="Background" Value="Transparent"/>
+        </Style>
         <ObjectDataProvider x:Key="BackupTypeEnum"
                             MethodName="GetValues"
                             ObjectType="{x:Type sys:Enum}">
