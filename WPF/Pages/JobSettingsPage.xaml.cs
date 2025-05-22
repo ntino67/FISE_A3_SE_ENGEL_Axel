@@ -38,8 +38,9 @@ namespace WPF.Pages
         private void OnToggleEncryptionClick(object sender, RoutedEventArgs e)
         {
             var key = KeyInput.Text;
+            MessageBox.Show($"KeyInput.Text = [{key}]");
+
             if (!string.IsNullOrEmpty(key))
-                // XOR encryption logic (assume implemented elsewhere)
                 _vm.ToggleEncryption(key);
             else
                 MessageBox.Show("Please enter a key first.");

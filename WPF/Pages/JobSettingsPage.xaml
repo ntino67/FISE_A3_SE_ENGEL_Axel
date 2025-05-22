@@ -11,25 +11,11 @@
         <conv:BoolToVisibilityConverter x:Key="BoolToVisibility" />
 
         <Style TargetType="TextBox" x:Key="PlaceholderStyle">
-            <Setter Property="Template">
-                <Setter.Value>
-                    <ControlTemplate TargetType="TextBox">
-                        <Grid>
-                            <TextBox x:Name="tb"
-                                     Background="Transparent"
-                                     Text="{TemplateBinding Text}"
-                                     Foreground="{TemplateBinding Foreground}"
-                                     BorderThickness="0" />
-                            <TextBlock Text="Enter encryption key..."
-                                       Foreground="#6C7086"
-                                       Margin="5,0,0,0"
-                                       IsHitTestVisible="False"
-                                       VerticalAlignment="Center"
-                                       Visibility="{Binding Text, ElementName=tb, Converter={StaticResource BoolToVisibility}}" />
-                        </Grid>
-                    </ControlTemplate>
-                </Setter.Value>
-            </Setter>
+            <Style.Triggers>
+                <Trigger Property="Text" Value="">
+                    <Setter Property="Tag" Value="Enter encryption key..." />
+                </Trigger>
+            </Style.Triggers>
         </Style>
     </Page.Resources>
 
@@ -69,13 +55,20 @@
                       Margin="0,5" />
 
             <!-- Encryption UI -->
-            <TextBox x:Name="KeyInput"
-                     Width="250" Height="30"
-                     Background="#313244"
-                     Foreground="#CDD6F4"
-                     BorderBrush="#A6ADC8"
-                     FontSize="16"
-                     Style="{StaticResource PlaceholderStyle}" />
+            <Grid Width="250" Height="30" Margin="0,5">
+                <TextBox x:Name="KeyInput"
+                         Background="#313244"
+                         Foreground="#CDD6F4"
+                         BorderBrush="#A6ADC8"
+                         FontSize="16" />
+
+                <TextBlock Text="Enter encryption key..."
+                           Foreground="#6C7086"
+                           Margin="10,0,0,0"
+                           VerticalAlignment="Center"
+                           IsHitTestVisible="False"
+                           Visibility="{Binding Text, ElementName=KeyInput, Converter={StaticResource BoolToVisibility}}" />
+            </Grid>
             <Button Content="Encrypt / Decrypt" Click="OnToggleEncryptionClick" Width="250" Height="45"
                     Background="#F9E2AF" Foreground="Black" Margin="0,5" />
 

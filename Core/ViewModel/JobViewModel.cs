@@ -10,6 +10,7 @@ using Core.Utils;
 using System.Linq;
 using System.Diagnostics;
 using System.IO;
+using System.Text;
 
 namespace Core.ViewModel
 {
@@ -192,7 +193,7 @@ namespace Core.ViewModel
                 CurrentJob = null;
         }
         
-        public void ToggleEncryption(string key = null)
+        public void ToggleEncryption(string key)
         {
             if (CurrentJob == null)
                 return;
@@ -202,43 +203,25 @@ namespace Core.ViewModel
             if (!Directory.Exists(folder))
                 throw new DirectoryNotFoundException("Target directory not found.");
 
-            string[] files = Directory.GetFiles(folder);
+            string[] files = Directory.GetFiles(folder, "*", SearchOption.AllDirectories);
+            byte[] keyBytes = Encoding.UTF8.GetBytes(key);
 
             foreach (string file in files)
             {
-                if (file.EndsWith(".aes"))
+                if (file.EndsWith(".enc"))
                 {
                     // Decrypt
-                    RunCryptoSoft("-d", file);
+                    CryptoSoft.XorEncryption.DecryptFile(file, keyBytes);
                 }
                 else
                 {
+                    // Skip .exe or .enc files during encryption
+                    if (file.EndsWith(".exe") || file.EndsWith(".dll") || file.EndsWith(".enc"))
+                        continue;
+
                     // Encrypt
-                    RunCryptoSoft("-e", file);
+                    CryptoSoft.XorEncryption.EncryptFile(file, keyBytes);
                 }
-            }
-        }
-        
-        private void RunCryptoSoft(string mode, string filepath)
-        {
-            var startInfo = new ProcessStartInfo
-            {
-                FileName = "CryptoSoft.exe", 
-                Arguments = $"{mode} \"{filepath}\"",
-                UseShellExecute = false,
-                RedirectStandardOutput = true,
-                RedirectStandardError = true,
-                CreateNoWindow = true
-            };
-
-            using (var process = Process.Start(startInfo))
-            {
-                process.WaitForExit();
-                string output = process.StandardOutput.ReadToEnd();
-                string error = process.StandardError.ReadToEnd();
-
-                if (process.ExitCode != 0)
-                    throw new Exception($"CryptoSoft error: {error}");
             }
         }
     }

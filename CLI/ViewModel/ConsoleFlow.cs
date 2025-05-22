@@ -212,31 +212,6 @@ namespace CLI.ViewModel
                         _view.ShowMessage($"[green]{LangHelper.GetString("BackupTypeUpdated")}[/]");
                         break;
                     }
-
-                    case "Encrypt/Decrypt":
-                        //Ask the key to the user
-                        string key = AnsiConsole.Ask<string>($"[green]{LangHelper.GetString("EnterKey")}[/]");
-                        if (string.IsNullOrEmpty(key))
-                        {
-                            _view.ShowError("Key cannot be empty");
-                            break;
-                        }
-                        if (_vm.TargetPath == null)
-                        {
-                            _view.ShowError("Target path cannot be null");
-                            break;
-                        }
-                        //Encrypt/Decrypt the job
-
-                        if (_vm.JobEncryption(key))
-                        {
-                            _view.ShowMessage($"[green]{LangHelper.GetString("JobEncrypted")}[/]");
-                        }
-                        else
-                        {
-                            _view.ShowMessage($"[green]{LangHelper.GetString("JobDecrypted")}[/]");
-                        }
-                            break;
                     case "Backup":
                     {
                         _view.ShowMessage($"[yellow]{LangHelper.GetString("RunningBackup")}[/]");
