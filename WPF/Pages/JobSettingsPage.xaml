@@ -46,6 +46,7 @@
     </Page.Resources>
 
     <Grid Margin="20">
+    <Grid Margin="20" Cursor="">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
             <RowDefinition Height="*" />
@@ -64,14 +65,15 @@
                     ToolTip="{Binding CurrentJob.SourceDirectory}"
                     Click="OnSetSourcePathClick"
                     Width="250" Height="45"
-                    Background="#89B4FA" Foreground="#232336" Margin="0,5" />
+                    BorderBrush="#89B4FA" Foreground="#CDD6F4" Margin="0,5"
+                    Style="{StaticResource RoundedButtonStyle}" />
             <Button Content="{Binding TargetDirectoryLabel}"
                     ToolTip="{Binding CurrentJob.TargetDirectory}"
                     Click="OnSetTargetPathClick"
                     Width="250" Height="45"
-                    Background="#89B4FA" Foreground="#232336" Margin="0,5" />
+                    BorderBrush="#89B4FA" Foreground="#CDD6F4" Margin="0,5"
                     Style="{StaticResource RoundedButtonStyle}"
-                    BorderBrush="#89B4FA" Foreground="#CDD6F4" Margin="0,5" Cursor="Hand" />
+                    Cursor="Hand" />
 
             <ComboBox Width="250" Height="36"
                       ItemsSource="{Binding Source={StaticResource BackupTypeEnum}}"
@@ -100,23 +102,24 @@
             <Button Content="{Binding EncryptionStatus}" 
                     Command="{Binding ToggleEncryptionCommand}"
                     Width="250" Height="45"
-                    Background="#F9E2AF" Foreground="Black" Margin="0,5" />
+                    Style="{StaticResource RoundedButtonStyle}"
+                    BorderBrush="#F9E2AF" Foreground="#CDD6F4" Margin="0,5" />
 
             <!-- Commands -->
             <Button Content="Run" Command="{Binding RunBackupCommand}"
                     Style="{StaticResource RoundedButtonStyle}"
-                    Width="250" Height="45" Background="#A6E3A1" Foreground="Black" Margin="0,5" />
+                    Width="250" Height="45" BorderBrush="#A6E3A1" Foreground="#CDD6F4" Margin="0,5" />
             <Button Content="Delete"
                     Command="{Binding DeleteJobCommand}"
                     CommandParameter="{Binding CurrentJob}"
                     Width="250" Height="45"
-                    Background="#F38BA8" Foreground="Black"
+                    BorderBrush="#F38BA8" Foreground="#CDD6F4"
                     Style="{StaticResource RoundedButtonStyle}"
                     Margin="0,5" />
-            <Button Content="Reset" Command="{Binding ResetJobCommand}" Width="250" Height="45" Background="#89DCEB"
+                <Button Content="Reset" Command="{Binding ResetJobCommand}" Width="250" Height="45" BorderBrush="#89DCEB"
                     Style="{StaticResource RoundedButtonStyle}"
-                    Foreground="Black" Margin="0,5" />
+                    Foreground="#CDD6F4" Margin="0,5" />
         </StackPanel>
     </Grid>
-
+   </Grid>
 </Page>
