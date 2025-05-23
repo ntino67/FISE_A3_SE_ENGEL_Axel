@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Globalization;
 using System.Linq;
+using System.Threading;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
@@ -270,6 +272,49 @@ namespace WPF.Pages
                 MessageBox.Show($"Erreur lors de la détection des applications en cours : {ex.Message}",
                                 "Erreur", MessageBoxButton.OK, MessageBoxImage.Error);
             }
+        }
+
+
+        private void LanguageSelector_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (LanguageSelector.SelectedItem is ComboBoxItem selectedItem)
+            {
+                string selectedLangContent = selectedItem.Content.ToString();
+                string langCode = GetLanguageCodeFromContent(selectedLangContent);
+
+                if (!string.IsNullOrEmpty(langCode))
+                {
+                    SetLang(langCode);
+                }
+            }
+        }
+
+        private string GetLanguageCodeFromContent(string content)
+        {
+            switch (content)
+            {
+                case "Français":
+                    return "fr_FR";
+                case "English":
+                    return "en_US";
+                case "Español": // If you add Spanish to your ComboBox
+                    return "es_ES";
+                default:
+                    return "en_US"; // Default language
+            }
+        }
+
+        private void SetLang(string lang)
+        {
+            Thread.CurrentThread.CurrentCulture = new CultureInfo(lang);
+            Thread.CurrentThread.CurrentUICulture = new CultureInfo(lang);
+
+            Application.Current.Resources.MergedDictionaries.Clear();
+            ResourceDictionary resdict = new ResourceDictionary()
+            {
+                Source = new Uri($"/Utils/Language/Dictionary_{lang}.xaml", UriKind.Relative)
+            };
+            Application.Current.Resources.MergedDictionaries.Add(resdict);
         }
     }
 }

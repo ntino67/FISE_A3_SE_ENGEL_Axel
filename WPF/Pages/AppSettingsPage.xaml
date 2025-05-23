@@ -13,7 +13,7 @@
 
         <!-- En-tête de la page -->
         <TextBlock Grid.Row="0" 
-                   Text="Paramètres de l'application"
+                   Text="{DynamicResource TextGeneralsettings}"
                    FontSize="32" 
                    FontWeight="Bold" 
                    Margin="0,0,0,30"
@@ -64,6 +64,8 @@
                         Foreground="#cdd6f4"/>
 
                             <ComboBox x:Name="LanguageSelector"
+                       SelectedValue="{Binding SelectedLanguage, Mode=TwoWay}"
+                       SelectedValuePath="Content"
                        Grid.Column="1"
                        Height="40"
                        MaxWidth="300"
@@ -73,7 +75,8 @@
                        BorderThickness="0"
                        Padding="15,0"
                        FontSize="16"
-                       VerticalContentAlignment="Center">
+                       VerticalContentAlignment="Center"
+                                      SelectionChanged="LanguageSelector_SelectionChanged">
                                 <ComboBox.Resources>
                                     <SolidColorBrush x:Key="{x:Static SystemColors.WindowBrushKey}" Color="#313244"/>
                                     <SolidColorBrush x:Key="{x:Static SystemColors.HighlightBrushKey}" Color="#74c7ec"/>
@@ -85,8 +88,8 @@
                                         </StackPanel>
                                     </DataTemplate>
                                 </ComboBox.ItemTemplate>
-                                <ComboBoxItem Content="Français" />
-                                <ComboBoxItem Content="English" />
+                                <ComboBoxItem Content="Français"/>
+                                <ComboBoxItem Content="English"/>
                             </ComboBox>
                         </Grid>
                     </Grid>
