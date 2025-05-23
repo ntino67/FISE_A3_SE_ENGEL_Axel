@@ -235,25 +235,31 @@ namespace Core.Model.Implementations
             }
         }
 
-        internal static void Encrypt(string Directory, string key)
+        internal void Encrypt(BackupJob job, string key)
         {
-            CryptoHelper.Encrypt(Directory, new[] { ".txt", ".docx", ".xlsx", ".png" }, key);
+            string Directory = job.TargetDirectory;
+            _logger.LogEncryptionStart(job);
+            long duration = CryptoHelper.Encrypt(Directory, new[] { ".txt", ".docx", ".xlsx", ".png" }, key);
+            _logger.LogEncryptionEnd(job, true, duration);
         }
 
-        internal static void Decrypt(string Directory, string key)
+        internal void Decrypt(BackupJob job, string key)
         {
-            CryptoHelper.Decrypt(Directory, key);
+            string Directory = job.TargetDirectory;
+            _logger.LogEncryptionStart(job);
+            long duration = CryptoHelper.Decrypt(Directory, key);
+            _logger.LogEncryptionEnd(job, true, duration);
         }
 
-        public void Encryption(bool isEncrypted, string Directory, string Key)
+        public void Encryption(bool isEncrypted, BackupJob job, string Key)
         {
             if (isEncrypted)
             {
-                Encrypt(Directory, Key);
+                Encrypt(job, Key);
             }
             else
             {
-                Decrypt(Directory, Key);
+                Decrypt(job, Key);
             }
         }
     }

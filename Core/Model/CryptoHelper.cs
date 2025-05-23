@@ -10,14 +10,20 @@ namespace Core.Model
     {
         private const string CryptoSoftPath = @"C:\WorkDirMQ\FISE_A3_SE_ENGEL_Axel\CryptoSoft\bin\Debug\netcoreapp3.1\CryptoSoft.exe";
 
-        internal static string Encrypt(string sourceDirectory, IEnumerable<string> extensions, string SecretKey)
+        internal static long Encrypt(string sourceDirectory, IEnumerable<string> extensions, string SecretKey)
         {
-            return ProcessDirectory(sourceDirectory, "-e", extensions, SecretKey);
+            Stopwatch stopwatch = Stopwatch.StartNew();
+            ProcessDirectory(sourceDirectory, "-e", extensions, SecretKey);
+            stopwatch.Stop();
+            return stopwatch.ElapsedMilliseconds;
         }
 
-        internal static string Decrypt(string sourceDirectory, string SecretKey)
+        internal static long Decrypt(string sourceDirectory, string SecretKey)
         {
-            return ProcessDirectory(sourceDirectory, "-d", new[] { ".xor" }, SecretKey);
+            Stopwatch stopwatch = Stopwatch.StartNew();
+            ProcessDirectory(sourceDirectory, "-d", new[] { ".enc" }, SecretKey);
+            stopwatch.Stop();
+            return stopwatch.ElapsedMilliseconds;
         }
 
         private static string ProcessDirectory(string folderPath, string mode, IEnumerable<string> extensions, string SecretKey)
