@@ -82,6 +82,8 @@ namespace Core.ViewModel
         public event PropertyChangedEventHandler PropertyChanged;
 
         public ObservableCollection<BackupJob> Jobs { get; private set; }
+        
+        public Action RefreshCommands { get; set; } = () => { };
 
         public BackupJob CurrentJob
         {
@@ -103,6 +105,20 @@ namespace Core.ViewModel
                 _jobMessage = value;
                 OnPropertyChanged();
                 OnPropertyChanged(nameof(HasJobMessage));
+            }
+        }
+        
+        private string _encryptionKey;
+        public string EncryptionKey
+        {
+            get => _encryptionKey;
+            set
+            {
+                if (_encryptionKey != value)
+                {
+                    _encryptionKey = value;
+                    OnPropertyChanged();
+                }
             }
         }
 
@@ -132,7 +148,6 @@ namespace Core.ViewModel
             }
         }
         
-        public string EncryptionKey { get; set; }
         public ICommand RunBackupCommand { get; private set; }
         public ICommand ResetJobCommand { get; private set; }
         public ICommand DeleteJobCommand { get; private set; }
@@ -174,6 +189,7 @@ namespace Core.ViewModel
             CurrentJob.SourceDirectory = sourcePath;
             _jobManager.UpdateBackupJob(CurrentJob);
             OnPropertyChanged(nameof(SourceDirectoryLabel));
+            RefreshCommands();
         }
 
         public void UpdateTargetPath(string targetPath)
@@ -183,6 +199,7 @@ namespace Core.ViewModel
             _jobManager.UpdateBackupJob(CurrentJob);
             OnPropertyChanged(nameof(TargetDirectoryLabel));
             OnPropertyChanged(nameof(EncryptionStatus));
+            RefreshCommands();
         }
 
         public void UpdateBackupType(BackupType type)

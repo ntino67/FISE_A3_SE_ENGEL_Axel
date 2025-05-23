@@ -87,12 +87,13 @@
             <!-- Encryption UI -->
             <Grid Width="250" Height="30" Margin="0,5">
                 <TextBox x:Name="KeyInput"
+                         Text="{Binding EncryptionKey, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                          Background="#313244"
                          Foreground="#CDD6F4"
                          BorderBrush="#A6ADC8"
                          FontSize="16" />
 
-                <TextBlock Text="{Binding EncryptionKey, UpdateSourceTrigger=PropertyChanged}"
+                <TextBlock Text="Enter an Encryption Key..."
                            Foreground="#6C7086"
                            Margin="10,0,0,0"
                            VerticalAlignment="Center"
