@@ -260,7 +260,10 @@ namespace Core.ViewModel
             var plain = files.Where(f => !f.EndsWith(".enc") && !f.EndsWith(".exe") && !f.EndsWith(".dll")).ToList();
 
             if (encrypted.Count > 0 && plain.Count > 0)
-                throw new InvalidOperationException("Encryption aborted: mixed encrypted and non-encrypted files detected.");
+            {
+                _ui.ShowToast("⚠️ Mixed files detected! Please resolve before (en/de)crypting.", 4000);
+                return;
+            }
 
             if (encrypted.Any())
             {
