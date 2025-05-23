@@ -70,6 +70,8 @@
                     Click="OnSetTargetPathClick"
                     Width="250" Height="45"
                     Background="#89B4FA" Foreground="#232336" Margin="0,5" />
+                    Style="{StaticResource RoundedButtonStyle}"
+                    BorderBrush="#89B4FA" Foreground="#CDD6F4" Margin="0,5" Cursor="Hand" />
 
             <ComboBox Width="250" Height="36"
                       ItemsSource="{Binding Source={StaticResource BackupTypeEnum}}"
@@ -101,16 +103,20 @@
                     Background="#F9E2AF" Foreground="Black" Margin="0,5" />
 
             <!-- Commands -->
-            <Button Content="Run" Command="{Binding RunBackupCommand}" IsEnabled="{Binding CurrentJob.IsReady}"
+            <Button Content="Run" Command="{Binding RunBackupCommand}"
+                    Style="{StaticResource RoundedButtonStyle}"
                     Width="250" Height="45" Background="#A6E3A1" Foreground="Black" Margin="0,5" />
             <Button Content="Delete"
                     Command="{Binding DeleteJobCommand}"
                     CommandParameter="{Binding CurrentJob}"
                     Width="250" Height="45"
                     Background="#F38BA8" Foreground="Black"
+                    Style="{StaticResource RoundedButtonStyle}"
                     Margin="0,5" />
             <Button Content="Reset" Command="{Binding ResetJobCommand}" Width="250" Height="45" Background="#89DCEB"
+                    Style="{StaticResource RoundedButtonStyle}"
                     Foreground="Black" Margin="0,5" />
         </StackPanel>
     </Grid>
+
 </Page>
