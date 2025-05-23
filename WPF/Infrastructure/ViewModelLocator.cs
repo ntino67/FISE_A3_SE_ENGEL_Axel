@@ -1,5 +1,6 @@
 ﻿using System;
 using System.IO;
+using System.Windows;
 using System.Windows.Input;
 using Core.Model.Implementations;
 using Core.Model.Interfaces;
@@ -42,6 +43,7 @@ namespace WPF.Infrastructure
 
             _jobViewModel = new JobViewModel(_jobManager, _iuiService, _commandFactory);
             _jobViewModel.RefreshCommands = () => CommandManager.InvalidateRequerySuggested();
+            _jobViewModel.RunOnUiThread = action => Application.Current.Dispatcher.Invoke(action);
         }
         
         public static JobViewModel GetJobViewModel() => JobViewModel;

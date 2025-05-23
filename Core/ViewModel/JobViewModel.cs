@@ -18,6 +18,7 @@ namespace Core.ViewModel
         private readonly IBackupService _jobManager;
         private readonly IUIService _ui;
         private readonly ICommandFactory _commandFactory;
+        private FileSystemWatcher _watcher;
         private BackupJob _currentJob;
         
         public JobViewModel(IBackupService jobManager, IUIService uiService, ICommandFactory commandFactory)
@@ -84,6 +85,8 @@ namespace Core.ViewModel
         public ObservableCollection<BackupJob> Jobs { get; private set; }
         
         public Action RefreshCommands { get; set; } = () => { };
+        
+        public Action<Action> RunOnUiThread { get; set; } = action => action();
 
         public BackupJob CurrentJob
         {
@@ -158,6 +161,7 @@ namespace Core.ViewModel
         public void SetCurrentJob(BackupJob job)
         {
             CurrentJob = job;
+            StartWatchingCurrentJobDirectory();
         }
 
         public void CreateNewJob(string name)
@@ -302,5 +306,39 @@ namespace Core.ViewModel
 
         protected void OnPropertyChanged([CallerMemberName] string propertyName = null)
             => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        
+        private void StartWatchingCurrentJobDirectory()
+        {
+            if (_watcher != null)
+            {
+                _watcher.EnableRaisingEvents = false;
+                _watcher.Dispose();
+                _watcher = null;
+            }
+
+            if (CurrentJob == null || string.IsNullOrWhiteSpace(CurrentJob.TargetDirectory) || !Directory.Exists(CurrentJob.TargetDirectory))
+                return;
+
+            _watcher = new FileSystemWatcher(CurrentJob.TargetDirectory)
+            {
+                IncludeSubdirectories = true,
+                EnableRaisingEvents = true,
+                NotifyFilter = NotifyFilters.FileName | NotifyFilters.LastWrite | NotifyFilters.DirectoryName
+            };
+
+            _watcher.Changed += (s, e) => OnDirectoryChanged();
+            _watcher.Created += (s, e) => OnDirectoryChanged();
+            _watcher.Deleted += (s, e) => OnDirectoryChanged();
+            _watcher.Renamed += (s, e) => OnDirectoryChanged();
+        }
+
+        private void OnDirectoryChanged()
+        {
+            RunOnUiThread(() =>
+            {
+                OnPropertyChanged(nameof(EncryptionStatus));
+                RefreshCommands?.Invoke();
+            });
+        }
     }
 }
