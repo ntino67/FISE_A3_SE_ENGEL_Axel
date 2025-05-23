@@ -1,31 +1,27 @@
 ﻿<Window x:Class="WPF.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:infrastructure="clr-namespace:WPF.Infrastructure"
         Title="EasySave from ProSoft"
         Height="720" Width="1280"
         WindowStyle="None"
-        AllowsTransparency="True" 
-        Background="Transparent" 
-        ResizeMode="NoResize">
+        AllowsTransparency="True"
+        Background="Transparent"
+        ResizeMode="NoResize"
+        DataContext="{x:Static infrastructure:ViewModelLocator.JobViewModel}">
     <Window.Resources>
         <!-- Couleur Sapphire -->
         <SolidColorBrush x:Key="SapphireBrush" Color="#74c7ec"/>
         <!-- Style global pour tous les boutons -->
-        <Style x:Key="BaseControlStyle" TargetType="Control">
+        <Style TargetType="Button">
             <Setter Property="Background" Value="{StaticResource SapphireBrush}"/>
             <Setter Property="Foreground" Value="#232336"/>
             <Setter Property="FontWeight" Value="Bold"/>
-            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="BorderBrush" Value="Transparent"/>
+            <Setter Property="BorderThickness" Value="0.2"/>
+            <Setter Property="Height" Value="36"/>
         </Style>
 
-        <Style TargetType="Button" BasedOn="{StaticResource BaseControlStyle}" />
-        <Style TargetType="ComboBox" BasedOn="{StaticResource BaseControlStyle}" />
-        <Style TargetType="ComboBoxItem">
-            <Setter Property="Foreground" Value="#232336"/>
-            <Setter Property="FontWeight" Value="Bold"/>
-            <Setter Property="HorizontalContentAlignment" Value="Center"/>
-            <Setter Property="VerticalContentAlignment" Value="Center"/>
-        </Style>
 
         <!-- Style pour ToggleButton Differential/Full -->
         <Style x:Key="DiffFullToggleStyle" TargetType="ToggleButton">
@@ -127,210 +123,336 @@
             <Setter Property="Cursor" Value="Hand"/>
         </Style>
     </Window.Resources>
-    <Border Background="#1e1e2e" CornerRadius="20">
-        <Grid>
-            <Grid.RowDefinitions>
-                <RowDefinition Height="90"/>
-                <RowDefinition/>
-            </Grid.RowDefinitions>
-            <!-- BARRE SUPÉRIEURE PERSONNALISÉE -->
-            <Border Grid.Row="0"
-                    Background="Transparent"
-                    CornerRadius="20,20,0,0"
-                    MouseLeftButtonDown="TopBar_MouseLeftButtonDown">
-                <Grid>
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="320"/>
-                        <ColumnDefinition Width="437"/>
-                        <ColumnDefinition/>
-                        <ColumnDefinition Width="180"/>
-                    </Grid.ColumnDefinitions>
-                    <TextBlock Grid.Column="0"
-                               Text="EasySave"
-                               VerticalAlignment="Center"
-                               HorizontalAlignment="Left"
-                               Margin="30,0,0,0"
-                               Foreground="#cdd6f4"
-                               FontSize="44"
-                               FontWeight="Bold" Height="58" Width="186"/>
-                    <StackPanel Grid.Column="1" Orientation="Horizontal" VerticalAlignment="Center" Height="70" Margin="0,0,12,0">
-                        <Button Width="160" Height="70" Margin="10,0"
-                                ToolTip="Paramètres"
-                                Click="GlobalSettingsButton_Click">
-                            <TextBlock Text="Paramètres" FontSize="28" VerticalAlignment="Center" HorizontalAlignment="Center"/>
-                        </Button>
-                        <Button Width="100" Height="70" Margin="10,0"
-                                ToolTip="Logs"
-                                Click="Bouton2_Click">
-                            <TextBlock Text="Logs" FontSize="28" VerticalAlignment="Center" HorizontalAlignment="Center"/>
-                        </Button>
-                        <Button Width="90" Height="70" Margin="10,0"
-                                ToolTip="Status"
-                                Click="Bouton3_Click">
-                            <TextBlock Text="Status" FontSize="28" VerticalAlignment="Center" HorizontalAlignment="Center"/>
-                        </Button>
-                    </StackPanel>
-                    <Grid Grid.Column="2"/>
-                    <StackPanel Grid.Column="3" Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center" Height="70" Width="180">
-                        <Button Width="50" Height="70" Margin="5,0"
-                                Background="Transparent" BorderThickness="0"
-                                ToolTip="Réduire"
-                                Click="MinimizeButton_Click">
-                            <TextBlock Text="&#x2212;" FontSize="28" Foreground="#cdd6f4" VerticalAlignment="Center" HorizontalAlignment="Center"/>
-                        </Button>
-                        <Button Width="50" Height="70" Margin="5,0"
-                                Background="Transparent" BorderThickness="0"
-                                ToolTip="Agrandir/Restaurer"
-                                Click="MaximizeButton_Click">
-                            <TextBlock Text="&#x25A1;" FontSize="24" Foreground="#cdd6f4" VerticalAlignment="Center" HorizontalAlignment="Center"/>
-                        </Button>
-                        <Button Width="50" Height="70" Margin="5,0"
-                                Background="Transparent" BorderThickness="0"
-                                ToolTip="Fermer"
-                                Click="CloseButton_Click">
-                            <TextBlock Text="&#x2715;" FontSize="28" Foreground="#f38ba8" VerticalAlignment="Center" HorizontalAlignment="Center"/>
-                        </Button>
-                    </StackPanel>
-                </Grid>
-            </Border>
-            <!-- CONTENU PRINCIPAL -->
-            <Grid Grid.Row="1">
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="*"/>
-                    <ColumnDefinition Width="3*"/>
-                </Grid.ColumnDefinitions>
+    <Grid>
+        <Border Background="#1e1e2e" CornerRadius="20">
+            <Grid>
                 <Grid.RowDefinitions>
-                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="45"/>
+                    <RowDefinition/>
                 </Grid.RowDefinitions>
-                <!-- Colonne de gauche (Jobs + barre de recherche + boutons) -->
-                <Grid Grid.Column="0" Background="#232336" Margin="0,0,0,0">
+                <!-- BARRE SUPÉRIEURE PERSONNALISÉE -->
+                <Border Grid.Row="0"
+                        Background="Transparent"
+                        CornerRadius="20,20,0,0"
+                        MouseLeftButtonDown="TopBar_MouseLeftButtonDown" VerticalAlignment="Stretch">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="400"/>
+                            <ColumnDefinition Width="212"/>
+                            <ColumnDefinition/>
+                            <ColumnDefinition Width="96"/>
+                        </Grid.ColumnDefinitions>
+                        <TextBlock Grid.Column="0"
+                                   Text="EasySave"
+                                   HorizontalAlignment="Left"
+                                   Margin="15,7,0,7"
+                                   Foreground="#cdd6f4"
+                                   FontSize="22"
+                                   FontWeight="Bold" Width="93"/>
+                        <Button x:Name="HomeButton"
+                            Width="36"
+                            Height="36"
+                            Margin="0,0,125,0"
+                            ToolTip="Accueil"
+                            Background="Transparent"
+                            BorderBrush="Transparent"
+                            Foreground="{StaticResource SapphireBrush}"
+                            BorderThickness="0.2"
+                            Click="HomeButton_Click">
+                            <Viewbox Stretch="Uniform">
+                                <Canvas Width="24" Height="24"
+                                    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+                                    <Path Fill="{StaticResource SapphireBrush}"
+                                      Data="M10,20V14H14V20H19V12H22L12,3L2,12H5V20H10Z"/>
+                                </Canvas>
+                            </Viewbox>
+                        </Button>
+
+                        <Grid Grid.Column="1" Grid.ColumnSpan="2" VerticalAlignment="Center" Height="36" HorizontalAlignment="Left" Width="271">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+                            <Button Grid.Column="0" Width="36" Height="36"
+                                    Background="Transparent"
+                                    BorderBrush="Transparent"
+                                    BorderThickness="0.2"
+                                    ToolTip="Paramètres"
+                                    VerticalAlignment="Center" HorizontalAlignment="Center">
+                                <Viewbox Stretch="Uniform">
+                                    <Canvas Width="12" Height="12"
+                                            xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                                            xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+                                        <Path Fill="{StaticResource SapphireBrush}" Data="M12,15.5A3.5,3.5 0 0,1 8.5,12A3.5,3.5 0 0,1 12,8.5A3.5,3.5 0 0,1 15.5,12A3.5,3.5 0 0,1 12,15.5M19.43,12.97C19.47,12.65 19.5,12.33 19.5,12C19.5,11.67 19.47,11.34 19.43,11L21.54,9.37C21.73,9.22 21.78,8.95 21.66,8.73L19.66,5.27C19.54,5.05 19.27,4.96 19.05,5.05L16.56,6.05C16.04,5.66 15.5,5.32 14.87,5.07L14.5,2.42C14.46,2.18 14.25,2 14,2H10C9.75,2 9.54,2.18 9.5,2.42L9.13,5.07C8.5,5.32 7.96,5.66 7.44,6.05L4.95,5.05C4.73,4.96 4.46,5.05 4.34,5.27L2.34,8.73C2.21,8.95 2.27,9.22 2.46,9.37L4.57,11C4.53,11.34 4.5,11.67 4.5,12C4.5,12.33 4.53,12.65 4.57,12.97L2.46,14.63C2.27,14.78 2.21,15.05 2.34,15.27L4.34,18.73C4.46,18.95 4.73,19.03 4.95,18.95L7.44,17.94C7.96,18.34 8.5,18.68 9.13,18.93L9.5,21.58C9.54,21.82 9.75,22 10,22H14C14.25,22 14.46,21.82 14.5,21.58L14.87,18.93C15.5,18.67 16.04,18.34 16.56,17.94L19.05,18.95C19.27,19.03 19.54,18.95 19.66,18.73L21.66,15.27C21.78,15.05 21.73,14.78 21.54,14.63L19.43,12.97Z" Height="11" Stretch="Fill" Width="11" HorizontalAlignment="Center" VerticalAlignment="Center" Canvas.Top="0.441" Canvas.Left="0.5" />
+                                    </Canvas>
+                                </Viewbox>
+                            </Button>
+                            <Button Grid.Column="1" Width="99" Height="36"
+                                    ToolTip="Logs"
+                                    Background="Transparent"
+                                    BorderBrush="Transparent"
+                                    Foreground="{StaticResource SapphireBrush}"
+                                    BorderThickness="0.2"
+                                    Click="Logs_Click"
+                                    VerticalAlignment="Center" HorizontalAlignment="Center">
+                                <TextBlock Text="Logs" FontSize="20" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+                            </Button>
+                            <Button Grid.Column="2" Width="80" Height="36"
+                                    ToolTip="Status"
+                                    Background="Transparent"
+                                    BorderBrush="Transparent"
+                                    Foreground="{StaticResource SapphireBrush}"
+                                    BorderThickness="0.2"
+                                    Click="Status_Click"
+                                    VerticalAlignment="Center" HorizontalAlignment="Center">
+                                <TextBlock Text="Status" FontSize="20" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+                            </Button>
+                        </Grid>
+                        <Grid Grid.Column="2" Margin="0,0,0,0"/>
+                        <Border Grid.Column="2" Background="Transparent" CornerRadius="8" Margin="530,0,-12,0" Grid.ColumnSpan="2">
+                            <Grid VerticalAlignment="Center" HorizontalAlignment="Right" Margin="0,0,15,0">
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="*"/>
+                                </Grid.RowDefinitions>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
+                                <Button Grid.Column="0" Width="36" Height="36" Margin="2,0"
+                                        Background="Transparent" BorderThickness="0"
+                                        ToolTip="Réduire"
+                                        Click="MinimizeButton_Click"
+                                        VerticalAlignment="Center" HorizontalAlignment="Center">
+                                    <TextBlock Text="&#x2212;" FontSize="25" Foreground="#cdd6f4" VerticalAlignment="Center" HorizontalAlignment="Center" Height="45"/>
+                                </Button>
+                                <Button Grid.Column="1" Width="36" Height="36" Margin="2,0"
+                                        Background="Transparent" BorderThickness="0"
+                                        ToolTip="Agrandir/Restaurer"
+                                        Click="MaximizeButton_Click"
+                                        VerticalAlignment="Center" HorizontalAlignment="Center">
+                                    <TextBlock Text="&#x25A1;" FontSize="30" Foreground="#cdd6f4" VerticalAlignment="Center" HorizontalAlignment="Center" Height="56"/>
+                                </Button>
+                                <Button Grid.Column="2" Width="36" Height="36" Margin="2,0"
+                                        Background="Transparent" BorderThickness="0"
+                                        ToolTip="Fermer"
+                                        Click="CloseButton_Click"
+                                        VerticalAlignment="Center" HorizontalAlignment="Center">
+                                    <TextBlock Text="&#x2715;" FontSize="20" Foreground="#f38ba8" VerticalAlignment="Center" HorizontalAlignment="Center" Height="34"/>
+                                </Button>
+                            </Grid>
+                        </Border>
+                    </Grid>
+                </Border>
+                <!-- CONTENU PRINCIPAL -->
+                <Grid Grid.Row="1">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="3*"/>
+                    </Grid.ColumnDefinitions>
                     <Grid.RowDefinitions>
-                        <RowDefinition Height="Auto"/>
                         <RowDefinition Height="*"/>
-                        <RowDefinition Height="Auto"/>
                     </Grid.RowDefinitions>
-                    <!-- Barre de recherche + boutons alignés à droite, zone de texte à largeur fixe -->
-                    <StackPanel Grid.Row="0" Orientation="Horizontal" Margin="0,10,10,10" HorizontalAlignment="Stretch">
-                        <TextBox x:Name="SearchBox"
-                                 Width="220"
-                                 VerticalAlignment="Center"
-                                 Height="36"
-                                 Margin="10,0,5,0"
-                                 Background="#313244"
-                                 Foreground="#cdd6f4"
-                                 FontSize="18"
-                                 Padding="10,0"/>
-                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
-                            <Button x:Name="SearchJobButton"
+                    <!-- Colonne de gauche (Jobs + barre de recherche + boutons) -->
+                    <Grid Grid.Column="0" Background="#232336" Margin="0,0,0,0">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="*"/>
+                            <RowDefinition Height="Auto"/>
+                        </Grid.RowDefinitions>
+                        <!-- Barre de recherche + boutons alignés à droite, zone de texte à largeur fixe -->
+                        <StackPanel Grid.Row="0" Orientation="Horizontal" Margin="0,10,10,10" HorizontalAlignment="Stretch">
+                            <TextBox x:Name="SearchBox"
+                                     Width="220"
+                                     VerticalAlignment="Center"
+                                     Height="36"
+                                     Margin="10,0,5,0"
+                                     Background="#313244"
+                                     Foreground="White"
+                                     FontSize="18"
+                                     Padding="10,0" />
+                            <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
+                                <Button x:Name="SearchJobButton"
                                     Width="36"
                                     Height="36"
                                     Margin="0,0,5,0"
                                     ToolTip="Rechercher"
+                                    Background="Transparent"
+                                    BorderBrush="Transparent"
+                                    Foreground="{StaticResource SapphireBrush}"
+                                    BorderThickness="0.2"
                                     Click="SearchJobButton_Click">
-                                <TextBlock Text="🔍" FontSize="20" FontWeight="Bold" VerticalAlignment="Center" HorizontalAlignment="Center"/>
-                            </Button>
-                            <Button x:Name="AddJobButton"
-                                    Width="36"
-                                    Height="36"
-                                    Margin="0,0,0,0"
-                                    ToolTip="Créer un job"
-                                    Click="AddJobButton_Click">
-                                <TextBlock Text="+" FontSize="24" FontWeight="Bold" VerticalAlignment="Center" HorizontalAlignment="Center"/>
-                            </Button>
-                        </StackPanel>
-                    </StackPanel>
-                    <!-- Liste des jobs avec espacement -->
-                    <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto" Margin="0,0,0,0">
-                        <ItemsControl x:Name="JobList" Margin="10,0,10,0">
-                            <ItemsControl.ItemsPanel>
-                                <ItemsPanelTemplate>
-                                    <StackPanel/>
-                                </ItemsPanelTemplate>
-                            </ItemsControl.ItemsPanel>
-                            <ItemsControl.ItemTemplate>
-                                <DataTemplate>
-                                    <Border Background="#313244" CornerRadius="12" Margin="0,10,0,10" Padding="0" Height="110">
-                                        <Grid>
-                                            <Grid.ColumnDefinitions>
-                                                <ColumnDefinition Width="1*"/>
-                                                <ColumnDefinition Width="3*"/>
-                                                <ColumnDefinition Width="2*"/>
-                                            </Grid.ColumnDefinitions>
-                                            <!-- Checkbox (1/6) -->
-                                            <CheckBox Grid.Column="0"
-                                                      IsChecked="{Binding IsChecked}"
-                                                      VerticalAlignment="Center"
-                                                      HorizontalAlignment="Center"/>
-                                            <!-- Nom du job (3/6) -->
-                                            <TextBlock Grid.Column="1"
-                                                       Text="{Binding Name}"
-                                                       VerticalAlignment="Center"
-                                                       HorizontalAlignment="Left"
-                                                       FontSize="22"
-                                                       Foreground="#cdd6f4"
-                                                       FontWeight="Bold"
-                                                       Margin="10,0,0,0"
-                                                       TextTrimming="CharacterEllipsis"
-                                                       TextWrapping="NoWrap"
-                                                       Width="220"/>
-                                            <!-- Paramètres + toggle (2/6) -->
-                                            <Grid Grid.Column="2">
-                                                <Grid.RowDefinitions>
-                                                    <RowDefinition Height="*"/>
-                                                    <RowDefinition Height="*"/>
-                                                </Grid.RowDefinitions>
-                                                <!-- Bouton paramètres en haut à droite -->
-                                                <Button Grid.Row="0"
-                                                        Content="⚙"
-                                                        Width="36" Height="36"
-                                                        HorizontalAlignment="Right"
-                                                        VerticalAlignment="Top"
-                                                        Margin="0,5,5,0"
-                                                        ToolTip="Paramètres du job"
-                                                        Click="JobSettingsButton_Click" />
-                                                <!-- Texte Full/Diff + toggle en bas à droite -->
-                                                <StackPanel Grid.Row="1" Orientation="Vertical" HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="0,0,5,5">
-                                                    <ToggleButton IsChecked="{Binding IsActive}" Style="{StaticResource DiffFullToggleStyle}"/>
-                                                </StackPanel>
-                                            </Grid>
-                                        </Grid>
-                                    </Border>
-                                </DataTemplate>
-                            </ItemsControl.ItemTemplate>
-                        </ItemsControl>
-                    </ScrollViewer>
-                    <!-- Bouton Run déroulant en bas + bouton Exécuter -->
-                    <Grid Grid.Row="2" Margin="10,10,10,10">
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="*"/>
-                            <ColumnDefinition Width="Auto"/>
-                        </Grid.ColumnDefinitions>
-                        <ComboBox x:Name="RunComboBox"
-                              Height="50"
-                              FontSize="14"
-                              VerticalAlignment="Bottom"
-                              HorizontalAlignment="Stretch"
-                              BorderThickness="0"
-                              SelectedIndex="0"
-                              Padding="0"
-                              HorizontalContentAlignment="Center"
-                              VerticalContentAlignment="Center">
-                            <ComboBoxItem Content="Run current selected"/>
-                            <ComboBoxItem Content="Run all"/>
-                            <ComboBoxItem Content="Reset selection"/>
-                        </ComboBox>
+                                    <Viewbox Stretch="Uniform">
+                                        <Canvas Width="24" Height="24"
+                                            xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                                            xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+                                            <Path Fill="{StaticResource SapphireBrush}"
+                                                Data="M9.5,3A6.5,6.5 0 0,1 16,9.5C16,11.11 15.41,12.59 14.44,13.73L14.71,14H15.5L20.5,19L19,20.5L14,15.5V14.71L13.73,14.44C12.59,15.41 11.11,16 9.5,16A6.5,6.5 0 0,1 3,9.5A6.5,6.5 0 0,1 9.5,3M9.5,5C7,5 5,7 5,9.5C5,12 7,14 9.5,14C12,14 14,12 14,9.5C14,7 12,5 9.5,5Z"/>
+                                        </Canvas>
+                                    </Viewbox>
+                                </Button>
 
-                        <Button x:Name="RunButton" Content="Exécuter" Height="50" Width="110" Margin="10,0,0,0"
-                                VerticalAlignment="Bottom" Grid.Column="1"
+                                <Button x:Name="AddJobButton"
+                                        Width="36"
+                                        Height="36"
+                                        Margin="0,0,0,0"
+                                        ToolTip="Créer un job"
+                                        Background="Transparent"
+                                        BorderBrush="Transparent"
+                                        Foreground="{StaticResource SapphireBrush}"
+                                        BorderThickness="0.2"
+                                        Command="{Binding CreateJobCommand}"
+                                        CommandParameter="{Binding Text, ElementName=SearchBox}">
+                                    <TextBlock Text="+" FontSize="50" FontWeight="Bold" VerticalAlignment="Center" HorizontalAlignment="Center" Height="78"/>
+                                </Button>
+                            </StackPanel>
+                        </StackPanel>
+                        <!-- Liste des jobs avec espacement -->
+                        <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto" Margin="0,0,0,0">
+                            <ItemsControl x:Name="JobList" Margin="10,0,10,0">
+                                <ItemsControl.ItemsPanel>
+                                    <ItemsPanelTemplate>
+                                        <StackPanel/>
+                                    </ItemsPanelTemplate>
+                                </ItemsControl.ItemsPanel>
+                                <ItemsControl.ItemTemplate>
+                                    <DataTemplate>
+                                        <Border Background="#313244" CornerRadius="12" Margin="0,10,0,10" Padding="0" Height="110">
+                                            <Grid>
+                                                <Grid.ColumnDefinitions>
+                                                    <ColumnDefinition Width="1*"/>
+                                                    <ColumnDefinition Width="3*"/>
+                                                    <ColumnDefinition Width="2*"/>
+                                                </Grid.ColumnDefinitions>
+                                                <!-- Checkbox (1/6) -->
+                                                <CheckBox Grid.Column="0"
+                                                          IsChecked="{Binding IsChecked}"
+                                                          VerticalAlignment="Center"
+                                                          HorizontalAlignment="Center"/>
+                                                <!-- Nom du job (3/6) -->
+                                                <TextBlock Grid.Column="1"
+                                                           Text="{Binding Name}"
+                                                           VerticalAlignment="Center"
+                                                           HorizontalAlignment="Left"
+                                                           FontSize="22"
+                                                           Foreground="#cdd6f4"
+                                                           FontWeight="Bold"
+                                                           Margin="10,0,0,0"
+                                                           TextTrimming="CharacterEllipsis"
+                                                           TextWrapping="NoWrap"
+                                                           Width="220"/>
+                                                <!-- Paramètres + toggle + poubelle (2/6) -->
+                                                <Grid Grid.Column="2">
+                                                    <Grid.RowDefinitions>
+                                                        <RowDefinition Height="*"/>
+                                                        <RowDefinition Height="*"/>
+                                                    </Grid.RowDefinitions>
+                                                    <StackPanel Grid.Row="0" Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0,5,5,0" >
+                                                        <!-- Bouton paramètres (identique à la barre supérieure) -->
+                                                        <Button Width="36" Height="36"
+                                                                Background="Transparent"
+                                                                BorderBrush="Transparent"
+                                                                BorderThickness="0.2"
+                                                                ToolTip="Paramètres du job"
+                                                                VerticalAlignment="Center" HorizontalAlignment="Center"
+                                                                Click="JobSettingsButton_Click"
+                                                                CommandParameter="{Binding}">
+                                                            <Viewbox Stretch="Uniform">
+                                                                <Canvas Width="12" Height="12"
+                                                                        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                                                                        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+                                                                    <Path Fill="{StaticResource SapphireBrush}" Data="M12,15.5A3.5,3.5 0 0,1 8.5,12A3.5,3.5 0 0,1 12,8.5A3.5,3.5 0 0,1 15.5,12A3.5,3.5 0 0,1 12,15.5M19.43,12.97C19.47,12.65 19.5,12.33 19.5,12C19.5,11.67 19.47,11.34 19.43,11L21.54,9.37C21.73,9.22 21.78,8.95 21.66,8.73L19.66,5.27C19.54,5.05 19.27,4.96 19.05,5.05L16.56,6.05C16.04,5.66 15.5,5.32 14.87,5.07L14.5,2.42C14.46,2.18 14.25,2 14,2H10C9.75,2 9.54,2.18 9.5,2.42L9.13,5.07C8.5,5.32 7.96,5.66 7.44,6.05L4.95,5.05C4.73,4.96 4.46,5.05 4.34,5.27L2.34,8.73C2.21,8.95 2.27,9.22 2.46,9.37L4.57,11C4.53,11.34 4.5,11.67 4.5,12C4.5,12.33 4.53,12.65 4.57,12.97L2.46,14.63C2.27,14.78 2.21,15.05 2.34,15.27L4.34,18.73C4.46,18.95 4.73,19.03 4.95,18.95L7.44,17.94C7.96,18.34 8.5,18.68 9.13,18.93L9.5,21.58C9.54,21.82 9.75,22 10,22H14C14.25,22 14.46,21.82 14.5,21.58L14.87,18.93C15.5,18.67 16.04,18.34 16.56,17.94L19.05,18.95C19.27,19.03 19.54,18.95 19.66,18.73L21.66,15.27C21.78,15.05 21.73,14.78 21.54,14.63L19.43,12.97Z" Height="11" Stretch="Fill" Width="11" HorizontalAlignment="Center" VerticalAlignment="Center" Canvas.Top="0.441" Canvas.Left="0.5" />
+                                                                </Canvas>
+                                                            </Viewbox>
+                                                        </Button>
+                                                        <!-- Bouton poubelle -->
+                                                        <Button Width="36" Height="36"
+                                                                Background="Transparent"
+                                                                BorderBrush="Transparent"
+                                                                ToolTip="Supprimer le job"
+                                                                Command="{Binding DataContext.DeleteJobCommand, RelativeSource={RelativeSource AncestorType=Window}}"
+                                                                CommandParameter="{Binding}">
+
+                                                            <Viewbox Stretch="Uniform">
+                                                                <Canvas Width="24" Height="24"
+                                                                        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                                                                        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+                                                                    <!-- Icône poubelle simple -->
+                                                                    <Path Fill="{StaticResource SapphireBrush}" Data="M3,6 L5,6 L21,6 M19,6 L17.5,21.5 C17.4,22.3 16.7,23 15.9,23 H8.1 C7.3,23 6.6,22.3 6.5,21.5 L5,6 M10,11 V17 M14,11 V17 M9,6 V4 C9,3.4 9.4,3 10,3 H14 C14.6,3 15,3.4 15,4 V6" Stroke="{StaticResource SapphireBrush}" StrokeThickness="1.2" StrokeStartLineCap="Round" StrokeEndLineCap="Round" StrokeLineJoin="Round"/>
+                                                                </Canvas>
+                                                            </Viewbox>
+                                                        </Button>
+                                                    </StackPanel>
+                                                    <!-- Texte Full/Diff + toggle en bas à droite -->
+                                                    <StackPanel Grid.Row="1" Orientation="Vertical" HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="0,0,5,5">
+                                                        <ToggleButton IsChecked="{Binding IsActive}" Style="{StaticResource DiffFullToggleStyle}"/>
+                                                    </StackPanel>
+                                                </Grid>
+                                            </Grid>
+                                        </Border>
+                                    </DataTemplate>
+                                </ItemsControl.ItemTemplate>
+                            </ItemsControl>
+                        </ScrollViewer>
+                        <!-- Bouton Run déroulant en bas + bouton Exécuter -->
+                        <Grid Grid.Row="2" Margin="10,10,10,10">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="Auto"/>
+                            </Grid.ColumnDefinitions>
+                            <ComboBox x:Name="RunComboBox"
+                                  Height="36"
+                                  FontSize="14"
+                                  VerticalAlignment="Bottom"
+                                  HorizontalAlignment="Stretch"
+                                  BorderThickness="0"
+                                  Foreground="{StaticResource SapphireBrush}"
+                                  FontWeight="Bold"
+                                  SelectedIndex="0"
+                                  Padding="0"
+                                  HorizontalContentAlignment="Center"
+                                  VerticalContentAlignment="Center">
+                                <ComboBoxItem Content="Run current selected"/>
+                                <ComboBoxItem Content="Run all"/>
+                                <ComboBoxItem Content="Reset selection"/>
+                            </ComboBox>
+
+                            <Button x:Name="RunButton" Content="Exécuter" Height="36" Width="110" Margin="10,0,0,0"
+                                    VerticalAlignment="Bottom" Grid.Column="1" Foreground="{StaticResource SapphireBrush}" Background="Transparent"
                                 Click="RunButton_Click" FontSize="20"/>
+                        </Grid>
                     </Grid>
+                    <!-- Frame pour afficher les pages, occupe 3/4 de la largeur -->
+                    <Frame x:Name="MainFrame"
+                           Grid.Column="1"
+                           NavigationUIVisibility="Hidden"
+                           Background="Transparent"/>
                 </Grid>
-                <!-- Frame pour afficher les pages, occupe 3/4 de la largeur -->
-                <Frame x:Name="MainFrame"
-                       Grid.Column="1"
-                       NavigationUIVisibility="Hidden"
-                       Background="Transparent"/>
+
             </Grid>
+        </Border>
+        <Grid x:Name="ToastHost"
+              HorizontalAlignment="Center"
+              VerticalAlignment="Bottom"
+              Margin="0,0,0,-50" 
+              Visibility="Collapsed"
+              Opacity="0"
+              IsHitTestVisible="False"
+              Panel.ZIndex="99">
+
+            <Border Background="#313244"
+                    Padding="14,10"
+                    CornerRadius="8"
+                    BorderBrush="#A6ADC8"
+                    BorderThickness="1">
+                <TextBlock x:Name="ToastText"
+                           Foreground="#CDD6F4"
+                           FontSize="16"
+                           FontWeight="Bold"
+                           Text="Toast Message" />
+            </Border>
         </Grid>
-    </Border>
+    </Grid>
 </Window>

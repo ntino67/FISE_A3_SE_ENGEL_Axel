@@ -1,15 +1,13 @@
-﻿using Microsoft.Win32;
-using System.Windows;
+﻿using System.Windows;
 using System.Windows.Controls;
-using WinForms = System.Windows.Forms;
+using Core.Utils;
 using Core.ViewModel;
+using WPF.Infrastructure;
+using WinForms = System.Windows.Forms;
 
 namespace WPF.Pages
 {
-    /// <summary>
-    /// Logique d'interaction pour JobPage.xaml
-    /// </summary>
-    public partial class JobSettingsPage : System.Windows.Controls.Page
+    public partial class JobSettingsPage : Page
     {
         private readonly JobViewModel _vm;
 
@@ -33,24 +31,14 @@ namespace WPF.Pages
                 _vm.UpdateTargetPath(dialog.SelectedPath);
         }
 
-        private void OnDeleteJobClick(object sender, RoutedEventArgs e)
-        {
-            if (_vm.CurrentJob != null)
-                _vm.DeleteJob(_vm.CurrentJob.Id);
-        }
-
         private void OnToggleEncryptionClick(object sender, RoutedEventArgs e)
         {
-            string key = KeyInput.Text;
+            var key = KeyInput.Text;
+
             if (!string.IsNullOrEmpty(key))
-            {
-                // XOR encryption logic (assume implemented elsewhere)
                 _vm.ToggleEncryption(key);
-            }
             else
-            {
-                System.Windows.MessageBox.Show("Please enter a key first.");
-            }
+                ToastBridge.ShowToast?.Invoke("🔑 Please enter a key first", 3000);
         }
     }
 }

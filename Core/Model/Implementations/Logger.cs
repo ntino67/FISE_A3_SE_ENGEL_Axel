@@ -65,6 +65,30 @@ namespace Core.Model.Implementations
             WriteToLogFile(logEntry);
         }
 
+        public void LogEncryptionStart(BackupJob job)
+        {
+            LogEntry logEntry = new LogEntry
+            {
+                Timestamp = DateTime.Now,
+                JobName = job.Name,
+                EncryptedDirectoryPath = job.TargetDirectory,
+                EncryptionDuration = 0,
+                Status = "ENCRYPTION_STARTED"
+            };
+            WriteToLogFile(logEntry);
+        }
+        public void LogEncryptionEnd(BackupJob job, bool success, long duration)
+        {
+            LogEntry logEntry = new LogEntry
+            {
+                Timestamp = DateTime.Now,
+                JobName = job.Name,
+                EncryptedDirectoryPath = job.TargetDirectory,
+                EncryptionDuration = duration,
+                Status = success ? "ENCRYPTION_COMPLETED" : "ENCRYPTION_FAILED"
+            }; 
+            WriteToLogFile(logEntry);
+        }
         public List<LogEntry> GetTodayLogs()
         {
             string logFilePath = GetLogFilePath(DateTime.Now);

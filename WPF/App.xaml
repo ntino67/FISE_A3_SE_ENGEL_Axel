@@ -7,6 +7,47 @@
              StartupUri="MainWindow.xaml">
     <Application.Resources>
         <local:FullDiffConverter x:Key="FullDiffConverter"/>
+        <Style TargetType="Control">
+            <Setter Property="Background" Value="Transparent"/>
+        </Style>
+
+        <Style x:Key="RoundedButtonStyle" TargetType="Button">
+            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="BorderBrush" Value="#89B4FA"/>
+            <Setter Property="BorderThickness" Value="2"/>
+            <Setter Property="FontSize" Value="16"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border x:Name="border"
+                    CornerRadius="12"
+                    Background="{TemplateBinding Background}"
+                    BorderBrush="{TemplateBinding BorderBrush}"
+                    BorderThickness="{TemplateBinding BorderThickness}">
+                            <ContentPresenter HorizontalAlignment="Center"
+                                  VerticalAlignment="Center"
+                                  RecognizesAccessKey="True"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="border" Property="Background" Value="#4C84D4"/>
+                                <!-- Hover background -->
+                                <Setter TargetName="border" Property="BorderBrush" Value="#4C84D4"/>
+                                <!-- Hover border -->
+                            </Trigger>
+                            <Trigger Property="IsPressed" Value="True">
+                                <Setter TargetName="border" Property="Background" Value="#1E5DAA"/>
+                                <!-- Clicked background -->
+                                <Setter TargetName="border" Property="BorderBrush" Value="#1E5DAA"/>
+                                <!-- Clicked border -->
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
         <ObjectDataProvider x:Key="BackupTypeEnum"
                             MethodName="GetValues"
                             ObjectType="{x:Type sys:Enum}">

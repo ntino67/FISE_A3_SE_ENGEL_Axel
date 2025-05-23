@@ -1,10 +1,13 @@
 ﻿using Core.Model;
 using Core.ViewModel;
-using Microsoft.Win32;
 using System;
 using System.Linq;
+using System.Security.Cryptography;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Media.Animation;
+using WPF.Infrastructure;
 using WPF.Pages;
 
 namespace WPF
@@ -16,17 +19,14 @@ namespace WPF
         public MainWindow()
         {
             InitializeComponent();
+
+            DataContext = _vm;
+
+            Core.Utils.ToastBridge.ShowToast = ShowToast;
             MainFrame.Navigate(new WelcomePage());
 
-            // For testing: create dummy jobs if none exist
-            if (!_vm.Jobs.Any())
-            {
-                _vm.CreateNewJob("Job 1");
-                _vm.CreateNewJob("Job 2");
-                _vm.CreateNewJob("Job 3");
-            }
-
             JobList.ItemsSource = _vm.Jobs;
+            _vm.NavigateToHome = () => MainFrame.Navigate(new WelcomePage());
         }
 
         private void TopBar_MouseLeftButtonDown(object sender, System.Windows.Input.MouseButtonEventArgs e)
@@ -40,14 +40,19 @@ namespace WPF
             MainFrame.Navigate(new AppSettingsPage());
         }
 
-        private void Bouton2_Click(object sender, RoutedEventArgs e)
+        private void Logs_Click(object sender, RoutedEventArgs e)
         {
             MainFrame.Navigate(new LogsOverviewPage());
         }
 
-        private void Bouton3_Click(object sender, RoutedEventArgs e)
+        private void Status_Click(object sender, RoutedEventArgs e)
         {
             MainFrame.Navigate(new BackupStatusPage());
+        }
+
+        private void HomeButton_Click(object sender, RoutedEventArgs e)
+        {
+            MainFrame.Navigate(new WelcomePage());
         }
 
         private void MinimizeButton_Click(object sender, RoutedEventArgs e)
@@ -67,30 +72,22 @@ namespace WPF
 
         private void JobSettingsButton_Click(object sender, RoutedEventArgs e)
         {
-            if (sender is Button btn && btn.DataContext is BackupJob job)
-            {
-                _vm.SetCurrentJob(job);
-                MainFrame.Navigate(new JobSettingsPage());
-            }
+            var button = sender as Button;
+            var job = button?.DataContext as BackupJob;
+            if (job == null)
+                return;
+
+            var vm = ViewModelLocator.JobViewModel;
+            vm.SetCurrentJob(null);
+            vm.SetCurrentJob(job);
+
+            System.Windows.Input.CommandManager.InvalidateRequerySuggested();
+
+            var page = new JobSettingsPage();
+            page.DataContext = vm;
+            MainFrame.Navigate(page);
         }
 
-        private void AddJobButton_Click(object sender, RoutedEventArgs e)
-        {
-            string jobName = SearchBox.Text?.Trim();
-            if (string.IsNullOrEmpty(jobName))
-            {
-                MessageBox.Show("Veuillez entrer un nom de job.", "Nom manquant", MessageBoxButton.OK, MessageBoxImage.Warning);
-                return;
-            }
-            if (_vm.Jobs.Any(j => j.Name.Equals(jobName, StringComparison.OrdinalIgnoreCase)))
-            {
-                MessageBox.Show("Ce nom de job existe déjà.", "Doublon", MessageBoxButton.OK, MessageBoxImage.Warning);
-                return;
-            }
-
-            _vm.CreateNewJob(jobName);
-            SearchBox.Text = "";
-        }
 
         private void SearchJobButton_Click(object sender, RoutedEventArgs e)
         {
@@ -115,5 +112,70 @@ namespace WPF
                 JobList.ItemsSource = _vm.Jobs;
             }
         }
+
+        public async void ShowToast(string message, int durationMs = 3000)
+        {
+            ToastText.Text = message;
+            ToastHost.Visibility = Visibility.Visible;
+
+            var fadeSlideIn = new Storyboard();
+
+            var fadeIn = new DoubleAnimation
+            {
+                From = 0,
+                To = 1,
+                Duration = TimeSpan.FromMilliseconds(200)
+            };
+
+            var slideIn = new ThicknessAnimation
+            {
+                From = new Thickness(0, 0, 0, -50),
+                To = new Thickness(0, 0, 0, 30),
+                Duration = TimeSpan.FromMilliseconds(200),
+                EasingFunction = new QuadraticEase { EasingMode = EasingMode.EaseOut }
+            };
+
+            Storyboard.SetTarget(fadeIn, ToastHost);
+            Storyboard.SetTargetProperty(fadeIn, new PropertyPath("Opacity"));
+
+            Storyboard.SetTarget(slideIn, ToastHost);
+            Storyboard.SetTargetProperty(slideIn, new PropertyPath("Margin"));
+
+            fadeSlideIn.Children.Add(fadeIn);
+            fadeSlideIn.Children.Add(slideIn);
+            fadeSlideIn.Begin();
+
+            await Task.Delay(durationMs);
+
+            var fadeSlideOut = new Storyboard();
+
+            var fadeOut = new DoubleAnimation
+            {
+                From = 1,
+                To = 0,
+                Duration = TimeSpan.FromMilliseconds(300)
+            };
+
+            var slideOut = new ThicknessAnimation
+            {
+                From = new Thickness(0, 0, 0, 30),
+                To = new Thickness(0, 0, 0, -50),
+                Duration = TimeSpan.FromMilliseconds(300),
+                EasingFunction = new QuadraticEase { EasingMode = EasingMode.EaseIn }
+            };
+
+            Storyboard.SetTarget(fadeOut, ToastHost);
+            Storyboard.SetTargetProperty(fadeOut, new PropertyPath("Opacity"));
+
+            Storyboard.SetTarget(slideOut, ToastHost);
+            Storyboard.SetTargetProperty(slideOut, new PropertyPath("Margin"));
+
+            fadeSlideOut.Children.Add(fadeOut);
+            fadeSlideOut.Children.Add(slideOut);
+            fadeSlideOut.Begin();
+
+            await Task.Delay(300);
+            ToastHost.Visibility = Visibility.Collapsed;
+        }
     }
-} 
+}
