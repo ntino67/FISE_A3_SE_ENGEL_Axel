@@ -11,5 +11,7 @@ namespace Core.Model.Interfaces
         void LogBackupEnd(BackupJob job, bool success, TimeSpan duration);
         List<LogEntry> GetTodayLogs();
         string GetLogFilePath(DateTime date);
+
+        void LogWarning(string message);
     }
 }

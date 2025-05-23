@@ -160,6 +160,7 @@
                                     BorderBrush="Transparent"
                                     BorderThickness="0.2"
                                     ToolTip="Paramètres"
+                                    Click="SettingsButton_Click"
                                     VerticalAlignment="Center" HorizontalAlignment="Center">
                                 <Viewbox Stretch="Uniform">
                                     <Canvas Width="12" Height="12"

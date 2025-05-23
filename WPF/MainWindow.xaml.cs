@@ -18,9 +18,9 @@ namespace WPF
         public MainWindow()
         {
             InitializeComponent();
-            
+
             DataContext = _vm;
-            
+
             Core.Utils.ToastBridge.ShowToast = ShowToast;
             MainFrame.Navigate(new WelcomePage());
 
@@ -103,7 +103,7 @@ namespace WPF
                 JobList.ItemsSource = _vm.Jobs;
             }
         }
-        
+
         public async void ShowToast(string message, int durationMs = 3000)
         {
             ToastText.Text = message;
@@ -168,10 +168,16 @@ namespace WPF
             await Task.Delay(300);
             ToastHost.Visibility = Visibility.Collapsed;
         }
-        
+
         private void SearchBox_TextChanged(object sender, TextChangedEventArgs e)
         {
             _vm.CreateJobCommand?.RaiseCanExecuteChanged();
         }
+
+        private void SettingsButton_Click(object sender, RoutedEventArgs e)
+        {
+            MainFrame.Navigate(new AppSettingsPage());
+
+        }
     }
-} 
+}
