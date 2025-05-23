@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Text;
 using System.Threading.Tasks;
 using Core.Model.Interfaces;
 using Core.Utils;
@@ -75,13 +76,13 @@ namespace Core.Model.Implementations
             return _jobs.Count;
         }
 
-        public async Task<bool> ExecuteBackupJob(string jobId)
+        public async Task<bool> ExecuteBackupJob(string jobId, string encryptionKey = null)
         {
             BackupJob job = _jobs.FirstOrDefault(j => j.Id == jobId);
             if (job == null)
                 return false;
 
-            return await ExecuteBackup(job);
+            return await ExecuteBackup(job, encryptionKey);
         }
 
         public async Task<List<bool>> ExecuteAllBackupJobs()
@@ -95,7 +96,7 @@ namespace Core.Model.Implementations
             return results;
         }
 
-        private async Task<bool> ExecuteBackup(BackupJob job)
+        private async Task<bool> ExecuteBackup(BackupJob job, string encryptionKey = null)
         {
             if (!job.IsValid())
                 return false;
@@ -115,11 +116,11 @@ namespace Core.Model.Implementations
 
                 if (job.Type == BackupType.Full)
                 {
-                    success = await ExecuteFullBackup(job);
+                    success = await ExecuteFullBackup(job, encryptionKey);
                 }
                 else
                 {
-                    success = await ExecuteDifferentialBackup(job);
+                    success = await ExecuteDifferentialBackup(job, encryptionKey);
                 }
 
                 job.Status = success ? JobStatus.Completed : JobStatus.Failed;
@@ -145,12 +146,21 @@ namespace Core.Model.Implementations
         }
 
 
-        private async Task<bool> ExecuteFullBackup(BackupJob job)
+        private async Task<bool> ExecuteFullBackup(BackupJob job, string encryptionKey)
         {
             try
             {
                 DirectoryInfo sourceDir = new DirectoryInfo(job.SourceDirectory);
                 FileInfo[] files = sourceDir.GetFiles("*", SearchOption.AllDirectories);
+                
+                bool targetIsEncrypted = false;
+                if (Directory.Exists(job.TargetDirectory))
+                {
+                    var targetFiles = Directory.GetFiles(job.TargetDirectory, "*.*", SearchOption.AllDirectories);
+                    bool hasEncrypted = targetFiles.Any(f => f.EndsWith(".enc"));
+                    bool hasPlain = targetFiles.Any(f => !f.EndsWith(".enc") && !f.EndsWith(".exe") && !f.EndsWith(".dll"));
+                    targetIsEncrypted = hasEncrypted && !hasPlain;
+                }
 
                 foreach (FileInfo file in files)
                 {
@@ -165,6 +175,20 @@ namespace Core.Model.Implementations
                     long transferTime = (long)(DateTime.Now - startCopy).TotalMilliseconds;
 
                     _logger.LogBackupOperation(job.Name, file.FullName, targetPath, file.Length, transferTime, "SUCCESS");
+
+                    if (targetIsEncrypted)
+                    {
+                        try
+                        {
+                            byte[] keyBytes = Encoding.UTF8.GetBytes(encryptionKey);
+                            CryptoSoft.XorEncryption.EncryptFile(targetPath, keyBytes);
+                        }
+                        catch (Exception ex)
+                        {
+                            _logger.LogBackupOperation(job.Name, file.FullName, targetPath, file.Length, transferTime,
+                                $"ENCRYPT_ERROR: {ex.Message}");
+                        }
+                    }
                 }
 
                 return true;
@@ -176,7 +200,7 @@ namespace Core.Model.Implementations
             }
         }
 
-        private async Task<bool> ExecuteDifferentialBackup(BackupJob job)
+        private async Task<bool> ExecuteDifferentialBackup(BackupJob job, string encryptionKey)
         {
             try
             {
@@ -186,10 +210,15 @@ namespace Core.Model.Implementations
                 if (!targetDir.Exists)
                 {
                     // Si le répertoire cible n'existe pas, effectuer une sauvegarde complète
-                    return await ExecuteFullBackup(job);
+                    return await ExecuteFullBackup(job, encryptionKey);
                 }
 
                 FileInfo[] files = sourceDir.GetFiles("*", SearchOption.AllDirectories);
+                
+                var targetFiles = Directory.GetFiles(job.TargetDirectory, "*.*", SearchOption.AllDirectories);
+                bool hasEncrypted = targetFiles.Any(f => f.EndsWith(".enc"));
+                bool hasPlain = targetFiles.Any(f => !f.EndsWith(".enc") && !f.EndsWith(".exe") && !f.EndsWith(".dll"));
+                bool targetIsEncrypted = hasEncrypted && !hasPlain;
 
                 foreach (FileInfo file in files)
                 {
@@ -214,6 +243,19 @@ namespace Core.Model.Implementations
                         long transferTime = (long)(DateTime.Now - startCopy).TotalMilliseconds;
 
                         _logger.LogBackupOperation(job.Name, file.FullName, targetPath, file.Length, transferTime, "SUCCESS");
+                        
+                        if (targetIsEncrypted)
+                        {
+                            try
+                            {
+                                byte[] keyBytes = Encoding.UTF8.GetBytes(encryptionKey);
+                                CryptoSoft.XorEncryption.EncryptFile(targetPath, keyBytes);
+                            }
+                            catch (Exception ex)
+                            {
+                                _logger.LogBackupOperation(job.Name, file.FullName, targetPath, file.Length, transferTime, $"ENCRYPT_ERROR: {ex.Message}");
+                            }
+                        }
                     }
                 }
 

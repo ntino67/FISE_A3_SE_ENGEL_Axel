@@ -77,7 +77,7 @@ namespace Core.ViewModel
                     else
                         ToggleEncryption(EncryptionKey);
                 },
-                _ => true
+                _ => EncryptionKey != null && EncryptionStatus != "Status: Unknown"
             );
         }
         public event PropertyChangedEventHandler PropertyChanged;
@@ -217,7 +217,8 @@ namespace Core.ViewModel
         {
             if (CurrentJob == null) throw new InvalidOperationException("Aucun job n'est sélectionné.");
 
-            bool result = await _jobManager.ExecuteBackupJob(CurrentJob.Id);
+            string keyToUse = this.EncryptionKey;
+            bool result = await _jobManager.ExecuteBackupJob(CurrentJob.Id, keyToUse);
             OnPropertyChanged(nameof(EncryptionStatus));
             _ui.ShowToast("✅ Backup complete!", 3000);
             return result;
@@ -271,15 +272,11 @@ namespace Core.ViewModel
 
             if (encrypted.Any())
             {
-                //foreach (var file in encrypted)
-                //    CryptoSoft.XorEncryption.DecryptFile(file, keyBytes);
                 _jobManager.Encryption(false, CurrentJob, key);
                 _ui.ShowToast("🔓 Files decrypted", 3000);
             }
             else
             {
-                //foreach (var file in plain)
-                //    CryptoSoft.XorEncryption.EncryptFile(file, keyBytes);
                 _jobManager.Encryption(true, CurrentJob, key);
                 _ui.ShowToast("🔒 Files encrypted", 3000);
             }

@@ -6,7 +6,7 @@ namespace Core.Model.Interfaces
 {
     public interface IBackupService
     {
-        Task<bool> ExecuteBackupJob(string jobId);
+        Task<bool> ExecuteBackupJob(string jobId, string keyToUse);
         Task<List<bool>> ExecuteAllBackupJobs();
         void AddBackupJob(BackupJob job);
         void UpdateBackupJob(BackupJob job);
