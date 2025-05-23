@@ -9,14 +9,6 @@
 
     <Page.Resources>
         <conv:BoolToVisibilityConverter x:Key="BoolToVisibility" />
-
-        <Style TargetType="TextBox" x:Key="PlaceholderStyle">
-            <Style.Triggers>
-                <Trigger Property="Text" Value="">
-                    <Setter Property="Tag" Value="Enter encryption key..." />
-                </Trigger>
-            </Style.Triggers>
-        </Style>
         
         <Style x:Key="FadeButtonStyle" TargetType="Button">
             <Setter Property="Opacity" Value="0"/>
@@ -96,21 +88,27 @@
                          BorderBrush="#A6ADC8"
                          FontSize="16" />
 
-                <TextBlock Text="Enter encryption key..."
+                <TextBlock Text="{Binding EncryptionKey, UpdateSourceTrigger=PropertyChanged}"
                            Foreground="#6C7086"
                            Margin="10,0,0,0"
                            VerticalAlignment="Center"
                            IsHitTestVisible="False"
                            Visibility="{Binding Text, ElementName=KeyInput, Converter={StaticResource BoolToVisibility}}" />
             </Grid>
-            <Button Content="{Binding EncryptionStatus}" Click="OnToggleEncryptionClick" Width="250" Height="45"
+            <Button Content="{Binding EncryptionStatus}" 
+                    Command="{Binding ToggleEncryptionCommand}"
+                    Width="250" Height="45"
                     Background="#F9E2AF" Foreground="Black" Margin="0,5" />
 
             <!-- Commands -->
             <Button Content="Run" Command="{Binding RunBackupCommand}" IsEnabled="{Binding CurrentJob.IsReady}"
                     Width="250" Height="45" Background="#A6E3A1" Foreground="Black" Margin="0,5" />
-            <Button Content="Delete" Command="{Binding DeleteJobCommand}" Width="250" Height="45" Background="#F38BA8"
-                    Foreground="Black" Margin="0,5" />
+            <Button Content="Delete"
+                    Command="{Binding DeleteJobCommand}"
+                    CommandParameter="{Binding CurrentJob}"
+                    Width="250" Height="45"
+                    Background="#F38BA8" Foreground="Black"
+                    Margin="0,5" />
             <Button Content="Reset" Command="{Binding ResetJobCommand}" Width="250" Height="45" Background="#89DCEB"
                     Foreground="Black" Margin="0,5" />
         </StackPanel>

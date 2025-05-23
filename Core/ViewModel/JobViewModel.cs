@@ -6,6 +6,7 @@ using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Input;
 using Core.Model;
 using Core.Model.Interfaces;
 using Core.Utils;
@@ -16,26 +17,28 @@ namespace Core.ViewModel
     {
         private readonly IBackupService _jobManager;
         private readonly IUIService _ui;
+        private readonly ICommandFactory _commandFactory;
         private BackupJob _currentJob;
         
-        public JobViewModel(IBackupService jobManager, IUIService uiService)
+        public JobViewModel(IBackupService jobManager, IUIService uiService, ICommandFactory commandFactory)
         {
             _jobManager = jobManager;
             _ui = uiService;
+            _commandFactory = commandFactory;
 
             Jobs = new ObservableCollection<BackupJob>(_jobManager.GetAllJobs());
 
-            RunBackupCommand = new RelayCommand(
+            RunBackupCommand = _commandFactory.Create(
                 async _ => await ExecuteCurrentJob(),
                 _ => CurrentJob?.IsValid() == true
             );
 
-            ResetJobCommand = new RelayCommand(
+            ResetJobCommand = _commandFactory.Create(
                 _ => ResetCurrentJob(),
                 _ => CurrentJob != null
             );
 
-            DeleteJobCommand = new RelayCommand<BackupJob>(
+            DeleteJobCommand = _commandFactory.Create<BackupJob>(
                 job =>
                 {
                     if (job != null && _ui.Confirm($"Are you sure you want to delete '{job.Name}'?"))
@@ -44,8 +47,7 @@ namespace Core.ViewModel
                 job => job != null
             );
 
-
-            CreateJobCommand = new RelayCommand(
+            CreateJobCommand = _commandFactory.Create(
                 param =>
                 {
                     string name = param as string;
@@ -65,6 +67,17 @@ namespace Core.ViewModel
                     string name = param as string;
                     return !string.IsNullOrWhiteSpace(name);
                 });
+
+            ToggleEncryptionCommand = _commandFactory.Create(
+                _ =>
+                {
+                    if (string.IsNullOrWhiteSpace(EncryptionKey))
+                        _ui.ShowToast("🔑 Please enter a key first", 3000);
+                    else
+                        ToggleEncryption(EncryptionKey);
+                },
+                _ => true
+            );
         }
         public event PropertyChangedEventHandler PropertyChanged;
 
@@ -77,9 +90,6 @@ namespace Core.ViewModel
             {
                 _currentJob = value;
                 OnPropertyChanged();
-                RunBackupCommand?.RaiseCanExecuteChanged();
-                DeleteJobCommand?.RaiseCanExecuteChanged();
-                ResetJobCommand?.RaiseCanExecuteChanged();
                 OnPropertyChanged(nameof(EncryptionStatus));
             }
         }
@@ -121,16 +131,18 @@ namespace Core.ViewModel
                      : "Status: Empty";
             }
         }
-        public RelayCommand RunBackupCommand { get; private set; }
-        public RelayCommand ResetJobCommand { get; private set; }
-        public RelayCommand<BackupJob> DeleteJobCommand { get; private set; }
-        public RelayCommand CreateJobCommand { get; private set; }
+        
+        public string EncryptionKey { get; set; }
+        public ICommand RunBackupCommand { get; private set; }
+        public ICommand ResetJobCommand { get; private set; }
+        public ICommand DeleteJobCommand { get; private set; }
+        public ICommand CreateJobCommand { get; private set; }
+        
+        public ICommand ToggleEncryptionCommand { get; private set; }
 
         public void SetCurrentJob(BackupJob job)
         {
             CurrentJob = job;
-            RunBackupCommand?.RaiseCanExecuteChanged();
-            DeleteJobCommand?.RaiseCanExecuteChanged();
         }
 
         public void CreateNewJob(string name)
@@ -140,9 +152,6 @@ namespace Core.ViewModel
 
             Jobs.Add(job);
             CurrentJob = job;
-
-            DeleteJobCommand?.RaiseCanExecuteChanged();
-            RunBackupCommand?.RaiseCanExecuteChanged();
 
             _ui.ShowToast("✅ Job ajouté.", 2000);
         }
@@ -165,7 +174,6 @@ namespace Core.ViewModel
             CurrentJob.SourceDirectory = sourcePath;
             _jobManager.UpdateBackupJob(CurrentJob);
             OnPropertyChanged(nameof(SourceDirectoryLabel));
-            RunBackupCommand?.RaiseCanExecuteChanged();
         }
 
         public void UpdateTargetPath(string targetPath)
@@ -175,7 +183,6 @@ namespace Core.ViewModel
             _jobManager.UpdateBackupJob(CurrentJob);
             OnPropertyChanged(nameof(TargetDirectoryLabel));
             OnPropertyChanged(nameof(EncryptionStatus));
-            RunBackupCommand?.RaiseCanExecuteChanged();
         }
 
         public void UpdateBackupType(BackupType type)
@@ -259,9 +266,6 @@ namespace Core.ViewModel
             OnPropertyChanged(nameof(SourceDirectoryLabel));
             OnPropertyChanged(nameof(TargetDirectoryLabel));
             OnPropertyChanged(nameof(EncryptionStatus));
-            RunBackupCommand?.RaiseCanExecuteChanged();
-            DeleteJobCommand?.RaiseCanExecuteChanged();
-            ResetJobCommand?.RaiseCanExecuteChanged();
         }
         
         private string TrimPath(string path, int maxLength = 40)

@@ -252,8 +252,7 @@
                                      Background="#313244"
                                      Foreground="White"
                                      FontSize="18"
-                                     Padding="10,0"
-                                     TextChanged="SearchBox_TextChanged"/>
+                                     Padding="10,0" />
                             <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
                                 <Button x:Name="SearchJobButton"
                                     Width="36"
@@ -338,7 +337,8 @@
                                                                 BorderThickness="0.2"
                                                                 ToolTip="Paramètres du job"
                                                                 VerticalAlignment="Center" HorizontalAlignment="Center"
-                                                                Click="JobSettingsButton_Click">
+                                                                Click="JobSettingsButton_Click"
+                                                                CommandParameter="{Binding}">
                                                             <Viewbox Stretch="Uniform">
                                                                 <Canvas Width="12" Height="12"
                                                                         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"

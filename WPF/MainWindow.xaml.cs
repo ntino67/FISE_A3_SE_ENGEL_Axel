@@ -73,12 +73,22 @@ namespace WPF
 
         private void JobSettingsButton_Click(object sender, RoutedEventArgs e)
         {
-            if (sender is Button btn && btn.DataContext is BackupJob job)
-            {
-                _vm.SetCurrentJob(job);
-                MainFrame.Navigate(new JobSettingsPage());
-            }
+            var button = sender as Button;
+            var job = button?.DataContext as BackupJob;
+            if (job == null)
+                return;
+
+            var vm = ViewModelLocator.JobViewModel;
+            vm.SetCurrentJob(null);
+            vm.SetCurrentJob(job);
+            
+            System.Windows.Input.CommandManager.InvalidateRequerySuggested();
+
+            var page = new JobSettingsPage();
+            page.DataContext = vm;
+            MainFrame.Navigate(page);
         }
+
 
         private void SearchJobButton_Click(object sender, RoutedEventArgs e)
         {
@@ -167,11 +177,6 @@ namespace WPF
 
             await Task.Delay(300);
             ToastHost.Visibility = Visibility.Collapsed;
-        }
-        
-        private void SearchBox_TextChanged(object sender, TextChangedEventArgs e)
-        {
-            _vm.CreateJobCommand?.RaiseCanExecuteChanged();
         }
     }
 } 

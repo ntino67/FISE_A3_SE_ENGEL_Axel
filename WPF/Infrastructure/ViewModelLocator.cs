@@ -4,6 +4,7 @@ using Core.Model.Implementations;
 using Core.Model.Interfaces;
 using Core.ViewModel;
 using WPF.Services;
+using WPF.Utils;
 
 namespace WPF.Infrastructure
 {
@@ -14,6 +15,7 @@ namespace WPF.Infrastructure
         private static ILogger _logger;
         private static JobViewModel _jobViewModel;
         private static IUIService _iuiService;
+        private static ICommandFactory _commandFactory;
         
         public static JobViewModel JobViewModel
         {
@@ -33,10 +35,11 @@ namespace WPF.Infrastructure
 
             _configManager = new ConfigurationManager(appDataPath);
             _logger = new Logger(_configManager.GetLogDirectory());
+            _commandFactory = new WpfCommandFactory();
             _jobManager = new JobManager(_logger, _configManager);
             _iuiService = new UIService();
 
-            _jobViewModel = new JobViewModel(_jobManager, _iuiService);
+            _jobViewModel = new JobViewModel(_jobManager, _iuiService, _commandFactory);
         }
         
         public static JobViewModel GetJobViewModel() => JobViewModel;
