@@ -239,7 +239,7 @@ namespace Core.Model.Implementations
         {
             string Directory = job.TargetDirectory;
             _logger.LogEncryptionStart(job);
-            long duration = CryptoHelper.Encrypt(Directory, new[] { ".txt", ".docx", ".xlsx", ".png" }, key);
+            long duration = CryptoHelper.Encrypt(Directory, new[] { ".txt", ".docx", ".xlsx", ".png", ".cs", ".sln", "json" }, key);
             _logger.LogEncryptionEnd(job, true, duration);
         }
 

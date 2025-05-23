@@ -1,85 +1,70 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using System.Text;
+using CryptoSoft;
 
 namespace Core.Model
 {
     internal static class CryptoHelper
     {
-        private const string CryptoSoftPath = @"C:\WorkDirMQ\FISE_A3_SE_ENGEL_Axel\CryptoSoft\bin\Debug\netcoreapp3.1\CryptoSoft.exe";
-
-        internal static long Encrypt(string sourceDirectory, IEnumerable<string> extensions, string SecretKey)
+        internal static long Encrypt(string sourceDirectory, IEnumerable<string> extensions, string secretKey)
         {
-            Stopwatch stopwatch = Stopwatch.StartNew();
-            ProcessDirectory(sourceDirectory, "-e", extensions, SecretKey);
-            stopwatch.Stop();
-            return stopwatch.ElapsedMilliseconds;
+            return ProcessDirectory(sourceDirectory, true, extensions, secretKey);
         }
 
-        internal static long Decrypt(string sourceDirectory, string SecretKey)
+        internal static long Decrypt(string sourceDirectory, string secretKey)
         {
-            Stopwatch stopwatch = Stopwatch.StartNew();
-            ProcessDirectory(sourceDirectory, "-d", new[] { ".enc" }, SecretKey);
-            stopwatch.Stop();
-            return stopwatch.ElapsedMilliseconds;
+            return ProcessDirectory(sourceDirectory, false, new[] { ".enc" }, secretKey);
         }
 
-        private static string ProcessDirectory(string folderPath, string mode, IEnumerable<string> extensions, string SecretKey)
+        private static long ProcessDirectory(string folderPath, bool encrypt, IEnumerable<string> extensions, string secretKey)
         {
             if (!Directory.Exists(folderPath))
                 throw new DirectoryNotFoundException($"Directory '{folderPath}' not found.");
 
-            var normalizedExtensions = extensions.Select(ext => ext.StartsWith(".") ? ext.ToLower() : "." + ext.ToLower()).ToHashSet();
+            var stopwatch = System.Diagnostics.Stopwatch.StartNew();
+
+            var normalizedExtensions = extensions
+                .Select(ext => ext.StartsWith(".") ? ext.ToLower() : "." + ext.ToLower())
+                .ToHashSet();
+
             var allFiles = Directory.GetFiles(folderPath, "*.*", SearchOption.AllDirectories)
-                                    .Where(file => normalizedExtensions.Contains(Path.GetExtension(file).ToLower()));
+                .Where(file =>
+                {
+                    string extension = Path.GetExtension(file).ToLower();
+                    return normalizedExtensions.Contains(extension);
+                })
+                .ToList();
+
+            byte[] keyBytes = Encoding.UTF8.GetBytes(secretKey);
+            int successCount = 0, failCount = 0;
 
             foreach (var file in allFiles)
             {
-                bool success = RunCryptoSoft(mode, file, SecretKey);
-                if (!success)
-                    throw new Exception($"Failed to process file: {file}");
-            }
+                if (!File.Exists(file))
+                    continue;
 
-            return folderPath;
-        }
-
-        private static bool RunCryptoSoft(string mode, string filePath, string key)
-        {
-            try
-            {
-                ProcessStartInfo startInfo = new ProcessStartInfo
+                try
                 {
-                    FileName = CryptoSoftPath,
-                    Arguments = $"{mode} \"{filePath}\" \"{key}\"",
-                    RedirectStandardOutput = true,
-                    RedirectStandardError = true,
-                    UseShellExecute = false,
-                    CreateNoWindow = true
-                };
+                    if (encrypt)
+                        XorEncryption.EncryptFile(file, keyBytes);
+                    else
+                        XorEncryption.DecryptFile(file, keyBytes);
 
-                using (Process process = Process.Start(startInfo))
+                    successCount++;
+                }
+                catch (Exception ex)
                 {
-                    process.WaitForExit();
-
-                    string output = process.StandardOutput.ReadToEnd();
-                    string error = process.StandardError.ReadToEnd();
-
-                    if (process.ExitCode != 0)
-                    {
-                        Console.WriteLine($"Error on {filePath}: {error}");
-                        return false;
-                    }
-
-                    return true;
+                    Console.WriteLine($"Failed to process file {file}: {ex.Message}");
+                    failCount++;
                 }
             }
-            catch (Exception ex)
-            {
-                Console.WriteLine($"Exception: {ex.Message}");
-                return false;
-            }
+
+            stopwatch.Stop();
+            Console.WriteLine($"[CryptoHelper] {successCount} files processed successfully, {failCount} failed. Time: {stopwatch.ElapsedMilliseconds}ms");
+            return stopwatch.ElapsedMilliseconds;
         }
     }
 }

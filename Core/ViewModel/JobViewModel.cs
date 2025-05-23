@@ -273,14 +273,14 @@ namespace Core.ViewModel
             {
                 //foreach (var file in encrypted)
                 //    CryptoSoft.XorEncryption.DecryptFile(file, keyBytes);
-                _jobManager.Encryption(true, CurrentJob, key);
+                _jobManager.Encryption(false, CurrentJob, key);
                 _ui.ShowToast("🔓 Files decrypted", 3000);
             }
             else
             {
                 //foreach (var file in plain)
                 //    CryptoSoft.XorEncryption.EncryptFile(file, keyBytes);
-                _jobManager.Encryption(false, CurrentJob, key);
+                _jobManager.Encryption(true, CurrentJob, key);
                 _ui.ShowToast("🔒 Files encrypted", 3000);
             }
 
