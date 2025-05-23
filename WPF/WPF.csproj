@@ -9,8 +9,27 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="Image\EasySave_Logos.png" />
+    <None Remove="Image\UserIcon.svg" />
+    <None Remove="Image\UserIcon_colored.png" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="SharpVectors" Version="1.8.4.2" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\Core\Core.csproj" />
     <ProjectReference Include="..\CryptoSoft\CryptoSoft.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Resource Include="Image\EasySave_Logos.png">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Image\UserIcon_colored.png">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Resource>
   </ItemGroup>
 
 </Project>

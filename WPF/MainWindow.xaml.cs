@@ -2,6 +2,7 @@
 using Core.ViewModel;
 using System;
 using System.Linq;
+using System.Security.Cryptography;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
@@ -18,9 +19,9 @@ namespace WPF
         public MainWindow()
         {
             InitializeComponent();
-            
+
             DataContext = _vm;
-            
+
             Core.Utils.ToastBridge.ShowToast = ShowToast;
             MainFrame.Navigate(new WelcomePage());
 
@@ -49,6 +50,11 @@ namespace WPF
             MainFrame.Navigate(new BackupStatusPage());
         }
 
+        private void HomeButton_Click(object sender, RoutedEventArgs e)
+        {
+            MainFrame.Navigate(new WelcomePage());
+        }
+
         private void MinimizeButton_Click(object sender, RoutedEventArgs e)
         {
             WindowState = WindowState.Minimized;
@@ -74,7 +80,7 @@ namespace WPF
             var vm = ViewModelLocator.JobViewModel;
             vm.SetCurrentJob(null);
             vm.SetCurrentJob(job);
-            
+
             System.Windows.Input.CommandManager.InvalidateRequerySuggested();
 
             var page = new JobSettingsPage();
@@ -106,7 +112,7 @@ namespace WPF
                 JobList.ItemsSource = _vm.Jobs;
             }
         }
-        
+
         public async void ShowToast(string message, int durationMs = 3000)
         {
             ToastText.Text = message;
@@ -172,4 +178,4 @@ namespace WPF
             ToastHost.Visibility = Visibility.Collapsed;
         }
     }
-} 
+}
