@@ -24,15 +24,8 @@ namespace WPF
             Core.Utils.ToastBridge.ShowToast = ShowToast;
             MainFrame.Navigate(new WelcomePage());
 
-            // For testing: create dummy jobs if none exist
-            if (!_vm.Jobs.Any())
-            {
-                _vm.CreateNewJob("Job 1");
-                _vm.CreateNewJob("Job 2");
-                _vm.CreateNewJob("Job 3");
-            }
-
             JobList.ItemsSource = _vm.Jobs;
+            _vm.NavigateToHome = () => MainFrame.Navigate(new WelcomePage());
         }
 
         private void TopBar_MouseLeftButtonDown(object sender, System.Windows.Input.MouseButtonEventArgs e)

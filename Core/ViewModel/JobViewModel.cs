@@ -39,14 +39,57 @@ namespace Core.ViewModel
                 _ => CurrentJob != null
             );
 
-            DeleteJobCommand = _commandFactory.Create<BackupJob>(
+            DeleteJobCommand = commandFactory.Create<BackupJob>(
                 job =>
                 {
-                    if (job != null && _ui.Confirm($"Are you sure you want to delete '{job.Name}'?"))
-                        DeleteJob(job.Id);
+                    if (job == null) return;
+                    var choice = _ui.ConfirmDeleteJobWithFiles(job.Name, job.TargetDirectory);
+
+                    if (choice == DeleteJobChoice.Cancel)
+                        return;
+
+                    if (choice == DeleteJobChoice.DeleteJobAndFiles)
+                    {
+                        try
+                        {
+                            if (Directory.Exists(job.TargetDirectory))
+                            {
+                                foreach (var file in Directory.GetFiles(job.TargetDirectory, "*", SearchOption.AllDirectories))
+                                {
+                                    try
+                                    {
+                                        File.Delete(file);
+                                    }
+                                    catch (Exception ex)
+                                    {
+                                        throw new Exception($"Error : {ex.Message}");
+                                    }
+                                }
+                                foreach (var dir in Directory.GetDirectories(job.TargetDirectory, "*", SearchOption.AllDirectories).OrderByDescending(d => d.Length))
+                                {
+                                    try
+                                    {
+                                        Directory.Delete(dir, true);
+                                    }
+                                    catch (Exception ex)
+                                    {
+                                        throw new Exception($"Error : {ex.Message}");
+                                    }
+                                }
+                            }
+                        }
+                        catch (Exception ex)
+                        {
+                            _ui.ShowToast($"Error deleting backup files: {ex.Message}", 4000);
+                        }
+                    }
+
+                    DeleteJob(job.Id);
+                    NavigateToHome?.Invoke();
                 },
                 job => job != null
             );
+
 
             CreateJobCommand = _commandFactory.Create(
                 param =>
@@ -87,6 +130,8 @@ namespace Core.ViewModel
         public Action RefreshCommands { get; set; } = () => { };
         
         public Action<Action> RunOnUiThread { get; set; } = action => action();
+        
+        public Action NavigateToHome { get; set; } = () => { };
 
         public BackupJob CurrentJob
         {
