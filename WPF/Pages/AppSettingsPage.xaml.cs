@@ -15,7 +15,6 @@ namespace WPF.Pages
 {
     public partial class AppSettingsPage : Page
     {
-        private readonly IConfigurationManager _configManager;
         private readonly SettingsViewModel _viewModel;
 
         public AppSettingsPage()
@@ -24,11 +23,7 @@ namespace WPF.Pages
 
             try
             {
-                // Récupérer le ConfigurationManager depuis l'application
-                _configManager = ((App)Application.Current).ConfigurationManager;
-
-                // Créer et initialiser le ViewModel
-                _viewModel = new SettingsViewModel(_configManager);
+                _viewModel = WPF.Infrastructure.ViewModelLocator.SettingsViewModel;
                 DataContext = _viewModel;
             }
             catch (Exception ex)
@@ -274,47 +269,5 @@ namespace WPF.Pages
             }
         }
 
-
-        private void LanguageSelector_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-            if (LanguageSelector.SelectedItem is ComboBoxItem selectedItem)
-            {
-                string selectedLangContent = selectedItem.Content.ToString();
-                string langCode = GetLanguageCodeFromContent(selectedLangContent);
-
-                if (!string.IsNullOrEmpty(langCode))
-                {
-                    SetLang(langCode);
-                }
-            }
-        }
-
-        private string GetLanguageCodeFromContent(string content)
-        {
-            switch (content)
-            {
-                case "Français":
-                    return "fr_FR";
-                case "English":
-                    return "en_US";
-                case "Español": // If you add Spanish to your ComboBox
-                    return "es_ES";
-                default:
-                    return "en_US"; // Default language
-            }
-        }
-
-        private void SetLang(string lang)
-        {
-            Thread.CurrentThread.CurrentCulture = new CultureInfo(lang);
-            Thread.CurrentThread.CurrentUICulture = new CultureInfo(lang);
-
-            Application.Current.Resources.MergedDictionaries.Clear();
-            ResourceDictionary resdict = new ResourceDictionary()
-            {
-                Source = new Uri($"/Utils/Language/Dictionary_{lang}.xaml", UriKind.Relative)
-            };
-            Application.Current.Resources.MergedDictionaries.Add(resdict);
-        }
     }
 }

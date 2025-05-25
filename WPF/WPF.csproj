@@ -9,8 +9,18 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Page Remove="Utils\Language\Dictionary_en_US.xaml" />
+    <Page Remove="Utils\Language\Dictionary_fr_FR.xaml" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\Core\Core.csproj" />
     <ProjectReference Include="..\CryptoSoft\CryptoSoft.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Resource Include="Utils\Language\Dictionary_en_US.xaml" />
+    <Resource Include="Utils\Language\Dictionary_fr_FR.xaml" />
   </ItemGroup>
 
 </Project>

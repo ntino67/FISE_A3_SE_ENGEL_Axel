@@ -1,10 +1,51 @@
 ﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:System="clr-namespace:System;assembly=System.Runtime">
-    
-    <System:String x:Key="MainTitle">EasySave</System:String>
-    <System:String x:Key="TextLogsButton">Logs</System:String>
-    <System:String x:Key="TextStatusButton">Status</System:String>
-    <System:String x:Key="TextGeneralsettings">General Settings</System:String>
-    <System:String x:Key="TextStatusBtn">Status</System:String>
+                    xmlns:system="clr-namespace:System;assembly=mscorlib">
+
+    <!-- General -->
+    <system:String x:Key="AppTitle">EasySave</system:String>
+
+    <!-- Settings page -->
+    <system:String x:Key="GeneralSettings">General Settings</system:String>
+    <system:String x:Key="LanguageSettings">Application Language</system:String>
+    <system:String x:Key="ChooseLanguage">Choose your preferred language for the application interface</system:String>
+    <system:String x:Key="English">English</system:String>
+    <system:String x:Key="French">French</system:String>
+    <system:String x:Key="SettingsSaved">Settings saved</system:String>
+
+    <!-- Blocking apps section -->
+    <system:String x:Key="BlockingApps">Blocking Applications</system:String>
+    <system:String x:Key="BlockingAppsDescription">Define applications that will block backup tasks when running. For sequential backup jobs, the software will complete the current job and stop before starting the next one.</system:String>
+    <system:String x:Key="AddApp">Add</system:String>
+    <system:String x:Key="DetectRunningApp">Detect</system:String>
+    <system:String x:Key="RunningApps">Running Applications</system:String>
+    <system:String x:Key="Select">Select</system:String>
+    <system:String x:Key="SearchApps">Search...</system:String>
+
+    <!-- Buttons -->
+    <system:String x:Key="Save">Save</system:String>
+    <system:String x:Key="Cancel">Cancel</system:String>
+    <system:String x:Key="Delete">Delete</system:String>
+
+    <!-- Jobs -->
+    <system:String x:Key="Jobs">Jobs</system:String>
+    <system:String x:Key="NewJob">New Job</system:String>
+    <system:String x:Key="JobName">Job Name</system:String>
+    <system:String x:Key="Source">Source</system:String>
+    <system:String x:Key="Target">Target</system:String>
+    <system:String x:Key="BackupType">Backup Type</system:String>
+    <system:String x:Key="Full">Full</system:String>
+    <system:String x:Key="Differential">Differential</system:String>
+    <system:String x:Key="Run">Run</system:String>
+    <system:String x:Key="Reset">Reset</system:String>
+
+    <!-- Logs -->
+    <system:String x:Key="Logs">Logs</system:String>
+    <system:String x:Key="Status">Status</system:String>
+
+    <!-- Messages -->
+    <system:String x:Key="Error">Error</system:String>
+    <system:String x:Key="Success">Success</system:String>
+    <system:String x:Key="Warning">Warning</system:String>
+    <system:String x:Key="Information">Information</system:String>
 </ResourceDictionary>

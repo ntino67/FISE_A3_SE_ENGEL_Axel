@@ -13,7 +13,7 @@
 
         <!-- En-tête de la page -->
         <TextBlock Grid.Row="0" 
-                   Text="{DynamicResource TextGeneralsettings}"
+                   Text="{DynamicResource GeneralSettings}"
                    FontSize="32" 
                    FontWeight="Bold" 
                    Margin="0,0,0,30"
@@ -22,11 +22,11 @@
         <!-- Contenu principal avec ScrollViewer pour s'adapter à de futures sections -->
         <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto">
             <StackPanel>
-                <!-- Section de sélection de langue -->
+                <!-- Section Langue -->
                 <Border Background="#232336" 
-         CornerRadius="12"
-         Padding="20" 
-         Margin="0,0,0,20">
+                        CornerRadius="12"
+                        Padding="20" 
+                        Margin="0,0,0,20">
                     <Grid>
                         <Grid.RowDefinitions>
                             <RowDefinition Height="Auto"/>
@@ -36,62 +36,49 @@
 
                         <!-- Titre de la section -->
                         <TextBlock Grid.Row="0"
-                    Text="Langue de l'application"
-                    FontSize="22" 
-                    FontWeight="SemiBold" 
-                    Margin="0,0,0,10"
-                    Foreground="#cdd6f4"/>
+                                   Text="{DynamicResource LanguageSettings}"
+                                   FontSize="22" 
+                                   FontWeight="SemiBold" 
+                                   Margin="0,0,0,10"
+                                   Foreground="#cdd6f4"/>
 
                         <!-- Description de la section -->
                         <TextBlock Grid.Row="1" 
-                    Text="Choisissez la langue de l'interface utilisateur."
-                    TextWrapping="Wrap"
-                    Margin="0,0,0,15"
-                    Foreground="#a6adc8"/>
+                                   Text="{DynamicResource ChooseLanguage}"
+                                   TextWrapping="Wrap"
+                                   Margin="0,0,0,15"
+                                   Foreground="#a6adc8"/>
 
-                        <!-- Sélection de langue -->
-                        <Grid Grid.Row="2">
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="Auto"/>
-                                <ColumnDefinition Width="*"/>
-                            </Grid.ColumnDefinitions>
-
-                            <TextBlock Grid.Column="0"
-                        Text="Langue :"
-                        FontSize="16"
-                        VerticalAlignment="Center"
-                        Margin="0,0,15,0"
-                        Foreground="#cdd6f4"/>
-
-                            <ComboBox x:Name="LanguageSelector"
-                       SelectedValue="{Binding SelectedLanguage, Mode=TwoWay}"
-                       SelectedValuePath="Content"
-                       Grid.Column="1"
-                       Height="40"
-                       MaxWidth="300"
-                       HorizontalAlignment="Left"
-                       Background="#313244"
-                       Foreground="#cdd6f4"
-                       BorderThickness="0"
-                       Padding="15,0"
-                       FontSize="16"
-                       VerticalContentAlignment="Center"
-                                      SelectionChanged="LanguageSelector_SelectionChanged">
-                                <ComboBox.Resources>
-                                    <SolidColorBrush x:Key="{x:Static SystemColors.WindowBrushKey}" Color="#313244"/>
-                                    <SolidColorBrush x:Key="{x:Static SystemColors.HighlightBrushKey}" Color="#74c7ec"/>
-                                </ComboBox.Resources>
-                                <ComboBox.ItemTemplate>
-                                    <DataTemplate>
-                                        <StackPanel Orientation="Horizontal">
-                                            <TextBlock Text="{Binding}" Foreground="#cdd6f4"/>
-                                        </StackPanel>
-                                    </DataTemplate>
-                                </ComboBox.ItemTemplate>
-                                <ComboBoxItem Content="Français"/>
-                                <ComboBoxItem Content="English"/>
-                            </ComboBox>
-                        </Grid>
+                        <!-- ComboBox pour la sélection de langue -->
+                        <ComboBox Grid.Row="2"
+                              x:Name="LanguageComboBox"
+                              Height="40"
+                              Padding="15,5"
+                              Background="#313244"
+                              Foreground="#cdd6f4"
+                              BorderThickness="0"
+                              ItemsSource="{Binding LanguageOptions}"
+                              SelectedValuePath="Key"
+                              DisplayMemberPath="Value"
+                              SelectedValue="{Binding SelectedLanguage}"
+                              HorizontalAlignment="Left"
+                              MinWidth="200">
+                            <ComboBox.ItemContainerStyle>
+                                <Style TargetType="ComboBoxItem">
+                                    <Setter Property="Background" Value="#313244"/>
+                                    <Setter Property="Foreground" Value="#cdd6f4"/>
+                                    <Style.Triggers>
+                                        <Trigger Property="IsMouseOver" Value="True">
+                                            <Setter Property="Background" Value="#45475a"/>
+                                        </Trigger>
+                                        <Trigger Property="IsSelected" Value="True">
+                                            <Setter Property="Background" Value="#74c7ec"/>
+                                            <Setter Property="Foreground" Value="#232336"/>
+                                        </Trigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </ComboBox.ItemContainerStyle>
+                        </ComboBox>
                     </Grid>
                 </Border>
 
@@ -110,7 +97,7 @@
 
                         <!-- Titre de la section -->
                         <TextBlock Grid.Row="0"
-                                   Text="Applications bloquantes"
+                                   Text="{DynamicResource BlockingApps}"
                                    FontSize="22" 
                                    FontWeight="SemiBold" 
                                    Margin="0,0,0,10"
@@ -118,7 +105,7 @@
 
                         <!-- Description de la section -->
                         <TextBlock Grid.Row="1" 
-                                   Text="Définissez les applications qui bloqueront les tâches de sauvegarde lorsqu'elles sont en cours d'exécution. Dans le cas de tâches séquentielles, le logiciel terminera la tâche en cours et s'arrêtera avant de démarrer la suivante."
+                                   Text="{DynamicResource BlockingAppsDescription}"
                                    TextWrapping="Wrap"
                                    Margin="0,0,0,15"
                                    Foreground="#a6adc8"/>
@@ -147,7 +134,7 @@
                             <!-- Bouton ajouter -->
                             <Button x:Name="AddBlockingAppButton"
                                     Grid.Column="1"
-                                    Content="Ajouter"
+                                    Content="{DynamicResource AddApp}"
                                     Height="40"
                                     Width="100"
                                     Margin="0,0,10,0"
@@ -160,7 +147,7 @@
                             <!-- Bouton détecter -->
                             <Button x:Name="DetectRunningAppButton"
                                     Grid.Column="2"
-                                    Content="Détecter"
+                                    Content="{DynamicResource DetectRunningApp}"
                                     Height="40"
                                     Width="100"
                                     Background="Transparent"
@@ -213,7 +200,7 @@
                                                     Margin="10,0,0,0"
                                                     Background="Transparent"
                                                     BorderThickness="0"
-                                                    ToolTip="Supprimer"
+                                                    ToolTip="{DynamicResource Delete}"
                                                     Tag="{Binding}"
                                                     Click="RemoveBlockingAppButton_Click">
                                                 <Viewbox Width="16" Height="16">
@@ -242,32 +229,6 @@
                         </Border>
                     </Grid>
                 </Border>
-
-                <!-- Espace réservé pour les futures sections -->
-                <Border Background="#232336" 
-                        CornerRadius="12"
-                        Padding="20" 
-                        Margin="0,0,0,20">
-                    <Grid>
-                        <Grid.RowDefinitions>
-                            <RowDefinition Height="Auto"/>
-                            <RowDefinition Height="Auto"/>
-                        </Grid.RowDefinitions>
-
-                        <TextBlock Grid.Row="0"
-                                   Text="Paramètres additionnels"
-                                   FontSize="22" 
-                                   FontWeight="SemiBold" 
-                                   Margin="0,0,0,10"
-                                   Foreground="#cdd6f4"/>
-
-                        <TextBlock Grid.Row="1" 
-                                   Text="Cette section est réservée pour de futures options."
-                                   TextWrapping="Wrap"
-                                   Margin="0,0,0,10"
-                                   Foreground="#a6adc8"/>
-                    </Grid>
-                </Border>
             </StackPanel>
         </ScrollViewer>
 
@@ -292,7 +253,7 @@
                         Orientation="Horizontal" 
                         HorizontalAlignment="Right">
                 <Button x:Name="SaveSettingsButton"
-                        Content="Enregistrer"
+                        Content="{DynamicResource Save}"
                         Height="40"
                         Width="150"
                         Margin="0,0,15,0"
@@ -304,7 +265,7 @@
                         Click="SaveSettingsButton_Click"/>
 
                 <Button x:Name="CancelButton"
-                        Content="Annuler"
+                        Content="{DynamicResource Cancel}"
                         Height="40"
                         Width="120"
                         Background="Transparent"
