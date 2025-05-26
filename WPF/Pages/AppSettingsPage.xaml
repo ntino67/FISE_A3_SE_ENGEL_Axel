@@ -52,10 +52,9 @@
                         <!-- ComboBox pour la sélection de langue -->
                         <ComboBox Grid.Row="2"
                               x:Name="LanguageComboBox"
-                              Height="40"
                               Padding="15,5"
                               Background="#313244"
-                              Foreground="#cdd6f4"
+                              Foreground="Black"
                               BorderThickness="0"
                               ItemsSource="{Binding LanguageOptions}"
                               SelectedValuePath="Key"
@@ -65,8 +64,8 @@
                               MinWidth="200">
                             <ComboBox.ItemContainerStyle>
                                 <Style TargetType="ComboBoxItem">
-                                    <Setter Property="Background" Value="#313244"/>
-                                    <Setter Property="Foreground" Value="#cdd6f4"/>
+                                    <Setter Property="Background" Value="#cdd6f4"/>
+                                    <Setter Property="Foreground" Value="Black"/>
                                     <Style.Triggers>
                                         <Trigger Property="IsMouseOver" Value="True">
                                             <Setter Property="Background" Value="#45475a"/>

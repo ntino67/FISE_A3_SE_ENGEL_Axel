@@ -40,8 +40,8 @@
     <system:String x:Key="Reset">Réinitialiser</system:String>
 
     <!-- Logs -->
-    <system:String x:Key="Logs">Journaux</system:String>
-    <system:String x:Key="Status">Statut</system:String>
+    <system:String x:Key="TextLogsButton">Journaux</system:String>
+    <system:String x:Key="TextStatusButton">Statut</system:String>
 
     <!-- Messages -->
     <system:String x:Key="Error">Erreur</system:String>

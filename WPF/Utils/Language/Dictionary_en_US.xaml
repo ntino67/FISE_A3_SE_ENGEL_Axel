@@ -40,8 +40,8 @@
     <system:String x:Key="Reset">Reset</system:String>
 
     <!-- Logs -->
-    <system:String x:Key="Logs">Logs</system:String>
-    <system:String x:Key="Status">Status</system:String>
+    <system:String x:Key="TextLogsButton">Logs</system:String>
+    <system:String x:Key="TextStatusButton">Status</system:String>
 
     <!-- Messages -->
     <system:String x:Key="Error">Error</system:String>

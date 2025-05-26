@@ -143,7 +143,7 @@
                             <ColumnDefinition Width="96"/>
                         </Grid.ColumnDefinitions>
                         <TextBlock Grid.Column="0"
-                                   Text="{DynamicResource MainTitle}"
+                                   Text="{DynamicResource AppTitle}"
                                    HorizontalAlignment="Left"
                                    Margin="15,7,0,7"
                                    Foreground="#cdd6f4"
@@ -177,7 +177,7 @@
                                     Foreground="{StaticResource SapphireBrush}"
                                     BorderThickness="0.2"
                                     Click="Logs_Click"
-                                    VerticalAlignment="Center" HorizontalAlignment="Center">
+                                    VerticalAlignment="Bottom" HorizontalAlignment="Center">
                                 <TextBlock Text="{DynamicResource TextLogsButton}" FontSize="20" VerticalAlignment="Center" HorizontalAlignment="Center"/>
                             </Button>
                             <Button Grid.Column="2" Width="80" Height="36"
@@ -187,8 +187,8 @@
                                     Foreground="{StaticResource SapphireBrush}"
                                     BorderThickness="0.2"
                                     Click="Status_Click"
-                                    VerticalAlignment="Center" HorizontalAlignment="Center">
-                                <TextBlock Text="{DynamicResource TextStatusBtn}" FontSize="20" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+                                    VerticalAlignment="Top" HorizontalAlignment="Center">
+                                <TextBlock Text="{DynamicResource TextStatusButton}" FontSize="20" VerticalAlignment="Center" HorizontalAlignment="Center"/>
                             </Button>
                         </Grid>
                         <Grid Grid.Column="2" Margin="0,0,0,0"/>
@@ -411,8 +411,8 @@
                            NavigationUIVisibility="Hidden"
                            Background="Transparent"/>
                 </Grid>
-                
-                </Grid>
+
+            </Grid>
         </Border>
         <Grid x:Name="ToastHost"
               HorizontalAlignment="Center"
@@ -434,6 +434,6 @@
                            FontWeight="Bold"
                            Text="Toast Message" />
             </Border>
-        </Grid> 
+        </Grid>
     </Grid>
 </Window>
