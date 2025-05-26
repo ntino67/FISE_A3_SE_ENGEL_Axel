@@ -1,14 +1,18 @@
 using System;
 using System.Windows.Input;
 
-namespace Core.Utils
+namespace WPF.Utils
 {
     public class RelayCommand : ICommand
     {
         private readonly Action<object> _execute;
         private readonly Predicate<object> _canExecute;
-
-        public event EventHandler CanExecuteChanged;
+        
+        public event EventHandler CanExecuteChanged
+        {
+            add    { CommandManager.RequerySuggested += value; }
+            remove { CommandManager.RequerySuggested -= value; }
+        }
 
         public RelayCommand(Action<object> execute, Predicate<object> canExecute = null)
         {
@@ -19,8 +23,6 @@ namespace Core.Utils
         public bool CanExecute(object parameter) => _canExecute == null || _canExecute(parameter);
 
         public void Execute(object parameter) => _execute(parameter);
-
-        public void RaiseCanExecuteChanged() => CanExecuteChanged?.Invoke(this, EventArgs.Empty);
     }
 
     public class RelayCommand<T> : ICommand
@@ -28,7 +30,11 @@ namespace Core.Utils
         private readonly Action<T> _execute;
         private readonly Predicate<T> _canExecute;
 
-        public event EventHandler CanExecuteChanged;
+        public event EventHandler CanExecuteChanged
+        {
+            add    { CommandManager.RequerySuggested += value; }
+            remove { CommandManager.RequerySuggested -= value; }
+        }
 
         public RelayCommand(Action<T> execute, Predicate<T> canExecute = null)
         {
@@ -40,7 +46,6 @@ namespace Core.Utils
         {
             if (parameter == null && typeof(T).IsValueType)
                 return _canExecute == null;
-
             return _canExecute == null || _canExecute((T)parameter);
         }
 
@@ -48,7 +53,5 @@ namespace Core.Utils
         {
             _execute((T)parameter);
         }
-
-        public void RaiseCanExecuteChanged() => CanExecuteChanged?.Invoke(this, EventArgs.Empty);
     }
 }

@@ -149,6 +149,26 @@
                                    Foreground="#cdd6f4"
                                    FontSize="22"
                                    FontWeight="Bold" Width="93"/>
+                        <Button x:Name="HomeButton"
+                            Width="36"
+                            Height="36"
+                            Margin="0,0,125,0"
+                            ToolTip="Accueil"
+                            Background="Transparent"
+                            BorderBrush="Transparent"
+                            Foreground="{StaticResource SapphireBrush}"
+                            BorderThickness="0.2"
+                            Click="HomeButton_Click">
+                            <Viewbox Stretch="Uniform">
+                                <Canvas Width="24" Height="24"
+                                    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+                                    <Path Fill="{StaticResource SapphireBrush}"
+                                      Data="M10,20V14H14V20H19V12H22L12,3L2,12H5V20H10Z"/>
+                                </Canvas>
+                            </Viewbox>
+                        </Button>
+
                         <Grid Grid.Column="1" Grid.ColumnSpan="2" VerticalAlignment="Center" Height="36" HorizontalAlignment="Left" Width="271">
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="*"/>
@@ -253,8 +273,7 @@
                                      Background="#313244"
                                      Foreground="White"
                                      FontSize="18"
-                                     Padding="10,0"
-                                     TextChanged="SearchBox_TextChanged"/>
+                                     Padding="10,0" />
                             <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
                                 <Button x:Name="SearchJobButton"
                                     Width="36"
@@ -339,7 +358,8 @@
                                                                 BorderThickness="0.2"
                                                                 ToolTip="Paramètres du job"
                                                                 VerticalAlignment="Center" HorizontalAlignment="Center"
-                                                                Click="JobSettingsButton_Click">
+                                                                Click="JobSettingsButton_Click"
+                                                                CommandParameter="{Binding}">
                                                             <Viewbox Stretch="Uniform">
                                                                 <Canvas Width="12" Height="12"
                                                                         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"

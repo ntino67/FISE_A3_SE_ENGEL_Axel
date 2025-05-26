@@ -1,9 +1,12 @@
 ﻿using System;
 using System.IO;
+using System.Windows;
+using System.Windows.Input;
 using Core.Model.Implementations;
 using Core.Model.Interfaces;
 using Core.ViewModel;
 using WPF.Services;
+using WPF.Utils;
 
 namespace WPF.Infrastructure
 {
@@ -16,7 +19,8 @@ namespace WPF.Infrastructure
         private static SettingsViewModel _settingsViewModel;
         private static IUIService _iuiService;
         private static ILocalizationService _localizationService;
-
+        private static ICommandFactory _commandFactory;
+        
         public static JobViewModel JobViewModel
         {
             get

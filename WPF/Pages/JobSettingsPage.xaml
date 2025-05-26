@@ -9,14 +9,6 @@
 
     <Page.Resources>
         <conv:BoolToVisibilityConverter x:Key="BoolToVisibility" />
-
-        <Style TargetType="TextBox" x:Key="PlaceholderStyle">
-            <Style.Triggers>
-                <Trigger Property="Text" Value="">
-                    <Setter Property="Tag" Value="Enter encryption key..." />
-                </Trigger>
-            </Style.Triggers>
-        </Style>
         
         <Style x:Key="FadeButtonStyle" TargetType="Button">
             <Setter Property="Opacity" Value="0"/>
@@ -54,6 +46,7 @@
     </Page.Resources>
 
     <Grid Margin="20">
+    <Grid Margin="20" Cursor="">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
             <RowDefinition Height="*" />
@@ -72,12 +65,15 @@
                     ToolTip="{Binding CurrentJob.SourceDirectory}"
                     Click="OnSetSourcePathClick"
                     Width="250" Height="45"
-                    Background="#89B4FA" Foreground="#232336" Margin="0,5" />
+                    BorderBrush="#89B4FA" Foreground="#CDD6F4" Margin="0,5"
+                    Style="{StaticResource RoundedButtonStyle}" />
             <Button Content="{Binding TargetDirectoryLabel}"
                     ToolTip="{Binding CurrentJob.TargetDirectory}"
                     Click="OnSetTargetPathClick"
                     Width="250" Height="45"
-                    Background="#89B4FA" Foreground="#232336" Margin="0,5" />
+                    BorderBrush="#89B4FA" Foreground="#CDD6F4" Margin="0,5"
+                    Style="{StaticResource RoundedButtonStyle}"
+                    Cursor="Hand" />
 
             <ComboBox Width="250" Height="36"
                       ItemsSource="{Binding Source={StaticResource BackupTypeEnum}}"
@@ -91,28 +87,40 @@
             <!-- Encryption UI -->
             <Grid Width="250" Height="30" Margin="0,5">
                 <TextBox x:Name="KeyInput"
+                         Text="{Binding EncryptionKey, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                          Background="#313244"
                          Foreground="#CDD6F4"
                          BorderBrush="#A6ADC8"
                          FontSize="16" />
 
-                <TextBlock Text="Enter encryption key..."
+                <TextBlock Text="Enter an Encryption Key..."
                            Foreground="#6C7086"
                            Margin="10,0,0,0"
                            VerticalAlignment="Center"
                            IsHitTestVisible="False"
                            Visibility="{Binding Text, ElementName=KeyInput, Converter={StaticResource BoolToVisibility}}" />
             </Grid>
-            <Button Content="{Binding EncryptionStatus}" Click="OnToggleEncryptionClick" Width="250" Height="45"
-                    Background="#F9E2AF" Foreground="Black" Margin="0,5" />
+            <Button Content="{Binding EncryptionStatus}" 
+                    Command="{Binding ToggleEncryptionCommand}"
+                    Width="250" Height="45"
+                    Style="{StaticResource RoundedButtonStyle}"
+                    BorderBrush="#F9E2AF" Foreground="#CDD6F4" Margin="0,5" />
 
             <!-- Commands -->
-            <Button Content="Run" Command="{Binding RunBackupCommand}" IsEnabled="{Binding CurrentJob.IsReady}"
-                    Width="250" Height="45" Background="#A6E3A1" Foreground="Black" Margin="0,5" />
-            <Button Content="Delete" Command="{Binding DeleteJobCommand}" Width="250" Height="45" Background="#F38BA8"
-                    Foreground="Black" Margin="0,5" />
-            <Button Content="Reset" Command="{Binding ResetJobCommand}" Width="250" Height="45" Background="#89DCEB"
-                    Foreground="Black" Margin="0,5" />
+            <Button Content="Run" Command="{Binding RunBackupCommand}"
+                    Style="{StaticResource RoundedButtonStyle}"
+                    Width="250" Height="45" BorderBrush="#A6E3A1" Foreground="#CDD6F4" Margin="0,5" />
+            <Button Content="Delete"
+                    Command="{Binding DeleteJobCommand}"
+                    CommandParameter="{Binding CurrentJob}"
+                    Width="250" Height="45"
+                    BorderBrush="#F38BA8" Foreground="#CDD6F4"
+                    Style="{StaticResource RoundedButtonStyle}"
+                    Margin="0,5" />
+                <Button Content="Reset" Command="{Binding ResetJobCommand}" Width="250" Height="45" BorderBrush="#89DCEB"
+                    Style="{StaticResource RoundedButtonStyle}"
+                    Foreground="#CDD6F4" Margin="0,5" />
         </StackPanel>
     </Grid>
+   </Grid>
 </Page>
