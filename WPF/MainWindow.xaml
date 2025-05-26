@@ -8,7 +8,8 @@
         AllowsTransparency="True"
         Background="Transparent"
         ResizeMode="NoResize"
-        DataContext="{x:Static infrastructure:ViewModelLocator.JobViewModel}">
+        DataContext="{x:Static infrastructure:ViewModelLocator.JobViewModel}"
+        Icon="/Image/Icon.ico">
     <Window.Resources>
         <!-- Couleur Sapphire -->
         <SolidColorBrush x:Key="SapphireBrush" Color="#74c7ec"/>

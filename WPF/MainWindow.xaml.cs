@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media.Animation;
+using System.Windows.Media.Imaging;
 using WPF.Infrastructure;
 using WPF.Pages;
 
@@ -21,8 +22,8 @@ namespace WPF
             InitializeComponent();
 
             DataContext = _vm;
-
-            Core.Utils.ToastBridge.ShowToast = ShowToast;
+            //Uri iconUri = new Uri("pack://application:,,,/Image/Icon.ico", UriKind.RelativeOrAbsolute);
+            //this.Icon = BitmapFrame.Create(iconUri);
             MainFrame.Navigate(new WelcomePage());
 
             JobList.ItemsSource = _vm.Jobs;
