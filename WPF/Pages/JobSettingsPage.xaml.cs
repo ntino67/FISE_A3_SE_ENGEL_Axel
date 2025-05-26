@@ -40,5 +40,10 @@ namespace WPF.Pages
             else
                 ToastBridge.ShowToast?.Invoke("🔑 Please enter a key first", 3000);
         }
+
+        private void TaskProgressBar_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
+        {
+
+        }
     }
 }

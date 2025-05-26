@@ -26,8 +26,14 @@ namespace Core.Model
         [JsonProperty("status")]
         public string Status { get; set; }
 
+        private long? _encryptionDuration;
+
         [JsonProperty("EncryptionDuration")]
-        public long EncryptionDuration { get; set; }
+        public long EncryptionDuration
+        {
+            get => _encryptionDuration ?? 0;
+            set => _encryptionDuration = value;
+        }
 
         [JsonProperty("EncryptedDirectoryPath")]
         public string EncryptedDirectoryPath { get; set; }

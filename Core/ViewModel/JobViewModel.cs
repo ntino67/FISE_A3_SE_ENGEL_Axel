@@ -1,9 +1,11 @@
 using System;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Runtime.CompilerServices;
+using System.Security.RightsManagement;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
@@ -20,7 +22,20 @@ namespace Core.ViewModel
         private readonly ICommandFactory _commandFactory;
         private FileSystemWatcher _watcher;
         private BackupJob _currentJob;
-        
+        private float _progress;
+        public float Progress
+        {
+            get => _progress;
+            set
+            {
+                if (_progress != value)
+                {
+                    _progress = value;
+                    OnPropertyChanged();
+                }
+            }
+        }
+
         public JobViewModel(IBackupService jobManager, IUIService uiService, ICommandFactory commandFactory)
         {
             _jobManager = jobManager;
@@ -189,7 +204,7 @@ namespace Core.ViewModel
                 bool hasEncrypted = files.Any(f => f.EndsWith(".enc"));
                 bool hasPlain = files.Any(f => !f.EndsWith(".enc") && !f.EndsWith(".exe") && !f.EndsWith(".dll"));
 
-                return hasEncrypted && hasPlain ? "Status: ⚠️ Mixed"
+                return hasEncrypted && hasPlain ? "Decrypt"
                      : hasEncrypted ? "Decrypt"
                      : hasPlain ? "Encrypt"
                      : "Status: Empty";
@@ -262,8 +277,9 @@ namespace Core.ViewModel
         {
             if (CurrentJob == null) throw new InvalidOperationException("Aucun job n'est sélectionné.");
 
+            Progress<float> progress = new Progress<float>(value => Progress = value);
             string keyToUse = this.EncryptionKey;
-            bool result = await _jobManager.ExecuteBackupJob(CurrentJob.Id, keyToUse);
+            bool result = await _jobManager.ExecuteBackupJob(CurrentJob.Id, progress, keyToUse);
             OnPropertyChanged(nameof(EncryptionStatus));
             _ui.ShowToast("✅ Backup complete!", 3000);
             return result;
@@ -279,13 +295,13 @@ namespace Core.ViewModel
             _ui.ShowToast("♻️ Job reset.", 3000);
         }
 
-        public void DeleteJob(string jobId)
+        public async void DeleteJob(string jobId)
         {
             var job = Jobs.FirstOrDefault(j => j.Id == jobId);
             if (job == null)
                 throw new InvalidOperationException("Chosen job doesn't exist.");
 
-            _jobManager.DeleteBackupJob(jobId);
+            await _jobManager.DeleteBackupJob(jobId);
             Jobs.Remove(job);
 
             if (CurrentJob?.Id == jobId)
@@ -295,7 +311,7 @@ namespace Core.ViewModel
             _ui.ShowToast("🗑️ Job deleted.", 3000);
         }
 
-        public void ToggleEncryption(string key)
+        public async void ToggleEncryption(string key)
         {
             if (CurrentJob == null) return;
 
@@ -309,20 +325,16 @@ namespace Core.ViewModel
             var encrypted = files.Where(f => f.EndsWith(".enc")).ToList();
             var plain = files.Where(f => !f.EndsWith(".enc") && !f.EndsWith(".exe") && !f.EndsWith(".dll")).ToList();
 
-            if (encrypted.Count > 0 && plain.Count > 0)
-            {
-                _ui.ShowToast("⚠️ Mixed files detected! Please resolve before (en/de)crypting.", 4000);
-                return;
-            }
+           Progress <float> progress = new Progress<float>(value => Progress = value);
 
             if (encrypted.Any())
             {
-                _jobManager.Encryption(false, CurrentJob, key);
+                await _jobManager.Encryption(false, CurrentJob, key, progress);
                 _ui.ShowToast("🔓 Files decrypted", 3000);
             }
             else
             {
-                _jobManager.Encryption(true, CurrentJob, key);
+                await _jobManager.Encryption(true, CurrentJob, key, progress);
                 _ui.ShowToast("🔒 Files encrypted", 3000);
             }
 

@@ -3,23 +3,24 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Threading.Tasks;
 using CryptoSoft;
 
 namespace Core.Model
 {
     internal static class CryptoHelper
     {
-        internal static long Encrypt(string sourceDirectory, IEnumerable<string> extensions, string secretKey)
+        internal static async Task<long> Encrypt(string sourceDirectory, IEnumerable<string> extensions, string secretKey, IProgress<float> progress)
         {
-            return ProcessDirectory(sourceDirectory, true, extensions, secretKey);
+            return await Task.Run(() => ProcessDirectory(sourceDirectory, true, extensions, secretKey, progress));
         }
 
-        internal static long Decrypt(string sourceDirectory, string secretKey)
+        internal static async Task<long> Decrypt(string sourceDirectory, string secretKey, IProgress<float> progress)
         {
-            return ProcessDirectory(sourceDirectory, false, new[] { ".enc" }, secretKey);
+            return await Task.Run(() => ProcessDirectory(sourceDirectory, false, new[] { ".enc" }, secretKey, progress));
         }
 
-        private static long ProcessDirectory(string folderPath, bool encrypt, IEnumerable<string> extensions, string secretKey)
+        private static long ProcessDirectory(string folderPath, bool encrypt, IEnumerable<string> extensions, string secretKey, IProgress<float> progress)
         {
             if (!Directory.Exists(folderPath))
                 throw new DirectoryNotFoundException($"Directory '{folderPath}' not found.");
@@ -40,6 +41,7 @@ namespace Core.Model
 
             byte[] keyBytes = Encoding.UTF8.GetBytes(secretKey);
             int successCount = 0, failCount = 0;
+            int numFiles = allFiles.Count;
 
             foreach (var file in allFiles)
             {
@@ -54,6 +56,7 @@ namespace Core.Model
                         XorEncryption.DecryptFile(file, keyBytes);
 
                     successCount++;
+                    progress.Report((float)successCount / numFiles * 100);
                 }
                 catch (Exception ex)
                 {
