@@ -22,8 +22,6 @@ namespace WPF
             InitializeComponent();
 
             DataContext = _vm;
-            //Uri iconUri = new Uri("pack://application:,,,/Image/Icon.ico", UriKind.RelativeOrAbsolute);
-            //this.Icon = BitmapFrame.Create(iconUri);
             MainFrame.Navigate(new WelcomePage());
 
             JobList.ItemsSource = _vm.Jobs;
