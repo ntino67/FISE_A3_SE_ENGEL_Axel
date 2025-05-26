@@ -9,6 +9,8 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Page Remove="Utils\Language\Dictionary_en_US.xaml" />
+    <Page Remove="Utils\Language\Dictionary_fr_FR.xaml" />
     <None Remove="Image\EasySave_Logos.png" />
     <None Remove="Image\UserIcon.svg" />
     <None Remove="Image\UserIcon_colored.png" />
@@ -24,6 +26,8 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Resource Include="Utils\Language\Dictionary_en_US.xaml" />
+    <Resource Include="Utils\Language\Dictionary_fr_FR.xaml" />
     <Resource Include="Image\EasySave_Logos.png">
       <CopyToOutputDirectory>Never</CopyToOutputDirectory>
     </Resource>

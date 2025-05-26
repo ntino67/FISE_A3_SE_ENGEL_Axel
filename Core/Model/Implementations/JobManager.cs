@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Diagnostics;
 using System.Text;
 using System.Threading.Tasks;
 using Core.Model.Interfaces;
@@ -92,6 +93,12 @@ namespace Core.Model.Implementations
             {
                 bool result = await ExecuteBackup(job);
                 results.Add(result);
+
+                if (!result && job.Status == JobStatus.Canceled)
+                {
+                    _logger.LogWarning("Arrêt de l'exécution des jobs suivants car une application bloquante a été détectée.");
+                    break;
+                }
             }
             return results;
         }
@@ -100,6 +107,26 @@ namespace Core.Model.Implementations
         {
             if (!job.IsValid())
                 return false;
+
+            // Vérifier si l'une des applications bloquantes est en cours d'exécution
+            List<string> blockingApps = _configManager.GetBlockingApplications();
+            if (blockingApps.Count > 0)
+            {
+                foreach (string app in blockingApps)
+                {
+                    if (!string.IsNullOrWhiteSpace(app))
+                    {
+                        Process[] processes = Process.GetProcessesByName(app);
+                        if (processes.Length > 0)
+                        {
+                            _logger.LogWarning($"Le job {job.Name} n'a pas pu démarrer : l'application bloquante {app} est en cours d'exécution.");
+                            job.Status = JobStatus.Canceled;
+                            _configManager.SaveJobs(_jobs);
+                            return false;
+                        }
+                    }
+                }
+            }
 
             DateTime startTime = DateTime.Now;
             job.Status = JobStatus.Running;

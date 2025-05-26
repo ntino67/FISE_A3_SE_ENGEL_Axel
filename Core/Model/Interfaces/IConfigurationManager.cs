@@ -12,5 +12,9 @@ namespace Core.Model.Interfaces
         string GetConfigurationDirectory();
         string GetStateFilePath();
         string GetLogDirectory();
+
+        List<string> GetBlockingApplications();
+
+        void SaveBlockingApplications(List<string> applicationNames);
     }
 }

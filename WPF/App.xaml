@@ -6,7 +6,11 @@
              xmlns:sys="clr-namespace:System;assembly=mscorlib"
              StartupUri="MainWindow.xaml">
     <Application.Resources>
-        <local:FullDiffConverter x:Key="FullDiffConverter"/>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="/Utils/Language/Dictionary_en_US.xaml"/>
+            </ResourceDictionary.MergedDictionaries>
+            <local:FullDiffConverter x:Key="FullDiffConverter"/>
         <Style TargetType="Control">
             <Setter Property="Background" Value="Transparent"/>
         </Style>
@@ -55,5 +59,6 @@
                 <x:Type TypeName="utils:BackupType"/>
             </ObjectDataProvider.MethodParameters>
         </ObjectDataProvider>
+        </ResourceDictionary>
     </Application.Resources>
 </Application>

@@ -132,9 +132,31 @@ namespace Core.Model.Implementations
 
             existingEntries.Add(entry);
 
-          
+
             string updatedJson = JsonConvert.SerializeObject(existingEntries, Formatting.Indented);
             File.WriteAllText(logFilePath, updatedJson);
         }
+
+        public void LogWarning(string message)
+        {
+            string logMessage = $"[WARNING] [{DateTime.Now}] {message}";
+            LogToFile("warnings.log", logMessage);
+            Console.WriteLine(logMessage);
+        }
+
+        private void LogToFile(string fileName, string message)
+        {
+            try
+            {
+                string logFilePath = Path.Combine(_logDirectory, fileName);
+                File.AppendAllText(logFilePath, message + Environment.NewLine);
+            }
+            catch
+            {
+                // La journalisation ne doit pas provoquer d'erreur dans l'application
+            }
+        }
+
     }
 }
+

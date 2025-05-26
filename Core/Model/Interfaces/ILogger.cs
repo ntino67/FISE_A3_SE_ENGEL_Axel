@@ -12,6 +12,7 @@ namespace Core.Model.Interfaces
         List<LogEntry> GetTodayLogs();
         string GetLogFilePath(DateTime date);
 
+        void LogWarning(string message);
         void LogEncryptionStart(BackupJob job);
         void LogEncryptionEnd(BackupJob job,bool success, long duration);
     }

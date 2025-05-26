@@ -104,7 +104,21 @@ namespace Core.Model.Implementations
         private class Settings
         {
             public string Language { get; set; } = "en-US";
- 
+            public List<string> BlockingApplications { get; set; } = new List<string>();  
+
+        }
+
+        public List<string> GetBlockingApplications()
+        {
+            var settings = LoadSettings();
+            return settings.BlockingApplications ?? new List<string>();
+        }
+
+        public void SaveBlockingApplications(List<string> applicationNames)
+        {
+            var settings = LoadSettings();
+            settings.BlockingApplications = applicationNames ?? new List<string>();
+            SaveSettings(settings);
         }
     }
 }
