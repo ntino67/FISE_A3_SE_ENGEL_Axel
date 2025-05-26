@@ -59,7 +59,7 @@ namespace WPF.Infrastructure
                 _jobManager = new JobManager(_logger, _configManager);
                 _iuiService = new UIService();
                 _localizationService = new LocalizationService();
-                _jobViewModel = new JobViewModel(_jobManager, _iuiService);
+                _jobViewModel = new JobViewModel(_jobManager, _iuiService, _commandFactory);
                 _settingsViewModel = new SettingsViewModel(_configManager, _localizationService);
             }
             catch (Exception ex)
