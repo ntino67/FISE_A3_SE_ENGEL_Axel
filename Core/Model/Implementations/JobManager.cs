@@ -47,14 +47,15 @@ namespace Core.Model.Implementations
             _configManager.SaveJobs(_jobs);
         }
 
-        public void DeleteBackupJob(string jobId)
+        public async Task<bool> DeleteBackupJob(string jobId)
         {
             BackupJob job = _jobs.FirstOrDefault(j => j.Id == jobId);
             if (job == null)
-                return;
+                return false;
 
             _jobs.Remove(job);
             _configManager.SaveJobs(_jobs);
+            return true;
         }
 
         public List<BackupJob> GetAllJobs()
@@ -77,21 +78,21 @@ namespace Core.Model.Implementations
             return _jobs.Count;
         }
 
-        public async Task<bool> ExecuteBackupJob(string jobId, string encryptionKey = null)
+        public async Task<bool> ExecuteBackupJob(string jobId, IProgress<float> progress, string encryptionKey = null)
         {
             BackupJob job = _jobs.FirstOrDefault(j => j.Id == jobId);
             if (job == null)
                 return false;
 
-            return await ExecuteBackup(job, encryptionKey);
+            return await ExecuteBackup(job, progress, encryptionKey);
         }
 
-        public async Task<List<bool>> ExecuteAllBackupJobs()
+        public async Task<List<bool>> ExecuteAllBackupJobs(IProgress<float> progress)
         {
             List<bool> results = new List<bool>();
             foreach (var job in _jobs)
             {
-                bool result = await ExecuteBackup(job);
+                bool result = await ExecuteBackup(job, progress);
                 results.Add(result);
 
                 if (!result && job.Status == JobStatus.Canceled)
@@ -103,7 +104,7 @@ namespace Core.Model.Implementations
             return results;
         }
 
-        private async Task<bool> ExecuteBackup(BackupJob job, string encryptionKey = null)
+        private async Task<bool> ExecuteBackup(BackupJob job, IProgress<float> progress, string encryptionKey = null)
         {
             if (!job.IsValid())
                 return false;
@@ -143,11 +144,11 @@ namespace Core.Model.Implementations
 
                 if (job.Type == BackupType.Full)
                 {
-                    success = await ExecuteFullBackup(job, encryptionKey);
+                    success = await ExecuteFullBackup(job, progress, encryptionKey);
                 }
                 else
                 {
-                    success = await ExecuteDifferentialBackup(job, encryptionKey);
+                    success = await ExecuteDifferentialBackup(job, encryptionKey, progress);
                 }
 
                 job.Status = success ? JobStatus.Completed : JobStatus.Failed;
@@ -173,7 +174,7 @@ namespace Core.Model.Implementations
         }
 
 
-        private async Task<bool> ExecuteFullBackup(BackupJob job, string encryptionKey)
+        private async Task<bool> ExecuteFullBackup(BackupJob job, IProgress<float> progress, string encryptionKey)
         {
             try
             {
@@ -216,6 +217,7 @@ namespace Core.Model.Implementations
                                 $"ENCRYPT_ERROR: {ex.Message}");
                         }
                     }
+                    progress?.Report((float)files.ToList().IndexOf(file) / files.Length * 100);
                 }
 
                 return true;
@@ -227,7 +229,7 @@ namespace Core.Model.Implementations
             }
         }
 
-        private async Task<bool> ExecuteDifferentialBackup(BackupJob job, string encryptionKey)
+        private async Task<bool> ExecuteDifferentialBackup(BackupJob job, string encryptionKey, IProgress<float> progress)
         {
             try
             {
@@ -237,7 +239,7 @@ namespace Core.Model.Implementations
                 if (!targetDir.Exists)
                 {
                     // Si le répertoire cible n'existe pas, effectuer une sauvegarde complète
-                    return await ExecuteFullBackup(job, encryptionKey);
+                    return await ExecuteFullBackup(job, progress, encryptionKey);
                 }
 
                 FileInfo[] files = sourceDir.GetFiles("*", SearchOption.AllDirectories);
@@ -283,6 +285,7 @@ namespace Core.Model.Implementations
                                 _logger.LogBackupOperation(job.Name, file.FullName, targetPath, file.Length, transferTime, $"ENCRYPT_ERROR: {ex.Message}");
                             }
                         }
+                        progress?.Report((float)files.ToList().IndexOf(file) / files.Length * 100);
                     }
                 }
 
@@ -304,32 +307,35 @@ namespace Core.Model.Implementations
             }
         }
 
-        internal void Encrypt(BackupJob job, string key)
+        internal async Task<bool> Encrypt(BackupJob job, string key, IProgress<float> progress)
         {
             string Directory = job.TargetDirectory;
             _logger.LogEncryptionStart(job);
-            long duration = CryptoHelper.Encrypt(Directory, new[] { ".txt", ".docx", ".xlsx", ".png", ".cs", ".sln", "json" }, key);
+            long duration = await CryptoHelper.Encrypt(Directory, new[] { ".txt", ".docx", ".xlsx", ".png", ".cs", ".sln", ".json", ".vpk" }, key, progress);
             _logger.LogEncryptionEnd(job, true, duration);
+            return true;
         }
 
-        internal void Decrypt(BackupJob job, string key)
+        internal async Task<bool> Decrypt(BackupJob job, string key, IProgress<float> progress)
         {
             string Directory = job.TargetDirectory;
             _logger.LogEncryptionStart(job);
-            long duration = CryptoHelper.Decrypt(Directory, key);
+            long duration = await CryptoHelper.Decrypt(Directory, key, progress);
             _logger.LogEncryptionEnd(job, true, duration);
+            return true;
         }
 
-        public void Encryption(bool isEncrypted, BackupJob job, string Key)
+        public async Task<bool> Encryption(bool isEncrypted, BackupJob job, string Key, IProgress<float> progress)
         {
             if (isEncrypted)
             {
-                Encrypt(job, Key);
+                await Encrypt(job, Key, progress);
             }
             else
             {
-                Decrypt(job, Key);
+                await Decrypt(job, Key, progress);
             }
+            return true;
         }
     }
 }

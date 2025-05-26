@@ -1,5 +1,6 @@
 ﻿using Core.Model;
 using Core.ViewModel;
+using Core.Utils;
 using System;
 using System.Linq;
 using System.Security.Cryptography;
@@ -26,6 +27,7 @@ namespace WPF
 
             JobList.ItemsSource = _vm.Jobs;
             _vm.NavigateToHome = () => MainFrame.Navigate(new WelcomePage());
+            ToastBridge.ShowToast = ShowToast;
         }
 
         private void TopBar_MouseLeftButtonDown(object sender, System.Windows.Input.MouseButtonEventArgs e)

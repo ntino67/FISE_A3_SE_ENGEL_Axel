@@ -9,7 +9,7 @@
 
     <Page.Resources>
         <conv:BoolToVisibilityConverter x:Key="BoolToVisibility" />
-        
+
         <Style x:Key="FadeButtonStyle" TargetType="Button">
             <Setter Property="Opacity" Value="0"/>
             <Setter Property="Background" Value="#F9E2AF"/>
@@ -46,28 +46,28 @@
     </Page.Resources>
 
     <Grid Margin="20">
-    <Grid Margin="20" Cursor="">
-        <Grid.RowDefinitions>
-            <RowDefinition Height="Auto" />
-            <RowDefinition Height="*" />
-        </Grid.RowDefinitions>
+        <Grid Margin="20" Cursor="">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="*" />
+            </Grid.RowDefinitions>
 
-        <!-- Header -->
-        <Border Grid.Row="0" Background="#313244" Padding="20" CornerRadius="10">
-            <TextBox Text="{Binding CurrentJob.Name, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+            <!-- Header -->
+            <Border Grid.Row="0" Background="#313244" Padding="20" CornerRadius="10">
+                <TextBox Text="{Binding CurrentJob.Name, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                      FontSize="28" Foreground="#CDD6F4" Background="Transparent"
                      BorderThickness="0" HorizontalAlignment="Center" />
-        </Border>
+            </Border>
 
-        <!-- Body -->
-        <StackPanel Grid.Row="1" Margin="0,20" HorizontalAlignment="Center" VerticalAlignment="Top">
-            <Button Content="{Binding SourceDirectoryLabel}"
+            <!-- Body -->
+            <StackPanel Grid.Row="1" Margin="0,20" HorizontalAlignment="Center" VerticalAlignment="Top">
+                <Button Content="{Binding SourceDirectoryLabel}"
                     ToolTip="{Binding CurrentJob.SourceDirectory}"
                     Click="OnSetSourcePathClick"
                     Width="250" Height="45"
                     BorderBrush="#89B4FA" Foreground="#CDD6F4" Margin="0,5"
                     Style="{StaticResource RoundedButtonStyle}" />
-            <Button Content="{Binding TargetDirectoryLabel}"
+                <Button Content="{Binding TargetDirectoryLabel}"
                     ToolTip="{Binding CurrentJob.TargetDirectory}"
                     Click="OnSetTargetPathClick"
                     Width="250" Height="45"
@@ -75,7 +75,7 @@
                     Style="{StaticResource RoundedButtonStyle}"
                     Cursor="Hand" />
 
-            <ComboBox Width="250" Height="36"
+                <ComboBox Width="250" Height="36"
                       ItemsSource="{Binding Source={StaticResource BackupTypeEnum}}"
                       SelectedItem="{Binding CurrentJob.Type, Mode=TwoWay}"
                       Background="#313244"
@@ -84,33 +84,33 @@
                       FontSize="16"
                       Margin="0,5" />
 
-            <!-- Encryption UI -->
-            <Grid Width="250" Height="30" Margin="0,5">
-                <TextBox x:Name="KeyInput"
+                <!-- Encryption UI -->
+                <Grid Width="250" Height="30" Margin="0,5">
+                    <TextBox x:Name="KeyInput"
                          Text="{Binding EncryptionKey, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                          Background="#313244"
                          Foreground="#CDD6F4"
                          BorderBrush="#A6ADC8"
                          FontSize="16" />
 
-                <TextBlock Text="Enter an Encryption Key..."
+                    <TextBlock Text="Enter an Encryption Key..."
                            Foreground="#6C7086"
                            Margin="10,0,0,0"
                            VerticalAlignment="Center"
                            IsHitTestVisible="False"
                            Visibility="{Binding Text, ElementName=KeyInput, Converter={StaticResource BoolToVisibility}}" />
-            </Grid>
-            <Button Content="{Binding EncryptionStatus}" 
+                </Grid>
+                <Button Content="{Binding EncryptionStatus}" 
                     Command="{Binding ToggleEncryptionCommand}"
                     Width="250" Height="45"
                     Style="{StaticResource RoundedButtonStyle}"
                     BorderBrush="#F9E2AF" Foreground="#CDD6F4" Margin="0,5" />
 
-            <!-- Commands -->
-            <Button Content="Run" Command="{Binding RunBackupCommand}"
+                <!-- Commands -->
+                <Button Content="Run" Command="{Binding RunBackupCommand}"
                     Style="{StaticResource RoundedButtonStyle}"
                     Width="250" Height="45" BorderBrush="#A6E3A1" Foreground="#CDD6F4" Margin="0,5" />
-            <Button Content="Delete"
+                <Button Content="Delete"
                     Command="{Binding DeleteJobCommand}"
                     CommandParameter="{Binding CurrentJob}"
                     Width="250" Height="45"
@@ -120,7 +120,24 @@
                 <Button Content="Reset" Command="{Binding ResetJobCommand}" Width="250" Height="45" BorderBrush="#89DCEB"
                     Style="{StaticResource RoundedButtonStyle}"
                     Foreground="#CDD6F4" Margin="0,5" />
-        </StackPanel>
+                <Grid Margin="10" Height="20" VerticalAlignment="Bottom">
+                    <!-- Barre de progression -->
+                    <ProgressBar Name="TaskProgressBar"
+                 Minimum="0"
+                 Maximum="100"
+                 Value="{Binding Progress}"
+                 ValueChanged="TaskProgressBar_ValueChanged" BorderThickness="1,1,1,1">
+                    </ProgressBar>
+
+                    <!-- Texte superposé centré -->
+                    <TextBlock Text="{Binding Progress, StringFormat={}{0:0}%}"
+               Foreground="Black"
+               FontWeight="Bold"
+               HorizontalAlignment="Center"
+               VerticalAlignment="Center"/>
+                </Grid>
+
+            </StackPanel>
+        </Grid>
     </Grid>
-   </Grid>
 </Page>
