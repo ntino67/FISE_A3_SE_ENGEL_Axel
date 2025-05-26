@@ -204,7 +204,7 @@ namespace Core.ViewModel
                 bool hasEncrypted = files.Any(f => f.EndsWith(".enc"));
                 bool hasPlain = files.Any(f => !f.EndsWith(".enc") && !f.EndsWith(".exe") && !f.EndsWith(".dll"));
 
-                return hasEncrypted && hasPlain ? "Status: ⚠️ Mixed"
+                return hasEncrypted && hasPlain ? "Decrypt"
                      : hasEncrypted ? "Decrypt"
                      : hasPlain ? "Encrypt"
                      : "Status: Empty";
@@ -324,12 +324,6 @@ namespace Core.ViewModel
 
             var encrypted = files.Where(f => f.EndsWith(".enc")).ToList();
             var plain = files.Where(f => !f.EndsWith(".enc") && !f.EndsWith(".exe") && !f.EndsWith(".dll")).ToList();
-
-            if (encrypted.Count > 0 && plain.Count > 0)
-            {
-                _ui.ShowToast("⚠️ Mixed files detected! Please resolve before (en/de)crypting.", 4000);
-                //return;
-            }
 
            Progress <float> progress = new Progress<float>(value => Progress = value);
 
