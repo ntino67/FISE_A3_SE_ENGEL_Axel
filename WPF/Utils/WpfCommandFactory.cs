@@ -12,5 +12,4 @@ namespace WPF.Utils
         public ICommand Create<T>(Action<T> execute, Predicate<T> canExecute = null)
             => new RelayCommand<T>(execute, canExecute);
     }
-
 }

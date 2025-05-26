@@ -20,7 +20,7 @@ namespace WPF.Infrastructure
         private static IUIService _iuiService;
         private static ILocalizationService _localizationService;
         private static ICommandFactory _commandFactory;
-        
+
         public static JobViewModel JobViewModel
         {
             get
@@ -52,11 +52,15 @@ namespace WPF.Infrastructure
                 Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),
                 "EasySave");
 
+
             try
             {
+
+
                 _configManager = new ConfigurationManager(appDataPath);
                 _logger = new Logger(_configManager.GetLogDirectory());
                 _jobManager = new JobManager(_logger, _configManager);
+                _commandFactory = new WpfCommandFactory();
                 _iuiService = new UIService();
                 _localizationService = new LocalizationService();
                 _jobViewModel = new JobViewModel(_jobManager, _iuiService, _commandFactory);
@@ -64,14 +68,8 @@ namespace WPF.Infrastructure
             }
             catch (Exception ex)
             {
-                // Log l'erreur et initialise au moins les services essentiels
-                System.Diagnostics.Debug.WriteLine($"Erreur lors de l'initialisation : {ex.Message}");
-
-                // Garantir que les services critiques sont initialisés
-                if (_localizationService == null)
-                    _localizationService = new LocalizationService();
+                throw new InvalidOperationException("Failed to initialize ViewModelLocator", ex);
             }
-
         }
 
         public static JobViewModel GetJobViewModel() => JobViewModel;

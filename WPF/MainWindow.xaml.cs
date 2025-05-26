@@ -178,11 +178,6 @@ namespace WPF
             ToastHost.Visibility = Visibility.Collapsed;
         }
 
-        private void SearchBox_TextChanged(object sender, TextChangedEventArgs e)
-        {
-            _vm.CreateJobCommand?.RaiseCanExecuteChanged();
-        }
-
         private void SettingsButton_Click(object sender, RoutedEventArgs e)
         {
             MainFrame.Navigate(new AppSettingsPage());

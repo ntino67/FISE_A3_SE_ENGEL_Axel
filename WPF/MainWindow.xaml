@@ -274,7 +274,7 @@
                                      Foreground="White"
                                      FontSize="18"
                                      Padding="10,0" />
-                            <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
+                                <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
                                 <Button x:Name="SearchJobButton"
                                     Width="36"
                                     Height="36"
