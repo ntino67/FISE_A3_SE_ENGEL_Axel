@@ -27,7 +27,7 @@
     <system:String x:Key="EncryptionExtensions">File Extensions to Encrypt</system:String>
     <system:String x:Key="EncryptionExtensionsDescription">Specify which file extensions should be encrypted when backup jobs are executed with encryption enabled.</system:String>
     <system:String x:Key="EncryptionWildcard">Wildcard Pattern</system:String>
-    <system:String x:Key="EncryptionWildcardDescription">Optional: Specify a wildcard pattern to encrypt all matching files regardless of their extension (e.g. *.* for all files).</system:String>
+    <system:String x:Key="EncryptionWildcardDescription">Optional: Specify a wildcard pattern to encrypt all matching files regardless of their extension (e.g. *.* or all for all files).</system:String>
     <system:String x:Key="AddExtension">Add</system:String>
 
     <!-- Buttons -->

@@ -23,10 +23,29 @@ namespace Core.Model
         private JobStatus _status = JobStatus.Ready;
         private bool _isChecked;
         private bool _isActive;
+        private bool _isEncrypted;
+
+
 
         // Non-editable property: GUID
         [JsonPropertyName("id")]
         public string Id { get; set; } = Guid.NewGuid().ToString();
+
+
+
+        [JsonPropertyName("isEncrypted")]
+        public bool IsEncrypted
+        {
+            get { return _isEncrypted; }
+            set
+            {
+                if (_isEncrypted != value)
+                {
+                    _isEncrypted = value;
+                    OnPropertyChanged();
+                }
+            }
+        }
 
         [JsonPropertyName("name")]
         public string Name

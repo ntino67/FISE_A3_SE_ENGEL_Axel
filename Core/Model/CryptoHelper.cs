@@ -14,7 +14,7 @@ namespace Core.Model
     {
         internal static async Task<long> Encrypt(string sourceDirectory, IEnumerable<string> extensions, string wildcard, string secretKey, IProgress<float> progress)
         {
-          
+
             return await Task.Run(() => ProcessDirectory(sourceDirectory, true, extensions, wildcard, secretKey, progress));
         }
 
@@ -32,17 +32,24 @@ namespace Core.Model
 
             List<string> filesToProcess;
 
+            // Pour le déchiffrement, toujours utiliser tous les fichiers (*.*)
             if (!encrypt)
             {
-                filesToProcess = Directory.GetFiles(folderPath, wildcard, SearchOption.AllDirectories).ToList();
+                filesToProcess = Directory.GetFiles(folderPath, "*.*", SearchOption.AllDirectories).ToList();
             }
-
+            // Option "Tout chiffrer" activée (wildcard = "all")
+            else if (!string.IsNullOrWhiteSpace(wildcard) && wildcard.Trim().ToLower() == "all")
+            {
+                filesToProcess = Directory.GetFiles(folderPath, "*.*", SearchOption.AllDirectories).ToList();
+                Console.WriteLine($"[CryptoHelper] Mode 'Tout chiffrer' activé. {filesToProcess.Count} fichiers trouvés.");
+            }
+            // Utilisation d'un wildcard personnalisé
             else if (!string.IsNullOrWhiteSpace(wildcard))
             {
                 try
                 {
                     filesToProcess = Directory.GetFiles(folderPath, wildcard, SearchOption.AllDirectories).ToList();
-
+                    Console.WriteLine($"[CryptoHelper] Utilisation du wildcard '{wildcard}'. {filesToProcess.Count} fichiers trouvés.");
                 }
                 catch (Exception ex)
                 {
@@ -50,15 +57,16 @@ namespace Core.Model
                     Console.WriteLine($"[CryptoHelper] Error retrieving files with wildcard '{wildcard}': {ex.Message}");
                 }
             }
-
-            // Sinon, utiliser les extensions spécifiées
+            // Utiliser les extensions spécifiées
             else if (extensions != null && extensions.Any())
             {
                 filesToProcess = GetFilesByExtensions(folderPath, extensions);
+                Console.WriteLine($"[CryptoHelper] Utilisation des extensions spécifiées. {filesToProcess.Count} fichiers trouvés.");
             }
             // Aucune règle spécifiée, ne rien faire
             else
             {
+                Console.WriteLine("[CryptoHelper] Aucune règle de filtrage spécifiée. Opération annulée.");
                 return 0;
             }
 
