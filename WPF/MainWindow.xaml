@@ -154,7 +154,7 @@
                             Width="36"
                             Height="36"
                             Margin="0,0,125,0"
-                            ToolTip="Accueil"
+                            ToolTip="Home"
                             Background="Transparent"
                             BorderBrush="Transparent"
                             Foreground="{StaticResource SapphireBrush}"
@@ -180,7 +180,7 @@
                                     Background="Transparent"
                                     BorderBrush="Transparent"
                                     BorderThickness="0.2"
-                                    ToolTip="Paramètres"
+                                    ToolTip="Settings"
                                     Click="SettingsButton_Click"
                                     VerticalAlignment="Center" HorizontalAlignment="Center">
                                 <Viewbox Stretch="Uniform">
@@ -225,21 +225,21 @@
                                 </Grid.ColumnDefinitions>
                                 <Button Grid.Column="0" Width="36" Height="36" Margin="2,0"
                                         Background="Transparent" BorderThickness="0"
-                                        ToolTip="Réduire"
+                                        ToolTip="Reduce"
                                         Click="MinimizeButton_Click"
                                         VerticalAlignment="Center" HorizontalAlignment="Center">
                                     <TextBlock Text="&#x2212;" FontSize="25" Foreground="#cdd6f4" VerticalAlignment="Center" HorizontalAlignment="Center" Height="45"/>
                                 </Button>
                                 <Button Grid.Column="1" Width="36" Height="36" Margin="2,0"
                                         Background="Transparent" BorderThickness="0"
-                                        ToolTip="Agrandir/Restaurer"
+                                        ToolTip="Enlarge/Restore"
                                         Click="MaximizeButton_Click"
                                         VerticalAlignment="Center" HorizontalAlignment="Center">
                                     <TextBlock Text="&#x25A1;" FontSize="30" Foreground="#cdd6f4" VerticalAlignment="Center" HorizontalAlignment="Center" Height="56"/>
                                 </Button>
                                 <Button Grid.Column="2" Width="36" Height="36" Margin="2,0"
                                         Background="Transparent" BorderThickness="0"
-                                        ToolTip="Fermer"
+                                        ToolTip="Close"
                                         Click="CloseButton_Click"
                                         VerticalAlignment="Center" HorizontalAlignment="Center">
                                     <TextBlock Text="&#x2715;" FontSize="20" Foreground="#f38ba8" VerticalAlignment="Center" HorizontalAlignment="Center" Height="34"/>
@@ -280,7 +280,7 @@
                                     Width="36"
                                     Height="36"
                                     Margin="0,0,5,0"
-                                    ToolTip="Rechercher"
+                                    ToolTip="Search"
                                     Background="Transparent"
                                     BorderBrush="Transparent"
                                     Foreground="{StaticResource SapphireBrush}"
@@ -300,7 +300,7 @@
                                         Width="36"
                                         Height="36"
                                         Margin="0,0,0,0"
-                                        ToolTip="Créer un job"
+                                        ToolTip="Create a job"
                                         Background="Transparent"
                                         BorderBrush="Transparent"
                                         Foreground="{StaticResource SapphireBrush}"
@@ -357,7 +357,7 @@
                                                                 Background="Transparent"
                                                                 BorderBrush="Transparent"
                                                                 BorderThickness="0.2"
-                                                                ToolTip="Paramètres du job"
+                                                                ToolTip="Job settings"
                                                                 VerticalAlignment="Center" HorizontalAlignment="Center"
                                                                 Click="JobSettingsButton_Click"
                                                                 CommandParameter="{Binding}">
@@ -373,7 +373,7 @@
                                                         <Button Width="36" Height="36"
                                                                 Background="Transparent"
                                                                 BorderBrush="Transparent"
-                                                                ToolTip="Supprimer le job"
+                                                                ToolTip="Delete job"
                                                                 Command="{Binding DataContext.DeleteJobCommand, RelativeSource={RelativeSource AncestorType=Window}}"
                                                                 CommandParameter="{Binding}">
 
