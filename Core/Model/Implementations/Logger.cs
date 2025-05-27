@@ -17,6 +17,8 @@ namespace Core.Model.Implementations
             Directory.CreateDirectory(logDirectory);
         }
 
+
+
         public void LogBackupOperation(string jobName, string sourcePath, string destinationPath, long fileSize, long transferTimeMs, string status)
         {
             LogEntry logEntry = new LogEntry

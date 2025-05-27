@@ -31,8 +31,6 @@
     <system:String x:Key="Jobs">Jobs</system:String>
     <system:String x:Key="NewJob">New Job</system:String>
     <system:String x:Key="JobName">Job Name</system:String>
-    <system:String x:Key="Source">Source</system:String>
-    <system:String x:Key="Target">Target</system:String>
     <system:String x:Key="BackupType">Backup Type</system:String>
     <system:String x:Key="Full">Full</system:String>
     <system:String x:Key="Differential">Differential</system:String>
@@ -48,4 +46,23 @@
     <system:String x:Key="Success">Success</system:String>
     <system:String x:Key="Warning">Warning</system:String>
     <system:String x:Key="Information">Information</system:String>
+
+    <!-- Pop-Up -->
+    <system:String x:Key="JobAlreadyRunning">Job is already running</system:String>
+    <system:String x:Key="JobDeleted">Job deleted</system:String>
+    
+    <system:String x:Key="NoJobSelected">No job selected</system:String>
+    <system:String x:Key="BackupComplete">Backup complete</system:String>
+    <system:String x:Key="Source">Source</system:String>
+    <system:String x:Key="Target">Target</system:String>
+    <system:String x:Key="JobWithName">A job with the name</system:String>
+    <system:String x:Key="AlreadyExist">already exists</system:String>
+    <system:String x:Key="JobDoesNotExist">The selected job does not exist</system:String>
+    <system:String x:Key="DirectoryDoesNotExist">The selected directory does not exist</system:String>
+    <system:String x:Key="FilesDecrypted">Files successfully decrypted</system:String>
+    <system:String x:Key="FilesEncrypted">Files successfully encrypted</system:String>
+    <system:String x:Key="NotSet">Not set</system:String>
+    <system:String x:Key="JobCreated">Job Created</system:String>
+    <system:String x:Key="JobReset">Job Reset</system:String>
 </ResourceDictionary>
+

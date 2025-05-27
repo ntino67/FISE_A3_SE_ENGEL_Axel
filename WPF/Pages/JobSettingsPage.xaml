@@ -107,17 +107,17 @@
                     BorderBrush="#F9E2AF" Foreground="#CDD6F4" Margin="0,5" />
 
                 <!-- Commands -->
-                <Button Content="Run" Command="{Binding RunBackupCommand}"
+                <Button Content="{DynamicResource Run}" Command="{Binding RunBackupCommand}"
                     Style="{StaticResource RoundedButtonStyle}"
                     Width="250" Height="45" BorderBrush="#A6E3A1" Foreground="#CDD6F4" Margin="0,5" />
-                <Button Content="Delete"
+                <Button Content="{DynamicResource Delete}"
                     Command="{Binding DeleteJobCommand}"
                     CommandParameter="{Binding CurrentJob}"
                     Width="250" Height="45"
                     BorderBrush="#F38BA8" Foreground="#CDD6F4"
                     Style="{StaticResource RoundedButtonStyle}"
                     Margin="0,5" />
-                <Button Content="Reset" Command="{Binding ResetJobCommand}" Width="250" Height="45" BorderBrush="#89DCEB"
+                <Button Content="{DynamicResource Reset}" Command="{Binding ResetJobCommand}" Width="250" Height="45" BorderBrush="#89DCEB"
                     Style="{StaticResource RoundedButtonStyle}"
                     Foreground="#CDD6F4" Margin="0,5" />
                 <Grid Margin="10" Height="20" VerticalAlignment="Bottom">
