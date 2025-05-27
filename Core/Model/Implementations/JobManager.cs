@@ -37,7 +37,6 @@ namespace Core.Model.Implementations
             BackupJob existingJob = _jobs.FirstOrDefault(j => j.Id == job.Id);
             if (existingJob == null)
                 throw new InvalidOperationException($"Le job avec l'ID {job.Id} n'existe pas.");
-
             // Vérifier si le nouveau nom n'est pas déjà utilisé par un autre job
             if (job.Name != existingJob.Name && _jobs.Any(j => j.Name == job.Name && j.Id != job.Id))
                 throw new InvalidOperationException($"Un job avec le nom {job.Name} existe déjà.");
@@ -52,7 +51,6 @@ namespace Core.Model.Implementations
             BackupJob job = _jobs.FirstOrDefault(j => j.Id == jobId);
             if (job == null)
                 return false;
-
             _jobs.Remove(job);
             _configManager.SaveJobs(_jobs);
             return true;
@@ -83,8 +81,8 @@ namespace Core.Model.Implementations
             BackupJob job = _jobs.FirstOrDefault(j => j.Id == jobId);
             if (job == null)
                 return false;
-
-            return await ExecuteBackup(job, progress, encryptionKey);
+            await ExecuteBackup(job, progress, encryptionKey);
+            return true;
         }
 
         public async Task<List<bool>> ExecuteAllBackupJobs(IProgress<float> progress)
@@ -327,6 +325,7 @@ namespace Core.Model.Implementations
 
         public async Task<bool> Encryption(bool isEncrypted, BackupJob job, string Key, IProgress<float> progress)
         {
+            job.Status = JobStatus.Running;
             if (isEncrypted)
             {
                 await Encrypt(job, Key, progress);
@@ -335,6 +334,7 @@ namespace Core.Model.Implementations
             {
                 await Decrypt(job, Key, progress);
             }
+            job.Status = JobStatus.Completed;
             return true;
         }
     }

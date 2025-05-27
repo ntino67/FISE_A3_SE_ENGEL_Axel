@@ -1,11 +1,9 @@
 using System;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
-using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Runtime.CompilerServices;
-using System.Security.RightsManagement;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
@@ -276,7 +274,11 @@ namespace Core.ViewModel
         public async Task<bool> ExecuteCurrentJob()
         {
             if (CurrentJob == null) throw new InvalidOperationException("Aucun job n'est sélectionné.");
-
+            if (CurrentJob.Status == JobStatus.Running)
+            {
+                _ui.ShowToast("🔄 Job déjà en cours d'exécution.", 3000);
+                return false;
+            }
             Progress<float> progress = new Progress<float>(value => Progress = value);
             string keyToUse = this.EncryptionKey;
             bool result = await _jobManager.ExecuteBackupJob(CurrentJob.Id, progress, keyToUse);
@@ -314,7 +316,11 @@ namespace Core.ViewModel
         public async void ToggleEncryption(string key)
         {
             if (CurrentJob == null) return;
-
+            if (CurrentJob.Status == JobStatus.Running)
+            {
+                _ui.ShowToast("🔄 Job déjà en cours d'exécution.", 3000);
+                return;
+            }
             string folder = CurrentJob.TargetDirectory;
             if (!Directory.Exists(folder))
                 throw new DirectoryNotFoundException("Target directory not found.");

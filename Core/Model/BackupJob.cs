@@ -2,7 +2,6 @@
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using System.Text.Json.Serialization;
-using Core.Model.Implementations;
 using Core.Utils;
 
 namespace Core.Model
@@ -19,7 +18,6 @@ namespace Core.Model
         private string _name;
         private string _sourceDirectory;
         private string _targetDirectory;
-        private bool _isEncrypted;
         private BackupType _type;
         private DateTime? _lastRunTime;
         private JobStatus _status = JobStatus.Ready;
@@ -29,20 +27,6 @@ namespace Core.Model
         // Non-editable property: GUID
         [JsonPropertyName("id")]
         public string Id { get; set; } = Guid.NewGuid().ToString();
-
-        [JsonPropertyName("isEncrypted")]
-        public bool IsEncrypted
-        {
-            get { return _isEncrypted; }
-            set
-            {
-                if (_isEncrypted != value)
-                {
-                    _isEncrypted = value;
-                    OnPropertyChanged();
-                }
-            }
-        }
 
         [JsonPropertyName("name")]
         public string Name
@@ -144,24 +128,6 @@ namespace Core.Model
             }
         }
         
-        [JsonIgnore]
-        public bool IsActive
-        {
-            get => _isActive;
-            set
-            {
-                if (_isActive != value)
-                {
-                    _isActive = value;
-                    OnPropertyChanged();
-                }
-            }
-        }
-        
-        [JsonIgnore]
-        public bool IsReady => 
-            !string.IsNullOrWhiteSpace(SourceDirectory) &&
-            !string.IsNullOrWhiteSpace(TargetDirectory);
 
         public bool IsValid()
         {
