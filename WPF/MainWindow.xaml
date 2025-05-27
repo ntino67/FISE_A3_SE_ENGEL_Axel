@@ -97,6 +97,76 @@
             </Setter>
         </Style>
 
+        <!-- Style réduit pour ToggleButton Differential/Full (pour la liste des jobs) -->
+        <Style x:Key="DiffFullToggleStyleSmall" TargetType="ToggleButton" BasedOn="{StaticResource DiffFullToggleStyle}">
+            <Setter Property="Width" Value="48"/>
+            <Setter Property="Height" Value="20"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="ToggleButton">
+                        <Grid>
+                            <!-- FOND -->
+                            <Border x:Name="SwitchBorder"
+                            Width="48" Height="20"
+                            CornerRadius="10"
+                            Background="#45475a"
+                            BorderBrush="#a6adc8"
+                            BorderThickness="1"/>
+                            <!-- THUMB -->
+                            <Border x:Name="SwitchThumb"
+                            Width="18" Height="14"
+                            Background="#232336"
+                            CornerRadius="7"
+                            Margin="2"
+                            HorizontalAlignment="Left"
+                            VerticalAlignment="Center"
+                            RenderTransformOrigin="0.5,0.5">
+                                <Border.RenderTransform>
+                                    <TranslateTransform X="0"/>
+                                </Border.RenderTransform>
+                            </Border>
+                            <!-- TEXTES -->
+                            <Grid>
+                                <TextBlock x:Name="DiffText"
+                                   Text="Diff"
+                                   FontWeight="Bold"
+                                   FontSize="8"
+                                   VerticalAlignment="Center"
+                                   HorizontalAlignment="Left"
+                                   Margin="5,0,0,0"
+                                   Foreground="White"
+                                   Visibility="Visible"/>
+                                <TextBlock x:Name="FullText"
+                                   Text="Full"
+                                   FontWeight="Bold"
+                                   FontSize="8"
+                                   VerticalAlignment="Center"
+                                   HorizontalAlignment="Right"
+                                   Margin="0,0,5,0"
+                                   Foreground="White"
+                                   Visibility="Collapsed"/>
+                            </Grid>
+                        </Grid>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsChecked" Value="True">
+                                <Setter TargetName="SwitchBorder" Property="Background" Value="#a6e3a1"/>
+                                <Setter TargetName="SwitchThumb" Property="HorizontalAlignment" Value="Right"/>
+                                <Setter TargetName="DiffText" Property="Visibility" Value="Collapsed"/>
+                                <Setter TargetName="FullText" Property="Visibility" Value="Visible"/>
+                                <Setter TargetName="FullText" Property="Foreground" Value="White"/>
+                            </Trigger>
+                            <Trigger Property="IsChecked" Value="False">
+                                <Setter TargetName="SwitchBorder" Property="Background" Value="#45475a"/>
+                                <Setter TargetName="SwitchThumb" Property="HorizontalAlignment" Value="Left"/>
+                                <Setter TargetName="DiffText" Property="Visibility" Value="Visible"/>
+                                <Setter TargetName="FullText" Property="Visibility" Value="Collapsed"/>
+                                <Setter TargetName="DiffText" Property="Foreground" Value="White"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
 
         <!-- Style pour CheckBox (optionnel, inchangé) -->
         <Style TargetType="CheckBox">
@@ -119,6 +189,35 @@
             </Setter>
             <Setter Property="Width" Value="36"/>
             <Setter Property="Height" Value="36"/>
+            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="Cursor" Value="Hand"/>
+        </Style>
+
+        <!-- Style réduit pour CheckBox (pour la liste des jobs) -->
+        <Style x:Key="SmallCheckBoxStyle" TargetType="CheckBox" BasedOn="{StaticResource {x:Type CheckBox}}">
+            <Setter Property="Width" Value="18"/>
+            <Setter Property="Height" Value="18"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="CheckBox">
+                        <Grid>
+                            <Ellipse x:Name="Ellipse" Width="14" Height="14" Stroke="#a6adc8" StrokeThickness="1.2" Fill="#313244"/>
+                            <Path x:Name="CheckMark" Data="M 3.5 7.5 L 6.5 10.5 L 10.5 4.5"
+                                  Stroke="#a6e3a1" StrokeThickness="1.8"
+                                  StrokeEndLineCap="Round" StrokeStartLineCap="Round"
+                                  Visibility="Collapsed"/>
+                        </Grid>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsChecked" Value="True">
+                                <Setter TargetName="Ellipse" Property="Stroke" Value="#a6e3a1"/>
+                                <Setter TargetName="Ellipse" Property="Fill" Value="#232336"/>
+                                <Setter TargetName="CheckMark" Property="Visibility" Value="Visible"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
             <Setter Property="Background" Value="Transparent"/>
             <Setter Property="BorderThickness" Value="0"/>
             <Setter Property="Cursor" Value="Hand"/>
@@ -170,7 +269,7 @@
                             </Viewbox>
                         </Button>
 
-                        <Grid Grid.Column="1" Grid.ColumnSpan="2" VerticalAlignment="Center" Height="36" HorizontalAlignment="Left" Width="271">
+                        <Grid Grid.Column="1" Grid.ColumnSpan="2" VerticalAlignment="Center" Height="36" HorizontalAlignment="Left">
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="*"/>
                                 <ColumnDefinition Width="*"/>
@@ -191,8 +290,9 @@
                                     </Canvas>
                                 </Viewbox>
                             </Button>
-                            <Button Grid.Column="1" Width="99" Height="36"
-                                    ToolTip="Logs"
+                            <Button Grid.Column="1" Width="120" Height="36"
+                                    x:Name="BackupStatusButton"
+                                    ToolTip="Backup Status"
                                     Background="Transparent"
                                     BorderBrush="Transparent"
                                     Foreground="{StaticResource SapphireBrush}"
@@ -321,7 +421,8 @@
                                 </ItemsControl.ItemsPanel>
                                 <ItemsControl.ItemTemplate>
                                     <DataTemplate>
-                                        <Border Background="#313244" CornerRadius="12" Margin="0,10,0,10" Padding="0" Height="110">
+                                        <!-- Taille divisée par 2 -->
+                                        <Border Background="#313244" CornerRadius="6" Margin="0,5,0,5" Padding="0" Height="55">
                                             <Grid>
                                                 <Grid.ColumnDefinitions>
                                                     <ColumnDefinition Width="1*"/>
@@ -332,28 +433,29 @@
                                                 <CheckBox Grid.Column="0"
                                                           IsChecked="{Binding IsChecked}"
                                                           VerticalAlignment="Center"
-                                                          HorizontalAlignment="Center"/>
+                                                          HorizontalAlignment="Center"
+                                                          Style="{StaticResource SmallCheckBoxStyle}"/>
                                                 <!-- Nom du job (3/6) -->
                                                 <TextBlock Grid.Column="1"
                                                            Text="{Binding Name}"
                                                            VerticalAlignment="Center"
                                                            HorizontalAlignment="Left"
-                                                           FontSize="22"
+                                                           FontSize="11"
                                                            Foreground="#cdd6f4"
                                                            FontWeight="Bold"
-                                                           Margin="10,0,0,0"
+                                                           Margin="5,0,0,0"
                                                            TextTrimming="CharacterEllipsis"
                                                            TextWrapping="NoWrap"
-                                                           Width="220"/>
+                                                           Width="110"/>
                                                 <!-- Paramètres + toggle + poubelle (2/6) -->
                                                 <Grid Grid.Column="2">
                                                     <Grid.RowDefinitions>
                                                         <RowDefinition Height="*"/>
                                                         <RowDefinition Height="*"/>
                                                     </Grid.RowDefinitions>
-                                                    <StackPanel Grid.Row="0" Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0,5,5,0" >
-                                                        <!-- Bouton paramètres (identique à la barre supérieure) -->
-                                                        <Button Width="36" Height="36"
+                                                    <StackPanel Grid.Row="0" Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0,2,2,0" >
+                                                        <!-- Bouton paramètres -->
+                                                        <Button Width="24" Height="24"
                                                                 Background="Transparent"
                                                                 BorderBrush="Transparent"
                                                                 BorderThickness="0.2"
@@ -361,35 +463,38 @@
                                                                 VerticalAlignment="Center" HorizontalAlignment="Center"
                                                                 Click="JobSettingsButton_Click"
                                                                 CommandParameter="{Binding}">
-                                                            <Viewbox Stretch="Uniform">
-                                                                <Canvas Width="12" Height="12"
+                                                            <Viewbox Stretch="Uniform" Width="16" Height="16">
+                                                                <Canvas Width="6" Height="6"
                                                                         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                                                                         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
-                                                                    <Path Fill="{StaticResource SapphireBrush}" Data="M12,15.5A3.5,3.5 0 0,1 8.5,12A3.5,3.5 0 0,1 12,8.5A3.5,3.5 0 0,1 15.5,12A3.5,3.5 0 0,1 12,15.5M19.43,12.97C19.47,12.65 19.5,12.33 19.5,12C19.5,11.67 19.47,11.34 19.43,11L21.54,9.37C21.73,9.22 21.78,8.95 21.66,8.73L19.66,5.27C19.54,5.05 19.27,4.96 19.05,5.05L16.56,6.05C16.04,5.66 15.5,5.32 14.87,5.07L14.5,2.42C14.46,2.18 14.25,2 14,2H10C9.75,2 9.54,2.18 9.5,2.42L9.13,5.07C8.5,5.32 7.96,5.66 7.44,6.05L4.95,5.05C4.73,4.96 4.46,5.05 4.34,5.27L2.34,8.73C2.21,8.95 2.27,9.22 2.46,9.37L4.57,11C4.53,11.34 4.5,11.67 4.5,12C4.5,12.33 4.53,12.65 4.57,12.97L2.46,14.63C2.27,14.78 2.21,15.05 2.34,15.27L4.34,18.73C4.46,18.95 4.73,19.03 4.95,18.95L7.44,17.94C7.96,18.34 8.5,18.68 9.13,18.93L9.5,21.58C9.54,21.82 9.75,22 10,22H14C14.25,22 14.46,21.82 14.5,21.58L14.87,18.93C15.5,18.67 16.04,18.34 16.56,17.94L19.05,18.95C19.27,19.03 19.54,18.95 19.66,18.73L21.66,15.27C21.78,15.05 21.73,14.78 21.54,14.63L19.43,12.97Z" Height="11" Stretch="Fill" Width="11" HorizontalAlignment="Center" VerticalAlignment="Center" Canvas.Top="0.441" Canvas.Left="0.5" />
+                                                                    <Path Fill="{StaticResource SapphireBrush}" Data="M12,15.5A3.5,3.5 0 0,1 8.5,12A3.5,3.5 0 0,1 12,8.5A3.5,3.5 0 0,1 15.5,12A3.5,3.5 0 0,1 12,15.5M19.43,12.97C19.47,12.65 19.5,12.33 19.5,12C19.5,11.67 19.47,11.34 19.43,11L21.54,9.37C21.73,9.22 21.78,8.95 21.66,8.73L19.66,5.27C19.54,5.05 19.27,4.96 19.05,5.05L16.56,6.05C16.04,5.66 15.5,5.32 14.87,5.07L14.5,2.42C14.46,2.18 14.25,2 14,2H10C9.75,2 9.54,2.18 9.5,2.42L9.13,5.07C8.5,5.32 7.96,5.66 7.44,6.05L4.95,5.05C4.73,4.96 4.46,5.05 4.34,5.27L2.34,8.73C2.21,8.95 2.27,9.22 2.46,9.37L4.57,11C4.53,11.34 4.5,11.67 4.5,12C4.5,12.33 4.53,12.65 4.57,12.97L2.46,14.63C2.27,14.78 2.21,15.05 2.34,15.27L4.34,18.73C4.46,18.95 4.73,19.03 4.95,18.95L7.44,17.94C7.96,18.34 8.5,18.68 9.13,18.93L9.5,21.58C9.54,21.82 9.75,22 10,22H14C14.25,22 14.46,21.82 14.5,21.58L14.87,18.93C15.5,18.67 16.04,18.34 16.56,17.94L19.05,18.95C19.27,19.03 19.54,18.95 19.66,18.73L21.66,15.27C21.78,15.05 21.73,14.78 21.54,14.63L19.43,12.97Z" Height="5.5" Stretch="Fill" Width="5.5" HorizontalAlignment="Center" VerticalAlignment="Center" Canvas.Top="0.22" Canvas.Left="0.25" />
                                                                 </Canvas>
                                                             </Viewbox>
                                                         </Button>
-                                                        <!-- Bouton poubelle -->
-                                                        <Button Width="36" Height="36"
+                                                        <!-- Bouton poubelle avec nouveau logo -->
+                                                        <Button Width="24" Height="24"
                                                                 Background="Transparent"
                                                                 BorderBrush="Transparent"
                                                                 ToolTip="Supprimer le job"
                                                                 Command="{Binding DataContext.DeleteJobCommand, RelativeSource={RelativeSource AncestorType=Window}}"
                                                                 CommandParameter="{Binding}">
-
-                                                            <Viewbox Stretch="Uniform">
+                                                            <Viewbox Stretch="Uniform" Width="16" Height="16">
                                                                 <Canvas Width="24" Height="24"
                                                                         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                                                                         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
-                                                                    <!-- Icône poubelle simple -->
-                                                                    <Path Fill="{StaticResource SapphireBrush}" Data="M3,6 L5,6 L21,6 M19,6 L17.5,21.5 C17.4,22.3 16.7,23 15.9,23 H8.1 C7.3,23 6.6,22.3 6.5,21.5 L5,6 M10,11 V17 M14,11 V17 M9,6 V4 C9,3.4 9.4,3 10,3 H14 C14.6,3 15,3.4 15,4 V6" Stroke="{StaticResource SapphireBrush}" StrokeThickness="1.2" StrokeStartLineCap="Round" StrokeEndLineCap="Round" StrokeLineJoin="Round"/>
+                                                                    <Path Fill="{StaticResource SapphireBrush}"
+                                                                          Data="M18,19C18,20.66 16.66,22 15,22H8C6.34,22 5,20.66 5,19V7H4V4H8.5L9.5,3H13.5L14.5,4H19V7H18V19
+                                                                                M6,7V19C6,20.1 6.9,21 8,21H15C16.1,21 17,20.1 17,19V7H6
+                                                                                M18,6V5H14L13,4H10L9,5H5V6H18
+                                                                                M8,9H9V19H8V9
+                                                                                M14,9H15V19H14V9Z"/>
                                                                 </Canvas>
                                                             </Viewbox>
                                                         </Button>
                                                     </StackPanel>
                                                     <!-- Texte Full/Diff + toggle en bas à droite -->
-                                                    <StackPanel Grid.Row="1" Orientation="Vertical" HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="0,0,5,5">
-                                                        <ToggleButton IsChecked="{Binding IsActive}" Style="{StaticResource DiffFullToggleStyle}"/>
+                                                    <StackPanel Grid.Row="1" Orientation="Vertical" HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="0,0,2,2">
+                                                        <ToggleButton IsChecked="{Binding IsActive, Mode=TwoWay}" Style="{StaticResource DiffFullToggleStyleSmall}"/>
                                                     </StackPanel>
                                                 </Grid>
                                             </Grid>
@@ -398,32 +503,28 @@
                                 </ItemsControl.ItemTemplate>
                             </ItemsControl>
                         </ScrollViewer>
-                        <!-- Bouton Run déroulant en bas + bouton Exécuter -->
+                        <!-- Boutons Run en bas -->
                         <Grid Grid.Row="2" Margin="10,10,10,10">
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="*"/>
-                                <ColumnDefinition Width="Auto"/>
                             </Grid.ColumnDefinitions>
-                            <ComboBox x:Name="RunComboBox"
-                                  Height="36"
-                                  FontSize="14"
-                                  VerticalAlignment="Bottom"
-                                  HorizontalAlignment="Stretch"
-                                  BorderThickness="0"
-                                  Foreground="{StaticResource SapphireBrush}"
-                                  FontWeight="Bold"
-                                  SelectedIndex="0"
-                                  Padding="0"
-                                  HorizontalContentAlignment="Center"
-                                  VerticalContentAlignment="Center">
-                                <ComboBoxItem Content="Run current selected"/>
-                                <ComboBoxItem Content="Run all"/>
-                                <ComboBoxItem Content="Reset selection"/>
-                            </ComboBox>
-
-                            <Button x:Name="RunButton" Content="Exécuter" Height="36" Width="110" Margin="10,0,0,0"
-                                    VerticalAlignment="Bottom" Grid.Column="1" Foreground="{StaticResource SapphireBrush}" Background="Transparent"
-                                Click="RunButton_Click" FontSize="20"/>
+                            <!-- Remplacement ComboBox + bouton Exécuter par 3 boutons côte à côte -->
+                            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Bottom">
+                                <Button x:Name="RunMultipleButton"
+                                        Content="Run multiple"
+                                        Width="110" Height="36"
+                                        Margin="0,0,10,0"
+                                        Click="RunMultipleButton_Click"/>
+                                <Button x:Name="RunAllButton"
+                                        Content="Run all"
+                                        Width="80" Height="36"
+                                        Margin="0,0,10,0"
+                                        Click="RunAllButton_Click"/>
+                                <Button x:Name="ResetSelectionButton"
+                                        Content="Reset selection"
+                                        Width="110" Height="36"
+                                        Click="ResetSelectionButton_Click"/>
+                            </StackPanel>
                         </Grid>
                     </Grid>
                     <!-- Frame pour afficher les pages, occupe 3/4 de la largeur -->
