@@ -11,6 +11,8 @@ using System.Windows.Media.Animation;
 using System.Windows.Media.Imaging;
 using WPF.Infrastructure;
 using WPF.Pages;
+using Core.Model.Interfaces;
+using WPF.Services;
 
 namespace WPF
 {

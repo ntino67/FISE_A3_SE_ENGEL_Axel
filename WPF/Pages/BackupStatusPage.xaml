@@ -5,9 +5,48 @@
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
       mc:Ignorable="d" 
       d:DesignHeight="450" d:DesignWidth="800"
-      Title="StatusPage">
-
-    <Grid>
-        
+      Title="StatusPage"
+      Background="#232334">
+    <Page.Resources>
+        <!-- Couleurs d'action inspirées de la capture d'écran -->
+        <SolidColorBrush x:Key="ActionEncryptBrush" Color="#FFF7E6A2"/>
+        <SolidColorBrush x:Key="ActionRunBrush"     Color="#FFB6F7C1"/>
+        <SolidColorBrush x:Key="ActionDeleteBrush"  Color="#FFF7B6B6"/>
+        <SolidColorBrush x:Key="ActionResetBrush"   Color="#FFB6D6F7"/>
+        <Style x:Key="ActionTextBlockStyle" TargetType="TextBlock">
+            <Style.Triggers>
+                <DataTrigger Binding="{Binding Action}" Value="Encrypt">
+                    <Setter Property="Foreground" Value="{StaticResource ActionEncryptBrush}"/>
+                </DataTrigger>
+                <DataTrigger Binding="{Binding Action}" Value="Run">
+                    <Setter Property="Foreground" Value="{StaticResource ActionRunBrush}"/>
+                </DataTrigger>
+                <DataTrigger Binding="{Binding Action}" Value="Delete">
+                    <Setter Property="Foreground" Value="{StaticResource ActionDeleteBrush}"/>
+                </DataTrigger>
+                <DataTrigger Binding="{Binding Action}" Value="Reset">
+                    <Setter Property="Foreground" Value="{StaticResource ActionResetBrush}"/>
+                </DataTrigger>
+            </Style.Triggers>
+        </Style>
+    </Page.Resources>
+    <Grid Margin="20">
+        <DataGrid ItemsSource="{Binding Logs}" AutoGenerateColumns="False" HeadersVisibility="Column"
+                  Background="#232334" Foreground="White" RowBackground="#26263A" AlternatingRowBackground="#232334"
+                  BorderBrush="#444" BorderThickness="1" CanUserAddRows="False" CanUserDeleteRows="False">
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="Job Name" Binding="{Binding JobName}" Width="*"/>
+                <DataGridTemplateColumn Header="Action" Width="100">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <TextBlock Text="{Binding Action}" Style="{StaticResource ActionTextBlockStyle}" HorizontalAlignment="Center"/>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+                <DataGridTextColumn Header="Start Time" Binding="{Binding StartTime, StringFormat=yyyy-MM-dd HH:mm:ss}" Width="150"/>
+                <DataGridTextColumn Header="End Time" Binding="{Binding EndTime, StringFormat=yyyy-MM-dd HH:mm:ss}" Width="150"/>
+                <DataGridTextColumn Header="Status" Binding="{Binding Status}" Width="100"/>
+            </DataGrid.Columns>
+        </DataGrid>
     </Grid>
 </Page>

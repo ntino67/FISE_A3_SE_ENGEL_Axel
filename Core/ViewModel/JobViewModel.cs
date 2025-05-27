@@ -199,18 +199,20 @@ namespace Core.ViewModel
 
         public async Task ExecuteAllJobs()
         {
+            Progress<float> progress = new Progress<float>(value => Progress = value);
             foreach (var job in Jobs)
             {
-                await _jobManager.ExecuteBackupJob(job.Id, this.EncryptionKey);
+                await _jobManager.ExecuteBackupJob(job.Id, progress, this.EncryptionKey);
             }
             _ui.ShowToast("✅ Toutes les sauvegardes sont terminées.", 3000);
         }
 
         public async Task ExecuteSelectedJobs()
         {
+            Progress<float> progress = new Progress<float>(value => Progress = value);
             foreach (var job in Jobs.Where(j => j.IsChecked))
             {
-                await _jobManager.ExecuteBackupJob(job.Id, this.EncryptionKey);
+                await _jobManager.ExecuteBackupJob(job.Id, progress, this.EncryptionKey);
             }
             _ui.ShowToast("✅ Sauvegardes sélectionnées terminées.", 3000);
         }
