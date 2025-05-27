@@ -505,12 +505,12 @@
                                         Content="Run multiple"
                                         Width="110" Height="36"
                                         Margin="0,0,10,0"
-                                        Click="RunMultipleButton_Click"/>
+                                        Command="{Binding RunSelectedBackupsCommand}" />
                                 <Button x:Name="RunAllButton"
                                         Content="Run all"
                                         Width="80" Height="36"
                                         Margin="0,0,10,0"
-                                        Click="RunAllButton_Click"/>
+                                        Command="{Binding RunAllBackupsCommand}" />                                
                                 <Button x:Name="ResetSelectionButton"
                                         Content="Reset selection"
                                         Width="110" Height="36"

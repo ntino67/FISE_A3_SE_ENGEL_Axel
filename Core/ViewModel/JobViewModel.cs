@@ -103,6 +103,15 @@ namespace Core.ViewModel
                 job => job != null
             );
 
+            RunAllBackupsCommand = _commandFactory.Create(
+                async _ => await ExecuteAllJobs(),
+                _ => Jobs.Any()
+            );
+
+            RunSelectedBackupsCommand = _commandFactory.Create(
+                async _ => await ExecuteSelectedJobs(),
+                _ => Jobs.Any(j => j.IsChecked)
+            );
 
             CreateJobCommand = _commandFactory.Create(
                 param =>
@@ -188,6 +197,24 @@ namespace Core.ViewModel
         public string SourceDirectoryLabel => "📁 Source: " + TrimPath(CurrentJob?.SourceDirectory);
         public string TargetDirectoryLabel => "🎯 Target: " + TrimPath(CurrentJob?.TargetDirectory);
 
+        public async Task ExecuteAllJobs()
+        {
+            foreach (var job in Jobs)
+            {
+                await _jobManager.ExecuteBackupJob(job.Id, this.EncryptionKey);
+            }
+            _ui.ShowToast("✅ Toutes les sauvegardes sont terminées.", 3000);
+        }
+
+        public async Task ExecuteSelectedJobs()
+        {
+            foreach (var job in Jobs.Where(j => j.IsChecked))
+            {
+                await _jobManager.ExecuteBackupJob(job.Id, this.EncryptionKey);
+            }
+            _ui.ShowToast("✅ Sauvegardes sélectionnées terminées.", 3000);
+        }
+
         public string EncryptionStatus
         {
             get
@@ -212,6 +239,8 @@ namespace Core.ViewModel
         public ICommand RunBackupCommand { get; private set; }
         public ICommand ResetJobCommand { get; private set; }
         public ICommand DeleteJobCommand { get; private set; }
+        public ICommand RunAllBackupsCommand { get; private set; }
+        public ICommand RunSelectedBackupsCommand { get; private set; }
         public ICommand CreateJobCommand { get; private set; }
         
         public ICommand ToggleEncryptionCommand { get; private set; }

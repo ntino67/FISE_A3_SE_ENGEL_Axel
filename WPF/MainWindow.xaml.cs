@@ -102,14 +102,6 @@ namespace WPF
             // Ajoutez ici la logique pour exécuter les jobs sélectionnés
         }
 
-        private void RunAllButton_Click(object sender, RoutedEventArgs e)
-        {
-            // Sélectionne/coche toutes les jobs
-            foreach (var job in _vm.Jobs)
-                job.IsChecked = true;
-            JobList.ItemsSource = null;
-            JobList.ItemsSource = _vm.Jobs;
-        }
 
         private void ResetSelectionButton_Click(object sender, RoutedEventArgs e)
         {
