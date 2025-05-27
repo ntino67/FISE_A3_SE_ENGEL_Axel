@@ -228,6 +228,161 @@
                         </Border>
                     </Grid>
                 </Border>
+                <Border Background="#232336" 
+        CornerRadius="12"
+        Padding="20" 
+        Margin="0,0,0,20">
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="*"/>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                        </Grid.RowDefinitions>
+
+                        <!-- Titre de la section -->
+                        <TextBlock Grid.Row="0"
+                   Text="{DynamicResource EncryptionSection}"
+                   FontSize="22" 
+                   FontWeight="SemiBold" 
+                   Margin="0,0,0,10"
+                   Foreground="#cdd6f4"/>
+
+                        <!-- Section Extensions -->
+                        <TextBlock Grid.Row="1" 
+                   Text="{DynamicResource EncryptionExtensionsDescription}"
+                   TextWrapping="Wrap"
+                   Margin="0,0,0,15"
+                   Foreground="#a6adc8"/>
+
+                        <!-- Zone d'ajout d'extension -->
+                        <Grid Grid.Row="2" Margin="0,0,0,15">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="Auto"/>
+                            </Grid.ColumnDefinitions>
+
+                            <!-- Champ texte extension -->
+                            <TextBox x:Name="ExtensionTextBox"
+                     Grid.Column="0"
+                     Height="40"
+                     Margin="0,0,10,0"
+                     Background="#313244"
+                     Foreground="#cdd6f4"
+                     BorderThickness="0"
+                     Padding="15,0"
+                     FontSize="16"
+                     VerticalContentAlignment="Center"
+                     BorderBrush="#74c7ec"/>
+
+                            <!-- Bouton ajouter -->
+                            <Button x:Name="AddExtensionButton"
+                    Grid.Column="1"
+                    Content="{DynamicResource AddExtension}"
+                    Height="40"
+                    Width="100"
+                    Background="#74c7ec"
+                    Foreground="#232336"
+                    FontWeight="Bold"
+                    BorderThickness="0"
+                    Click="AddExtensionButton_Click"/>
+                        </Grid>
+
+                        <!-- Liste des extensions -->
+                        <Border Grid.Row="3"
+                Background="#313244" 
+                CornerRadius="8"
+                Margin="0,0,0,20">
+                            <ListView x:Name="ExtensionsListBox"
+                      ItemsSource="{Binding EncryptionFileExtensions}"
+                      Background="Transparent"
+                      BorderThickness="0"
+                      Foreground="#cdd6f4"
+                      ScrollViewer.VerticalScrollBarVisibility="Auto"
+                      MaxHeight="200"
+                      MinHeight="100">
+                                <ListView.ItemTemplate>
+                                    <DataTemplate>
+                                        <Grid Height="40" Margin="5">
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="*"/>
+                                                <ColumnDefinition Width="Auto"/>
+                                            </Grid.ColumnDefinitions>
+
+                                            <StackPanel Grid.Column="0" Orientation="Horizontal" VerticalAlignment="Center">
+                                                <!-- Icône fichier -->
+                                                <Viewbox Width="18" Height="18" Margin="0,0,10,0">
+                                                    <Canvas Width="24" Height="24">
+                                                        <Path Fill="#74c7ec" Data="M14,2H6A2,2 0 0,0 4,4V20A2,2 0 0,0 6,22H18A2,2 0 0,0 20,20V8L14,2M18,20H6V4H13V9H18V20Z"/>
+                                                    </Canvas>
+                                                </Viewbox>
+                                                <!-- Extension -->
+                                                <TextBlock Text="{Binding}" 
+                                           FontSize="16" 
+                                           VerticalAlignment="Center" 
+                                           Foreground="#cdd6f4"/>
+                                            </StackPanel>
+
+                                            <!-- Bouton supprimer -->
+                                            <Button Grid.Column="1" 
+                                    Width="30" 
+                                    Height="30"
+                                    Margin="10,0,0,0"
+                                    Background="Transparent"
+                                    BorderThickness="0"
+                                    ToolTip="{DynamicResource Delete}"
+                                    Tag="{Binding}"
+                                    Click="RemoveExtensionButton_Click">
+                                                <Viewbox Width="16" Height="16">
+                                                    <Canvas Width="24" Height="24">
+                                                        <Path Fill="#f38ba8" Data="M19,6.41L17.59,5L12,10.59L6.41,5L5,6.41L10.59,12L5,17.59L6.41,19L12,13.41L17.59,19L19,17.59L13.41,12L19,6.41Z"/>
+                                                    </Canvas>
+                                                </Viewbox>
+                                            </Button>
+                                        </Grid>
+                                    </DataTemplate>
+                                </ListView.ItemTemplate>
+
+                                <ListView.ItemContainerStyle>
+                                    <Style TargetType="ListViewItem">
+                                        <Setter Property="Background" Value="Transparent"/>
+                                        <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+                                        <Setter Property="Padding" Value="10,5"/>
+                                        <Style.Triggers>
+                                            <Trigger Property="IsMouseOver" Value="True">
+                                                <Setter Property="Background" Value="#45475a"/>
+                                            </Trigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </ListView.ItemContainerStyle>
+                            </ListView>
+                        </Border>
+
+                        <!-- Section Wildcard -->
+                        <TextBlock Grid.Row="4"
+                   Text="{DynamicResource EncryptionWildcardDescription}"
+                   TextWrapping="Wrap"
+                   Margin="0,0,0,10"
+                   Foreground="#a6adc8"/>
+
+                        <!-- Champ texte wildcard -->
+                        <TextBox x:Name="WildcardTextBox"
+                 Grid.Row="5"
+                 Height="40"
+                 Margin="0"
+                 Background="#313244"
+                 Foreground="#cdd6f4"
+                 BorderThickness="0"
+                 Padding="15,0"
+                 FontSize="16"
+                 VerticalContentAlignment="Center"
+                 BorderBrush="#74c7ec"
+                 Text="{Binding EncryptionWildcard, UpdateSourceTrigger=PropertyChanged}"/>
+                    </Grid>
+                </Border>
+
             </StackPanel>
         </ScrollViewer>
 

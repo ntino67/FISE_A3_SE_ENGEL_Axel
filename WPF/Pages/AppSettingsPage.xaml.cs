@@ -33,6 +33,24 @@ namespace WPF.Pages
             }
         }
 
+        private void AddExtensionButton_Click(object sender, RoutedEventArgs e)
+        {
+            string extension = ExtensionTextBox.Text?.Trim();
+            if (!string.IsNullOrWhiteSpace(extension))
+            {
+                _viewModel.AddEncryptionExtension(extension);
+                ExtensionTextBox.Clear();
+            }
+        }
+
+        private void RemoveExtensionButton_Click(object sender, RoutedEventArgs e)
+        {
+            if (sender is Button button && button.Tag is string extension)
+            {
+                _viewModel.RemoveEncryptionExtension(extension);
+            }
+        }
+
         private async void SaveSettingsButton_Click(object sender, RoutedEventArgs e)
         {
             try
