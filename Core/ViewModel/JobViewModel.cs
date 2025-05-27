@@ -22,6 +22,7 @@ namespace Core.ViewModel
         private FileSystemWatcher _watcher;
         private BackupJob _currentJob;
         private float _progress;
+
         public float Progress
         {
             get => _progress;
@@ -201,6 +202,8 @@ namespace Core.ViewModel
         public async Task ExecuteAllJobs()
         {
             Progress<float> progress = new Progress<float>(value => Progress = value);
+
+
             foreach (var job in Jobs)
             {
                 await _jobManager.ExecuteBackupJob(job.Id, progress, this.EncryptionKey);
@@ -211,6 +214,7 @@ namespace Core.ViewModel
         public async Task ExecuteSelectedJobs()
         {
             Progress<float> progress = new Progress<float>(value => Progress = value);
+
             foreach (var job in Jobs.Where(j => j.IsChecked))
             {
                 await _jobManager.ExecuteBackupJob(job.Id, progress, this.EncryptionKey);
