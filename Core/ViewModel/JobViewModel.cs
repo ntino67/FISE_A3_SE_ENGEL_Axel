@@ -6,6 +6,7 @@ using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 using System.Windows.Input;
 using Core.Model;
 using Core.Model.Interfaces;
@@ -194,8 +195,8 @@ namespace Core.ViewModel
 
         public bool HasJobMessage => !string.IsNullOrWhiteSpace(JobMessage);
 
-        public string SourceDirectoryLabel => "📁 Source: " + TrimPath(CurrentJob?.SourceDirectory);
-        public string TargetDirectoryLabel => "🎯 Target: " + TrimPath(CurrentJob?.TargetDirectory);
+        public string SourceDirectoryLabel => "📁 "+ Application.Current.Resources["Source"] as string + ": " + TrimPath(CurrentJob?.SourceDirectory);
+        public string TargetDirectoryLabel => "🎯 "+ Application.Current.Resources["Target"] as string + ": " + TrimPath(CurrentJob?.TargetDirectory);
 
         public async Task ExecuteAllJobs()
         {
@@ -261,16 +262,16 @@ namespace Core.ViewModel
             Jobs.Add(job);
             CurrentJob = job;
 
-            _ui.ShowToast("✅ Job ajouté.", 2000);
+            _ui.ShowToast("✅ "+ Application.Current.Resources["JobCreated"] as string + ".", 2000);
         }
 
         public void UpdateJobName(string newName)
         {
             if (CurrentJob == null)
-                throw new InvalidOperationException("Aucun job n'est sélectionné.");
+                throw new InvalidOperationException(Application.Current.Resources["NoJobSelected"] as string);
 
             if (_jobManager.JobExists(newName) && CurrentJob.Name != newName)
-                throw new InvalidOperationException($"Un job avec le nom {newName} existe déjà.");
+                throw new InvalidOperationException(Application.Current.Resources["JobWithName"] as string + newName + Application.Current.Resources["AlreadyExist"] as string);
 
             CurrentJob.Name = newName;
             _jobManager.UpdateBackupJob(CurrentJob);
@@ -278,7 +279,7 @@ namespace Core.ViewModel
 
         public void UpdateSourcePath(string sourcePath)
         {
-            if (CurrentJob == null) throw new InvalidOperationException("Aucun job n'est sélectionné.");
+            if (CurrentJob == null) throw new InvalidOperationException(Application.Current.Resources["NoJobSelected"] as string);
             CurrentJob.SourceDirectory = sourcePath;
             _jobManager.UpdateBackupJob(CurrentJob);
             OnPropertyChanged(nameof(SourceDirectoryLabel));
@@ -287,7 +288,7 @@ namespace Core.ViewModel
 
         public void UpdateTargetPath(string targetPath)
         {
-            if (CurrentJob == null) throw new InvalidOperationException("Aucun job n'est sélectionné.");
+            if (CurrentJob == null) throw new InvalidOperationException(Application.Current.Resources["NoJobSelected"] as string);
             CurrentJob.TargetDirectory = targetPath;
             _jobManager.UpdateBackupJob(CurrentJob);
             OnPropertyChanged(nameof(TargetDirectoryLabel));
@@ -297,42 +298,42 @@ namespace Core.ViewModel
 
         public void UpdateBackupType(BackupType type)
         {
-            if (CurrentJob == null) throw new InvalidOperationException("Aucun job n'est sélectionné.");
+            if (CurrentJob == null) throw new InvalidOperationException(Application.Current.Resources["NoJobSelected"] as string);
             CurrentJob.Type = type;
             _jobManager.UpdateBackupJob(CurrentJob);
         }
 
         public async Task<bool> ExecuteCurrentJob()
         {
-            if (CurrentJob == null) throw new InvalidOperationException("Aucun job n'est sélectionné.");
+            if (CurrentJob == null) throw new InvalidOperationException(Application.Current.Resources["NoJobSelected"] as string);
             if (CurrentJob.Status == JobStatus.Running)
             {
-                _ui.ShowToast("🔄 Job déjà en cours d'exécution.", 3000);
+                _ui.ShowToast("🔄 " + Application.Current.Resources["JobAlreadyRunning"] + ".", 3000);
                 return false;
             }
             Progress<float> progress = new Progress<float>(value => Progress = value);
             string keyToUse = this.EncryptionKey;
             bool result = await _jobManager.ExecuteBackupJob(CurrentJob.Id, progress, keyToUse);
             OnPropertyChanged(nameof(EncryptionStatus));
-            _ui.ShowToast("✅ Backup complete!", 3000);
+            _ui.ShowToast("✅ "+ Application.Current.Resources["BackupComplete"] as string +"!", 3000);
             return result;
         }
 
         public void ResetCurrentJob()
         {
-            if (CurrentJob == null) throw new InvalidOperationException("Aucun job n'est sélectionné.");
+            if (CurrentJob == null) throw new InvalidOperationException(Application.Current.Resources["NoJobSelected"] as string);
 
             CurrentJob.Reset();
             _jobManager.UpdateBackupJob(CurrentJob);
             RefreshJobBindings();
-            _ui.ShowToast("♻️ Job reset.", 3000);
+            _ui.ShowToast("♻️ "+ Application.Current.Resources["JobReset"] as string + ".", 3000);
         }
 
         public async void DeleteJob(string jobId)
         {
             var job = Jobs.FirstOrDefault(j => j.Id == jobId);
             if (job == null)
-                throw new InvalidOperationException("Chosen job doesn't exist.");
+                throw new InvalidOperationException(Application.Current.Resources["JobDoesNotExist"] as string);
 
             await _jobManager.DeleteBackupJob(jobId);
             Jobs.Remove(job);
@@ -341,7 +342,7 @@ namespace Core.ViewModel
                 CurrentJob = null;
 
             OnPropertyChanged(nameof(EncryptionStatus));
-            _ui.ShowToast("🗑️ Job deleted.", 3000);
+            _ui.ShowToast("🗑️ "+ Application.Current.Resources["JobDeleted"] as string + ".", 3000);
         }
 
         public async void ToggleEncryption(string key)
@@ -349,12 +350,12 @@ namespace Core.ViewModel
             if (CurrentJob == null) return;
             if (CurrentJob.Status == JobStatus.Running)
             {
-                _ui.ShowToast("🔄 Job déjà en cours d'exécution.", 3000);
+                _ui.ShowToast("🔄 "+ Application.Current.Resources["JobAlreadyRunning"] as string +".", 3000);
                 return;
             }
             string folder = CurrentJob.TargetDirectory;
             if (!Directory.Exists(folder))
-                throw new DirectoryNotFoundException("Target directory not found.");
+                throw new DirectoryNotFoundException(Application.Current.Resources["DirectoryDoesNotExist"] as string + ".");
 
             string[] files = Directory.GetFiles(folder, "*", SearchOption.AllDirectories);
             byte[] keyBytes = Encoding.UTF8.GetBytes(key);
@@ -367,12 +368,12 @@ namespace Core.ViewModel
             if (encrypted.Any())
             {
                 await _jobManager.Encryption(false, CurrentJob, key, progress);
-                _ui.ShowToast("🔓 Files decrypted", 3000);
+                _ui.ShowToast("🔓" + Application.Current.Resources["FilesDecrypted"] as string, 3000);
             }
             else
             {
                 await _jobManager.Encryption(true, CurrentJob, key, progress);
-                _ui.ShowToast("🔒 Files encrypted", 3000);
+                _ui.ShowToast("🔒" + Application.Current.Resources["FilesEncrypted"] as string, 3000);
             }
 
             OnPropertyChanged(nameof(EncryptionStatus));
@@ -388,7 +389,7 @@ namespace Core.ViewModel
         private string TrimPath(string path, int maxLength = 40)
         {
             if (string.IsNullOrWhiteSpace(path))
-                return "[Not set]";
+                return "["+ Application.Current.Resources["NotSet"] as string + "]";
             if (path.Length <= maxLength)
                 return path;
 

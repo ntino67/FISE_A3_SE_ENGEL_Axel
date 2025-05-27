@@ -55,8 +55,6 @@ namespace WPF.Infrastructure
 
             try
             {
-
-
                 _configManager = new ConfigurationManager(appDataPath);
                 _logger = new Logger(_configManager.GetLogDirectory());
                 _jobManager = new JobManager(_logger, _configManager);

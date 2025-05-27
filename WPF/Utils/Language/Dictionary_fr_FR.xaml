@@ -31,8 +31,6 @@
     <system:String x:Key="Jobs">Tâches</system:String>
     <system:String x:Key="NewJob">Nouvelle tâche</system:String>
     <system:String x:Key="JobName">Nom de la tâche</system:String>
-    <system:String x:Key="Source">Source</system:String>
-    <system:String x:Key="Target">Destination</system:String>
     <system:String x:Key="BackupType">Type de sauvegarde</system:String>
     <system:String x:Key="Full">Complète</system:String>
     <system:String x:Key="Differential">Différentielle</system:String>
@@ -48,4 +46,22 @@
     <system:String x:Key="Success">Succès</system:String>
     <system:String x:Key="Warning">Avertissement</system:String>
     <system:String x:Key="Information">Information</system:String>
+
+    <!-- Pop-Up -->
+    <system:String x:Key="JobAlreadyRunning">Le Job est déjà en cours d'exécution</system:String>
+    <system:String x:Key="JobDeleted">Job supprimé</system:String>
+
+    <system:String x:Key="NoJobSelected">Aucune tâche sélectionnée</system:String>
+    <system:String x:Key="BackupComplete">Sauvegarde terminée</system:String>
+    <system:String x:Key="Source">Source</system:String>
+    <system:String x:Key="Target">Cible</system:String>
+    <system:String x:Key="JobWithName">Une tâche avec le nom</system:String>
+    <system:String x:Key="AlreadyExist">existe déjà</system:String>
+    <system:String x:Key="JobDoesNotExist">La tâche sélectionnée n'existe pas</system:String>
+    <system:String x:Key="DirectoryDoesNotExist">Le répertoire sélectionné n'existe pas</system:String>
+    <system:String x:Key="FilesDecrypted">Fichiers déchiffrés avec succès</system:String>
+    <system:String x:Key="FilesEncrypted">Fichiers chiffrés avec succès</system:String>
+    <system:String x:Key="NotSet">Non défini</system:String>
+    <system:String x:Key="JobCreated">Job créé</system:String>
+    <system:String x:Key="JobReset">Job réinitialisé</system:String>
 </ResourceDictionary>
