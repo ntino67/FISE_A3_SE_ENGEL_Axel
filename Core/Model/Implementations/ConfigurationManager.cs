@@ -104,8 +104,10 @@ namespace Core.Model.Implementations
         private class Settings
         {
             public string Language { get; set; } = "en-US";
-            public List<string> BlockingApplications { get; set; } = new List<string>();  
+            public List<string> BlockingApplications { get; set; } = new List<string>();
 
+            public List<string> EncryptionFileExtensions { get; set; } = new List<string> ();
+            public string EncryptionWildcard { get; set; } = "";
         }
 
         public List<string> GetBlockingApplications()
@@ -118,6 +120,31 @@ namespace Core.Model.Implementations
         {
             var settings = LoadSettings();
             settings.BlockingApplications = applicationNames ?? new List<string>();
+            SaveSettings(settings);
+        }
+        public List<string> GetEncryptionFileExtensions()
+        {
+            var settings = LoadSettings();
+            return settings.EncryptionFileExtensions ?? new List<string> ();
+        }
+
+        public void SaveEncryptionFileExtensions(List<string> extensions)
+        {
+            var settings = LoadSettings();
+            settings.EncryptionFileExtensions = extensions ?? new List<string>();
+            SaveSettings(settings);
+        }
+
+        public string GetEncryptionWildcard()
+        {
+            var settings = LoadSettings();
+            return settings.EncryptionWildcard ?? "";
+        }
+
+        public void SaveEncryptionWildcard(string wildcard)
+        {
+            var settings = LoadSettings();
+            settings.EncryptionWildcard = wildcard;
             SaveSettings(settings);
         }
     }

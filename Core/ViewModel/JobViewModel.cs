@@ -22,6 +22,7 @@ namespace Core.ViewModel
         private FileSystemWatcher _watcher;
         private BackupJob _currentJob;
         private float _progress;
+
         public float Progress
         {
             get => _progress;
@@ -104,6 +105,15 @@ namespace Core.ViewModel
                 job => job != null
             );
 
+            RunAllBackupsCommand = _commandFactory.Create(
+                async _ => await ExecuteAllJobs(),
+                _ => Jobs.Any()
+            );
+
+            RunSelectedBackupsCommand = _commandFactory.Create(
+                async _ => await ExecuteSelectedJobs(),
+                _ => Jobs.Any(j => j.IsChecked)
+            );
 
             CreateJobCommand = _commandFactory.Create(
                 param =>
@@ -189,6 +199,29 @@ namespace Core.ViewModel
         public string SourceDirectoryLabel => "📁 "+ Application.Current.Resources["Source"] as string + ": " + TrimPath(CurrentJob?.SourceDirectory);
         public string TargetDirectoryLabel => "🎯 "+ Application.Current.Resources["Target"] as string + ": " + TrimPath(CurrentJob?.TargetDirectory);
 
+        public async Task ExecuteAllJobs()
+        {
+            Progress<float> progress = new Progress<float>(value => Progress = value);
+
+
+            foreach (var job in Jobs)
+            {
+                await _jobManager.ExecuteBackupJob(job.Id, progress, this.EncryptionKey);
+            }
+            _ui.ShowToast("✅ Toutes les sauvegardes sont terminées.", 3000);
+        }
+
+        public async Task ExecuteSelectedJobs()
+        {
+            Progress<float> progress = new Progress<float>(value => Progress = value);
+
+            foreach (var job in Jobs.Where(j => j.IsChecked))
+            {
+                await _jobManager.ExecuteBackupJob(job.Id, progress, this.EncryptionKey);
+            }
+            _ui.ShowToast("✅ Sauvegardes sélectionnées terminées.", 3000);
+        }
+
         public string EncryptionStatus
         {
             get
@@ -213,6 +246,8 @@ namespace Core.ViewModel
         public ICommand RunBackupCommand { get; private set; }
         public ICommand ResetJobCommand { get; private set; }
         public ICommand DeleteJobCommand { get; private set; }
+        public ICommand RunAllBackupsCommand { get; private set; }
+        public ICommand RunSelectedBackupsCommand { get; private set; }
         public ICommand CreateJobCommand { get; private set; }
         
         public ICommand ToggleEncryptionCommand { get; private set; }

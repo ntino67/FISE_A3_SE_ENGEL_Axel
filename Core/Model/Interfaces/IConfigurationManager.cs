@@ -16,5 +16,10 @@ namespace Core.Model.Interfaces
         List<string> GetBlockingApplications();
 
         void SaveBlockingApplications(List<string> applicationNames);
+
+        List<string> GetEncryptionFileExtensions();
+        void SaveEncryptionFileExtensions(List<string> extensions);
+        string GetEncryptionWildcard();
+        void SaveEncryptionWildcard(string wildcard);
     }
 }

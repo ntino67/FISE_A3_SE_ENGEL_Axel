@@ -11,6 +11,8 @@ using System.Windows.Media.Animation;
 using System.Windows.Media.Imaging;
 using WPF.Infrastructure;
 using WPF.Pages;
+using Core.Model.Interfaces;
+using WPF.Services;
 
 namespace WPF
 {
@@ -41,12 +43,7 @@ namespace WPF
             MainFrame.Navigate(new AppSettingsPage());
         }
 
-        private void Logs_Click(object sender, RoutedEventArgs e)
-        {
-            MainFrame.Navigate(new LogsOverviewPage());
-        }
-
-        private void Status_Click(object sender, RoutedEventArgs e)
+        private void BackupStatusButton_Click(object sender, RoutedEventArgs e)
         {
             MainFrame.Navigate(new BackupStatusPage());
         }
@@ -89,7 +86,6 @@ namespace WPF
             MainFrame.Navigate(page);
         }
 
-
         private void SearchJobButton_Click(object sender, RoutedEventArgs e)
         {
             string search = SearchBox.Text?.Trim().ToLower();
@@ -103,15 +99,19 @@ namespace WPF
             }
         }
 
-        private void RunButton_Click(object sender, RoutedEventArgs e)
+        private void RunMultipleButton_Click(object sender, RoutedEventArgs e)
         {
-            if (RunComboBox.SelectedIndex == 2)
-            {
-                foreach (var job in _vm.Jobs)
-                    job.IsChecked = false;
-                JobList.ItemsSource = null;
-                JobList.ItemsSource = _vm.Jobs;
-            }
+            // Ajoutez ici la logique pour exécuter les jobs sélectionnés
+        }
+
+
+        private void ResetSelectionButton_Click(object sender, RoutedEventArgs e)
+        {
+            // Décoche tous les jobs (reset selection)
+            foreach (var job in _vm.Jobs)
+                job.IsChecked = false;
+            JobList.ItemsSource = null;
+            JobList.ItemsSource = _vm.Jobs;
         }
 
         public async void ShowToast(string message, int durationMs = 3000)
@@ -182,7 +182,6 @@ namespace WPF
         private void SettingsButton_Click(object sender, RoutedEventArgs e)
         {
             MainFrame.Navigate(new AppSettingsPage());
-
         }
     }
 }

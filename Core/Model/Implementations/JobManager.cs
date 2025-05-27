@@ -149,6 +149,24 @@ namespace Core.Model.Implementations
                     success = await ExecuteDifferentialBackup(job, encryptionKey, progress);
                 }
 
+                // Si le job est configuré pour le chiffrement, exécuter le chiffrement
+                if (success && job.IsEncrypted)
+                {
+                    var encryptProgress = new Progress<float>(value =>
+                    {
+                        // Mise à jour de la progression globale (considérons que le chiffrement représente 20% de la tâche)
+                        progress?.Report(80 + value * 0.2f);
+                    });
+
+                var extensions = _configManager.GetEncryptionFileExtensions();
+                var wildcard = _configManager.GetEncryptionWildcard();
+
+                _logger.LogWarning($"Job {job.Name} - Chiffrement avec extensions: {string.Join(", ", extensions)}");
+                _logger.LogWarning($"Job {job.Name} - Chiffrement avec wildcard: {wildcard}");
+
+                    await CryptoHelper.Encrypt(job.TargetDirectory, extensions, wildcard, encryptionKey, encryptProgress);
+                }
+
                 job.Status = success ? JobStatus.Completed : JobStatus.Failed;
                 job.LastRunTime = DateTime.Now;
                 _configManager.SaveJobs(_jobs);
@@ -165,9 +183,9 @@ namespace Core.Model.Implementations
 
                 TimeSpan duration = DateTime.Now - startTime;
                 _logger.LogBackupEnd(job, false, duration);
+                _logger.LogWarning($"Erreur lors de l'exécution du job {job.Name}: {ex.Message}");
 
                 return false;
-                throw ex;
             }
         }
 
@@ -309,9 +327,27 @@ namespace Core.Model.Implementations
         {
             string Directory = job.TargetDirectory;
             _logger.LogEncryptionStart(job);
-            long duration = await CryptoHelper.Encrypt(Directory, new[] { ".txt", ".docx", ".xlsx", ".png", ".cs", ".sln", ".json", ".vpk" }, key, progress);
-            _logger.LogEncryptionEnd(job, true, duration);
-            return true;
+
+            try
+            {
+
+                List<string> extensions = _configManager.GetEncryptionFileExtensions();
+                string wildcard = _configManager.GetEncryptionWildcard();
+
+                _logger.LogWarning($"Extensions configurées: {string.Join(", ", extensions)}");
+                _logger.LogWarning($"Wildcard configuré: {wildcard}");
+
+                long duration = await CryptoHelper.Encrypt(Directory, extensions, wildcard, key, progress);
+
+                _logger.LogEncryptionEnd(job, true, duration);
+                return true;
+            }
+            catch (Exception ex)
+            {
+                _logger.LogWarning($"Erreur lors du chiffrement du job {job.Name}: {ex.Message}");
+                _logger.LogEncryptionEnd(job, false, 0);
+                return false;
+            }
         }
 
         internal async Task<bool> Decrypt(BackupJob job, string key, IProgress<float> progress)
@@ -328,11 +364,11 @@ namespace Core.Model.Implementations
             job.Status = JobStatus.Running;
             if (isEncrypted)
             {
-                await Encrypt(job, Key, progress);
+                await Encrypt(job, Key ?? "EasySave" + job.Id, progress);
             }
             else
             {
-                await Decrypt(job, Key, progress);
+                await Decrypt(job, Key ?? "EasySave" + job.Id, progress);
             }
             job.Status = JobStatus.Completed;
             return true;

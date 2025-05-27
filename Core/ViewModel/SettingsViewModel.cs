@@ -13,14 +13,67 @@ namespace Core.ViewModel
         private ObservableCollection<string> _blockingApplications;
         private string _selectedLanguage;
         private List<KeyValuePair<string, string>> _languageOptions;
+        private ObservableCollection<string> _encryptionFileExtensions;
+        private string _encryptionWildcard;
+
+        public ObservableCollection<string> EncryptionFileExtensions
+        {
+            get => _encryptionFileExtensions;
+            set
+            {
+                if (_encryptionFileExtensions != value)
+                {
+                    _encryptionFileExtensions = value;
+                    OnPropertyChanged();
+                }
+            }
+        }
+
+        public string EncryptionWildcard
+        {
+            get => _encryptionWildcard;
+            set
+            {
+                if (_encryptionWildcard != value)
+                {
+                    _encryptionWildcard = value;
+                    OnPropertyChanged();
+                }
+            }
+        }
 
         public SettingsViewModel(IConfigurationManager configManager, ILocalizationService localizationService)
         {
             _configManager = configManager;
             _localizationService = localizationService;
             _blockingApplications = new ObservableCollection<string>();
+            _encryptionFileExtensions = new ObservableCollection<string>();
             _languageOptions = _localizationService.GetAvailableLanguages();
             ReloadSettings();
+        }
+
+        public void AddEncryptionExtension(string extension)
+        {
+            if (string.IsNullOrWhiteSpace(extension))
+                return;
+
+            // S'assurer que l'extension commence par un point
+            string formattedExtension = extension.StartsWith(".") ? extension.ToLower() : "." + extension.ToLower();
+
+            if (!EncryptionFileExtensions.Contains(formattedExtension))
+            {
+                EncryptionFileExtensions.Add(formattedExtension);
+                OnPropertyChanged(nameof(EncryptionFileExtensions));
+            }
+        }
+
+        public void RemoveEncryptionExtension(string extension)
+        {
+            if (EncryptionFileExtensions.Contains(extension))
+            {
+                EncryptionFileExtensions.Remove(extension);
+                OnPropertyChanged(nameof(EncryptionFileExtensions));
+            }
         }
 
         public ObservableCollection<string> BlockingApplications
@@ -73,8 +126,8 @@ namespace Core.ViewModel
         {
             _configManager.SaveBlockingApplications(new List<string>(BlockingApplications));
             _configManager.SaveLanguage(SelectedLanguage);
-
-            // Utilisation du service de localisation
+            _configManager.SaveEncryptionFileExtensions(new List<string>(EncryptionFileExtensions));
+            _configManager.SaveEncryptionWildcard(EncryptionWildcard);
             _localizationService.ChangeLanguage(SelectedLanguage);
         }
 
@@ -82,6 +135,11 @@ namespace Core.ViewModel
         {
             var apps = _configManager.GetBlockingApplications();
             BlockingApplications = new ObservableCollection<string>(apps ?? new List<string>());
+
+            var extensions = _configManager.GetEncryptionFileExtensions();
+            EncryptionFileExtensions = new ObservableCollection<string>(extensions ?? new List<string>());
+
+            EncryptionWildcard = _configManager.GetEncryptionWildcard();
 
             string savedLanguage = _configManager.GetLanguage();
             SelectedLanguage = string.IsNullOrEmpty(savedLanguage) ? "en-US" : savedLanguage;

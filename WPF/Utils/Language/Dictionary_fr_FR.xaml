@@ -22,6 +22,14 @@
     <system:String x:Key="Select">Sélectionner</system:String>
     <system:String x:Key="SearchApps">Rechercher...</system:String>
 
+    <!-- Encryption files section -->
+    <system:String x:Key="EncryptionSection">Paramètres de chiffrement</system:String>
+    <system:String x:Key="EncryptionExtensions">Extensions de fichiers à chiffrer</system:String>
+    <system:String x:Key="EncryptionExtensionsDescription">Spécifiez quelles extensions de fichiers doivent être chiffrées lorsque les tâches de sauvegarde sont exécutées avec le chiffrement activé.</system:String>
+    <system:String x:Key="EncryptionWildcard">Motif générique</system:String>
+    <system:String x:Key="EncryptionWildcardDescription">Optionnel: Spécifiez un motif générique pour chiffrer tous les fichiers correspondants quelle que soit leur extension (ex: *.* ou all pour tous les fichiers).</system:String>
+    <system:String x:Key="AddExtension">Ajouter</system:String>
+    
     <!-- Buttons -->
     <system:String x:Key="Save">Enregistrer</system:String>
     <system:String x:Key="Cancel">Annuler</system:String>
