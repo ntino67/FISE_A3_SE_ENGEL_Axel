@@ -72,9 +72,10 @@ namespace WPF
         {
             var button = sender as Button;
             var job = button?.DataContext as BackupJob;
-            if (job == null)
+            if (job == null) { 
+                ShowToast("⚠️ Job selection error", 3000);
                 return;
-
+            }
             var vm = ViewModelLocator.JobViewModel;
             vm.SetCurrentJob(null);
             vm.SetCurrentJob(job);

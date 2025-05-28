@@ -16,14 +16,44 @@ namespace Core.ViewModel
 {
     public class JobViewModel : INotifyPropertyChanged
     {
+        private InstructionHandlerViewModel _instructionHandler;
         private readonly IBackupService _jobManager;
         private readonly IUIService _ui;
         private readonly ICommandFactory _commandFactory;
         private FileSystemWatcher _watcher;
         private BackupJob _currentJob;
-        private float _progress;
+        public BackupJob CurrentJob
+        {
+            get => _currentJob;
+            set
+            {
+                if (_currentJob != value)
+                {
+                    if (_currentJob != null)
+                        _currentJob.PropertyChanged -= OnCurrentJobPropertyChanged;
 
-        public float Progress
+                    _currentJob = value;
+                    OnPropertyChanged();
+
+                    if (_currentJob != null)
+                        _currentJob.PropertyChanged += OnCurrentJobPropertyChanged;
+
+                    OnPropertyChanged(nameof(EncryptionStatus));
+                }
+            }
+        }
+
+        private void OnCurrentJobPropertyChanged(object sender, PropertyChangedEventArgs e)
+        {
+            if (e.PropertyName == nameof(BackupJob.Progress))
+            {
+                OnPropertyChanged(nameof(CurrentJob.Progress)); // 👈 pour notifier la vue
+            }
+        }
+
+        private float _progress; //Devra être supprimé
+
+        public float Progress //Devra être supprimé
         {
             get => _progress;
             set
@@ -36,16 +66,17 @@ namespace Core.ViewModel
             }
         }
 
-        public JobViewModel(IBackupService jobManager, IUIService uiService, ICommandFactory commandFactory)
+        public JobViewModel(IBackupService jobManager, IUIService uiService, ICommandFactory commandFactory, InstructionHandlerViewModel instructionHandlerViewModel) //Constructeur refaire toutes les commandes
         {
             _jobManager = jobManager;
+            _instructionHandler = instructionHandlerViewModel;
             _ui = uiService;
             _commandFactory = commandFactory;
 
             Jobs = new ObservableCollection<BackupJob>(_jobManager.GetAllJobs());
 
             RunBackupCommand = _commandFactory.Create(
-                async _ => await ExecuteCurrentJob(),
+                async job => await ExecuteCurrentJob((BackupJob)job),
                 _ => CurrentJob?.IsValid() == true
             );
 
@@ -137,53 +168,46 @@ namespace Core.ViewModel
                 });
 
             ToggleEncryptionCommand = _commandFactory.Create(
-                _ =>
+                job =>
                 {
                     if (string.IsNullOrWhiteSpace(EncryptionKey))
                         _ui.ShowToast("🔑 Please enter a key first", 3000);
                     else
-                        ToggleEncryption(EncryptionKey);
+                        ToggleEncryption((BackupJob) job, EncryptionKey);
                 },
                 _ => EncryptionKey != null && EncryptionStatus != "Status: Unknown"
             );
-        }
-        public event PropertyChangedEventHandler PropertyChanged;
 
-        public ObservableCollection<BackupJob> Jobs { get; private set; }
-        
-        public Action RefreshCommands { get; set; } = () => { };
-        
-        public Action<Action> RunOnUiThread { get; set; } = action => action();
-        
-        public Action NavigateToHome { get; set; } = () => { };
+            PauseResumeCommand = _commandFactory.Create(
+                job =>
+                {
+                    if (CurrentJob.Status == JobStatus.Running)
+                        PauseCurrentJob((BackupJob)job);
+                    else if (CurrentJob.Status == JobStatus.Paused)
+                        ResumeCurrentJob((BackupJob)job);
+                },
+                _ => CurrentJob != null && (CurrentJob.Status == JobStatus.Running || CurrentJob.Status == JobStatus.Paused)
+            );
 
-        public BackupJob CurrentJob
-        {
-            get => _currentJob;
-            private set
-            {
-                _currentJob = value;
-                OnPropertyChanged();
-                OnPropertyChanged(nameof(EncryptionStatus));
-            }
+            StopBackupCommand = _commandFactory.Create(
+                _ => StopCurrentJob(),
+                _ => CurrentJob != null && (CurrentJob.Status == JobStatus.Running || CurrentJob.Status == JobStatus.Paused)
+            );
         }
+        public event PropertyChangedEventHandler PropertyChanged; //Ne pas toucher
 
-        private string _jobMessage;
-        public string JobMessage
-        {
-            get => _jobMessage;
-            set
-            {
-                _jobMessage = value;
-                OnPropertyChanged();
-                OnPropertyChanged(nameof(HasJobMessage));
-            }
-        }
+        public ObservableCollection<BackupJob> Jobs { get; private set; } //Ne pas toucher
         
-        private string _encryptionKey;
-        public string EncryptionKey
+        public Action RefreshCommands { get; set; } = () => { }; //Ne pas toucher
+
+        public Action<Action> RunOnUiThread { get; set; } = action => action(); //Ne pas toucher
+
+        public Action NavigateToHome { get; set; } = () => { }; //Ne pas toucher
+        
+        private string _encryptionKey; //Ne pas toucher
+        public string EncryptionKey //Ne pas toucher
         {
-            get => _encryptionKey;
+            get => _encryptionKey; //Ne pas toucher
             set
             {
                 if (_encryptionKey != value)
@@ -194,18 +218,21 @@ namespace Core.ViewModel
             }
         }
 
-        public bool HasJobMessage => !string.IsNullOrWhiteSpace(JobMessage);
-
         public string SourceDirectoryLabel => "📁 "+ Application.Current.Resources["Source"] as string + ": " + TrimPath(CurrentJob?.SourceDirectory);
         public string TargetDirectoryLabel => "🎯 "+ Application.Current.Resources["Target"] as string + ": " + TrimPath(CurrentJob?.TargetDirectory);
 
         public async Task ExecuteAllJobs()
         {
-            Progress<float> progress = new Progress<float>(value => Progress = value);
-
 
             foreach (var job in Jobs)
             {
+                var progress = new Progress<float>(p =>
+                {
+                    Application.Current.Dispatcher.Invoke(() =>
+                    {
+                        job.Progress = p;
+                    });
+                });
                 await _jobManager.ExecuteBackupJob(job.Id, progress, this.EncryptionKey);
             }
             _ui.ShowToast("✅ Toutes les sauvegardes sont terminées.", 3000);
@@ -213,10 +240,16 @@ namespace Core.ViewModel
 
         public async Task ExecuteSelectedJobs()
         {
-            Progress<float> progress = new Progress<float>(value => Progress = value);
 
             foreach (var job in Jobs.Where(j => j.IsChecked))
             {
+                var progress = new Progress<float>(p =>
+                {
+                    Application.Current.Dispatcher.Invoke(() =>
+                    {
+                        job.Progress = p;
+                    });
+                });
                 await _jobManager.ExecuteBackupJob(job.Id, progress, this.EncryptionKey);
             }
             _ui.ShowToast("✅ Sauvegardes sélectionnées terminées.", 3000);
@@ -249,8 +282,9 @@ namespace Core.ViewModel
         public ICommand RunAllBackupsCommand { get; private set; }
         public ICommand RunSelectedBackupsCommand { get; private set; }
         public ICommand CreateJobCommand { get; private set; }
-        
         public ICommand ToggleEncryptionCommand { get; private set; }
+        public ICommand PauseResumeCommand { get; private set; }
+        public ICommand StopBackupCommand { get; private set; }
 
         public void SetCurrentJob(BackupJob job)
         {
@@ -307,7 +341,7 @@ namespace Core.ViewModel
             _jobManager.UpdateBackupJob(CurrentJob);
         }
 
-        public async Task<bool> ExecuteCurrentJob()
+        public async Task<bool> ExecuteCurrentJob(BackupJob CurrentJob)
         {
             if (CurrentJob == null) throw new InvalidOperationException(Application.Current.Resources["NoJobSelected"] as string);
             if (CurrentJob.Status == JobStatus.Running)
@@ -315,8 +349,14 @@ namespace Core.ViewModel
                 _ui.ShowToast("🔄 " + Application.Current.Resources["JobAlreadyRunning"] + ".", 3000);
                 return false;
             }
-            Progress<float> progress = new Progress<float>(value => Progress = value);
             string keyToUse = this.EncryptionKey;
+            var progress = new Progress<float>(p =>
+            {
+                Application.Current.Dispatcher.Invoke(() =>
+                {
+                    CurrentJob.Progress = p;
+                });
+            });
             bool result = await _jobManager.ExecuteBackupJob(CurrentJob.Id, progress, keyToUse);
             OnPropertyChanged(nameof(EncryptionStatus));
             _ui.ShowToast("✅ "+ Application.Current.Resources["BackupComplete"] as string +"!", 3000);
@@ -338,7 +378,7 @@ namespace Core.ViewModel
             var job = Jobs.FirstOrDefault(j => j.Id == jobId);
             if (job == null)
                 throw new InvalidOperationException(Application.Current.Resources["JobDoesNotExist"] as string);
-
+            job.Status = JobStatus.Stopped; // Set status to Deleted before removing
             _jobManager.DeleteBackupJob(jobId);
             Jobs.Remove(job);
 
@@ -348,8 +388,44 @@ namespace Core.ViewModel
             OnPropertyChanged(nameof(EncryptionStatus));
             _ui.ShowToast("🗑️ "+ Application.Current.Resources["JobDeleted"] as string + ".", 3000);
         }
-
-        public async void ToggleEncryption(string key)
+        public void PauseCurrentJob(BackupJob CurrentJob)
+        {
+            if (CurrentJob == null) throw new InvalidOperationException(Application.Current.Resources["NoJobSelected"] as string);
+            if (CurrentJob.Status != JobStatus.Running)
+            {
+                _ui.ShowToast("🔄 " + Application.Current.Resources["JobNotRunning"] as string + ".", 3000);
+                return;
+            }
+            CurrentJob.Status = JobStatus.Paused;
+            _jobManager.UpdateBackupJob(CurrentJob);
+            _ui.ShowToast("⏸️ " + Application.Current.Resources["JobPaused"] as string + ".", 3000);
+        }
+        public void ResumeCurrentJob(BackupJob CurrentJob)
+        {
+            if (CurrentJob == null) throw new InvalidOperationException(Application.Current.Resources["NoJobSelected"] as string);
+            if (CurrentJob.Status != JobStatus.Paused)
+            {
+                _ui.ShowToast("🔄 " + Application.Current.Resources["JobNotPaused"] as string + ".", 3000);
+                return;
+            }
+            CurrentJob.Status = JobStatus.Running;
+            _jobManager.UpdateBackupJob(CurrentJob);
+            _ui.ShowToast("▶️ " + Application.Current.Resources["JobResumed"] as string + ".", 3000);
+        }
+        public void StopCurrentJob()
+        {
+            if (CurrentJob == null) throw new InvalidOperationException(Application.Current.Resources["NoJobSelected"] as string);
+            if (CurrentJob.Status != JobStatus.Running && CurrentJob.Status != JobStatus.Paused)
+            {
+                _ui.ShowToast("🔄 " + Application.Current.Resources["JobNotRunningOrPaused"] as string + ".", 3000);
+                return;
+            }
+            CurrentJob.Status = JobStatus.Stopped;
+            CurrentJob.Progress = 0; // Reset progress when stopping
+            _jobManager.UpdateBackupJob(CurrentJob);
+            _ui.ShowToast("🛑 " + Application.Current.Resources["JobStopped"] as string + ".", 3000);
+        }
+        public async void ToggleEncryption(BackupJob CurrentJob ,string key)
         {
             if (CurrentJob == null) return;
             if (CurrentJob.Status == JobStatus.Running)
@@ -367,8 +443,13 @@ namespace Core.ViewModel
             var encrypted = files.Where(f => f.EndsWith(".enc")).ToList();
             var plain = files.Where(f => !f.EndsWith(".enc") && !f.EndsWith(".exe") && !f.EndsWith(".dll")).ToList();
 
-           Progress <float> progress = new Progress<float>(value => Progress = value);
-
+            var progress = new Progress<float>(p =>
+            {
+                Application.Current.Dispatcher.Invoke(() =>
+                {
+                    CurrentJob.Progress = p;
+                });
+            });
             if (encrypted.Any())
             {
                 await _jobManager.Encryption(false, CurrentJob, key, progress);

@@ -72,4 +72,8 @@
     <system:String x:Key="NotSet">Non défini</system:String>
     <system:String x:Key="JobCreated">Job créé</system:String>
     <system:String x:Key="JobReset">Job réinitialisé</system:String>
+
+    <system:String x:Key="Stop">🛑 Stop</system:String>
+    <system:String x:Key="Pause">⏸️ Pause</system:String>
+    <system:String x:Key="Resume">▶️ Reprendre</system:String>
 </ResourceDictionary>

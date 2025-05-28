@@ -24,6 +24,21 @@ namespace Core.Model
         private bool _isChecked;
         private bool _isActive;
         private bool _isEncrypted;
+        private float _progress;
+
+        [JsonIgnore]
+        public float Progress
+        {
+            get => _progress;
+            set
+            {
+                if (_progress != value)
+                {
+                    _progress = value;
+                    OnPropertyChanged();
+                }
+            }
+        }
 
 
 
@@ -118,8 +133,7 @@ namespace Core.Model
             }
         }
 
-        [JsonPropertyName("state")]
-        [JsonConverter(typeof(JsonStringEnumConverter))]
+        [JsonIgnore]
         public JobStatus Status
         {
             get => _status;

@@ -31,17 +31,14 @@ namespace WPF.Pages
                 _vm.UpdateTargetPath(dialog.SelectedPath);
         }
 
-        private void OnToggleEncryptionClick(object sender, RoutedEventArgs e)
-        {
-            var key = KeyInput.Text;
-
-            if (!string.IsNullOrEmpty(key))
-                _vm.ToggleEncryption(key);
-            else
-                ToastBridge.ShowToast?.Invoke("🔑 Please enter a key first", 3000);
-        }
+        
 
         private void TaskProgressBar_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
+        {
+
+        }
+
+        private void Button_Click(object sender, RoutedEventArgs e)
         {
 
         }

@@ -20,6 +20,7 @@ namespace WPF.Infrastructure
         private static IUIService _iuiService;
         private static ILocalizationService _localizationService;
         private static ICommandFactory _commandFactory;
+        private static InstructionHandlerViewModel _instructionHandlerViewModel = new InstructionHandlerViewModel(_jobManager, _iuiService);
 
         public static JobViewModel JobViewModel
         {
@@ -61,7 +62,8 @@ namespace WPF.Infrastructure
                 _commandFactory = new WpfCommandFactory();
                 _iuiService = new UIService();
                 _localizationService = new LocalizationService();
-                _jobViewModel = new JobViewModel(_jobManager, _iuiService, _commandFactory);
+                _instructionHandlerViewModel = new InstructionHandlerViewModel(_jobManager, _iuiService);
+                _jobViewModel = new JobViewModel(_jobManager, _iuiService, _commandFactory, _instructionHandlerViewModel);
                 _settingsViewModel = new SettingsViewModel(_configManager, _localizationService);
             }
             catch (Exception ex)

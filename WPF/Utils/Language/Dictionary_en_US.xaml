@@ -72,5 +72,9 @@
     <system:String x:Key="NotSet">Not set</system:String>
     <system:String x:Key="JobCreated">Job Created</system:String>
     <system:String x:Key="JobReset">Job Reset</system:String>
+
+    <system:String x:Key="Stop">🛑 Stop</system:String>
+    <system:String x:Key="Pause">⏸️ Pause</system:String>
+    <system:String x:Key="Resume">▶️ Resume</system:String>
 </ResourceDictionary>
 

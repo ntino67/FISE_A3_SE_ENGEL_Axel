@@ -243,7 +243,10 @@ namespace Core.Model.Implementations
                                 $"ENCRYPT_ERROR: {ex.Message}");
                         }
                     }
-                    progress?.Report((float)files.ToList().IndexOf(file) / files.Length * 100);
+                    if(job.Status == JobStatus.Running)
+                    {
+                        progress?.Report((float)files.ToList().IndexOf(file) / files.Length * 100);
+                    }
                 }
 
                 return true;
