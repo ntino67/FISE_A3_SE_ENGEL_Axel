@@ -22,6 +22,19 @@ namespace Core.ViewModel
         private FileSystemWatcher _watcher;
         private BackupJob _currentJob;
         private float _progress;
+        private string _searchText;
+        public string SearchText
+        {
+            get => _searchText;
+            set
+            {
+                if (_searchText != value)
+                {
+                    _searchText = value;
+                    OnPropertyChanged();
+                }
+            }
+        }
 
         public float Progress
         {
@@ -129,6 +142,7 @@ namespace Core.ViewModel
                     }
 
                     CreateNewJob(name);
+                    SearchText= string.Empty;
                 },
                 param =>
                 {
