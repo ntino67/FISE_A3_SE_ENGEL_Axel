@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Xml.Serialization;
 using Newtonsoft.Json;
 using Core.Model.Interfaces;
 
@@ -10,15 +11,15 @@ namespace Core.Model.Implementations
     public class Logger : ILogger
     {
         private readonly string _logDirectory;
+        private readonly XmlSerializer _xmlSerializer;
 
         public Logger(string logDirectory)
         {
             _logDirectory = logDirectory;
             Directory.CreateDirectory(logDirectory);
+            _xmlSerializer = new XmlSerializer(typeof(List<LogEntry>), new XmlRootAttribute("LogEntries"));
+
         }
-
-
-
         public void LogBackupOperation(string jobName, string sourcePath, string destinationPath, long fileSize, long transferTimeMs, string status)
         {
             LogEntry logEntry = new LogEntry
@@ -81,12 +82,14 @@ namespace Core.Model.Implementations
         }
         public void LogEncryptionEnd(BackupJob job, bool success, long duration)
         {
+            long encryptionDuration = success ? duration : -1;
+
             LogEntry logEntry = new LogEntry
             {
                 Timestamp = DateTime.Now,
                 JobName = job.Name,
                 EncryptedDirectoryPath = job.TargetDirectory,
-                EncryptionDuration = duration,
+                EncryptionDuration = encryptionDuration,
                 Status = success ? "ENCRYPTION_COMPLETED" : "ENCRYPTION_FAILED"
             }; 
             WriteToLogFile(logEntry);
@@ -111,12 +114,31 @@ namespace Core.Model.Implementations
 
         public string GetLogFilePath(DateTime date)
         {
+            return GetJsonLogFilePath(date);
+        }
+
+        public string GetJsonLogFilePath(DateTime date)
+        {
             return Path.Combine(_logDirectory, $"EasySave_Log_{date:yyyyMMdd}.json");
+        }
+
+        public string GetXmlLogFilePath(DateTime date)
+        {
+            return Path.Combine(_logDirectory, $"EasySave_Log_{date:yyyyMMdd}.xml");
         }
 
         private void WriteToLogFile(LogEntry entry)
         {
-            string logFilePath = GetLogFilePath(DateTime.Now);
+            // Write to JSON file
+            WriteToJsonLogFile(entry);
+
+            // Write to XML file
+            WriteToXmlLogFile(entry);
+        }
+
+        private void WriteToJsonLogFile(LogEntry entry)
+        {
+            string logFilePath = GetJsonLogFilePath(DateTime.Now);
 
             List<LogEntry> existingEntries = new List<LogEntry>();
             if (File.Exists(logFilePath))
@@ -134,9 +156,43 @@ namespace Core.Model.Implementations
 
             existingEntries.Add(entry);
 
-
             string updatedJson = JsonConvert.SerializeObject(existingEntries, Formatting.Indented);
             File.WriteAllText(logFilePath, updatedJson);
+        }
+
+        private void WriteToXmlLogFile(LogEntry entry)
+        {
+            string logFilePath = GetXmlLogFilePath(DateTime.Now);
+
+            List<LogEntry> existingEntries = new List<LogEntry>();
+            if (File.Exists(logFilePath))
+            {
+                try
+                {
+                    using (FileStream stream = new FileStream(logFilePath, FileMode.Open))
+                    {
+                        existingEntries = (List<LogEntry>)_xmlSerializer.Deserialize(stream);
+                    }
+                }
+                catch
+                {
+                    // En cas d'erreur, on continue avec une liste vide
+                }
+            }
+
+            existingEntries.Add(entry);
+
+            try
+            {
+                using (FileStream stream = new FileStream(logFilePath, FileMode.Create))
+                {
+                    _xmlSerializer.Serialize(stream, existingEntries);
+                }
+            }
+            catch (Exception ex)
+            {
+                LogWarning($"Error writing to XML log file: {ex.Message}");
+            }
         }
 
         public void LogWarning(string message)

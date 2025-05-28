@@ -52,6 +52,9 @@ namespace Core.ViewModel
 
         public string StateFilePath => _configManager.GetStateFilePath();
 
+        public string JsonLogFilePath => _logger.GetJsonLogFilePath(DateTime.Now);
+        public string XmlLogFilePath => _logger.GetXmlLogFilePath(DateTime.Now);
+
         public SettingsViewModel(IConfigurationManager configManager, ILocalizationService localizationService, ILogger logger)
         {
             _configManager = configManager;
