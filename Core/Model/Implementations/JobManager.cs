@@ -15,11 +15,15 @@ namespace Core.Model.Implementations
         private List<BackupJob> _jobs;
         private readonly ILogger _logger;
         private readonly IConfigurationManager _configManager;
+        private readonly IUIService _uiService;
+        private readonly IResourceService _resourceService;
 
-        public JobManager(ILogger logger, IConfigurationManager configManager)
+        public JobManager(ILogger logger, IConfigurationManager configManager, IUIService uiService, IResourceService resourceService)
         {
             _logger = logger;
             _configManager = configManager;
+            _uiService = uiService;
+            _resourceService = resourceService;
             _jobs = configManager.LoadJobs();
         }
 
@@ -118,6 +122,9 @@ namespace Core.Model.Implementations
                         Process[] processes = Process.GetProcessesByName(app);
                         if (processes.Length > 0)
                         {
+                            string message = _resourceService.GetString("BackupBlockedByApp", app);
+
+                            _uiService.ShowToast(message, 5000);
                             _logger.LogWarning($"Le job {job.Name} n'a pas pu démarrer : l'application bloquante {app} est en cours d'exécution.");
                             job.Status = JobStatus.Canceled;
                             _configManager.SaveJobs(_jobs);
