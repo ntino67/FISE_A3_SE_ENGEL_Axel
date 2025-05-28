@@ -24,43 +24,6 @@ namespace Core.Model
         private bool _isChecked;
         private bool _isActive;
         private bool _isEncrypted;
-        private float _progress;
-
-        [JsonIgnore]
-        public float Progress
-        {
-            get => _progress;
-            set
-            {
-                if (_progress != value)
-                {
-                    _progress = value;
-                    OnPropertyChanged();
-                }
-            }
-        }
-
-        [JsonIgnore]
-        public static int NumberOfPriorityJobRunning { get; set; } = 0;
-
-
-        private bool _isPriorityJob = false;
-        [JsonIgnore]
-        public bool isPriorityJob
-        {
-            get { return _isPriorityJob; }
-            set
-            {
-                if (value != _isPriorityJob)
-                {
-                    _isPriorityJob = value;
-                    OnPropertyChanged();
-                }
-            }
-        }
-        [JsonIgnore]
-        public bool ForcedStatus { get; set; }
-
 
 
 
@@ -155,7 +118,8 @@ namespace Core.Model
             }
         }
 
-        [JsonIgnore]
+        [JsonPropertyName("state")]
+        [JsonConverter(typeof(JsonStringEnumConverter))]
         public JobStatus Status
         {
             get => _status;
@@ -163,25 +127,12 @@ namespace Core.Model
             {
                 if (_status != value)
                 {
-                    // Only act if the status actually changes
-                    if (isPriorityJob)
-                    {
-                        if (value == JobStatus.Running)
-                        {
-                            NumberOfPriorityJobRunning++;
-                        }
-                        else if (value == JobStatus.Stopped || value == JobStatus.Completed || value == JobStatus.Paused)
-                        {
-                            NumberOfPriorityJobRunning--;
-                        }
-                    }
-
                     _status = value;
                     OnPropertyChanged();
                 }
             }
         }
-
+        
         [JsonIgnore]
         public bool IsChecked
         {
@@ -196,6 +147,20 @@ namespace Core.Model
             }
         }
 
+        [JsonPropertyName("isActive")]
+        public bool IsActive
+        {
+            get => _isActive;
+            set
+            {
+                if (_isActive != value)
+                {
+                    _isActive = value;
+                    OnPropertyChanged();
+                }
+            }
+        }
+       
 
         public bool IsValid()
         {
@@ -211,20 +176,6 @@ namespace Core.Model
             Type = BackupType.Full;
             Status = JobStatus.Ready;
             LastRunTime = null;
-        }
-
-        [JsonPropertyName("isActive")]
-        public bool IsActive
-        {
-            get => _isActive;
-            set
-            {
-                if (_isActive != value)
-                {
-                    _isActive = value;
-                    OnPropertyChanged();
-                }
-            }
         }
     }
 }
