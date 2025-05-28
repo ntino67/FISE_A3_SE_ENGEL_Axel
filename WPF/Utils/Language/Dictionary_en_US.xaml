@@ -29,6 +29,15 @@
     <system:String x:Key="EncryptionWildcard">Wildcard Pattern</system:String>
     <system:String x:Key="EncryptionWildcardDescription">Optional: Specify a wildcard pattern to encrypt all matching files regardless of their extension (e.g. *.* or all for all files).</system:String>
     <system:String x:Key="AddExtension">Add</system:String>
+    
+    <!-- Logs settings section -->
+    <system:String x:Key="LogFilesSection">Log Files</system:String>
+    <system:String x:Key="LogFilesDescription">Access application log files to view backup operation details.</system:String>
+    <system:String x:Key="DailyLogFile">Daily Log</system:String>
+    <system:String x:Key="StateFile">Tasks State</system:String>
+    <system:String x:Key="WarningsLogFile">Warnings Log</system:String>
+    <system:String x:Key="OpenFile">Open</system:String>
+    <system:String x:Key="ShowInFolder">Show in Folder</system:String>
 
     <!-- Buttons -->
     <system:String x:Key="Save">Save</system:String>
@@ -48,6 +57,9 @@
     <!-- Logs -->
     <system:String x:Key="TextLogsButton">Logs</system:String>
     <system:String x:Key="TextStatusButton">Status</system:String>
+
+
+
 
     <!-- Messages -->
     <system:String x:Key="Error">Error</system:String>
