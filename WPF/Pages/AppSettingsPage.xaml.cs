@@ -8,7 +8,6 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
 using System.Windows.Media.Animation;
-using System.Diagnostics;
 using Core.Model.Interfaces;
 using Core.ViewModel;
 using System.IO;
@@ -209,6 +208,32 @@ namespace WPF.Pages
                 MessageBox.Show($"Erreur lors de l'ouverture du dossier : {ex.Message}", "Erreur", MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
+
+        private void OpenXmlLogButton_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                string filePath = _viewModel.XmlLogFilePath;
+                if (File.Exists(filePath))
+                {
+                    Process.Start(new ProcessStartInfo(filePath) { UseShellExecute = true });
+                }
+                else
+                {
+                    MessageBox.Show("Le fichier journal XML n'existe pas encore.", "Information", MessageBoxButton.OK, MessageBoxImage.Information);
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Erreur lors de l'ouverture du fichier : {ex.Message}", "Erreur", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+        }
+
+        private void ShowXmlLogFolderButton_Click(object sender, RoutedEventArgs e)
+        {
+            OpenFolder(_viewModel.LogsDirectoryPath);
+        }
+
 
 
         private void DetectRunningAppButton_Click(object sender, RoutedEventArgs e)

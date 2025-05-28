@@ -394,7 +394,7 @@
                             <RowDefinition Height="Auto"/>
                             <!-- Description row -->
                             <RowDefinition Height="Auto"/>
-                            <!-- Daily log row -->
+                            <!-- Daily log row (with formats options) -->
                             <RowDefinition Height="Auto"/>
                             <!-- State file row -->
                             <RowDefinition Height="Auto"/>
@@ -417,8 +417,11 @@
                    Margin="0,0,0,15"
                    Foreground="#a6adc8"/>
 
-                        <!-- Daily Log File -->
-                        <Grid Grid.Row="2" Margin="0,0,0,15">
+                        <!-- Daily Log File (with formats options) -->
+                        <Grid Grid.Row="2"
+                              Margin="0,0,0,15"
+                              >
+
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="Auto"/>
                                 <!-- Icon -->
@@ -472,6 +475,10 @@
                     BorderBrush="#74c7ec"
                     Click="ShowDailyLogFolderButton_Click"/>
                         </Grid>
+
+                        <!-- JSON Log File -->
+                        
+                        
 
                         <!-- State File (state.json) -->
                         <Grid Grid.Row="3" Margin="0,0,0,15">

@@ -29,7 +29,6 @@ namespace Core.Model
                 throw new DirectoryNotFoundException($"Directory '{folderPath}' not found.");
 
             var stopwatch = System.Diagnostics.Stopwatch.StartNew();
-
             List<string> filesToProcess;
 
             // Pour le déchiffrement, toujours utiliser tous les fichiers (*.*)

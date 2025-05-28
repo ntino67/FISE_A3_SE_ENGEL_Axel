@@ -11,7 +11,8 @@ namespace Core.Model.Interfaces
         void LogBackupEnd(BackupJob job, bool success, TimeSpan duration);
         List<LogEntry> GetTodayLogs();
         string GetLogFilePath(DateTime date);
-
+        string GetJsonLogFilePath(DateTime date);
+        string GetXmlLogFilePath(DateTime date);
         void LogWarning(string message);
         void LogEncryptionStart(BackupJob job);
         void LogEncryptionEnd(BackupJob job,bool success, long duration);
