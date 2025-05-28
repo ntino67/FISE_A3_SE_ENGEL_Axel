@@ -75,7 +75,7 @@ namespace WPF.Infrastructure
                 _commandFactory = new WpfCommandFactory();
                 _jobManager = new JobManager(_logger, _configManager, _iuiService, _resourceService);
                 _jobViewModel = new JobViewModel(_jobManager, _iuiService, _commandFactory);
-                _settingsViewModel = new SettingsViewModel(_configManager, _localizationService);
+                _settingsViewModel = new SettingsViewModel(_configManager, _localizationService, _logger);
             }
             catch (Exception ex)
             {

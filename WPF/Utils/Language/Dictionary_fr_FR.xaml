@@ -27,7 +27,17 @@
     <system:String x:Key="EncryptionWildcard">Motif générique</system:String>
     <system:String x:Key="EncryptionWildcardDescription">Optionnel: Spécifiez un motif générique pour chiffrer tous les fichiers correspondants quelle que soit leur extension (ex: *.* ou all pour tous les fichiers).</system:String>
     <system:String x:Key="AddExtension">Ajouter</system:String>
+
+    <!-- Logs section -->
+    <system:String x:Key="LogFilesSection">Fichiers journaux</system:String>
+    <system:String x:Key="LogFilesDescription">Accédez aux fichiers journaux de l'application pour consulter les détails des opérations de sauvegarde.</system:String>
+    <system:String x:Key="DailyLogFile">Journal quotidien</system:String>
+    <system:String x:Key="StateFile">État des tâches</system:String>
+    <system:String x:Key="WarningsLogFile">Journal des avertissements</system:String>
+    <system:String x:Key="OpenFile">Ouvrir</system:String>
+    <system:String x:Key="ShowInFolder">Afficher dans le dossier</system:String>
     
+
     <!-- Buttons -->
     <system:String x:Key="Save">Enregistrer</system:String>
     <system:String x:Key="Cancel">Annuler</system:String>

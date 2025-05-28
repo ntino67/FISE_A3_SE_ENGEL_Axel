@@ -1,6 +1,8 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.IO;
 using System.Runtime.CompilerServices;
 using Core.Model.Interfaces;
 
@@ -10,11 +12,13 @@ namespace Core.ViewModel
     {
         private readonly IConfigurationManager _configManager;
         private readonly ILocalizationService _localizationService;
+        private readonly ILogger _logger;
         private ObservableCollection<string> _blockingApplications;
         private string _selectedLanguage;
         private List<KeyValuePair<string, string>> _languageOptions;
         private ObservableCollection<string> _encryptionFileExtensions;
         private string _encryptionWildcard;
+  
 
         public ObservableCollection<string> EncryptionFileExtensions
         {
@@ -42,10 +46,17 @@ namespace Core.ViewModel
             }
         }
 
-        public SettingsViewModel(IConfigurationManager configManager, ILocalizationService localizationService)
+        public string DailyLogFilePath => _logger.GetLogFilePath(DateTime.Now);
+        public string WarningsLogFilePath => Path.Combine(_configManager.GetLogDirectory(), "warnings.log");
+        public string LogsDirectoryPath => _configManager.GetLogDirectory();
+
+        public string StateFilePath => _configManager.GetStateFilePath();
+
+        public SettingsViewModel(IConfigurationManager configManager, ILocalizationService localizationService, ILogger logger)
         {
             _configManager = configManager;
             _localizationService = localizationService;
+            _logger = logger;
             _blockingApplications = new ObservableCollection<string>();
             _encryptionFileExtensions = new ObservableCollection<string>();
             _languageOptions = _localizationService.GetAvailableLanguages();
