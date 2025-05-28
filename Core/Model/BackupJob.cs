@@ -146,7 +146,21 @@ namespace Core.Model
                 }
             }
         }
-        
+
+        [JsonPropertyName("isActive")]
+        public bool IsActive
+        {
+            get => _isActive;
+            set
+            {
+                if (_isActive != value)
+                {
+                    _isActive = value;
+                    OnPropertyChanged();
+                }
+            }
+        }
+       
 
         public bool IsValid()
         {

@@ -383,6 +383,20 @@ namespace Core.ViewModel
             OnPropertyChanged(nameof(EncryptionStatus));
         }
         
+        public bool IsActive
+        {
+            get => CurrentJob?.IsActive ?? false;
+            set
+            {
+                if (CurrentJob != null && CurrentJob.IsActive != value)
+                {
+                    CurrentJob.IsActive = value;
+                    _jobManager.UpdateBackupJob(CurrentJob);
+                    OnPropertyChanged();
+                }
+            }
+        }
+        
         private void RefreshJobBindings()
         {
             OnPropertyChanged(nameof(SourceDirectoryLabel));
