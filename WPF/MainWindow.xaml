@@ -221,7 +221,8 @@
                                      Background="#313244"
                                      Foreground="White"
                                      FontSize="18"
-                                     Padding="10,0" />
+                                     Padding="10,0"
+                                     Text="{Binding SearchText, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
                                 <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
                                 <Button x:Name="SearchJobButton"
                                     Width="36"
@@ -253,7 +254,7 @@
                                         Foreground="{StaticResource SapphireBrush}"
                                         BorderThickness="0.2"
                                         Command="{Binding CreateJobCommand}"
-                                        CommandParameter="{Binding Text, ElementName=SearchBox}">
+                                        CommandParameter="{Binding SearchText}">
                                     <TextBlock Text="+" FontSize="50" FontWeight="Bold" VerticalAlignment="Center" HorizontalAlignment="Center" Height="78"/>
                                 </Button>
                             </StackPanel>
