@@ -2,7 +2,7 @@
 using System.Globalization;
 using System.Windows.Data;
 
-namespace WPF
+namespace WPF.Converter
 {
     public class FullDiffConverter : IValueConverter
     {
