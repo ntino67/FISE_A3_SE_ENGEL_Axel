@@ -26,7 +26,7 @@ namespace WPF.Pages
             try
             {
                 _viewModel = WPF.Infrastructure.ViewModelLocator.GetSettingsViewModel();
-                _uiService = WPF.Infrastructure.ViewModelLocator.GetUIService(); 
+                _uiService = WPF.Infrastructure.ViewModelLocator.GetUIService();
                 DataContext = _viewModel;
             }
             catch (Exception ex)
@@ -116,7 +116,7 @@ namespace WPF.Pages
                 // Créer une fenêtre de dialogue pour sélectionner un processus
                 var selectProcessDialog = new Window
                 {
-                    Title = "Sélectionner un processus",
+                    Title = Application.Current.Resources["RunningApps"] as string ?? "Applications en cours d'exécution",
                     Width = 500,
                     Height = 600,
                     WindowStartupLocation = WindowStartupLocation.CenterScreen,
@@ -134,7 +134,7 @@ namespace WPF.Pages
                 // En-tête
                 var headerText = new TextBlock
                 {
-                    Text = "Applications en cours d'exécution",
+                    Text = Application.Current.Resources["RunningApps"] as string ?? "Applications en cours d'exécution",
                     FontSize = 22,
                     FontWeight = FontWeights.SemiBold,
                     Margin = new Thickness(0, 0, 0, 15),
@@ -239,7 +239,7 @@ namespace WPF.Pages
 
                 var selectButton = new Button
                 {
-                    Content = "Sélectionner",
+                    Content = Application.Current.Resources["Select"] as string ?? "Sélectionner",
                     Height = 40,
                     Width = 120,
                     Margin = new Thickness(0, 0, 10, 0),
@@ -261,7 +261,7 @@ namespace WPF.Pages
 
                 var cancelDialogButton = new Button
                 {
-                    Content = "Annuler",
+                    Content = Application.Current.Resources["Cancel"] as string ?? "Annuler",
                     Height = 40,
                     Width = 100,
                     Background = Brushes.Transparent,
