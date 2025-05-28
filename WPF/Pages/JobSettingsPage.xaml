@@ -10,6 +10,109 @@
     <Page.Resources>
         <conv:BoolToVisibilityConverter x:Key="BoolToVisibility" />
 
+        <Style x:Key="FadeButtonStyle" TargetType="Button">
+            <Setter Property="Opacity" Value="0"/>
+            <Setter Property="Background" Value="#F9E2AF"/>
+            <Setter Property="Foreground" Value="Black"/>
+            <Setter Property="FontWeight" Value="Bold"/>
+            <Setter Property="BorderBrush" Value="Transparent"/>
+            <Setter Property="IsHitTestVisible" Value="False"/>
+            <Setter Property="Height" Value="45"/>
+            <Setter Property="Width" Value="250"/>
+            <Setter Property="HorizontalContentAlignment" Value="Center"/>
+            <Setter Property="VerticalContentAlignment" Value="Center"/>
+            <Style.Triggers>
+                <DataTrigger Binding="{Binding HasJobMessage}" Value="True">
+                    <DataTrigger.EnterActions>
+                        <BeginStoryboard>
+                            <Storyboard>
+                                <DoubleAnimation Storyboard.TargetProperty="Opacity"
+                                                 To="1" Duration="0:0:0.2"/>
+                            </Storyboard>
+                        </BeginStoryboard>
+                    </DataTrigger.EnterActions>
+                    <DataTrigger.ExitActions>
+                        <BeginStoryboard>
+                            <Storyboard>
+                                <DoubleAnimation Storyboard.TargetProperty="Opacity"
+                                                 To="0" Duration="0:0:0.3"/>
+                            </Storyboard>
+                        </BeginStoryboard>
+                    </DataTrigger.ExitActions>
+                </DataTrigger>
+            </Style.Triggers>
+        </Style>
+        <Style x:Key="DiffFullToggleStyle" TargetType="ToggleButton">
+            <Setter Property="Width" Value="250"/>
+            <Setter Property="Height" Value="40"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="ToggleButton">
+                        <Grid>
+                            <!-- FOND -->
+                            <Border x:Name="SwitchBorder"
+                            Width="250" Height="40"
+                            CornerRadius="20"
+                            Background="#45475a"
+                            BorderBrush="#a6adc8"
+                            BorderThickness="2"/>
+
+                            <!-- THUMB -->
+                            <Border x:Name="SwitchThumb"
+                            Width="95" Height="34"
+                            Background="#232336"
+                            CornerRadius="17"
+                            Margin="3"
+                            HorizontalAlignment="Left"
+                            VerticalAlignment="Center"
+                            RenderTransformOrigin="0.5,0.5">
+                                <Border.RenderTransform>
+                                    <TranslateTransform X="0"/>
+                                </Border.RenderTransform>
+                                <Grid>
+                                    <TextBlock x:Name="DiffText"
+                                       Text="Differential"
+                                       FontWeight="Bold"
+                                       FontSize="14"
+                                       VerticalAlignment="Center"
+                                       HorizontalAlignment="Center"
+                                       Margin="0,0,0,0"
+                                       Foreground="#CDD6F4"
+                                       Visibility="Visible"/>
+                                    <TextBlock x:Name="FullText"
+                                       Text="Full"
+                                       FontWeight="Bold"
+                                       FontSize="14"
+                                       VerticalAlignment="Center"
+                                       HorizontalAlignment="Center"
+                                       Margin="0,0,0,0"
+                                       Foreground="#CDD6F4"
+                                       Visibility="Collapsed"/>
+                                </Grid>
+                            </Border>
+
+                        </Grid>
+
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsChecked" Value="True">
+                                <Setter TargetName="SwitchBorder" Property="Background" Value="#a6e3a1"/>
+                                <Setter TargetName="SwitchThumb" Property="HorizontalAlignment" Value="Right"/>
+                                <Setter TargetName="DiffText" Property="Visibility" Value="Collapsed"/>
+                                <Setter TargetName="FullText" Property="Visibility" Value="Visible"/>
+                            </Trigger>
+                            <Trigger Property="IsChecked" Value="False">
+                                <Setter TargetName="SwitchBorder" Property="Background" Value="#45475a"/>
+                                <Setter TargetName="SwitchThumb" Property="HorizontalAlignment" Value="Left"/>
+                                <Setter TargetName="DiffText" Property="Visibility" Value="Visible"/>
+                                <Setter TargetName="FullText" Property="Visibility" Value="Collapsed"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+
     </Page.Resources>
 
     <Grid Margin="20">
@@ -31,28 +134,23 @@
                 <Button Content="{Binding SourceDirectoryLabel}"
                     ToolTip="{Binding CurrentJob.SourceDirectory}"
                     Click="OnSetSourcePathClick"
-                    Width="250" Height="30"
+                    Width="250" Height="45"
                     BorderBrush="#89B4FA" Foreground="#CDD6F4" Margin="0,5"
                     Style="{StaticResource RoundedButtonStyle}" />
                 <Button Content="{Binding TargetDirectoryLabel}"
                     ToolTip="{Binding CurrentJob.TargetDirectory}"
                     Click="OnSetTargetPathClick"
-                    Width="250" Height="35"
+                    Width="250" Height="45"
                     BorderBrush="#89B4FA" Foreground="#CDD6F4" Margin="0,5"
                     Style="{StaticResource RoundedButtonStyle}"
                     Cursor="Hand" />
 
-                <ComboBox Width="250" Height="36"
-                      ItemsSource="{Binding Source={StaticResource BackupTypeEnum}}"
-                      SelectedItem="{Binding CurrentJob.Type, Mode=TwoWay}"
-                      Background="#313244"
-                      Foreground="#313244"
-                      BorderBrush="#A6ADC8"
-                      FontSize="16"
-                      Margin="0,5" />
+                <StackPanel Grid.Row="1" Orientation="Vertical" HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="0,0,2,2">
+                    <ToggleButton IsChecked="{Binding IsActive, Mode=TwoWay}" Style="{StaticResource DiffFullToggleStyle}"/>
+                </StackPanel>
 
                 <!-- Encryption UI -->
-                <Grid Width="250" Height="35" Margin="0,5">
+                <Grid Width="250" Height="30" Margin="0,5">
                     <TextBox x:Name="KeyInput"
                          Text="{Binding EncryptionKey, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                          Background="#313244"
@@ -69,65 +167,22 @@
                 </Grid>
                 <Button Content="{Binding EncryptionStatus}" 
                     Command="{Binding ToggleEncryptionCommand}"
-                        CommandParameter="{Binding CurrentJob}"
-                    Width="250" Height="35"
+                    Width="250" Height="45"
                     Style="{StaticResource RoundedButtonStyle}"
                     BorderBrush="#F9E2AF" Foreground="#CDD6F4" Margin="0,5" />
 
                 <!-- Commands -->
                 <Button Content="{DynamicResource Run}" Command="{Binding RunBackupCommand}"
-                        CommandParameter="{Binding CurrentJob}"
                     Style="{StaticResource RoundedButtonStyle}"
-                    Width="250" Height="35" BorderBrush="#A6E3A1" Foreground="#CDD6F4" Margin="0,5" />
-                <Grid Margin="0,5">
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="*" />
-                        <ColumnDefinition Width="*" />
-                    </Grid.ColumnDefinitions>
-                    <!-- Pause / Resume Button -->
-<Button Grid.Column="0"
-        Command="{Binding PauseResumeCommand}"
-        CommandParameter="{Binding CurrentJob}"
-        Width="120" Height="35"
-        BorderBrush="#F9E2AF"
-        Foreground="#CDD6F4">
-
-    <Button.Style>
-        <Style TargetType="Button" BasedOn="{StaticResource RoundedButtonStyle}">
-            <Setter Property="Content" Value="Pause/Resume" />
-            <Style.Triggers>
-                <DataTrigger Binding="{Binding CurrentJob.Status}" Value="Running">
-                    <Setter Property="Content" 
-                            Value="{DynamicResource Pause}" />
-                </DataTrigger>
-                <DataTrigger Binding="{Binding CurrentJob.Status}" Value="Paused">
-                    <Setter Property="Content" 
-                            Value="{DynamicResource Resume}" />
-                </DataTrigger>
-            </Style.Triggers>
-        </Style>
-    </Button.Style>
-</Button>
-
-                <!-- Stop Button -->
-                    <Button Grid.Column="1" Content="{DynamicResource Stop}"
-            Command="{Binding StopBackupCommand}"
-                            CommandParameter="{Binding CurrentJob}"
-            Style="{StaticResource RoundedButtonStyle}"
-            Width="120" Height="35"
-            BorderBrush="#F38BA8"
-            Foreground="#CDD6F4"/>
-                </Grid>
+                    Width="250" Height="45" BorderBrush="#A6E3A1" Foreground="#CDD6F4" Margin="0,5" />
                 <Button Content="{DynamicResource Delete}"
                     Command="{Binding DeleteJobCommand}"
                     CommandParameter="{Binding CurrentJob}"
-                    Width="250" Height="35"
+                    Width="250" Height="45"
                     BorderBrush="#F38BA8" Foreground="#CDD6F4"
                     Style="{StaticResource RoundedButtonStyle}"
                     Margin="0,5" />
-                <Button Content="{DynamicResource Reset}" Command="{Binding ResetJobCommand}"
-                        CommandParameter="{Binding CurrentJob}"
-                        Width="250" Height="30" BorderBrush="#89DCEB"
+                <Button Content="{DynamicResource Reset}" Command="{Binding ResetJobCommand}" Width="250" Height="45" BorderBrush="#89DCEB"
                     Style="{StaticResource RoundedButtonStyle}"
                     Foreground="#CDD6F4" Margin="0,5" />
                 <Grid Margin="10" Height="20" VerticalAlignment="Bottom">
@@ -135,20 +190,17 @@
                     <ProgressBar Name="TaskProgressBar"
                  Minimum="0"
                  Maximum="100"
-                 Background="#CDD6F4"
-                 Foreground="#89DCEB"
-                 Value="{Binding CurrentJob.Progress}"
+                 Value="{Binding Progress}"
                  ValueChanged="TaskProgressBar_ValueChanged" BorderThickness="1,1,1,1">
                     </ProgressBar>
 
                     <!-- Texte superposé centré -->
-                    <TextBlock Text="{Binding CurrentJob.Progress, StringFormat={}{0:0}%}"
-               Foreground="#313244"
+                    <TextBlock Text="{Binding Progress, StringFormat={}{0:0}%}"
+               Foreground="Black"
                FontWeight="Bold"
                HorizontalAlignment="Center"
                VerticalAlignment="Center"/>
                 </Grid>
-                
 
             </StackPanel>
         </Grid>

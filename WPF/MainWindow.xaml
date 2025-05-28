@@ -156,11 +156,11 @@
                                     BorderThickness="0.2"
                                     Click="BackupStatusButton_Click"
                                     VerticalAlignment="Center" HorizontalAlignment="Center">
-                                <TextBlock Text="{Binding CurrentlyRunningJobs}" FontSize="20" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+                                <TextBlock Text="Backup Status" FontSize="20" VerticalAlignment="Center" HorizontalAlignment="Center"/>
                             </Button>
                         </Grid>
                         <Grid Grid.Column="2" Margin="0,0,0,0"/>
-                        <Border Grid.Column="2" Background="Transparent" CornerRadius="8" Margin="0,0,-12,0" Grid.ColumnSpan="2" HorizontalAlignment="Right" Width="150">
+                        <Border Grid.Column="2" Background="Transparent" CornerRadius="8" Margin="530,0,-12,0" Grid.ColumnSpan="2">
                             <Grid VerticalAlignment="Center" HorizontalAlignment="Right" Margin="0,0,15,0">
                                 <Grid.RowDefinitions>
                                     <RowDefinition Height="*"/>
@@ -221,9 +221,8 @@
                                      Background="#313244"
                                      Foreground="White"
                                      FontSize="18"
-                                     Padding="10,0"
-                                     Text="{Binding SearchText, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
-                            <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
+                                     Padding="10,0" />
+                                <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
                                 <Button x:Name="SearchJobButton"
                                     Width="36"
                                     Height="36"
@@ -254,7 +253,7 @@
                                         Foreground="{StaticResource SapphireBrush}"
                                         BorderThickness="0.2"
                                         Command="{Binding CreateJobCommand}"
-                                        CommandParameter="{Binding SearchText}">
+                                        CommandParameter="{Binding Text, ElementName=SearchBox}">
                                     <TextBlock Text="+" FontSize="50" FontWeight="Bold" VerticalAlignment="Center" HorizontalAlignment="Center" Height="78"/>
                                 </Button>
                             </StackPanel>
@@ -319,7 +318,7 @@
                                                             </Viewbox>
                                                         </Button>
                                                         <!-- Bouton poubelle avec nouveau logo -->
-                                                     <Button Width="28" Height="28"
+                                                        <Button Width="28" Height="28"
                                                                 Background="Transparent"
                                                                 BorderBrush="Transparent"
                                                                 ToolTip="Delete job"
@@ -362,7 +361,7 @@
                                         Content="Run all"
                                         Width="80" Height="36"
                                         Margin="0,0,10,0"
-                                        Command="{Binding RunAllBackupsCommand}" />
+                                        Command="{Binding RunAllBackupsCommand}" />                                
                                 <Button x:Name="ResetSelectionButton"
                                         Content="Reset selection"
                                         Width="110" Height="36"
