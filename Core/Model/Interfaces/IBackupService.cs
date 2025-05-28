@@ -11,7 +11,7 @@ namespace Core.Model.Interfaces
         Task<List<bool>> ExecuteAllBackupJobs(IProgress<float> progress);
         void AddBackupJob(BackupJob job);
         void UpdateBackupJob(BackupJob job);
-        Task<bool> DeleteBackupJob(string jobId);
+        bool DeleteBackupJob(string jobId);
         List<BackupJob> GetAllJobs();
         BackupJob GetJob(string jobId);
         bool JobExists(string jobName);

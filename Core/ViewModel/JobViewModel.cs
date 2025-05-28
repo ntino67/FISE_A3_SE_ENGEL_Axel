@@ -339,13 +339,13 @@ namespace Core.ViewModel
             _ui.ShowToast("♻️ "+ Application.Current.Resources["JobReset"] as string + ".", 3000);
         }
 
-        public async void DeleteJob(string jobId)
+        public void DeleteJob(string jobId)
         {
             var job = Jobs.FirstOrDefault(j => j.Id == jobId);
             if (job == null)
                 throw new InvalidOperationException(Application.Current.Resources["JobDoesNotExist"] as string);
 
-            await _jobManager.DeleteBackupJob(jobId);
+            _jobManager.DeleteBackupJob(jobId);
             Jobs.Remove(job);
 
             if (CurrentJob?.Id == jobId)
