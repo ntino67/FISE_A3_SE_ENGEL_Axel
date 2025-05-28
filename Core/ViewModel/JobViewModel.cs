@@ -319,7 +319,13 @@ namespace Core.ViewModel
             string keyToUse = this.EncryptionKey;
             bool result = await _jobManager.ExecuteBackupJob(CurrentJob.Id, progress, keyToUse);
             OnPropertyChanged(nameof(EncryptionStatus));
-            _ui.ShowToast("✅ "+ Application.Current.Resources["BackupComplete"] as string +"!", 3000);
+
+
+            if (result && CurrentJob.Status == JobStatus.Completed)
+            {
+                _ui.ShowToast("✅ " + Application.Current.Resources["BackupComplete"] as string + "!", 3000);
+            }
+
             return result;
         }
 

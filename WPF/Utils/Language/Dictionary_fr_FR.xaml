@@ -11,8 +11,6 @@
     <system:String x:Key="ChooseLanguage">Choisissez la langue préférée pour l'interface de l'application</system:String>
     <system:String x:Key="English">Anglais</system:String>
     <system:String x:Key="French">Français</system:String>
-    <system:String x:Key="SettingsSaved">Paramètres enregistrés</system:String>
-
     <!-- Blocking apps section -->
     <system:String x:Key="BlockingApps">Applications bloquantes</system:String>
     <system:String x:Key="BlockingAppsDescription">Définissez les applications qui bloqueront les tâches de sauvegarde lorsqu'elles sont en cours d'exécution. Dans le cas de tâches séquentielles, le logiciel terminera la tâche en cours et s'arrêtera avant de démarrer la suivante.</system:String>
@@ -72,4 +70,12 @@
     <system:String x:Key="NotSet">Non défini</system:String>
     <system:String x:Key="JobCreated">Job créé</system:String>
     <system:String x:Key="JobReset">Job réinitialisé</system:String>
+
+    <!-- Toast Messages -->
+    <system:String x:Key="SettingsSaved">Paramètres enregistrés avec succès</system:String>
+    <system:String x:Key="BlockingAppAdded">Application bloquante ajoutée: {0}</system:String>
+    <system:String x:Key="BlockingAppRemoved">Application bloquante supprimée: {0}</system:String>
+    <system:String x:Key="BlockingAppDetected">⚠️ Application bloquante détectée: {0}</system:String>
+    <system:String x:Key="BackupBlockedByApp">⚠️ Sauvegarde bloquée par l'application: {0}</system:String>
+
 </ResourceDictionary>

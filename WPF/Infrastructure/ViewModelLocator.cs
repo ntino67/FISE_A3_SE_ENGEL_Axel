@@ -20,6 +20,9 @@ namespace WPF.Infrastructure
         private static IUIService _iuiService;
         private static ILocalizationService _localizationService;
         private static ICommandFactory _commandFactory;
+        private static IResourceService _resourceService;
+
+
 
         public static JobViewModel JobViewModel
         {
@@ -28,6 +31,15 @@ namespace WPF.Infrastructure
                 if (_jobViewModel == null)
                     throw new InvalidOperationException("ViewModelLocator has not been initialized. Call Initialize() first.");
                 return _jobViewModel;
+            }
+        }
+        public static IUIService UIService
+        {
+            get
+            {
+                if (_iuiService == null)
+                    _iuiService = new UIService();
+                return _iuiService;
             }
         }
         public static SettingsViewModel SettingsViewModel
@@ -57,10 +69,11 @@ namespace WPF.Infrastructure
             {
                 _configManager = new ConfigurationManager(appDataPath);
                 _logger = new Logger(_configManager.GetLogDirectory());
-                _jobManager = new JobManager(_logger, _configManager);
-                _commandFactory = new WpfCommandFactory();
                 _iuiService = new UIService();
                 _localizationService = new LocalizationService();
+                _resourceService = new ResourceService();
+                _commandFactory = new WpfCommandFactory();
+                _jobManager = new JobManager(_logger, _configManager, _iuiService, _resourceService);
                 _jobViewModel = new JobViewModel(_jobManager, _iuiService, _commandFactory);
                 _settingsViewModel = new SettingsViewModel(_configManager, _localizationService);
             }
@@ -83,5 +96,24 @@ namespace WPF.Infrastructure
             }
             return _localizationService;
         }
+        public static IUIService GetUIService()
+        {
+            if (_iuiService == null)
+            {
+                _iuiService = new UIService();
+            }
+            return _iuiService;
+        }
+
+        public static IResourceService GetResourceService()
+        {
+            if (_resourceService == null)
+            {
+                _resourceService = new ResourceService();
+            }
+            return _resourceService;
+        }
+
+
     }
 }

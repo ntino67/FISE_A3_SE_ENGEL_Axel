@@ -13,9 +13,11 @@ using Core.ViewModel;
 
 namespace WPF.Pages
 {
+
     public partial class AppSettingsPage : Page
     {
         private readonly SettingsViewModel _viewModel;
+        private readonly IUIService _uiService;
 
         public AppSettingsPage()
         {
@@ -23,7 +25,8 @@ namespace WPF.Pages
 
             try
             {
-                _viewModel = WPF.Infrastructure.ViewModelLocator.SettingsViewModel;
+                _viewModel = WPF.Infrastructure.ViewModelLocator.GetSettingsViewModel();
+                _uiService = WPF.Infrastructure.ViewModelLocator.GetUIService(); 
                 DataContext = _viewModel;
             }
             catch (Exception ex)
@@ -57,20 +60,8 @@ namespace WPF.Pages
             {
                 _viewModel.SaveSettings();
 
-                // Animation et retour visuel
-                StatusMessage.Text = "✓ Paramètres enregistrés";
-                StatusMessage.Visibility = Visibility.Visible;
-
-                // Animation de fondu
-                StatusMessage.Opacity = 0;
-                var fadeIn = new DoubleAnimation(0, 1, TimeSpan.FromMilliseconds(200));
-                StatusMessage.BeginAnimation(UIElement.OpacityProperty, fadeIn);
-
-                // Après 3 secondes, faire disparaître le message
-                await System.Threading.Tasks.Task.Delay(3000);
-                var fadeOut = new DoubleAnimation(1, 0, TimeSpan.FromMilliseconds(500));
-                fadeOut.Completed += (s, args) => StatusMessage.Visibility = Visibility.Collapsed;
-                StatusMessage.BeginAnimation(UIElement.OpacityProperty, fadeOut);
+                string message = Application.Current.Resources["SettingsSaved"] as string ?? "✓ Paramètres enregistrés";
+                _uiService.ShowToast(message, 3000);
             }
             catch (Exception ex)
             {
@@ -91,6 +82,12 @@ namespace WPF.Pages
             if (!string.IsNullOrWhiteSpace(appName))
             {
                 _viewModel.AddBlockingApplication(appName);
+                // Toast de confirmation
+                string message = string.Format(
+                    Application.Current.Resources["BlockingAppAdded"] as string ??
+                    "Application bloquante ajoutée: {0}", appName);
+                _uiService.ShowToast(message, 2000);
+
                 BlockingAppTextBox.Clear();
             }
         }
@@ -100,6 +97,12 @@ namespace WPF.Pages
             if (sender is Button button && button.Tag is string appName)
             {
                 _viewModel.RemoveBlockingApplication(appName);
+
+                // Toast de confirmation
+                string message = string.Format(
+                    Application.Current.Resources["BlockingAppRemoved"] as string ??
+                    "Application bloquante supprimée: {0}", appName);
+                _uiService.ShowToast(message, 2000);
             }
         }
 
