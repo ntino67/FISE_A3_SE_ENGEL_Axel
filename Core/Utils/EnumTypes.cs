@@ -12,6 +12,8 @@ namespace Core.Utils
     {
         Ready,
         Running,
+        Paused,
+        Stopped,
         Completed,
         Failed,
         Canceled
