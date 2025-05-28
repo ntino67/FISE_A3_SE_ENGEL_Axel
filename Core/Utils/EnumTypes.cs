@@ -18,4 +18,11 @@ namespace Core.Utils
         Failed,
         Canceled
     }
+
+    public enum Instruction
+    {
+        Encrypt,
+        Decrypt,
+        Backup
+    }
 }

@@ -10,39 +10,6 @@
     <Page.Resources>
         <conv:BoolToVisibilityConverter x:Key="BoolToVisibility" />
 
-        <Style x:Key="FadeButtonStyle" TargetType="Button">
-            <Setter Property="Opacity" Value="0"/>
-            <Setter Property="Background" Value="#F9E2AF"/>
-            <Setter Property="Foreground" Value="Black"/>
-            <Setter Property="FontWeight" Value="Bold"/>
-            <Setter Property="BorderBrush" Value="Transparent"/>
-            <Setter Property="IsHitTestVisible" Value="False"/>
-            <Setter Property="Height" Value="45"/>
-            <Setter Property="Width" Value="250"/>
-            <Setter Property="HorizontalContentAlignment" Value="Center"/>
-            <Setter Property="VerticalContentAlignment" Value="Center"/>
-            <Style.Triggers>
-                <DataTrigger Binding="{Binding HasJobMessage}" Value="True">
-                    <DataTrigger.EnterActions>
-                        <BeginStoryboard>
-                            <Storyboard>
-                                <DoubleAnimation Storyboard.TargetProperty="Opacity"
-                                                 To="1" Duration="0:0:0.2"/>
-                            </Storyboard>
-                        </BeginStoryboard>
-                    </DataTrigger.EnterActions>
-                    <DataTrigger.ExitActions>
-                        <BeginStoryboard>
-                            <Storyboard>
-                                <DoubleAnimation Storyboard.TargetProperty="Opacity"
-                                                 To="0" Duration="0:0:0.3"/>
-                            </Storyboard>
-                        </BeginStoryboard>
-                    </DataTrigger.ExitActions>
-                </DataTrigger>
-            </Style.Triggers>
-        </Style>
-
     </Page.Resources>
 
     <Grid Margin="20">
@@ -64,13 +31,13 @@
                 <Button Content="{Binding SourceDirectoryLabel}"
                     ToolTip="{Binding CurrentJob.SourceDirectory}"
                     Click="OnSetSourcePathClick"
-                    Width="250" Height="45"
+                    Width="250" Height="30"
                     BorderBrush="#89B4FA" Foreground="#CDD6F4" Margin="0,5"
                     Style="{StaticResource RoundedButtonStyle}" />
                 <Button Content="{Binding TargetDirectoryLabel}"
                     ToolTip="{Binding CurrentJob.TargetDirectory}"
                     Click="OnSetTargetPathClick"
-                    Width="250" Height="45"
+                    Width="250" Height="35"
                     BorderBrush="#89B4FA" Foreground="#CDD6F4" Margin="0,5"
                     Style="{StaticResource RoundedButtonStyle}"
                     Cursor="Hand" />
@@ -85,7 +52,7 @@
                       Margin="0,5" />
 
                 <!-- Encryption UI -->
-                <Grid Width="250" Height="30" Margin="0,5">
+                <Grid Width="250" Height="35" Margin="0,5">
                     <TextBox x:Name="KeyInput"
                          Text="{Binding EncryptionKey, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                          Background="#313244"
@@ -102,22 +69,65 @@
                 </Grid>
                 <Button Content="{Binding EncryptionStatus}" 
                     Command="{Binding ToggleEncryptionCommand}"
-                    Width="250" Height="45"
+                        CommandParameter="{Binding CurrentJob}"
+                    Width="250" Height="35"
                     Style="{StaticResource RoundedButtonStyle}"
                     BorderBrush="#F9E2AF" Foreground="#CDD6F4" Margin="0,5" />
 
                 <!-- Commands -->
                 <Button Content="{DynamicResource Run}" Command="{Binding RunBackupCommand}"
+                        CommandParameter="{Binding CurrentJob}"
                     Style="{StaticResource RoundedButtonStyle}"
-                    Width="250" Height="45" BorderBrush="#A6E3A1" Foreground="#CDD6F4" Margin="0,5" />
+                    Width="250" Height="35" BorderBrush="#A6E3A1" Foreground="#CDD6F4" Margin="0,5" />
+                <Grid Margin="0,5">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="*" />
+                    </Grid.ColumnDefinitions>
+                    <!-- Pause / Resume Button -->
+<Button Grid.Column="0"
+        Command="{Binding PauseResumeCommand}"
+        CommandParameter="{Binding CurrentJob}"
+        Width="120" Height="35"
+        BorderBrush="#F9E2AF"
+        Foreground="#CDD6F4">
+
+    <Button.Style>
+        <Style TargetType="Button" BasedOn="{StaticResource RoundedButtonStyle}">
+            <Setter Property="Content" Value="Pause/Resume" />
+            <Style.Triggers>
+                <DataTrigger Binding="{Binding CurrentJob.Status}" Value="Running">
+                    <Setter Property="Content" 
+                            Value="{DynamicResource Pause}" />
+                </DataTrigger>
+                <DataTrigger Binding="{Binding CurrentJob.Status}" Value="Paused">
+                    <Setter Property="Content" 
+                            Value="{DynamicResource Resume}" />
+                </DataTrigger>
+            </Style.Triggers>
+        </Style>
+    </Button.Style>
+</Button>
+
+                <!-- Stop Button -->
+                    <Button Grid.Column="1" Content="{DynamicResource Stop}"
+            Command="{Binding StopBackupCommand}"
+                            CommandParameter="{Binding CurrentJob}"
+            Style="{StaticResource RoundedButtonStyle}"
+            Width="120" Height="35"
+            BorderBrush="#F38BA8"
+            Foreground="#CDD6F4"/>
+                </Grid>
                 <Button Content="{DynamicResource Delete}"
                     Command="{Binding DeleteJobCommand}"
                     CommandParameter="{Binding CurrentJob}"
-                    Width="250" Height="45"
+                    Width="250" Height="35"
                     BorderBrush="#F38BA8" Foreground="#CDD6F4"
                     Style="{StaticResource RoundedButtonStyle}"
                     Margin="0,5" />
-                <Button Content="{DynamicResource Reset}" Command="{Binding ResetJobCommand}" Width="250" Height="45" BorderBrush="#89DCEB"
+                <Button Content="{DynamicResource Reset}" Command="{Binding ResetJobCommand}"
+                        CommandParameter="{Binding CurrentJob}"
+                        Width="250" Height="30" BorderBrush="#89DCEB"
                     Style="{StaticResource RoundedButtonStyle}"
                     Foreground="#CDD6F4" Margin="0,5" />
                 <Grid Margin="10" Height="20" VerticalAlignment="Bottom">
@@ -125,12 +135,12 @@
                     <ProgressBar Name="TaskProgressBar"
                  Minimum="0"
                  Maximum="100"
-                 Value="{Binding Progress}"
+                 Value="{Binding CurrentJob.Progress}"
                  ValueChanged="TaskProgressBar_ValueChanged" BorderThickness="1,1,1,1">
                     </ProgressBar>
 
                     <!-- Texte superposé centré -->
-                    <TextBlock Text="{Binding Progress, StringFormat={}{0:0}%}"
+                    <TextBlock Text="{Binding CurrentJob.Progress, StringFormat={}{0:0}%}"
                Foreground="Black"
                FontWeight="Bold"
                HorizontalAlignment="Center"
