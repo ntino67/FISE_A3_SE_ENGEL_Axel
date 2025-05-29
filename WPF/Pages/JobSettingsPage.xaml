@@ -135,17 +135,20 @@
                     <ProgressBar Name="TaskProgressBar"
                  Minimum="0"
                  Maximum="100"
+                 Background="#CDD6F4"
+                 Foreground="#89DCEB"
                  Value="{Binding CurrentJob.Progress}"
                  ValueChanged="TaskProgressBar_ValueChanged" BorderThickness="1,1,1,1">
                     </ProgressBar>
 
                     <!-- Texte superposé centré -->
                     <TextBlock Text="{Binding CurrentJob.Progress, StringFormat={}{0:0}%}"
-               Foreground="Black"
+               Foreground="#313244"
                FontWeight="Bold"
                HorizontalAlignment="Center"
                VerticalAlignment="Center"/>
                 </Grid>
+                
 
             </StackPanel>
         </Grid>
