@@ -40,6 +40,28 @@ namespace Core.Model
             }
         }
 
+        [JsonIgnore]
+        public static int NumberOfPriorityJobRunning { get; set; } = 0;
+
+
+        private bool _isPriorityJob = false;
+        [JsonIgnore]
+        public bool isPriorityJob
+        {
+            get { return _isPriorityJob; }
+            set
+            {
+                if (value != _isPriorityJob)
+                {
+                    _isPriorityJob = value;
+                    OnPropertyChanged();
+                }
+            }
+        }
+        [JsonIgnore]
+        public bool ForcedStatus { get; set; }
+
+
 
 
         // Non-editable property: GUID
@@ -141,12 +163,25 @@ namespace Core.Model
             {
                 if (_status != value)
                 {
+                    // Only act if the status actually changes
+                    if (isPriorityJob)
+                    {
+                        if (value == JobStatus.Running)
+                        {
+                            NumberOfPriorityJobRunning++;
+                        }
+                        else if (value == JobStatus.Stopped || value == JobStatus.Completed || value == JobStatus.Paused)
+                        {
+                            NumberOfPriorityJobRunning--;
+                        }
+                    }
+
                     _status = value;
                     OnPropertyChanged();
                 }
             }
         }
-        
+
         [JsonIgnore]
         public bool IsChecked
         {
@@ -160,7 +195,7 @@ namespace Core.Model
                 }
             }
         }
-        
+
 
         public bool IsValid()
         {

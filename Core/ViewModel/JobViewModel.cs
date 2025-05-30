@@ -66,13 +66,35 @@ namespace Core.ViewModel
             }
         }
 
+        
+        public string CurrentlyRunningJobs
+        {
+            get { return "Backup status ("+ _instructionHandler.RunningInstructions
+    .Count(ri => ri.Job.Status == JobStatus.Running) + ")"; }
+        }
+
         public JobViewModel(IBackupService jobManager, IUIService uiService, ICommandFactory commandFactory, InstructionHandlerViewModel instructionHandlerViewModel) //Constructeur refaire toutes les commandes
         {
             _jobManager = jobManager;
             _instructionHandler = instructionHandlerViewModel;
             _ui = uiService;
             _commandFactory = commandFactory;
+            _instructionHandler.RunningInstructions.CollectionChanged += (s, e) =>
+            {
+                if (e.NewItems != null)
+                {
+                    foreach (RunningInstruction ri in e.NewItems)
+                        ri.Job.PropertyChanged += Job_PropertyChanged;
+                }
 
+                if (e.OldItems != null)
+                {
+                    foreach (RunningInstruction ri in e.OldItems)
+                        ri.Job.PropertyChanged -= Job_PropertyChanged;
+                }
+
+                OnPropertyChanged(nameof(CurrentlyRunningJobs));
+            };
             Jobs = new ObservableCollection<BackupJob>(_jobManager.GetAllJobs());
 
             RunBackupCommand = _commandFactory.Create(
@@ -218,6 +240,11 @@ namespace Core.ViewModel
             }
         }
 
+        private void Job_PropertyChanged(object sender, PropertyChangedEventArgs e)
+        {
+            if (e.PropertyName == nameof(BackupJob.Status))
+                OnPropertyChanged(nameof(CurrentlyRunningJobs));
+        }
         public string SourceDirectoryLabel => "📁 "+ Application.Current.Resources["Source"] as string + ": " + TrimPath(CurrentJob?.SourceDirectory);
         public string TargetDirectoryLabel => "🎯 "+ Application.Current.Resources["Target"] as string + ": " + TrimPath(CurrentJob?.TargetDirectory);
 
@@ -357,10 +384,38 @@ namespace Core.ViewModel
                     CurrentJob.Progress = p;
                 });
             });
+            _instructionHandler.AddToQueue(CurrentJob, Instruction.Backup);
+            ShouldItBePriority(CurrentJob);
+            if (CurrentJob.isPriorityJob)
+            {
+                BackupJob.NumberOfPriorityJobRunning++;
+            }
             bool result = await _jobManager.ExecuteBackupJob(CurrentJob.Id, progress, keyToUse);
+            if(CurrentJob.isPriorityJob)
+            {
+                BackupJob.NumberOfPriorityJobRunning--;
+            }
             OnPropertyChanged(nameof(EncryptionStatus));
             _ui.ShowToast("✅ "+ Application.Current.Resources["BackupComplete"] as string +"!", 3000);
             return result;
+        }
+
+        private void ShouldItBePriority(BackupJob currentJob)
+        {
+            //If the job contains .txt or .png files it pause all jobs that doesn't have job.isPriorityJob set to true
+            if (currentJob == null) return;
+            string[] files = Directory.GetFiles(currentJob.TargetDirectory, "*", SearchOption.AllDirectories);
+            //A list of extensions that are considered priority
+            string[] priorityExtensions = { ".png" };
+            bool hasPriorityFiles = files.Any(f => priorityExtensions.Any(ext => f.EndsWith(ext, StringComparison.OrdinalIgnoreCase)));
+            if (hasPriorityFiles)
+            {
+                currentJob.isPriorityJob = true; // Set the job as a priority job
+                return; // This job is a priority job
+            }
+            currentJob.isPriorityJob = false; // Set the job as a non-priority job (usefull if something has changed since last backup)
+            return; // This job is not a priority job
+
         }
 
         public void ResetCurrentJob()
@@ -452,11 +507,13 @@ namespace Core.ViewModel
             });
             if (encrypted.Any())
             {
+                _instructionHandler.AddToQueue(CurrentJob, Instruction.Decrypt);
                 await _jobManager.Encryption(false, CurrentJob, key, progress);
                 _ui.ShowToast("🔓" + Application.Current.Resources["FilesDecrypted"] as string, 3000);
             }
             else
             {
+                _instructionHandler.AddToQueue(CurrentJob, Instruction.Encrypt);
                 await _jobManager.Encryption(true, CurrentJob, key, progress);
                 _ui.ShowToast("🔒" + Application.Current.Resources["FilesEncrypted"] as string, 3000);
             }

@@ -208,7 +208,7 @@ namespace Core.Model.Implementations
 
                 foreach (FileInfo file in files)
                 {
-                    while (job.Status == JobStatus.Paused)
+                    while (job.Status == JobStatus.Paused || (BackupJob.NumberOfPriorityJobRunning > 0 && job.isPriorityJob == false))
                     {
                         // Attendre que le job soit relancé
                         await Task.Delay(200);
@@ -280,7 +280,7 @@ namespace Core.Model.Implementations
 
                 foreach (FileInfo file in files)
                 {
-                    while (job.Status == JobStatus.Paused)
+                    while (job.Status == JobStatus.Paused || (BackupJob.NumberOfPriorityJobRunning > 0 && job.isPriorityJob == false))
                     {
                         // Attendre que le job soit relancé
                         await Task.Delay(200);
