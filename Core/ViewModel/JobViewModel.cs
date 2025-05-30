@@ -22,6 +22,9 @@ namespace Core.ViewModel
         private readonly ICommandFactory _commandFactory;
         private FileSystemWatcher _watcher;
         private BackupJob _currentJob;
+        private string _searchText;
+        private ObservableCollection<BackupJob> _filteredJobs;
+
         public BackupJob CurrentJob
         {
             get => _currentJob;
@@ -51,22 +54,6 @@ namespace Core.ViewModel
             }
         }
 
-        private float _progress; //Devra être supprimé
-
-        public float Progress //Devra être supprimé
-        {
-            get => _progress;
-            set
-            {
-                if (_progress != value)
-                {
-                    _progress = value;
-                    OnPropertyChanged();
-                }
-            }
-        }
-
-        
         public string CurrentlyRunningJobs
         {
             get { return Application.Current.Resources["BackupStatus"] as string + " ("+ _instructionHandler.RunningInstructions
@@ -535,6 +522,64 @@ namespace Core.ViewModel
             }
         }
         
+        public string SearchText
+        {
+            get => _searchText;
+            set
+            {
+                if (_searchText != value)
+                {
+                    _searchText = value;
+                    OnPropertyChanged();
+                    FilterJobs(_searchText);
+                }
+            }
+        }
+
+        // Propriété pour accéder aux jobs filtrés ou à tous les jobs si pas de filtre
+        public ObservableCollection<BackupJob> DisplayedJobs => _filteredJobs ?? Jobs;
+
+        // Méthode pour filtrer les jobs en fonction du texte de recherche
+        public void FilterJobs(string searchText)
+        {
+            if (string.IsNullOrEmpty(searchText))
+            {
+                // Réinitialiser la vue avec tous les jobs
+                _filteredJobs = null;
+                OnPropertyChanged(nameof(DisplayedJobs));
+            }
+            else
+            {
+                _filteredJobs = new ObservableCollection<BackupJob>(
+                    Jobs.Where(j => j.Name.ToLower().Contains(searchText.ToLower())));
+                OnPropertyChanged(nameof(DisplayedJobs));
+            }
+        }
+
+        // Méthode pour réinitialiser les sélections de tous les jobs
+        public void ResetAllJobSelections()
+        {
+            foreach (var job in Jobs)
+            {
+                job.IsChecked = false;
+            }
+            // Sauvegarder les modifications
+            RefreshJobsList();
+        }
+
+        // Méthode pour rafraîchir la liste des jobs depuis le gestionnaire
+        public void RefreshJobsList()
+        {
+            var updatedJobs = _jobManager.GetAllJobs();
+            Jobs.Clear();
+            foreach (var job in updatedJobs)
+            {
+                Jobs.Add(job);
+            }
+            OnPropertyChanged(nameof(Jobs));
+            OnPropertyChanged(nameof(DisplayedJobs));
+        }
+
         private void RefreshJobBindings()
         {
             OnPropertyChanged(nameof(SourceDirectoryLabel));
