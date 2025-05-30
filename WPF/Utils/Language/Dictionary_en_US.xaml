@@ -80,6 +80,7 @@
     <system:String x:Key="JobNotPaused">Job is not paused</system:String>
     <system:String x:Key="JobResumed">Job resumed</system:String>
     <system:String x:Key="JobStopped">Job stopped</system:String>
-    
+    <system:String x:Key="BackupStatus">Backup status</system:String>
+
 </ResourceDictionary>
 

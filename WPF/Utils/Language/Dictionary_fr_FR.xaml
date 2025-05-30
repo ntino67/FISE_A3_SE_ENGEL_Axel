@@ -80,4 +80,5 @@
     <system:String x:Key="JobNotPaused">Job n'est pas en pause</system:String>
     <system:String x:Key="JobResumed">Job repris</system:String>
     <system:String x:Key="JobStopped">Job stoppé</system:String>
+    <system:String x:Key="BackupStatus">Statut des jobs</system:String>
 </ResourceDictionary>

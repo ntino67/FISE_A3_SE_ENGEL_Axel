@@ -69,7 +69,7 @@ namespace Core.ViewModel
         
         public string CurrentlyRunningJobs
         {
-            get { return "Backup status ("+ _instructionHandler.RunningInstructions
+            get { return Application.Current.Resources["BackupStatus"] as string + " ("+ _instructionHandler.RunningInstructions
     .Count(ri => ri.Job.Status == JobStatus.Running) + ")"; }
         }
 
