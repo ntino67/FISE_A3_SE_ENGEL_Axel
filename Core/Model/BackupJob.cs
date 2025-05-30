@@ -24,14 +24,15 @@ namespace Core.Model
         private bool _isChecked;
         private bool _isActive;
         private bool _isEncrypted;
+        private float _progress;
+        private bool _isPriorityJob;
 
-
+        // Static property for tracking priority jobs
+        public static int NumberOfPriorityJobRunning { get; set; } = 0;
 
         // Non-editable property: GUID
         [JsonPropertyName("id")]
         public string Id { get; set; } = Guid.NewGuid().ToString();
-
-
 
         [JsonPropertyName("isEncrypted")]
         public bool IsEncrypted
@@ -161,6 +162,33 @@ namespace Core.Model
             }
         }
        
+        [JsonPropertyName("progress")]
+        public float Progress
+        {
+            get => _progress;
+            set
+            {
+                if (_progress != value)
+                {
+                    _progress = value;
+                    OnPropertyChanged();
+                }
+            }
+        }
+
+        [JsonPropertyName("isPriorityJob")]
+        public bool isPriorityJob
+        {
+            get => _isPriorityJob;
+            set
+            {
+                if (_isPriorityJob != value)
+                {
+                    _isPriorityJob = value;
+                    OnPropertyChanged();
+                }
+            }
+        }
 
         public bool IsValid()
         {
@@ -176,6 +204,7 @@ namespace Core.Model
             Type = BackupType.Full;
             Status = JobStatus.Ready;
             LastRunTime = null;
+            Progress = 0;
         }
     }
 }

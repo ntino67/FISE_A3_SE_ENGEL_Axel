@@ -20,7 +20,7 @@ namespace WPF.Infrastructure
         private static IUIService _iuiService;
         private static ILocalizationService _localizationService;
         private static ICommandFactory _commandFactory;
-        private static InstructionHandlerViewModel _instructionHandlerViewModel = new InstructionHandlerViewModel(_jobManager, _iuiService);
+        private static InstructionHandlerViewModel _instructionHandlerViewModel;
 
         public static JobViewModel JobViewModel
         {
@@ -41,18 +41,14 @@ namespace WPF.Infrastructure
             }
         }
 
-
-
         public static void Initialize()
         {
             if (_configManager != null) // Déjà initialisé
                 return;
 
-
             string appDataPath = Path.Combine(
                 Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),
                 "EasySave");
-
 
             try
             {
