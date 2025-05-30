@@ -27,7 +27,7 @@ namespace WPF
             DataContext = _vm;
             MainFrame.Navigate(new WelcomePage());
 
-            JobList.ItemsSource = _vm.Jobs;
+            JobList.ItemsSource = _vm.DisplayedJobs;
             _vm.NavigateToHome = () => MainFrame.Navigate(new WelcomePage());
             ToastBridge.ShowToast = ShowToast;
         }
@@ -89,6 +89,7 @@ namespace WPF
         private void SearchJobButton_Click(object sender, RoutedEventArgs e)
         {
             string search = SearchBox.Text?.Trim().ToLower();
+            _vm.FilterJobs(search);
             if (string.IsNullOrEmpty(search))
             {
                 JobList.ItemsSource = _vm.Jobs;
@@ -107,6 +108,7 @@ namespace WPF
 
         private void ResetSelectionButton_Click(object sender, RoutedEventArgs e)
         {
+            _vm.ResetAllJobSelections();
             // Décoche tous les jobs (reset selection)
             foreach (var job in _vm.Jobs)
                 job.IsChecked = false;

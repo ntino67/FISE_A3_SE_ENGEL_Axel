@@ -14,6 +14,7 @@ namespace Core.Utils
         Running,
         Completed,
         Failed,
-        Canceled
+        Canceled,
+        Stopped
     }
 }
