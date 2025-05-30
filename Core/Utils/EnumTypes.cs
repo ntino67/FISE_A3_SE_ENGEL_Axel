@@ -16,7 +16,8 @@ namespace Core.Utils
         Stopped,
         Completed,
         Failed,
-        Canceled
+        Canceled,
+        ForcePaused
     }
 
     public enum Instruction

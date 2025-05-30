@@ -4,6 +4,7 @@ using Core.Utils;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Linq;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
@@ -25,45 +26,24 @@ namespace Core.ViewModel
         public ObservableCollection<RunningInstruction> RunningInstructions { get; } = new ObservableCollection<RunningInstruction>();
         public object App { get; private set; }
 
-        public void AddToQueue(BackupJob job, Instruction instruction, string key = null)
+        public void AddToQueue(BackupJob job, Instruction instruction)
         {
             if (job == null)
                 throw new ArgumentNullException(nameof(job));
-            var progress = new Progress<float>(p => job.Progress = p);
-            var task = Task.Run(async () =>
-            {
-                try
-                {
-                    switch (instruction)
-                    {
-                        case Instruction.Encrypt:
-                            Thread.Sleep(1000); // Here put _jobManager.ExecuteEncryptJob(job.Id, job.Progress, key);
-                            break;
-                        case Instruction.Decrypt:
-                            Thread.Sleep(1000); // Here put _jobManager.ExecuteDecryptJob(job.Id, job.Progress, key);
-                            break;
-                        case Instruction.Backup:
-                            Thread.Sleep(1000); // Here put _jobManager.ExecuteBackupJob(job.Id, job.Progress, key);
-                            break;
-                    }
-                }
-                catch (OperationCanceledException)
-                {
-                    Console.WriteLine($"{instruction} cancelled for {job.Name}");
-                }
-                catch (Exception ex)
-                {
-                    Console.WriteLine($"Error in {instruction} for {job.Name}: {ex.Message}");
-                }
-            });
 
             var runningInstruction = new RunningInstruction
             {
                 Job = job,
                 Instruction = instruction,
-                Task = task
             };
-
+            //Verify if the job is already in the list and if so , update the instruction
+            var existingInstruction = RunningInstructions.FirstOrDefault(ri => ri.Job.Id == job.Id);
+            if (existingInstruction != null)
+            {
+                existingInstruction.Instruction = instruction;
+                return; // If the job is already in the list, just update the instruction
+            }
+            // If the job is not in the list, add it
             Application.Current.Dispatcher.Invoke(() => RunningInstructions.Add(runningInstruction));
         }
     }
@@ -72,7 +52,5 @@ namespace Core.ViewModel
     {
         public BackupJob Job { get; set; }
         public Instruction Instruction { get; set; }
-        public Task Task { get; set; }
-        public Progress<float> Progress { get; set; } // bindable
     }
 }
