@@ -212,5 +212,19 @@ namespace Core.Model
             Status = JobStatus.Ready;
             LastRunTime = null;
         }
+
+        [JsonPropertyName("isActive")]
+        public bool IsActive
+        {
+            get => _isActive;
+            set
+            {
+                if (_isActive != value)
+                {
+                    _isActive = value;
+                    OnPropertyChanged();
+                }
+            }
+        }
     }
 }
