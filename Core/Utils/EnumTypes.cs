@@ -12,18 +12,9 @@ namespace Core.Utils
     {
         Ready,
         Running,
-        Paused,
-        Stopped,
         Completed,
         Failed,
         Canceled,
-        ForcePaused
-    }
-
-    public enum Instruction
-    {
-        Encrypt,
-        Decrypt,
-        Backup
+        Stopped
     }
 }
