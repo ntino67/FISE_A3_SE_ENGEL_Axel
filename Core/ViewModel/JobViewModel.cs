@@ -23,6 +23,24 @@ namespace Core.ViewModel
         private BackupJob _currentJob;
         private float _progress;
         private string _searchText;
+        private ObservableCollection<BackupJob> _filteredJobs;
+        public ObservableCollection<BackupJob> DisplayedJobs => _filteredJobs ?? Jobs;
+
+        public void FilterJobs(string searchText)
+        {
+            if (string.IsNullOrEmpty(searchText))
+            {
+                _filteredJobs = null;
+                OnPropertyChanged(nameof(DisplayedJobs));
+            }
+            else
+            {
+                _filteredJobs = new ObservableCollection<BackupJob>(
+                    Jobs.Where(j => j.Name.ToLower().Contains(searchText.ToLower())));
+                OnPropertyChanged(nameof(DisplayedJobs));
+            }
+        }
+
         public string SearchText
         {
             get => _searchText;
@@ -347,6 +365,29 @@ namespace Core.ViewModel
             _ui.ShowToast("♻️ "+ Application.Current.Resources["JobReset"] as string + ".", 3000);
         }
 
+        public void RefreshJobsList()
+        {
+            var updatedJobs = _jobManager.GetAllJobs();
+            Jobs.Clear();
+            foreach (var job in updatedJobs)
+                Jobs.Add(job);
+
+            OnPropertyChanged(nameof(Jobs));
+            OnPropertyChanged(nameof(DisplayedJobs));
+        }
+
+        public void ResetAllJobSelections()
+        {
+            foreach (var job in Jobs)
+                job.IsChecked = false;
+
+            OnPropertyChanged(nameof(Jobs));
+            OnPropertyChanged(nameof(DisplayedJobs));
+
+            // Assurez-vous que les changements sont sauvegardés
+            foreach (var job in Jobs)
+                _jobManager.UpdateBackupJob(job);
+        }
         public async void DeleteJob(string jobId)
         {
             var job = Jobs.FirstOrDefault(j => j.Id == jobId);
