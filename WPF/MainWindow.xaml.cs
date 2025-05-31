@@ -126,7 +126,10 @@ namespace WPF
 
         private void RunMultipleButton_Click(object sender, RoutedEventArgs e)
         {
-            // Ajoutez ici la logique pour exécuter les jobs sélectionnés
+        }
+
+        private void RunAllButton_click(object sender, RoutedEventArgs e)
+        {
         }
 
 

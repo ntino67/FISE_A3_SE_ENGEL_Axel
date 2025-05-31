@@ -23,6 +23,7 @@ namespace Core.Utils
         Completed,
         Failed,
         Stopped,
-        Canceled
+        Canceled,
+        NotReady
     }
 }

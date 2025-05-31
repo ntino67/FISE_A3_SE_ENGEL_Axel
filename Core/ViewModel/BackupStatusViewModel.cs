@@ -212,8 +212,7 @@ namespace Core.ViewModel
         private void OnStopJob(BackupStatusItemModel item)
         {
             if (item == null || item.JobReference == null) return;
-            _jobViewModel.CurrentJob = item.JobReference;
-            _jobViewModel.StopCurrentJob();
+            _jobViewModel.StopCurrentJob(item.JobReference); // Pass the required 'job' parameter
         }
     }
 }

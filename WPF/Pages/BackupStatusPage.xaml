@@ -187,7 +187,8 @@
                                             Margin="3,0" 
                                             Command="{Binding DataContext.RunCommand, RelativeSource={RelativeSource AncestorType=DataGrid}}"
                                             CommandParameter="{Binding}"
-                                            ToolTip="Run">
+                                            ToolTip="Run"
+                                            IsEnabled="{Binding CanRun}">
                                         <Path Fill="#cdd6f4" Data="M8,5.14V19.14L19,12.14L8,5.14Z" Width="24" Height="24"/>
                                     </Button>
                                     <Button Style="{StaticResource CircleButtonStyle}" 
@@ -196,7 +197,8 @@
                                             Margin="3,0" 
                                             Command="{Binding DataContext.PauseCommand, RelativeSource={RelativeSource AncestorType=DataGrid}}"
                                             CommandParameter="{Binding}"
-                                            ToolTip="Pause">
+                                            ToolTip="Pause"
+                                            IsEnabled="{Binding CanPause}">
                                         <Path Fill="#cdd6f4" Data="M14,19H18V5H14M6,19H10V5H6V19Z" Width="24" Height="24"/>
                                     </Button>
                                     <Button Style="{StaticResource CircleButtonStyle}" 
@@ -205,7 +207,8 @@
                                             Margin="3,0" 
                                             Command="{Binding DataContext.StopCommand, RelativeSource={RelativeSource AncestorType=DataGrid}}"
                                             CommandParameter="{Binding}"
-                                            ToolTip="Stop">
+                                            ToolTip="Stop"
+                                            IsEnabled="{Binding CanStop}">
                                         <Path Fill="#cdd6f4" Data="M18,18H6V6H18V18Z" Width="24" Height="24"/>
                                     </Button>
                                 </StackPanel>

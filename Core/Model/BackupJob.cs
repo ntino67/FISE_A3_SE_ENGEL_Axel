@@ -253,11 +253,21 @@ namespace Core.Model
             }
         }
 
+        // Ajoutez cette propriété à la classe BackupJob
+        public Instruction CurrentInstruction { get; set; } = Instruction.Backup;
+
         public bool IsValid()
         {
-            return !string.IsNullOrEmpty(Name) &&
-                   !string.IsNullOrEmpty(SourceDirectory) &&
-                   !string.IsNullOrEmpty(TargetDirectory);
+            bool valid = !string.IsNullOrEmpty(SourceDirectory) && 
+                        !string.IsNullOrEmpty(TargetDirectory) && 
+                        Directory.Exists(SourceDirectory);
+            
+            if (!valid && Status != JobStatus.Failed)
+            {
+                Status = JobStatus.NotReady;
+            }
+            
+            return valid;
         }
 
         public void Reset()
