@@ -5,8 +5,7 @@ namespace Core.Utils
     public enum BackupType
     {
         Full,
-        Differential,
-        Incremental
+        Differential
     }
 
     public enum Instruction
