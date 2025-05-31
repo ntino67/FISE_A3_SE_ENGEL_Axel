@@ -41,6 +41,20 @@ namespace WPF
             ToastBridge.ShowToast = ShowToast;
         }
 
+        private void AddJobButton_Click(object sender, RoutedEventArgs e)
+        {
+            string jobName = SearchBox.Text?.Trim();
+
+            if (!string.IsNullOrWhiteSpace(jobName))
+            {
+                // Utiliser la nouvelle méthode qui gère aussi le vidage du SearchText
+                _vm.CreateNewJobAndClearSearch(jobName);
+
+                // Pas besoin de vider SearchBox directement, il sera mis à jour par le binding
+                // lorsque SearchText dans le ViewModel sera vidé
+            }
+        }
+
         private void TopBar_MouseLeftButtonDown(object sender, System.Windows.Input.MouseButtonEventArgs e)
         {
             if (e.ChangedButton == System.Windows.Input.MouseButton.Left)
