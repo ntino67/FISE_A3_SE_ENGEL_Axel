@@ -10,27 +10,18 @@ using WPF.Utils;
 
 namespace WPF.Infrastructure
 {
-    public static class ViewModelLocator
+    public class ViewModelLocator
     {
         private static IBackupService _jobManager;
         private static IConfigurationManager _configManager;
         private static ILogger _logger;
-        private static JobViewModel _jobViewModel;
         private static SettingsViewModel _settingsViewModel;
         private static IUIService _iuiService;
         private static ILocalizationService _localizationService;
         private static ICommandFactory _commandFactory;
         private static InstructionHandlerViewModel _instructionHandlerViewModel;
 
-        public static JobViewModel JobViewModel
-        {
-            get
-            {
-                if (_jobViewModel == null)
-                    throw new InvalidOperationException("ViewModelLocator has not been initialized. Call Initialize() first.");
-                return _jobViewModel;
-            }
-        }
+        public static JobViewModel JobViewModel { get; set; }
         public static SettingsViewModel SettingsViewModel
         {
             get
@@ -39,6 +30,13 @@ namespace WPF.Infrastructure
                     throw new InvalidOperationException("ViewModelLocator has not been initialized. Call Initialize() first.");
                 return _settingsViewModel;
             }
+        }
+
+        static ViewModelLocator()
+        {
+            // Initialisation de JobViewModel ici selon votre logique d'injection de dépendances
+            // Par exemple :
+            // JobViewModel = new JobViewModel(...);
         }
 
         public static void Initialize()
@@ -59,7 +57,7 @@ namespace WPF.Infrastructure
                 _iuiService = new UIService();
                 _localizationService = new LocalizationService();
                 _instructionHandlerViewModel = new InstructionHandlerViewModel(_jobManager, _iuiService);
-                _jobViewModel = new JobViewModel(_jobManager, _iuiService, _commandFactory, _instructionHandlerViewModel);
+                JobViewModel = new JobViewModel(_jobManager, _iuiService, _commandFactory, _instructionHandlerViewModel);
                 _settingsViewModel = new SettingsViewModel(_configManager, _localizationService);
             }
             catch (Exception ex)
@@ -68,7 +66,6 @@ namespace WPF.Infrastructure
             }
         }
 
-        public static JobViewModel GetJobViewModel() => JobViewModel;
         public static SettingsViewModel GetSettingsViewModel() => SettingsViewModel;
         public static IBackupService GetJobManager() => _jobManager ?? throw new InvalidOperationException("Call Initialize() first.");
         public static IConfigurationManager GetConfigurationManager() => _configManager ?? throw new InvalidOperationException("Call Initialize() first.");

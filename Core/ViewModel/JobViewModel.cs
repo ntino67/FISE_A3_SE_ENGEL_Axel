@@ -16,6 +16,9 @@ namespace Core.ViewModel
 {
     public class JobViewModel : INotifyPropertyChanged
     {
+        public event Action<string> JobDeleted;
+        public event Action<string, string> InstructionChanged;
+
         private InstructionHandlerViewModel _instructionHandler;
         private readonly IBackupService _jobManager;
         private readonly IUIService _ui;
@@ -309,12 +312,14 @@ namespace Core.ViewModel
         public void CreateNewJob(string name)
         {
             var job = new BackupJob { Name = name };
-            _jobManager.AddBackupJob(job);
+            _jobManager.AddBackupJob(job); // Persiste dans le JSON
 
             Jobs.Add(job);
+            OnPropertyChanged(nameof(Jobs)); // Notifie la vue et les VM abonnés
+
             CurrentJob = job;
 
-            _ui.ShowToast("✅ "+ Application.Current.Resources["JobCreated"] as string + ".", 2000);
+            _ui.ShowToast("✅ " + Application.Current.Resources["JobCreated"] as string + ".", 2000);
         }
 
         public void UpdateJobName(string newName)
@@ -429,6 +434,9 @@ namespace Core.ViewModel
 
             OnPropertyChanged(nameof(EncryptionStatus));
             _ui.ShowToast("🗑️ "+ Application.Current.Resources["JobDeleted"] as string + ".", 3000);
+            
+            // Notifier les abonnés (ex: BackupStatusPage) de la suppression du job
+            JobDeleted?.Invoke(jobId);
         }
         public void PauseCurrentJob(BackupJob CurrentJob)
         {
@@ -490,21 +498,37 @@ namespace Core.ViewModel
                 Application.Current.Dispatcher.Invoke(() =>
                 {
                     CurrentJob.Progress = p;
+                    OnPropertyChanged(nameof(CurrentJob.Progress));
                 });
             });
+
+            // Définir le statut et l'heure de début
+            CurrentJob.Status = JobStatus.Running;
+            CurrentJob.StartTime = DateTime.Now;
+            OnPropertyChanged(nameof(CurrentJob.StartTime));
+            OnPropertyChanged(nameof(CurrentJob.Status));
+
             if (encrypted.Any())
             {
                 _instructionHandler.AddToQueue(CurrentJob, Instruction.Decrypt);
+                InstructionChanged?.Invoke(CurrentJob.Id, Instruction.Decrypt.ToString()); // <-- S'assure que "Decrypt" est bien envoyé
                 await _jobManager.Encryption(false, CurrentJob, key, progress);
                 _ui.ShowToast("🔓" + Application.Current.Resources["FilesDecrypted"] as string, 3000);
             }
             else
             {
                 _instructionHandler.AddToQueue(CurrentJob, Instruction.Encrypt);
+                InstructionChanged?.Invoke(CurrentJob.Id, Instruction.Encrypt.ToString());
                 await _jobManager.Encryption(true, CurrentJob, key, progress);
                 _ui.ShowToast("🔒" + Application.Current.Resources["FilesEncrypted"] as string, 3000);
             }
 
+            // Définir l'heure de fin et le statut
+            CurrentJob.EndTime = DateTime.Now;
+            CurrentJob.Status = JobStatus.Completed;
+            OnPropertyChanged(nameof(CurrentJob.EndTime));
+            OnPropertyChanged(nameof(CurrentJob.Status));
+            OnPropertyChanged(nameof(CurrentJob.Progress));
             OnPropertyChanged(nameof(EncryptionStatus));
         }
         
@@ -597,8 +621,10 @@ namespace Core.ViewModel
             return "..." + path.Substring(path.Length - maxLength);
         }
 
-        protected void OnPropertyChanged([CallerMemberName] string propertyName = null)
-            => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        public void OnPropertyChanged([CallerMemberName] string propertyName = null)
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        }
         
         private void StartWatchingCurrentJobDirectory()
         {
@@ -632,6 +658,22 @@ namespace Core.ViewModel
                 OnPropertyChanged(nameof(EncryptionStatus));
                 RefreshCommands?.Invoke();
             });
+        }
+
+        public void CreateNewJobAndClearSearch(string name)
+        {
+            // Créer le nouveau job comme avant
+            CreateNewJob(name);
+
+            // Vider explicitement SearchText
+            SearchText = string.Empty;
+
+            // Forcer l'actualisation des collections filtrées
+            FilterJobs(string.Empty);
+
+            // Notifier les changements
+            OnPropertyChanged(nameof(SearchText));
+            OnPropertyChanged(nameof(DisplayedJobs));
         }
     }
 }
