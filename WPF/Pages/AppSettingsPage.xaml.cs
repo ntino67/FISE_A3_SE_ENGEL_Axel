@@ -234,6 +234,30 @@ namespace WPF.Pages
             OpenFolder(_viewModel.LogsDirectoryPath);
         }
 
+        private void OpenJsonLogButton_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                string filePath = _viewModel.JsonLogFilePath;
+                if (File.Exists(filePath))
+                {
+                    Process.Start(new ProcessStartInfo(filePath) { UseShellExecute = true });
+                }
+                else
+                {
+                    MessageBox.Show("Le fichier journal JSON n'existe pas encore.", "Information", MessageBoxButton.OK, MessageBoxImage.Information);
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Erreur lors de l'ouverture du fichier : {ex.Message}", "Erreur", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+        }
+
+        private void ShowJsonLogFolderButton_Click(object sender, RoutedEventArgs e)
+        {
+            OpenFolder(_viewModel.LogsDirectoryPath);
+        }
 
 
         private void DetectRunningAppButton_Click(object sender, RoutedEventArgs e)

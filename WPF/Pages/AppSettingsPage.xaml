@@ -418,179 +418,205 @@
                    Foreground="#a6adc8"/>
 
                         <!-- Daily Log File (with formats options) -->
-                        <Grid Grid.Row="2"
-                              Margin="0,0,0,15"
-                              >
+                        <Border Grid.Row="2" 
+          Margin="0,0,0,15" 
+          Background="#313244" 
+          CornerRadius="8" 
+          Padding="15">
+                            <Grid>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="Auto"/>
+                                </Grid.RowDefinitions>
 
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="Auto"/>
-                                <!-- Icon -->
-                                <ColumnDefinition Width="*"/>
-                                <!-- Info text -->
-                                <ColumnDefinition Width="Auto"/>
-                                <!-- Open button -->
-                                <ColumnDefinition Width="Auto"/>
-                                <!-- Show in folder button -->
-                            </Grid.ColumnDefinitions>
+                                <!-- Header with title and path -->
+                                <Grid Grid.Row="0" Margin="0,0,0,10">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="Auto"/>
+                                        <ColumnDefinition Width="*"/>
+                                    </Grid.ColumnDefinitions>
 
-                            <!-- Icon -->
-                            <Viewbox Width="24" Height="24" Margin="0,0,15,0">
-                                <Canvas Width="24" Height="24">
-                                    <Path Fill="#74c7ec" Data="M14,2H6A2,2 0 0,0 4,4V20A2,2 0 0,0 6,22H18A2,2 0 0,0 20,20V8L14,2M15,18H9V16H15V18M15,13H9V11H15V13M13,9V3.5L18.5,9H13Z"/>
-                                </Canvas>
-                            </Viewbox>
+                                    <!-- Icon -->
+                                    <Viewbox Width="24" Height="24" Margin="0,0,15,0" VerticalAlignment="Top">
+                                        <Canvas Width="24" Height="24">
+                                            <Path Fill="#74c7ec" Data="M14,2H6A2,2 0 0,0 4,4V20A2,2 0 0,0 6,22H18A2,2 0 0,0 20,20V8L14,2M15,18H9V16H15V18M15,13H9V11H15V13M13,9V3.5L18.5,9H13Z"/>
+                                        </Canvas>
+                                    </Viewbox>
 
-                            <!-- Information -->
-                            <StackPanel Grid.Column="1">
-                                <TextBlock Text="{DynamicResource DailyLogFile}" 
-                           FontWeight="SemiBold"
-                           FontSize="16"
-                           Foreground="#cdd6f4"/>
-                                <TextBlock Text="{Binding DailyLogFilePath}" 
-                           TextWrapping="Wrap"
-                           TextTrimming="CharacterEllipsis"
-                           MaxWidth="600"
-                           Foreground="#a6adc8"/>
-                            </StackPanel>
 
-                            <!-- Open File Button -->
-                            <Button Grid.Column="2" 
-                    x:Name="OpenDailyLogButton"
-                    Content="{DynamicResource OpenFile}"
-                    Margin="10,0,10,0"
+                                    <!-- Information -->
+                                    <StackPanel Grid.Column="1">
+                                        <TextBlock Text="{DynamicResource DailyLogFile}" 
+                                   FontWeight="SemiBold"
+                                   FontSize="16"
+                                   Foreground="#cdd6f4"/>
+                                        <TextBlock Text="{Binding DailyLogFilePath}" 
+                                   TextWrapping="Wrap"
+                                   TextTrimming="CharacterEllipsis"
+                                   Foreground="#a6adc8"/>
+                                    </StackPanel>
+                                </Grid>
+
+                                <!-- Format options and buttons -->
+                                <Grid Grid.Row="1">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="Auto"/>
+                                        <ColumnDefinition Width="*"/>
+                                        <ColumnDefinition Width="Auto"/>
+                                    </Grid.ColumnDefinitions>
+
+                                    <!-- Format selection -->
+                                    <StackPanel Grid.Column="0" Orientation="Horizontal" Margin="0,0,15,0">
+                                        <TextBlock Text="Format:" 
+                                        FontWeight="SemiBold"
+                                        VerticalAlignment="Center"
+                                        Margin="0,0,8,0"
+                                        Foreground="#a6adc8"/>
+
+                                        <!-- Format buttons -->
+                                        <Button x:Name="JsonFormatButton"
+                                        Content="JSON"
+                                        Margin="0,0,5,0"
+                                        Padding="8,3"
+                                        Background="#f9e2af"
+                                        Foreground="#232336"
+                                        BorderThickness="0"
+                                        Click="OpenJsonLogButton_Click"/>
+
+                                        <Button x:Name="XmlFormatButton"
+                                        Content="XML"
+                                        Padding="8,3"
+                                        Background="#a6e3a1"
+                                        Foreground="#232336"
+                                        BorderThickness="0"
+                                        Click="OpenXmlLogButton_Click"/>
+                                  </StackPanel>
+
+                                    <!-- Show in folder Button -->
+                                    <Button Grid.Column="2" 
+                    x:Name="ShowLogFolderButton"
+                    Content="{DynamicResource ShowInFolder}"
                     Padding="10,5"
                     Background="#74c7ec"
                     Foreground="#232336"
                     BorderThickness="0"
-                    Click="OpenDailyLogButton_Click"/>
-
-                            <!-- Show in Folder Button -->
-                            <Button Grid.Column="3" 
-                    x:Name="ShowDailyLogFolderButton"
-                    Content="{DynamicResource ShowInFolder}"
-                    Padding="10,5"
-                    Background="Transparent"
-                    Foreground="#74c7ec"
-                    BorderThickness="1"
-                    BorderBrush="#74c7ec"
                     Click="ShowDailyLogFolderButton_Click"/>
-                        </Grid>
-
-                        <!-- JSON Log File -->
-                        
-                        
+                                </Grid>
+                            </Grid>
+                        </Border>
 
                         <!-- State File (state.json) -->
-                        <Grid Grid.Row="3" Margin="0,0,0,15">
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="Auto"/>
+                        <Border Grid.Row="3" 
+                         Margin="0,0,0,15" 
+                         Background="#313244" 
+                         CornerRadius="8" 
+                         Padding="15">      
+                       <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto"/>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="Auto"/>
+                                    <ColumnDefinition Width="Auto"/>
+                                </Grid.ColumnDefinitions>
+
                                 <!-- Icon -->
-                                <ColumnDefinition Width="*"/>
-                                <!-- Info text -->
-                                <ColumnDefinition Width="Auto"/>
-                                <!-- Open button -->
-                                <ColumnDefinition Width="Auto"/>
-                                <!-- Show in folder button -->
-                            </Grid.ColumnDefinitions>
+                                <Viewbox Grid.Column="0" Width="24" Height="24" Margin="0,0,15,0" VerticalAlignment="Top">
+                                    <Canvas Width="24" Height="24">
+                                        <Path Fill="#94e2d5" Data="M15,9H5V5H15M12,19A3,3 0 0,1 9,16A3,3 0 0,1 12,13A3,3 0 0,1 15,16A3,3 0 0,1 12,19M17,3H5C3.89,3 3,3.9 3,5V19A2,2 0 0,0 5,21H19A2,2 0 0,0 21,19V7L17,3Z"/>
+                                    </Canvas>
+                                </Viewbox>
+                                <!-- Information -->
+                                <StackPanel Grid.Column="1">
+                                    <TextBlock Text="{DynamicResource StateFile}" 
+                                     FontWeight="SemiBold"
+                                     FontSize="16"
+                                     Foreground="#cdd6f4"/>
+                                    <TextBlock Text="{Binding StateFilePath}" 
+                                     TextWrapping="Wrap"
+                                     TextTrimming="CharacterEllipsis"
+                                     MaxWidth="600"
+                                     Foreground="#a6adc8"/> 
+                                </StackPanel>
 
-                            <!-- Icon -->
-                            <Viewbox Width="24" Height="24" Margin="0,0,15,0">
-                                <Canvas Width="24" Height="24">
-                                    <Path Fill="#94e2d5" Data="M15,9H5V5H15M12,19A3,3 0 0,1 9,16A3,3 0 0,1 12,13A3,3 0 0,1 15,16A3,3 0 0,1 12,19M17,3H5C3.89,3 3,3.9 3,5V19A2,2 0 0,0 5,21H19A2,2 0 0,0 21,19V7L17,3Z"/>
-                                </Canvas>
-                            </Viewbox>
+                                <!-- Open File Button -->
+                                <Button Grid.Column="2" 
+                                x:Name="OpenStateFileButton"
+                                Content="{DynamicResource OpenFile}"
+                                Margin="10,0,10,0"
+                                Padding="10,5"
+                                Background="#94e2d5"
+                                Foreground="#232336"
+                                BorderThickness="0"
+                                Click="OpenStateFileButton_Click"/>
 
-                            <!-- Information -->
-                            <StackPanel Grid.Column="1">
-                                <TextBlock Text="{DynamicResource StateFile}" 
-                           FontWeight="SemiBold"
-                           FontSize="16"
-                           Foreground="#cdd6f4"/>
-                                <TextBlock Text="{Binding StateFilePath}" 
-                           TextWrapping="Wrap"
-                           TextTrimming="CharacterEllipsis"
-                           MaxWidth="600"
-                           Foreground="#a6adc8"/>
-                            </StackPanel>
-
-                            <!-- Open File Button -->
-                            <Button Grid.Column="2" 
-                    x:Name="OpenStateFileButton"
-                    Content="{DynamicResource OpenFile}"
-                    Margin="10,0,10,0"
-                    Padding="10,5"
-                    Background="#94e2d5"
-                    Foreground="#232336"
-                    BorderThickness="0"
-                    Click="OpenStateFileButton_Click"/>
-
-                            <!-- Show in Folder Button -->
-                            <Button Grid.Column="3" 
-                    x:Name="ShowStateFileFolderButton"
-                    Content="{DynamicResource ShowInFolder}"
-                    Padding="10,5"
-                    Background="Transparent"
-                    Foreground="#94e2d5"
-                    BorderThickness="1"
-                    BorderBrush="#94e2d5"
-                    Click="ShowStateFileFolderButton_Click"/>
-                        </Grid>
+                                <!-- Show in Folder Button -->
+                                <Button Grid.Column="3" 
+                                x:Name="ShowStateFileFolderButton"
+                                Content="{DynamicResource ShowInFolder}"
+                                Padding="10,5"
+                                Background="Transparent"
+                                Foreground="#94e2d5"
+                                BorderThickness="1"
+                                BorderBrush="#94e2d5"
+                                Click="ShowStateFileFolderButton_Click"/>
+                            </Grid>
+                        </Border>
 
                         <!-- Warnings Log File -->
-                        <Grid Grid.Row="4">
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="Auto"/>
+                        <Border Grid.Row="4" 
+                         Background="#313244" 
+                         CornerRadius="8" 
+                         Padding="15">  
+                      <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto"/>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="Auto"/>
+                                    <ColumnDefinition Width="Auto"/>
+                                </Grid.ColumnDefinitions>
+
                                 <!-- Icon -->
-                                <ColumnDefinition Width="*"/>
-                                <!-- Info text -->
-                                <ColumnDefinition Width="Auto"/>
-                                <!-- Open button -->
-                                <ColumnDefinition Width="Auto"/>
-                                <!-- Show in folder button -->
-                            </Grid.ColumnDefinitions>
+                                <Viewbox Grid.Column="0" Width="24" Height="24" Margin="0,0,15,0" VerticalAlignment="Top">
+                                    <Canvas Width="24" Height="24">
+                                        <Path Fill="#fab387" Data="M13 14H11V9H13M13 18H11V16H13M1 21H23L12 2L1 21Z"/>
+                                    </Canvas>
+                                </Viewbox>
 
-                            <!-- Icon -->
-                            <Viewbox Width="24" Height="24" Margin="0,0,15,0">
-                                <Canvas Width="24" Height="24">
-                                    <Path Fill="#fab387" Data="M13 14H11V9H13M13 18H11V16H13M1 21H23L12 2L1 21Z"/>
-                                </Canvas>
-                            </Viewbox>
+                                <!-- Information -->
+                                <StackPanel Grid.Column="1">
+                                    <TextBlock Text="{DynamicResource WarningsLogFile}" 
+                                      FontWeight="SemiBold"
+                                      FontSize="16"
+                                      Foreground="#cdd6f4"/>
+                                    <TextBlock Text="{Binding WarningsLogFilePath}" 
+                                     TextWrapping="Wrap"
+                                     TextTrimming="CharacterEllipsis"
+                                     MaxWidth="600"
+                                     Foreground="#a6adc8"/>  
+                                </StackPanel>
+                                <!-- Open File Button -->
+                                <Button Grid.Column="2" 
+                                x:Name="OpenWarningsLogButton"
+                                Content="{DynamicResource OpenFile}"
+                                Margin="10,0,10,0"
+                                Padding="10,5"
+                                Background="#fab387"
+                                Foreground="#232336"
+                                BorderThickness="0"
+                                Click="OpenWarningsLogButton_Click"/>
 
-                            <!-- Information -->
-                            <StackPanel Grid.Column="1">
-                                <TextBlock Text="{DynamicResource WarningsLogFile}" 
-                           FontWeight="SemiBold"
-                           FontSize="16"
-                           Foreground="#cdd6f4"/>
-                                <TextBlock Text="{Binding WarningsLogFilePath}" 
-                           TextWrapping="Wrap"
-                           TextTrimming="CharacterEllipsis"
-                           MaxWidth="600"
-                           Foreground="#a6adc8"/>
-                            </StackPanel>
-
-                            <!-- Open File Button -->
-                            <Button Grid.Column="2" 
-                    x:Name="OpenWarningsLogButton"
-                    Content="{DynamicResource OpenFile}"
-                    Margin="10,0,10,0"
-                    Padding="10,5"
-                    Background="#fab387"
-                    Foreground="#232336"
-                    BorderThickness="0"
-                    Click="OpenWarningsLogButton_Click"/>
-
-                            <!-- Show in Folder Button -->
-                            <Button Grid.Column="3" 
-                    x:Name="ShowWarningsLogFolderButton"
-                    Content="{DynamicResource ShowInFolder}"
-                    Padding="10,5"
-                    Background="Transparent"
-                    Foreground="#fab387"
-                    BorderThickness="1"
-                    BorderBrush="#fab387"
-                    Click="ShowWarningsLogFolderButton_Click"/>
-                        </Grid>
+                                <!-- Show in Folder Button -->
+                                <Button Grid.Column="3" 
+                                 x:Name="ShowWarningsLogFolderButton"
+                                 Content="{DynamicResource ShowInFolder}"
+                                 Padding="10,5"
+                                 Background="Transparent"
+                                 Foreground="#fab387"
+                                 BorderThickness="1"
+                                 BorderBrush="#fab387"
+                                 Click="ShowWarningsLogFolderButton_Click"/>
+                            </Grid>
+                        </Border>
                     </Grid>
                 </Border>
             </StackPanel>
