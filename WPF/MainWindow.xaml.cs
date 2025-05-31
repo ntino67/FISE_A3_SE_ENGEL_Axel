@@ -28,7 +28,16 @@ namespace WPF
             MainFrame.Navigate(new WelcomePage());
 
             JobList.ItemsSource = _vm.DisplayedJobs;
-            _vm.NavigateToHome = () => MainFrame.Navigate(new WelcomePage());
+            _vm.NavigateToHome = () =>
+            {
+                var currentPage = MainFrame.Content;
+                if (currentPage is AppSettingsPage || currentPage is BackupStatusPage)
+                {
+                    // Ne rien faire si on est déjà sur AppSettingsPage ou BackupStatusPage
+                    return;
+                }
+                MainFrame.Navigate(new WelcomePage());
+            };
             ToastBridge.ShowToast = ShowToast;
         }
 
