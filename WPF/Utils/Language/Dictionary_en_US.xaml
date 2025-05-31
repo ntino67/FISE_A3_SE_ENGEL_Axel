@@ -85,6 +85,16 @@
     <system:String x:Key="JobCreated">Job Created</system:String>
     <system:String x:Key="JobReset">Job Reset</system:String>
 
+    <system:String x:Key="Stop">🛑 Stop</system:String>
+    <system:String x:Key="Pause">⏸️ Pause</system:String>
+    <system:String x:Key="Resume">▶️ Resume</system:String>
+    <system:String x:Key="JobPaused">Job paused</system:String>
+    <system:String x:Key="JobNotPaused">Job is not paused</system:String>
+    <system:String x:Key="JobResumed">Job resumed</system:String>
+    <system:String x:Key="JobStopped">Job stopped</system:String>
+    <system:String x:Key="BackupStatus">Backup status</system:String>
+
+
     <system:String x:Key="BlockingAppAdded">Blocking application added: {0}</system:String>
     <system:String x:Key="BlockingAppRemoved">Blocking application removed: {0}</system:String>
     <system:String x:Key="BlockingAppDetected">⚠️ Blocking application detected: {0}</system:String>

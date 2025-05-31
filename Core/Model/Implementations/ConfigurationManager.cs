@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using Newtonsoft.Json;
 using Core.Model.Interfaces;
+using Core.Utils;
 
 namespace Core.Model.Implementations
 {
@@ -43,7 +44,14 @@ namespace Core.Model.Implementations
             string json = File.ReadAllText(_stateFilePath);
             try
             {
-                return JsonConvert.DeserializeObject<List<BackupJob>>(json) ?? new List<BackupJob>();
+                var list = JsonConvert.DeserializeObject<List<BackupJob>>(json) ?? new List<BackupJob>();
+                //Set all status to Ready and reset progress
+                foreach (var job in list)
+                {
+                    job.Status = JobStatus.Ready;
+                    job.Progress = 0;
+                }
+                return list;
             }
             catch
             {

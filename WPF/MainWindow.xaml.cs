@@ -27,9 +27,32 @@ namespace WPF
             DataContext = _vm;
             MainFrame.Navigate(new WelcomePage());
 
-            JobList.ItemsSource = _vm.Jobs;
-            _vm.NavigateToHome = () => MainFrame.Navigate(new WelcomePage());
+            JobList.ItemsSource = _vm.DisplayedJobs;
+            _vm.NavigateToHome = () =>
+            {
+                var currentPage = MainFrame.Content;
+                if (currentPage is AppSettingsPage || currentPage is BackupStatusPage)
+                {
+                    // Ne rien faire si on est déjà sur AppSettingsPage ou BackupStatusPage
+                    return;
+                }
+                MainFrame.Navigate(new WelcomePage());
+            };
             ToastBridge.ShowToast = ShowToast;
+        }
+
+        private void AddJobButton_Click(object sender, RoutedEventArgs e)
+        {
+            string jobName = SearchBox.Text?.Trim();
+
+            if (!string.IsNullOrWhiteSpace(jobName))
+            {
+                // Utiliser la nouvelle méthode qui gère aussi le vidage du SearchText
+                _vm.CreateNewJobAndClearSearch(jobName);
+
+                // Pas besoin de vider SearchBox directement, il sera mis à jour par le binding
+                // lorsque SearchText dans le ViewModel sera vidé
+            }
         }
 
         private void TopBar_MouseLeftButtonDown(object sender, System.Windows.Input.MouseButtonEventArgs e)
@@ -72,9 +95,10 @@ namespace WPF
         {
             var button = sender as Button;
             var job = button?.DataContext as BackupJob;
-            if (job == null)
+            if (job == null) { 
+                ShowToast("⚠️ Job selection error", 3000);
                 return;
-
+            }
             var vm = ViewModelLocator.JobViewModel;
             vm.SetCurrentJob(null);
             vm.SetCurrentJob(job);
@@ -89,6 +113,7 @@ namespace WPF
         private void SearchJobButton_Click(object sender, RoutedEventArgs e)
         {
             string search = SearchBox.Text?.Trim().ToLower();
+            _vm.FilterJobs(search);
             if (string.IsNullOrEmpty(search))
             {
                 JobList.ItemsSource = _vm.Jobs;
@@ -107,6 +132,7 @@ namespace WPF
 
         private void ResetSelectionButton_Click(object sender, RoutedEventArgs e)
         {
+            _vm.ResetAllJobSelections();
             // Décoche tous les jobs (reset selection)
             foreach (var job in _vm.Jobs)
                 job.IsChecked = false;

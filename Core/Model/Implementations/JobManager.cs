@@ -50,7 +50,7 @@ namespace Core.Model.Implementations
             _configManager.SaveJobs(_jobs);
         }
 
-        public async Task<bool> DeleteBackupJob(string jobId)
+        public bool DeleteBackupJob(string jobId)
         {
             BackupJob job = _jobs.FirstOrDefault(j => j.Id == jobId);
             if (job == null)
@@ -215,6 +215,16 @@ namespace Core.Model.Implementations
 
                 foreach (FileInfo file in files)
                 {
+                    while (job.Status == JobStatus.Paused || (BackupJob.NumberOfPriorityJobRunning > 0 && job.isPriorityJob == false))
+                    {
+                        // Attendre que le job soit relancé
+                        await Task.Delay(200);
+                    }
+                    if (job.Status == JobStatus.Canceled)
+                    {
+                        _logger.LogWarning($"Le job {job.Name} a été annulé pendant la sauvegarde.");
+                        return false;
+                    }
                     string relativePath = file.FullName.Substring(sourceDir.FullName.Length + 1);
                     string targetPath = Path.Combine(job.TargetDirectory, relativePath);
 
@@ -240,7 +250,10 @@ namespace Core.Model.Implementations
                                 $"ENCRYPT_ERROR: {ex.Message}");
                         }
                     }
-                    progress?.Report((float)files.ToList().IndexOf(file) / files.Length * 100);
+                    if(job.Status == JobStatus.Running)
+                    {
+                        progress?.Report((float)files.ToList().IndexOf(file) / files.Length * 100);
+                    }
                 }
 
                 return true;
@@ -274,6 +287,16 @@ namespace Core.Model.Implementations
 
                 foreach (FileInfo file in files)
                 {
+                    while (job.Status == JobStatus.Paused || (BackupJob.NumberOfPriorityJobRunning > 0 && job.isPriorityJob == false))
+                    {
+                        // Attendre que le job soit relancé
+                        await Task.Delay(200);
+                    }
+                    if (job.Status == JobStatus.Canceled)
+                    {
+                        _logger.LogWarning($"Le job {job.Name} a été annulé pendant la sauvegarde.");
+                        return false;
+                    }
                     string relativePath = file.FullName.Substring(sourceDir.FullName.Length + 1);
                     string targetPath = Path.Combine(job.TargetDirectory, relativePath);
 

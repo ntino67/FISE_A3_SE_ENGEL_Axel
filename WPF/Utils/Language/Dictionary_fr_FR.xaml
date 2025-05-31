@@ -81,6 +81,15 @@
     <system:String x:Key="JobCreated">Job créé</system:String>
     <system:String x:Key="JobReset">Job réinitialisé</system:String>
 
+    <system:String x:Key="Stop">🛑 Stop</system:String>
+    <system:String x:Key="Pause">⏸️ Pause</system:String>
+    <system:String x:Key="Resume">▶️ Reprendre</system:String>
+    <system:String x:Key="JobPaused">Job mis en pause</system:String>
+    <system:String x:Key="JobNotPaused">Job n'est pas en pause</system:String>
+    <system:String x:Key="JobResumed">Job repris</system:String>
+    <system:String x:Key="JobStopped">Job stoppé</system:String>
+    <system:String x:Key="BackupStatus">Statut des jobs</system:String>
+
     <!-- Toast Messages -->
     <system:String x:Key="SettingsSaved">Paramètres enregistrés avec succès</system:String>
     <system:String x:Key="BlockingAppAdded">Application bloquante ajoutée: {0}</system:String>
