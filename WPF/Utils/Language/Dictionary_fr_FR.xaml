@@ -42,6 +42,10 @@
     <system:String x:Key="PriorityFilesDescription">Les fichiers avec ces extensions seront traités en priorité lors des sauvegardes. Les autres jobs seront mis en pause jusqu'à ce que tous les fichiers prioritaires soient traités.</system:String>
     <system:String x:Key="Add">Ajouter</system:String>
 
+    <!--  File size  -->
+    <system:String x:Key="FileSizeLimit">Limite de taille de fichier</system:String>
+    <system:String x:Key="FileSizeLimitDescription">Taille maximale de fichier (en kB) au-delà de laquelle les transferts simultanés sont interdits.</system:String>
+
 
     <!-- Buttons -->
     <system:String x:Key="Save">Enregistrer</system:String>

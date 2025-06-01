@@ -7,6 +7,7 @@ using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Windows.Input;
 using Core.Model.Interfaces;
+using Core.Utils;
 
 namespace Core.ViewModel
 {
@@ -23,8 +24,24 @@ namespace Core.ViewModel
         private string _encryptionWildcard;
         private ObservableCollection<string> _priorityExtensions;
         private string _newPriorityExtension;
+        private long _maxFileSizeKB;
 
 
+        /// <summary>
+        /// Taille maximale de fichier (en kB) au-delà de laquelle les transferts simultanés sont interdits
+        /// </summary>
+        public long MaxFileSizeKB
+        {
+            get => _maxFileSizeKB;
+            set
+            {
+                if (_maxFileSizeKB != value)
+                {
+                    _maxFileSizeKB = value;
+                    OnPropertyChanged();
+                }
+            }
+        }
         public ObservableCollection<string> EncryptionFileExtensions
         {
             get => _encryptionFileExtensions;
@@ -199,7 +216,9 @@ namespace Core.ViewModel
             _configManager.SaveLanguage(SelectedLanguage);
             _configManager.SaveEncryptionFileExtensions(new List<string>(EncryptionFileExtensions));
             _configManager.SaveEncryptionWildcard(EncryptionWildcard);
-            _configManager.SavePriorityFileExtensions(new List<string>(PriorityExtensions)); 
+            _configManager.SavePriorityFileExtensions(new List<string>(PriorityExtensions));
+            _configManager.SaveMaxFileSizeKB(MaxFileSizeKB);
+            LargeFileTransferManager.Instance.MaxFileSizeKB = MaxFileSizeKB;
             _localizationService.ChangeLanguage(SelectedLanguage);
         }
 
@@ -212,6 +231,8 @@ namespace Core.ViewModel
             EncryptionFileExtensions = new ObservableCollection<string>(extensions ?? new List<string>());
 
             EncryptionWildcard = _configManager.GetEncryptionWildcard();
+
+            MaxFileSizeKB = _configManager.GetMaxFileSizeKB();
 
             string savedLanguage = _configManager.GetLanguage();
             SelectedLanguage = string.IsNullOrEmpty(savedLanguage) ? "en-US" : savedLanguage;

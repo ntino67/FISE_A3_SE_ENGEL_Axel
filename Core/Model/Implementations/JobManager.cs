@@ -346,12 +346,36 @@ namespace Core.Model.Implementations
 
         private async Task CopyFile(string sourcePath, string targetPath)
         {
-            using (FileStream sourceStream = new FileStream(sourcePath, FileMode.Open, FileAccess.Read, FileShare.Read, 4096, true))
-            using (FileStream targetStream = new FileStream(targetPath, FileMode.Create, FileAccess.Write, FileShare.None, 4096, true))
+            var fileInfo = new FileInfo(sourcePath);
+            var fileManager = LargeFileTransferManager.Instance;
+
+            // Vérifier si c'est un fichier volumineux
+            bool isLargeFile = fileManager.IsLargeFile(fileInfo.Length);
+
+            if (isLargeFile)
             {
-                await sourceStream.CopyToAsync(targetStream);
+                // Acquérir la permission pour le transfert de fichier volumineux
+                using (await fileManager.AcquireLargeFileTransferPermissionAsync())
+                {
+                    // Effectuer le transfert du fichier volumineux
+                    using (FileStream sourceStream = new FileStream(sourcePath, FileMode.Open, FileAccess.Read, FileShare.Read, 4096, true))
+                    using (FileStream targetStream = new FileStream(targetPath, FileMode.Create, FileAccess.Write, FileShare.None, 4096, true))
+                    {
+                        await sourceStream.CopyToAsync(targetStream);
+                    }
+                }
+            }
+            else
+            {
+                // Pour les petits fichiers, procéder comme d'habitude
+                using (FileStream sourceStream = new FileStream(sourcePath, FileMode.Open, FileAccess.Read, FileShare.Read, 4096, true))
+                using (FileStream targetStream = new FileStream(targetPath, FileMode.Create, FileAccess.Write, FileShare.None, 4096, true))
+                {
+                    await sourceStream.CopyToAsync(targetStream);
+                }
             }
         }
+
 
         internal async Task<bool> Encrypt(BackupJob job, string key, IProgress<float> progress)
         {
