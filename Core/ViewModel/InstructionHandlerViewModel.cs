@@ -40,32 +40,13 @@ namespace Core.ViewModel
         public void AddToQueue(BackupJob job, Instruction instruction)
         {
             if (job == null) return;
+            //If the job is already in the queue just modify instruction
+            var existingInstruction = RunningInstructions.FirstOrDefault(i => i.Job.Id == job.Id);
+            if (existingInstruction != null) {
+                existingInstruction.Instruction = instruction;
+                return;
+            }
             RunningInstructions.Add(new RunningInstruction(job, instruction));
-        }
-
-        public void RemoveFromQueue(string jobId)
-        {
-            if (string.IsNullOrEmpty(jobId)) return;
-
-            for (int i = RunningInstructions.Count - 1; i >= 0; i--)
-            {
-                if (RunningInstructions[i].Job.Id == jobId)
-                {
-                    RunningInstructions.RemoveAt(i);
-                }
-            }
-        }
-
-        public void UpdateProgress(string jobId, float progress)
-        {
-            foreach (var instruction in RunningInstructions)
-            {
-                if (instruction.Job.Id == jobId)
-                {
-                    instruction.Progress = progress;
-                    break;
-                }
-            }
         }
 
         public event PropertyChangedEventHandler PropertyChanged;
@@ -79,13 +60,11 @@ namespace Core.ViewModel
     {
         public BackupJob Job { get; set; }
         public Instruction Instruction { get; set; }
-        public float Progress { get; set; }
 
         public RunningInstruction(BackupJob job, Instruction instruction)
         {
             Job = job;
             Instruction = instruction;
-            Progress = 0;
         }
     }
 }

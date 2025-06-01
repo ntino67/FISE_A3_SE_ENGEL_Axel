@@ -521,6 +521,9 @@ namespace Core.ViewModel
                 _ui.ShowToast("🔄 " + Application.Current.Resources["JobNotRunning"] as string + ".", 3000);
                 return;
             }
+            if (CurrentJob.isPriorityJob) {
+                BackupJob.DecrementPriorityJobCount(); // Decrement priority job count if it was a priority job
+            }
             CurrentJob.Status = JobStatus.Paused;
             _jobManager.UpdateBackupJob(CurrentJob);
             _ui.ShowToast("⏸️ " + Application.Current.Resources["JobPaused"] as string + ".", 3000);
@@ -532,6 +535,10 @@ namespace Core.ViewModel
             {
                 _ui.ShowToast("🔄 " + Application.Current.Resources["JobNotPaused"] as string + ".", 3000);
                 return;
+            }
+            if (CurrentJob.isPriorityJob)
+            {
+                BackupJob.IncrementPriorityJobCount(); // Decrement priority job count if it was a priority job
             }
             CurrentJob.Status = JobStatus.Running;
             _jobManager.UpdateBackupJob(CurrentJob);
