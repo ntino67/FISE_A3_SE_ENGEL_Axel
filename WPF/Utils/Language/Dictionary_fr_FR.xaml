@@ -11,8 +11,6 @@
     <system:String x:Key="ChooseLanguage">Choisissez la langue préférée pour l'interface de l'application</system:String>
     <system:String x:Key="English">Anglais</system:String>
     <system:String x:Key="French">Français</system:String>
-    <system:String x:Key="SettingsSaved">Paramètres enregistrés</system:String>
-
     <!-- Blocking apps section -->
     <system:String x:Key="BlockingApps">Applications bloquantes</system:String>
     <system:String x:Key="BlockingAppsDescription">Définissez les applications qui bloqueront les tâches de sauvegarde lorsqu'elles sont en cours d'exécution. Dans le cas de tâches séquentielles, le logiciel terminera la tâche en cours et s'arrêtera avant de démarrer la suivante.</system:String>
@@ -29,7 +27,22 @@
     <system:String x:Key="EncryptionWildcard">Motif générique</system:String>
     <system:String x:Key="EncryptionWildcardDescription">Optionnel: Spécifiez un motif générique pour chiffrer tous les fichiers correspondants quelle que soit leur extension (ex: *.* ou all pour tous les fichiers).</system:String>
     <system:String x:Key="AddExtension">Ajouter</system:String>
+
+    <!-- Logs section -->
+    <system:String x:Key="LogFilesSection">Fichiers journaux</system:String>
+    <system:String x:Key="LogFilesDescription">Accédez aux fichiers journaux de l'application pour consulter les détails des opérations de sauvegarde.</system:String>
+    <system:String x:Key="DailyLogFile">Journal quotidien</system:String>
+    <system:String x:Key="StateFile">État des tâches</system:String>
+    <system:String x:Key="WarningsLogFile">Journal des avertissements</system:String>
+    <system:String x:Key="OpenFile">Ouvrir</system:String>
+    <system:String x:Key="ShowInFolder">Afficher dans le dossier</system:String>
     
+    <!--  Priority extensions -->
+    <system:String x:Key="PriorityFilesTitle">Extensions de fichiers prioritaires</system:String>
+    <system:String x:Key="PriorityFilesDescription">Les fichiers avec ces extensions seront traités en priorité lors des sauvegardes. Les autres jobs seront mis en pause jusqu'à ce que tous les fichiers prioritaires soient traités.</system:String>
+    <system:String x:Key="Add">Ajouter</system:String>
+
+
     <!-- Buttons -->
     <system:String x:Key="Save">Enregistrer</system:String>
     <system:String x:Key="Cancel">Annuler</system:String>
@@ -81,4 +94,12 @@
     <system:String x:Key="JobResumed">Job repris</system:String>
     <system:String x:Key="JobStopped">Job stoppé</system:String>
     <system:String x:Key="BackupStatus">Statut des jobs</system:String>
+
+    <!-- Toast Messages -->
+    <system:String x:Key="SettingsSaved">Paramètres enregistrés avec succès</system:String>
+    <system:String x:Key="BlockingAppAdded">Application bloquante ajoutée: {0}</system:String>
+    <system:String x:Key="BlockingAppRemoved">Application bloquante supprimée: {0}</system:String>
+    <system:String x:Key="BlockingAppDetected">⚠️ Application bloquante détectée: {0}</system:String>
+    <system:String x:Key="BackupBlockedByApp">⚠️ Sauvegarde bloquée par l'application: {0}</system:String>
+
 </ResourceDictionary>

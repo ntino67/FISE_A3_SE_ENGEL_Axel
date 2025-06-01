@@ -116,6 +116,8 @@ namespace Core.Model.Implementations
 
             public List<string> EncryptionFileExtensions { get; set; } = new List<string> ();
             public string EncryptionWildcard { get; set; } = "";
+            public List<string> PriorityFileExtensions { get; set; } = new List<string>(); 
+
         }
 
         public List<string> GetBlockingApplications()
@@ -155,5 +157,19 @@ namespace Core.Model.Implementations
             settings.EncryptionWildcard = wildcard;
             SaveSettings(settings);
         }
+
+        public List<string> GetPriorityFileExtensions()
+        {
+            var settings = LoadSettings();
+            return settings.PriorityFileExtensions ?? new List<string>();
+        }
+
+        public void SavePriorityFileExtensions(List<string> extensions)
+        {
+            var settings = LoadSettings();
+            settings.PriorityFileExtensions = extensions ?? new List<string>();
+            SaveSettings(settings);
+        }
+
     }
 }

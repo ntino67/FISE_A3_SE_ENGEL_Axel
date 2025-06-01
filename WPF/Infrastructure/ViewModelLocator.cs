@@ -15,13 +15,34 @@ namespace WPF.Infrastructure
         private static IBackupService _jobManager;
         private static IConfigurationManager _configManager;
         private static ILogger _logger;
+        private static JobViewModel _jobViewModel;
         private static SettingsViewModel _settingsViewModel;
         private static IUIService _iuiService;
         private static ILocalizationService _localizationService;
         private static ICommandFactory _commandFactory;
+        private static IResourceService _resourceService;
         private static InstructionHandlerViewModel _instructionHandlerViewModel;
 
-        public static JobViewModel JobViewModel { get; set; }
+
+
+        public static JobViewModel JobViewModel
+        {
+            get
+            {
+                if (_jobViewModel == null)
+                    throw new InvalidOperationException("ViewModelLocator has not been initialized. Call Initialize() first.");
+                return _jobViewModel;
+            }
+        }
+        public static IUIService UIService
+        {
+            get
+            {
+                if (_iuiService == null)
+                    _iuiService = new UIService();
+                return _iuiService;
+            }
+        }
         public static SettingsViewModel SettingsViewModel
         {
             get
@@ -52,13 +73,18 @@ namespace WPF.Infrastructure
             {
                 _configManager = new ConfigurationManager(appDataPath);
                 _logger = new Logger(_configManager.GetLogDirectory());
-                _jobManager = new JobManager(_logger, _configManager);
-                _commandFactory = new WpfCommandFactory();
                 _iuiService = new UIService();
                 _localizationService = new LocalizationService();
+                _resourceService = new ResourceService();
+                _commandFactory = new WpfCommandFactory();
+                _jobManager = new JobManager(_logger, _configManager, _iuiService, _resourceService);
+
                 _instructionHandlerViewModel = new InstructionHandlerViewModel(_jobManager, _iuiService);
-                JobViewModel = new JobViewModel(_jobManager, _iuiService, _commandFactory, _instructionHandlerViewModel);
-                _settingsViewModel = new SettingsViewModel(_configManager, _localizationService);
+                _jobViewModel = new JobViewModel(_jobManager, _iuiService, _commandFactory, _instructionHandlerViewModel, _configManager);
+                _settingsViewModel = new SettingsViewModel(_configManager, _localizationService, _logger, _commandFactory);
+
+
+
             }
             catch (Exception ex)
             {
@@ -78,5 +104,24 @@ namespace WPF.Infrastructure
             }
             return _localizationService;
         }
+        public static IUIService GetUIService()
+        {
+            if (_iuiService == null)
+            {
+                _iuiService = new UIService();
+            }
+            return _iuiService;
+        }
+
+        public static IResourceService GetResourceService()
+        {
+            if (_resourceService == null)
+            {
+                _resourceService = new ResourceService();
+            }
+            return _resourceService;
+        }
+
+
     }
 }

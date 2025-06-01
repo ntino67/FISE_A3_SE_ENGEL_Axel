@@ -23,6 +23,7 @@ namespace Core.ViewModel
         private readonly IBackupService _jobManager;
         private readonly IUIService _ui;
         private readonly ICommandFactory _commandFactory;
+        private readonly IConfigurationManager _configManager; 
         private FileSystemWatcher _watcher;
         private BackupJob _currentJob;
         private string _searchText;
@@ -63,12 +64,13 @@ namespace Core.ViewModel
     .Count(ri => ri.Job.Status == JobStatus.Running) + ")"; }
         }
 
-        public JobViewModel(IBackupService jobManager, IUIService uiService, ICommandFactory commandFactory, InstructionHandlerViewModel instructionHandlerViewModel) //Constructeur refaire toutes les commandes
+        public JobViewModel(IBackupService jobManager, IUIService uiService, ICommandFactory commandFactory, InstructionHandlerViewModel instructionHandlerViewModel, IConfigurationManager configManager) 
         {
             _jobManager = jobManager;
             _instructionHandler = instructionHandlerViewModel;
             _ui = uiService;
             _commandFactory = commandFactory;
+            _configManager = configManager;
             _instructionHandler.RunningInstructions.CollectionChanged += (s, e) =>
             {
                 if (e.NewItems != null)
@@ -250,8 +252,17 @@ namespace Core.ViewModel
                         job.Progress = p;
                     });
                 });
+                ShouldItBePriority(job); // Vérifier si le job est prioritaire
+                if (job.isPriorityJob) { 
+                    BackupJob.NumberOfPriorityJobRunning++;
+                }
+
                 await _jobManager.ExecuteBackupJob(job.Id, progress, this.EncryptionKey);
+
+                if (job.isPriorityJob)
+                    BackupJob.NumberOfPriorityJobRunning--;
             }
+
             _ui.ShowToast("✅ Toutes les sauvegardes sont terminées.", 3000);
         }
 
@@ -267,7 +278,14 @@ namespace Core.ViewModel
                         job.Progress = p;
                     });
                 });
+                ShouldItBePriority(job); // Vérifier si le job est prioritaire
+                if (job.isPriorityJob)
+                    BackupJob.NumberOfPriorityJobRunning++;
+
                 await _jobManager.ExecuteBackupJob(job.Id, progress, this.EncryptionKey);
+
+                if (job.isPriorityJob)
+                    BackupJob.NumberOfPriorityJobRunning--;
             }
             _ui.ShowToast("✅ Sauvegardes sélectionnées terminées.", 3000);
         }
@@ -394,20 +412,22 @@ namespace Core.ViewModel
 
         private void ShouldItBePriority(BackupJob currentJob)
         {
-            //If the job contains .txt or .png files it pause all jobs that doesn't have job.isPriorityJob set to true
-            if (currentJob == null) return;
-            string[] files = Directory.GetFiles(currentJob.TargetDirectory, "*", SearchOption.AllDirectories);
-            //A list of extensions that are considered priority
-            string[] priorityExtensions = { ".png" };
-            bool hasPriorityFiles = files.Any(f => priorityExtensions.Any(ext => f.EndsWith(ext, StringComparison.OrdinalIgnoreCase)));
-            if (hasPriorityFiles)
-            {
-                currentJob.isPriorityJob = true; // Set the job as a priority job
-                return; // This job is a priority job
-            }
-            currentJob.isPriorityJob = false; // Set the job as a non-priority job (usefull if something has changed since last backup)
-            return; // This job is not a priority job
+            if (currentJob == null || string.IsNullOrWhiteSpace(currentJob.SourceDirectory)) return;
 
+            // Utiliser le répertoire SOURCE pour vérifier les fichiers qui seront sauvegardés
+            if (!Directory.Exists(currentJob.SourceDirectory)) return;
+
+            // Récupérer les extensions prioritaires depuis la configuration
+            var priorityExtensions = _configManager.GetPriorityFileExtensions();
+            if (priorityExtensions == null || !priorityExtensions.Any())
+                return; // Si pas d'extensions prioritaires configurées, ce n'est pas un job prioritaire
+
+            string[] files = Directory.GetFiles(currentJob.SourceDirectory, "*", SearchOption.AllDirectories);
+
+            bool hasPriorityFiles = files.Any(f => priorityExtensions.Any(ext =>
+                f.EndsWith(ext, StringComparison.OrdinalIgnoreCase)));
+
+            currentJob.isPriorityJob = hasPriorityFiles;
         }
 
         public void ResetCurrentJob()

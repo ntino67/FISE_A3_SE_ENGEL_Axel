@@ -30,6 +30,11 @@
     <system:String x:Key="EncryptionWildcardDescription">Optional: Specify a wildcard pattern to encrypt all matching files regardless of their extension (e.g. *.* or all for all files).</system:String>
     <system:String x:Key="AddExtension">Add</system:String>
 
+    <!-- Priority extensions -->
+    <system:String x:Key="PriorityFilesTitle">Priority File Extensions</system:String>
+    <system:String x:Key="PriorityFilesDescription">Files with these extensions will be processed with priority during backups. Other jobs will be paused until all priority files are processed.</system:String>
+    <system:String x:Key="Add">Add</system:String>
+
     <!-- Buttons -->
     <system:String x:Key="Save">Save</system:String>
     <system:String x:Key="Cancel">Cancel</system:String>
