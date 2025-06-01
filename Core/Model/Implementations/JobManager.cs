@@ -93,7 +93,7 @@ namespace Core.Model.Implementations
             BackupJob job = _jobs.FirstOrDefault(j => j.Id == jobId);
             if (job == null)
                 return false;
-            await ExecuteBackup(job, progress, encryptionKey);
+            await Task.Run(() => ExecuteBackup(job, progress, encryptionKey));
             return true;
         }
 
@@ -228,7 +228,7 @@ namespace Core.Model.Implementations
                         // Attendre que le job soit relancé
                         await Task.Delay(200);
                     }
-                    if (job.Status == JobStatus.Canceled)
+                    if (job.Status == JobStatus.Canceled || job.Status == JobStatus.Stopped)
                     {
                         _logger.LogWarning($"Le job {job.Name} a été annulé pendant la sauvegarde.");
                         return false;
