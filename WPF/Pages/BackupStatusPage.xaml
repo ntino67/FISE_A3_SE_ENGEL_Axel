@@ -156,7 +156,7 @@
                 Background="#232336"
                 BorderThickness="2" 
                 CornerRadius="10">
-            <DataGrid ItemsSource="{Binding JobStatusItems}" 
+            <DataGrid ItemsSource="{Binding RunningInstructions}" 
                       AutoGenerateColumns="False" 
                       HeadersVisibility="Column"
                       Background="#232334" 
@@ -185,8 +185,8 @@
                                             Background="#232336" 
                                             BorderBrush="#A6E3A1"
                                             Margin="3,0" 
-                                            Command="{Binding DataContext.RunCommand, RelativeSource={RelativeSource AncestorType=DataGrid}}"
-                                            CommandParameter="{Binding}"
+                                            Command="{Binding DataContext.RunBackupCommand, RelativeSource={RelativeSource AncestorType=DataGrid}}"
+                                            CommandParameter="{Binding Job}"
                                             ToolTip="Run">
                                         <Path Fill="#cdd6f4" Data="M8,5.14V19.14L19,12.14L8,5.14Z" Width="24" Height="24"/>
                                     </Button>
@@ -194,8 +194,8 @@
                                             Background="#232336" 
                                             BorderBrush="#F9E2AF"
                                             Margin="3,0" 
-                                            Command="{Binding DataContext.PauseCommand, RelativeSource={RelativeSource AncestorType=DataGrid}}"
-                                            CommandParameter="{Binding}"
+                                            Command="{Binding DataContext.PauseResumeCommand, RelativeSource={RelativeSource AncestorType=DataGrid}}"
+                                            CommandParameter="{Binding Job}"
                                             ToolTip="Pause">
                                         <Path Fill="#cdd6f4" Data="M14,19H18V5H14M6,19H10V5H6V19Z" Width="24" Height="24"/>
                                     </Button>
@@ -203,8 +203,8 @@
                                             Background="#232336" 
                                             BorderBrush="#F38BA8"
                                             Margin="3,0" 
-                                            Command="{Binding DataContext.StopCommand, RelativeSource={RelativeSource AncestorType=DataGrid}}"
-                                            CommandParameter="{Binding}"
+                                            Command="{Binding DataContext.StopBackupCommand, RelativeSource={RelativeSource AncestorType=DataGrid}}"
+                                            CommandParameter="{Binding Job}"
                                             ToolTip="Stop">
                                         <Path Fill="#cdd6f4" Data="M18,18H6V6H18V18Z" Width="24" Height="24"/>
                                     </Button>
@@ -213,22 +213,22 @@
                         </DataGridTemplateColumn.CellTemplate>
                     </DataGridTemplateColumn>
                     
-                    <DataGridTextColumn Header="JobName" Binding="{Binding JobName}" Width="*" ElementStyle="{StaticResource CenteredCellStyle}" />
+                    <DataGridTextColumn Header="JobName" Binding="{Binding Job.Name}" Width="*" ElementStyle="{StaticResource CenteredCellStyle}" />
                     <DataGridTextColumn Header="Instruction" Binding="{Binding Instruction}" Width="*" ElementStyle="{StaticResource ActionTextBlockStyle}" />
                     <DataGridTemplateColumn Header="Progress" Width="*">
                         <DataGridTemplateColumn.CellTemplate>
                             <DataTemplate>
                                 <ProgressBar Minimum="0"
                                              Maximum="100"
-                                             Value="{Binding Progress}"
+                                             Value="{Binding Job.Progress}"
                                              Style="{StaticResource CustomProgressBarStyle}"
-                                             ToolTip="{Binding Progress, StringFormat={}{0:F1}%}" />
+                                             ToolTip="{Binding Job.Progress, StringFormat={}{0:F1}%}" />
                             </DataTemplate>
                         </DataGridTemplateColumn.CellTemplate>
                     </DataGridTemplateColumn>
-                    <DataGridTextColumn Header="Start Time" Binding="{Binding StartTime, StringFormat=G}" Width="*" ElementStyle="{StaticResource TimeTextBlockStyle}" />
-                    <DataGridTextColumn Header="End Time" Binding="{Binding EndTime, StringFormat=G}" Width="*" ElementStyle="{StaticResource TimeTextBlockStyle}" />
-                    <DataGridTextColumn Header="Status" Binding="{Binding Status}" Width="*" ElementStyle="{StaticResource StatusTextBlockStyle}" />
+                    <DataGridTextColumn Header="Start Time" Binding="{Binding Job.StartTime}" Width="*" ElementStyle="{StaticResource TimeTextBlockStyle}" />
+                    <DataGridTextColumn Header="End Time" Binding="{Binding Job.EndTime}" Width="*" ElementStyle="{StaticResource TimeTextBlockStyle}" />
+                    <DataGridTextColumn Header="Status" Binding="{Binding Job.Status}" Width="*" ElementStyle="{StaticResource StatusTextBlockStyle}" />
                 </DataGrid.Columns>
             </DataGrid>
         </Border>

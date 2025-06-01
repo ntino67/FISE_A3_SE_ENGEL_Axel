@@ -99,6 +99,8 @@
     <system:String x:Key="Resume">▶️ Resume</system:String>
     <system:String x:Key="JobPaused">Job paused</system:String>
     <system:String x:Key="JobNotPaused">Job is not paused</system:String>
+    <system:String x:Key="JobNotRunning">Job is not paused</system:String>
+    <system:String x:Key="JobNotRunnningOrPaused">Job is not paused neither running</system:String>
     <system:String x:Key="JobResumed">Job resumed</system:String>
     <system:String x:Key="JobStopped">Job stopped</system:String>
     <system:String x:Key="BackupStatus">Backup status</system:String>

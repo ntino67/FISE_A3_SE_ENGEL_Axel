@@ -23,8 +23,7 @@ namespace WPF.Pages
         public BackupStatusPage()
         {
             InitializeComponent();
-            _statusVm = new BackupStatusViewModel(ViewModelLocator.JobViewModel);
-            DataContext = _statusVm;
+            DataContext = ViewModelLocator.JobViewModel;
         }
 
         private void DataGrid_SelectionChanged(object sender, SelectionChangedEventArgs e)
