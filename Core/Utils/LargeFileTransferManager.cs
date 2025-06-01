@@ -10,7 +10,7 @@ namespace Core.Utils
 
         public static LargeFileTransferManager Instance => _instance.Value;
 
-        private readonly SemaphoreSlim _largeFileSemaphore = new SemaphoreSlim(1, 1);
+        private readonly SemaphoreSlim _largeFileSemaphore = new SemaphoreSlim(3, 3); // 3 transferts simultanés autorisés
         private long _maxFileSizeKB = 1024; // 1 MB par défaut
 
         private LargeFileTransferManager() { }

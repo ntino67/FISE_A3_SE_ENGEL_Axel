@@ -37,7 +37,20 @@ namespace Core.Model
         private long _bytesCopied;
 
         // Static property for tracking priority jobs
-        public static int NumberOfPriorityJobRunning { get; set; } = 0;
+        private static int _numberOfPriorityJobRunning = 0;
+        // Propriété en lecture seule
+        public static int NumberOfPriorityJobRunning => _numberOfPriorityJobRunning;
+
+        // Méthodes thread-safe pour incrémenter/décrémenter
+        public static void IncrementPriorityJobCount()
+        {
+            Interlocked.Increment(ref _numberOfPriorityJobRunning);
+        }
+
+        public static void DecrementPriorityJobCount()
+        {
+            Interlocked.Decrement(ref _numberOfPriorityJobRunning);
+        }
 
         // Non-editable property: GUID
         [JsonPropertyName("id")]
