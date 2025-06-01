@@ -43,6 +43,10 @@
     <system:String x:Key="PriorityFilesTitle">Priority File Extensions</system:String>
     <system:String x:Key="PriorityFilesDescription">Files with these extensions will be processed with priority during backups. Other jobs will be paused until all priority files are processed.</system:String>
     <system:String x:Key="Add">Add</system:String>
+    
+    <!-- File size -->
+    <system:String x:Key="FileSizeLimit">File Size Limit</system:String>
+    <system:String x:Key="FileSizeLimitDescription">Maximum file size (in kB) beyond which simultaneous transfers are prohibited.</system:String>
 
     <!-- Buttons -->
     <system:String x:Key="Save">Save</system:String>

@@ -116,7 +116,9 @@ namespace Core.Model.Implementations
 
             public List<string> EncryptionFileExtensions { get; set; } = new List<string> ();
             public string EncryptionWildcard { get; set; } = "";
-            public List<string> PriorityFileExtensions { get; set; } = new List<string>(); 
+            public List<string> PriorityFileExtensions { get; set; } = new List<string>();
+            public long MaxFileSizeKB { get; set; } = 1024; // 1 MB par défaut
+
 
         }
 
@@ -170,6 +172,20 @@ namespace Core.Model.Implementations
             settings.PriorityFileExtensions = extensions ?? new List<string>();
             SaveSettings(settings);
         }
+
+        public long GetMaxFileSizeKB()
+        {
+            var settings = LoadSettings();
+            return settings.MaxFileSizeKB;
+        }
+
+        public void SaveMaxFileSizeKB(long maxFileSizeKB)
+        {
+            var settings = LoadSettings();
+            settings.MaxFileSizeKB = maxFileSizeKB;
+            SaveSettings(settings);
+        }
+
 
     }
 }

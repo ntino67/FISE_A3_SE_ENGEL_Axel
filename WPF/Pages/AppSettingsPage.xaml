@@ -752,6 +752,62 @@
                         </Border>
                     </Grid>
                 </Border>
+                <!-- Section File Size Limit -->
+                <Border Background="#232336" 
+        CornerRadius="12"
+        Padding="20" 
+        Margin="0,0,0,20">
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                        </Grid.RowDefinitions>
+
+                        <!-- Titre de la section -->
+                        <TextBlock Grid.Row="0"
+                   Text="{DynamicResource FileSizeLimit}"
+                   FontSize="22" 
+                   FontWeight="SemiBold" 
+                   Margin="0,0,0,10"
+                   Foreground="#cdd6f4"/>
+
+                        <!-- Description de la section -->
+                        <TextBlock Grid.Row="1" 
+                   Text="{DynamicResource FileSizeLimitDescription}"
+                   TextWrapping="Wrap"
+                   Margin="0,0,0,15"
+                   Foreground="#a6adc8"/>
+
+                        <!-- Champ pour la taille maximale de fichier -->
+                        <Grid Grid.Row="2">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="Auto"/>
+                            </Grid.ColumnDefinitions>
+
+                            <!-- Champ numérique pour la taille maximale -->
+                            <TextBox Grid.Column="0"
+                     Height="40"
+                     Margin="0,0,10,0"
+                     Background="#313244"
+                     Foreground="#cdd6f4"
+                     BorderThickness="0"
+                     Padding="15,0"
+                     FontSize="16"
+                     VerticalContentAlignment="Center"
+                     BorderBrush="#74c7ec"
+                     Text="{Binding MaxFileSizeKB, UpdateSourceTrigger=PropertyChanged}"/>
+
+                            <!-- Unité (kB) -->
+                            <TextBlock Grid.Column="1"
+                       Text="kB"
+                       Foreground="#cdd6f4"
+                       FontSize="16"
+                       VerticalAlignment="Center"/>
+                        </Grid>
+                    </Grid>
+                </Border>
             </StackPanel>
         </ScrollViewer>
 

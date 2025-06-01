@@ -32,6 +32,10 @@ namespace WPF
             string configDirectory = AppDomain.CurrentDomain.BaseDirectory;
             ConfigurationManager = new ConfigurationManager(configDirectory);
 
+            // Initialiser le gestionnaire de transferts de fichiers volumineux avec la valeur de configuration
+            Core.Utils.LargeFileTransferManager.Instance.MaxFileSizeKB = ConfigurationManager.GetMaxFileSizeKB();
+
+
             ViewModelLocator.Initialize();
 
             InitializeLanguage();

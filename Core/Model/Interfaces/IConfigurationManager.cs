@@ -22,6 +22,8 @@ namespace Core.Model.Interfaces
         string GetEncryptionWildcard();
         void SaveEncryptionWildcard(string wildcard);
         List<string> GetPriorityFileExtensions();
+        long GetMaxFileSizeKB();
+        void SaveMaxFileSizeKB(long maxFileSizeKB);
         void SavePriorityFileExtensions(List<string> extensions);
 
     }
