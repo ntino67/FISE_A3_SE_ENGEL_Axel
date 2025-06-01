@@ -64,15 +64,16 @@
         <Style x:Key="ActionTextBlockStyle" TargetType="TextBlock">
             <Setter Property="HorizontalAlignment" Value="Center"/>
             <Setter Property="VerticalAlignment" Value="Center"/>
+            <!-- Couleur par défaut (pour Backup ou autres) -->
+            <Setter Property="Foreground" Value="#A6E3A1"/>
             <Style.Triggers>
                 <DataTrigger Binding="{Binding Instruction}" Value="Encrypt">
-                    <Setter Property="Foreground" Value="#cdd6f4"/>
-                </DataTrigger>
-                <DataTrigger Binding="{Binding Instruction}" Value="Backup">
-                    <Setter Property="Foreground" Value="#cdd6f4"/>
+                    <Setter Property="Foreground" Value="#F9E2AF"/>
+                    <Setter Property="FontWeight" Value="Bold"/>
                 </DataTrigger>
                 <DataTrigger Binding="{Binding Instruction}" Value="Decrypt">
-                    <Setter Property="Foreground" Value="#cdd6f4"/>
+                    <Setter Property="Foreground" Value="#89B4FA"/>
+                    <Setter Property="FontWeight" Value="Bold"/>
                 </DataTrigger>
             </Style.Triggers>
         </Style>
@@ -103,16 +104,29 @@
         <!-- Style for progress bar with percentage text always visible and styled -->
         <Style x:Key="CustomProgressBarStyle" TargetType="ProgressBar">
             <Setter Property="Height" Value="20"/>
+            <Setter Property="Minimum" Value="0"/>
+            <Setter Property="Maximum" Value="100"/>
+            <Setter Property="IsIndeterminate" Value="False"/>
+            <Setter Property="Foreground" Value="#A6E3A1"/>
+            <Setter Property="Background" Value="#232334"/>
             <Setter Property="Template">
                 <Setter.Value>
                     <ControlTemplate TargetType="ProgressBar">
-                        <Border BorderBrush="#444" BorderThickness="1" Background="#232334" Name="ProgressBorder">
+                        <Border BorderBrush="#444" BorderThickness="1" Background="{TemplateBinding Background}" Name="ProgressBorder" CornerRadius="3">
                             <Grid>
                                 <Rectangle x:Name="PART_Track" Fill="Transparent"/>
                                 <Rectangle x:Name="PART_Indicator"
                                            HorizontalAlignment="Left"
-                                           Fill="#A6E3A1"
-                                           Width="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=Value, Converter={StaticResource ProgressToWidthConverter}}"/>
+                                           Fill="{TemplateBinding Foreground}">
+                                    <Rectangle.Width>
+                                        <MultiBinding Converter="{StaticResource ProgressToWidthConverter}">
+                                            <Binding RelativeSource="{RelativeSource TemplatedParent}" Path="Value"/>
+                                            <Binding RelativeSource="{RelativeSource TemplatedParent}" Path="ActualWidth"/>
+                                            <Binding RelativeSource="{RelativeSource TemplatedParent}" Path="Minimum"/>
+                                            <Binding RelativeSource="{RelativeSource TemplatedParent}" Path="Maximum"/>
+                                        </MultiBinding>
+                                    </Rectangle.Width>
+                                </Rectangle>
                                 <TextBlock Text="{Binding Value, RelativeSource={RelativeSource TemplatedParent}, StringFormat={}{0:0}%}"
                                            HorizontalAlignment="Center"
                                            VerticalAlignment="Center"
@@ -221,11 +235,11 @@
                     <DataGridTemplateColumn Header="Progress" Width="*">
                         <DataGridTemplateColumn.CellTemplate>
                             <DataTemplate>
-                                <ProgressBar Minimum="0"
-                                             Maximum="100"
-                                             Value="{Binding Progress}"
-                                             Style="{StaticResource CustomProgressBarStyle}"
-                                             ToolTip="{Binding Progress, StringFormat={}{0:F1}%}" />
+                                <Grid>
+                                    <ProgressBar Style="{StaticResource CustomProgressBarStyle}"
+                                                 Value="{Binding CurrentJob.Progress, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" 
+                                                 Margin="5" />
+                                </Grid>
                             </DataTemplate>
                         </DataGridTemplateColumn.CellTemplate>
                     </DataGridTemplateColumn>

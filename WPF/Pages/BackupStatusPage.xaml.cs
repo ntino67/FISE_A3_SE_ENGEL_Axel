@@ -23,5 +23,17 @@ namespace WPF.Pages
             InitializeComponent();
             this.DataContext = ViewModelLocator.JobViewModel;
         }
+
+        // Event handler for ProgressBar ValueChanged
+        private void TaskProgressBar_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
+        {
+            // Example logic: Update UI or log progress
+            var progressBar = sender as ProgressBar;
+            if (progressBar != null)
+            {
+                double progress = progressBar.Value;
+                // Add your logic here, e.g., logging or updating other UI elements
+            }
+        }
     }
 }

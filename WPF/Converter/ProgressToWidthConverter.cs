@@ -5,34 +5,30 @@ using System.Windows.Data;
 
 namespace WPF.Converter
 {
-    public class ProgressToWidthConverter : IValueConverter
+    public class ProgressToWidthConverter : IMultiValueConverter
     {
-        public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
+        public object Convert(object[] values, Type targetType, object parameter, CultureInfo culture)
         {
-            if (value is double progress && progress >= 0)
+            if (values.Length < 4 || 
+                !(values[0] is double value) || 
+                !(values[1] is double width) || 
+                !(values[2] is double min) || 
+                !(values[3] is double max))
             {
-                // Si un paramètre est passé, utilisez-le comme largeur maximale
-                double maxWidth = 100;
-
-                if (parameter != null && double.TryParse(parameter.ToString(), out double width))
-                {
-                    maxWidth = width;
-                }
-
-                // Obtenir la largeur du conteneur parent si disponible
-                var frameworkElement = parameter as FrameworkElement;
-                if (frameworkElement != null)
-                {
-                    maxWidth = frameworkElement.ActualWidth;
-                }
-
-                return (progress / 100.0) * maxWidth;
+                return 0d;
             }
 
-            return DependencyProperty.UnsetValue;
+            if (max - min == 0)
+                return 0d;
+
+            double percent = (value - min) / (max - min);
+            // S'assurer que percent est entre 0 et 1
+            percent = Math.Max(0, Math.Min(percent, 1));
+            
+            return width * percent;
         }
 
-        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
+        public object[] ConvertBack(object value, Type[] targetTypes, object parameter, CultureInfo culture)
         {
             throw new NotImplementedException();
         }

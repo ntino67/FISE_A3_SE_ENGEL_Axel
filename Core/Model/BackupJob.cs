@@ -35,6 +35,9 @@ namespace Core.Model
         private DateTime? _endTime;
         private long _totalBytes;
         private long _bytesCopied;
+        private Instruction _currentInstruction = Instruction.Backup;
+        private int _processedFiles;
+        private int _totalFiles;
 
         // Static property for tracking priority jobs
         public static int NumberOfPriorityJobRunning { get; set; } = 0;
@@ -253,8 +256,44 @@ namespace Core.Model
             }
         }
 
-        // Ajoutez cette propriété à la classe BackupJob
-        public Instruction CurrentInstruction { get; set; } = Instruction.Backup;
+        public Instruction CurrentInstruction
+        {
+            get => _currentInstruction;
+            set
+            {
+                if (_currentInstruction != value)
+                {
+                    _currentInstruction = value;
+                    OnPropertyChanged();
+                }
+            }
+        }
+
+        public int ProcessedFiles
+        {
+            get => _processedFiles;
+            set
+            {
+                if (_processedFiles != value)
+                {
+                    _processedFiles = value;
+                    OnPropertyChanged();
+                }
+            }
+        }
+
+        public int TotalFiles
+        {
+            get => _totalFiles;
+            set
+            {
+                if (_totalFiles != value)
+                {
+                    _totalFiles = value;
+                    OnPropertyChanged();
+                }
+            }
+        }
 
         public bool IsValid()
         {
@@ -297,8 +336,10 @@ namespace Core.Model
                 ? Directory.GetFiles(SourceDirectory, "*", SearchOption.AllDirectories)
                 : new string[0];
 
+            TotalFiles = files.Length;
             TotalBytes = files.Sum(f => new FileInfo(f).Length);
             BytesCopied = 0;
+            ProcessedFiles = 0;
 
             // Simulate real copy with delay and update progress
             foreach (var file in files)
@@ -315,6 +356,7 @@ namespace Core.Model
                 });
 
                 BytesCopied += fileLength;
+                ProcessedFiles++;
                 ProgressChanged?.Invoke(BytesCopied, TotalBytes);
             }
 

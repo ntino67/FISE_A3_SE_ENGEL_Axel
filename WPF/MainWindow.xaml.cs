@@ -27,6 +27,8 @@ namespace WPF
             DataContext = _vm;
             MainFrame.Navigate(new WelcomePage());
 
+            Initialize();
+
             JobList.ItemsSource = _vm.DisplayedJobs;
             _vm.NavigateToHome = () =>
             {
@@ -39,6 +41,27 @@ namespace WPF
                 MainFrame.Navigate(new WelcomePage());
             };
             ToastBridge.ShowToast = ShowToast;
+        }
+
+        private void Initialize()
+        {
+            // Autres initialisations...
+            ViewModelLocator.JobViewModel.NavigateToBackupStatus = () =>
+            {
+                NavigateToBackupStatusPage();
+            };
+
+            ViewModelLocator.JobViewModel.NavigateToBackupStatus = () =>
+            {
+                NavigateToPage(typeof(BackupStatusPage));
+            };
+        }
+
+        private void NavigateToBackupStatusPage()
+        {
+            MainFrame.Navigate(new BackupStatusPage());
+            { 
+            };
         }
 
         private void AddJobButton_Click(object sender, RoutedEventArgs e)
@@ -95,7 +118,8 @@ namespace WPF
         {
             var button = sender as Button;
             var job = button?.DataContext as BackupJob;
-            if (job == null) { 
+            if (job == null)
+            {
                 ShowToast("⚠️ Job selection error", 3000);
                 return;
             }
@@ -131,7 +155,6 @@ namespace WPF
         private void RunAllButton_click(object sender, RoutedEventArgs e)
         {
         }
-
 
         private void ResetSelectionButton_Click(object sender, RoutedEventArgs e)
         {
@@ -211,6 +234,25 @@ namespace WPF
         private void SettingsButton_Click(object sender, RoutedEventArgs e)
         {
             MainFrame.Navigate(new AppSettingsPage());
+        }
+        private void NavigateToPage(Type pageType)
+        {
+            if (pageType == typeof(BackupStatusPage))
+            {
+                MainFrame.Navigate(new BackupStatusPage());
+            }
+            else if (pageType == typeof(AppSettingsPage))
+            {
+                MainFrame.Navigate(new AppSettingsPage());
+            }
+            else if (pageType == typeof(WelcomePage))
+            {
+                MainFrame.Navigate(new WelcomePage());
+            }
+            else
+            {
+                throw new ArgumentException($"Unsupported page type: {pageType.Name}");
+            }
         }
     }
 }

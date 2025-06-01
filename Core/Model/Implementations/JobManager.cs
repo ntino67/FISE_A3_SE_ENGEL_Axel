@@ -158,23 +158,39 @@ namespace Core.Model.Implementations
                         progress?.Report(80 + value * 0.2f);
                     });
 
-                var extensions = _configManager.GetEncryptionFileExtensions();
-                var wildcard = _configManager.GetEncryptionWildcard();
+                    var extensions = _configManager.GetEncryptionFileExtensions();
+                    var wildcard = _configManager.GetEncryptionWildcard();
 
-                _logger.LogWarning($"Job {job.Name} - Chiffrement avec extensions: {string.Join(", ", extensions)}");
-                _logger.LogWarning($"Job {job.Name} - Chiffrement avec wildcard: {wildcard}");
+                    _logger.LogWarning($"Job {job.Name} - Chiffrement avec extensions: {string.Join(", ", extensions)}");
+                    _logger.LogWarning($"Job {job.Name} - Chiffrement avec wildcard: {wildcard}");
 
                     await CryptoHelper.Encrypt(job.TargetDirectory, extensions, wildcard, encryptionKey, encryptProgress);
                 }
 
-                job.Status = success ? JobStatus.Completed : JobStatus.Failed;
-                job.LastRunTime = DateTime.Now;
+                // Vérifier si le job a été annulé avant de terminer
+                if (job.Status != JobStatus.Canceled)
+                {
+                    job.Status = success ? JobStatus.Completed : JobStatus.Failed;
+
+                    // Ne montrer le message de succès que si le job n'a pas été annulé
+                    TimeSpan duration = DateTime.Now - startTime;
+                    _logger.LogBackupEnd(job, success, duration);
+
+                    // Si le job n'est pas annulé, on peut montrer un message de succès
+                    if (success)
+                    {
+                        job.LastRunTime = DateTime.Now;
+                    }
+                }
+                else
+                {
+                    // Si le job a été annulé, logger cette information
+                    _logger.LogWarning($"Le job {job.Name} a été annulé par l'utilisateur.");
+                }
+
                 _configManager.SaveJobs(_jobs);
 
-                TimeSpan duration = DateTime.Now - startTime;
-                _logger.LogBackupEnd(job, success, duration);
-
-                return success;
+                return job.Status != JobStatus.Canceled && success;
             }
             catch (Exception ex)
             {
@@ -196,6 +212,13 @@ namespace Core.Model.Implementations
             {
                 DirectoryInfo sourceDir = new DirectoryInfo(job.SourceDirectory);
                 FileInfo[] files = sourceDir.GetFiles("*", SearchOption.AllDirectories);
+                int totalFiles = files.Length;
+                int processedFiles = 0;
+                float fileProgressWeight = 1.0f / totalFiles; // Poids de chaque fichier dans la progression totale
+
+                // Stockez l'information dans le job pour l'affichage
+                job.TotalFiles = totalFiles;
+                job.ProcessedFiles = 0;
                 
                 bool targetIsEncrypted = false;
                 if (Directory.Exists(job.TargetDirectory))
@@ -208,9 +231,10 @@ namespace Core.Model.Implementations
 
                 foreach (FileInfo file in files)
                 {
-                    while (job.Status == JobStatus.Paused || (BackupJob.NumberOfPriorityJobRunning > 0 && job.isPriorityJob == false))
+                    while ((job.Status == JobStatus.Paused || (BackupJob.NumberOfPriorityJobRunning > 0 && job.isPriorityJob == false)) &&
+                           job.Status != JobStatus.Canceled)
                     {
-                        // Attendre que le job soit relancé
+                        // Attendre que le job soit relancé ou annulé
                         await Task.Delay(200);
                     }
                     if (job.Status == JobStatus.Canceled)
@@ -225,9 +249,17 @@ namespace Core.Model.Implementations
                     Directory.CreateDirectory(Path.GetDirectoryName(targetPath));
 
                     DateTime startCopy = DateTime.Now;
-                    await CopyFile(file.FullName, targetPath);
+                    
+                    // Utiliser un IProgress local pour ce fichier, qui sera converti en progression globale
+                    var fileProgress = new Progress<float>(p => 
+                    {
+                        float overallProgress = (processedFiles * fileProgressWeight) + (p * fileProgressWeight);
+                        progress?.Report(overallProgress * 100); // Convertir en pourcentage (0-100)
+                    });
+                    
+                    await CopyFile(file.FullName, targetPath, fileProgress);
+                    
                     long transferTime = (long)(DateTime.Now - startCopy).TotalMilliseconds;
-
                     _logger.LogBackupOperation(job.Name, file.FullName, targetPath, file.Length, transferTime, "SUCCESS");
 
                     if (targetIsEncrypted)
@@ -243,9 +275,15 @@ namespace Core.Model.Implementations
                                 $"ENCRYPT_ERROR: {ex.Message}");
                         }
                     }
+
+                    // Mise à jour du nombre de fichiers traités
+                    processedFiles++;
+                    job.ProcessedFiles = processedFiles;
+                    
+                    // Rapport de progression après chaque fichier complet
                     if(job.Status == JobStatus.Running)
                     {
-                        progress?.Report((float)files.ToList().IndexOf(file) / files.Length * 100);
+                        progress?.Report((float)processedFiles / totalFiles * 100);
                     }
                 }
 
@@ -280,9 +318,10 @@ namespace Core.Model.Implementations
 
                 foreach (FileInfo file in files)
                 {
-                    while (job.Status == JobStatus.Paused || (BackupJob.NumberOfPriorityJobRunning > 0 && job.isPriorityJob == false))
+                    while ((job.Status == JobStatus.Paused || (BackupJob.NumberOfPriorityJobRunning > 0 && job.isPriorityJob == false)) &&
+                           job.Status != JobStatus.Canceled)
                     {
-                        // Attendre que le job soit relancé
+                        // Attendre que le job soit relancé ou annulé
                         await Task.Delay(200);
                     }
                     if (job.Status == JobStatus.Canceled)
@@ -307,7 +346,7 @@ namespace Core.Model.Implementations
                         Directory.CreateDirectory(Path.GetDirectoryName(targetPath));
 
                         DateTime startCopy = DateTime.Now;
-                        await CopyFile(file.FullName, targetPath);
+                        await CopyFile(file.FullName, targetPath, progress);
                         long transferTime = (long)(DateTime.Now - startCopy).TotalMilliseconds;
 
                         _logger.LogBackupOperation(job.Name, file.FullName, targetPath, file.Length, transferTime, "SUCCESS");
@@ -337,12 +376,26 @@ namespace Core.Model.Implementations
             }
         }
 
-        private async Task CopyFile(string sourcePath, string targetPath)
+        private async Task CopyFile(string sourcePath, string targetPath, IProgress<float> progress = null)
         {
-            using (FileStream sourceStream = new FileStream(sourcePath, FileMode.Open, FileAccess.Read, FileShare.Read, 4096, true))
-            using (FileStream targetStream = new FileStream(targetPath, FileMode.Create, FileAccess.Write, FileShare.None, 4096, true))
+            const int bufferSize = 81920; // 80KB buffer pour de meilleures performances
+            byte[] buffer = new byte[bufferSize];
+            
+            using (FileStream sourceStream = new FileStream(sourcePath, FileMode.Open, FileAccess.Read, FileShare.Read, bufferSize, true))
+            using (FileStream targetStream = new FileStream(targetPath, FileMode.Create, FileAccess.Write, FileShare.None, bufferSize, true))
             {
-                await sourceStream.CopyToAsync(targetStream);
+                long fileSize = sourceStream.Length;
+                long totalBytesRead = 0;
+                int bytesRead;
+                
+                while ((bytesRead = await sourceStream.ReadAsync(buffer, 0, buffer.Length)) > 0)
+                {
+                    await targetStream.WriteAsync(buffer, 0, bytesRead);
+                    totalBytesRead += bytesRead;
+                    
+                    // Rapport de progression pour ce fichier individuel
+                    progress?.Report((float)totalBytesRead / fileSize);
+                }
             }
         }
 
@@ -395,6 +448,39 @@ namespace Core.Model.Implementations
             }
             job.Status = JobStatus.Completed;
             return true;
+        }
+
+        public Task PauseBackupJob(string jobId)
+        {
+            BackupJob job = _jobs.FirstOrDefault(j => j.Id == jobId);
+            if (job != null)
+            {
+                job.Status = JobStatus.Paused;
+                _configManager.SaveJobs(_jobs);
+            }
+            return Task.CompletedTask;
+        }
+
+        public Task ResumeBackupJob(string jobId)
+        {
+            BackupJob job = _jobs.FirstOrDefault(j => j.Id == jobId);
+            if (job != null)
+            {
+                job.Status = JobStatus.Running;
+                _configManager.SaveJobs(_jobs);
+            }
+            return Task.CompletedTask;
+        }
+
+        public Task StopBackupJob(string jobId)
+        {
+            BackupJob job = _jobs.FirstOrDefault(j => j.Id == jobId);
+            if (job != null)
+            {
+                job.Status = JobStatus.Canceled;
+                _configManager.SaveJobs(_jobs);
+            }
+            return Task.CompletedTask;
         }
     }
 }

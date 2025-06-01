@@ -17,5 +17,8 @@ namespace Core.Model.Interfaces
         bool JobExists(string jobName);
         int GetJobCount();
         Task<bool> Encryption(bool isEncrypted,BackupJob job, string Key, IProgress <float> progress);
+        Task PauseBackupJob(string jobId);
+        Task ResumeBackupJob(string jobId);
+        Task StopBackupJob(string jobId);
     }
 }
