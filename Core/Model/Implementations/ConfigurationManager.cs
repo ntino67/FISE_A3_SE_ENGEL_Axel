@@ -4,6 +4,7 @@ using System.IO;
 using Newtonsoft.Json;
 using Core.Model.Interfaces;
 using Core.Utils;
+using System.Threading;
 
 namespace Core.Model.Implementations
 {
@@ -13,6 +14,8 @@ namespace Core.Model.Implementations
         private readonly string _stateFilePath;
         private readonly string _logDirectory;
         private readonly string _settingsFilePath;
+        private readonly object _stateLock = new object(); // Objet de verrouillage pour state.json
+        private readonly object _settingsLock = new object(); // Objet de verrouillage pour settings.json
 
         public ConfigurationManager(string configDirectory)
         {
@@ -31,44 +34,63 @@ namespace Core.Model.Implementations
 
         public void SaveJobs(List<BackupJob> jobs)
         {
-            
-            string json = JsonConvert.SerializeObject(jobs, Formatting.Indented);
-            File.WriteAllText(_stateFilePath, json);
+            lock (_stateLock) // Verrouiller l'accès pendant l'écriture
+            {
+                string json = JsonConvert.SerializeObject(jobs, Formatting.Indented);
+
+                // Utiliser FileStream avec FileShare.None pour s'assurer que personne d'autre n'accède au fichier
+                using (FileStream fs = new FileStream(_stateFilePath, FileMode.Create, FileAccess.Write, FileShare.None))
+                using (StreamWriter writer = new StreamWriter(fs))
+                {
+                    writer.Write(json);
+                    writer.Flush();
+                }
+            }
         }
 
         public List<BackupJob> LoadJobs()
         {
-            if (!File.Exists(_stateFilePath))
-                return new List<BackupJob>();
+            lock (_stateLock) // Verrouiller l'accès pendant la lecture
+            {
+                if (!File.Exists(_stateFilePath))
+                    return new List<BackupJob>();
 
-            string json = File.ReadAllText(_stateFilePath);
-            try
-            {
-                var list = JsonConvert.DeserializeObject<List<BackupJob>>(json) ?? new List<BackupJob>();
-                //Set all status to Ready and reset progress
-                foreach (var job in list)
+                try
                 {
-                    job.Status = JobStatus.Ready;
-                    job.Progress = 0;
+                    string json;
+                    using (FileStream fs = new FileStream(_stateFilePath, FileMode.Open, FileAccess.Read, FileShare.Read))
+                    using (StreamReader reader = new StreamReader(fs))
+                    {
+                        json = reader.ReadToEnd();
+                    }
+
+                    var list = JsonConvert.DeserializeObject<List<BackupJob>>(json) ?? new List<BackupJob>();
+                    //Set all status to Ready and reset progress
+                    foreach (BackupJob job in list)
+                    {
+                        job.Status = JobStatus.Ready;
+                        job.Progress = 0;
+                    }
+                    return list;
                 }
-                return list;
-            }
-            catch
-            {
-                return new List<BackupJob>();
+                catch (Exception ex)
+                {
+                    Console.WriteLine($"Error loading jobs: {ex.Message}");
+                    return new List<BackupJob>();
+                }
             }
         }
 
         public void SaveLanguage(string languageCode)
         {
-            var settings = LoadSettings();
+            Settings settings = LoadSettings();
             settings.Language = languageCode;
             SaveSettings(settings);
         }
 
         public string GetLanguage()
         {
-            var settings = LoadSettings();
+            Settings settings = LoadSettings();
             return settings.Language;
         }
 
@@ -89,26 +111,43 @@ namespace Core.Model.Implementations
 
         private Settings LoadSettings()
         {
-            if (!File.Exists(_settingsFilePath))
-                return new Settings();
+            lock (_settingsLock) // Verrouiller l'accès aux paramètres
+            {
+                if (!File.Exists(_settingsFilePath))
+                    return new Settings();
 
-            string json = File.ReadAllText(_settingsFilePath);
-            try
-            {
-                return JsonConvert.DeserializeObject<Settings>(json) ?? new Settings();
-            }
-            catch
-            {
-                return new Settings();
+                try
+                {
+                    string json;
+                    using (FileStream fs = new FileStream(_settingsFilePath, FileMode.Open, FileAccess.Read, FileShare.Read))
+                    using (StreamReader reader = new StreamReader(fs))
+                    {
+                        json = reader.ReadToEnd();
+                    }
+
+                    return JsonConvert.DeserializeObject<Settings>(json) ?? new Settings();
+                }
+                catch
+                {
+                    return new Settings();
+                }
             }
         }
 
         private void SaveSettings(Settings settings)
         {
-            string json = JsonConvert.SerializeObject(settings, Formatting.Indented);
-            File.WriteAllText(_settingsFilePath, json);
-        }
+            lock (_settingsLock) // Verrouiller l'accès aux paramètres
+            {
+                string json = JsonConvert.SerializeObject(settings, Formatting.Indented);
 
+                using (FileStream fs = new FileStream(_settingsFilePath, FileMode.Create, FileAccess.Write, FileShare.None))
+                using (StreamWriter writer = new StreamWriter(fs))
+                {
+                    writer.Write(json);
+                    writer.Flush();
+                }
+            }
+        }
         private class Settings
         {
             public string Language { get; set; } = "en-US";
@@ -124,64 +163,64 @@ namespace Core.Model.Implementations
 
         public List<string> GetBlockingApplications()
         {
-            var settings = LoadSettings();
+            Settings settings = LoadSettings();
             return settings.BlockingApplications ?? new List<string>();
         }
 
         public void SaveBlockingApplications(List<string> applicationNames)
         {
-            var settings = LoadSettings();
+            Settings settings = LoadSettings();
             settings.BlockingApplications = applicationNames ?? new List<string>();
             SaveSettings(settings);
         }
         public List<string> GetEncryptionFileExtensions()
         {
-            var settings = LoadSettings();
+            Settings settings = LoadSettings();
             return settings.EncryptionFileExtensions ?? new List<string> ();
         }
 
         public void SaveEncryptionFileExtensions(List<string> extensions)
         {
-            var settings = LoadSettings();
+            Settings settings = LoadSettings();
             settings.EncryptionFileExtensions = extensions ?? new List<string>();
             SaveSettings(settings);
         }
 
         public string GetEncryptionWildcard()
         {
-            var settings = LoadSettings();
+            Settings settings = LoadSettings();
             return settings.EncryptionWildcard ?? "";
         }
 
         public void SaveEncryptionWildcard(string wildcard)
         {
-            var settings = LoadSettings();
+            Settings settings = LoadSettings();
             settings.EncryptionWildcard = wildcard;
             SaveSettings(settings);
         }
 
         public List<string> GetPriorityFileExtensions()
         {
-            var settings = LoadSettings();
+            Settings settings = LoadSettings();
             return settings.PriorityFileExtensions ?? new List<string>();
         }
 
         public void SavePriorityFileExtensions(List<string> extensions)
         {
-            var settings = LoadSettings();
+            Settings settings = LoadSettings();
             settings.PriorityFileExtensions = extensions ?? new List<string>();
             SaveSettings(settings);
         }
 
         public long GetMaxFileSizeKB()
         {
-            var settings = LoadSettings();
+            Settings settings = LoadSettings();
             return settings.MaxFileSizeKB;
         }
 
         public void SaveMaxFileSizeKB(long maxFileSizeKB)
         {
-            var settings = LoadSettings();
+            Settings settings = LoadSettings();
             settings.MaxFileSizeKB = maxFileSizeKB;
             SaveSettings(settings);
         }

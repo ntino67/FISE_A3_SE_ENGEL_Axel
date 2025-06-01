@@ -1,10 +1,12 @@
 using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.IO;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
@@ -242,35 +244,54 @@ namespace Core.ViewModel
 
         public async Task ExecuteAllJobs()
         {
+            var tasks = new List<Task>();
 
             foreach (var job in Jobs)
             {
+                var localJob = job; // Capture locale pour éviter les problèmes de closure
                 var progress = new Progress<float>(p =>
                 {
                     Application.Current.Dispatcher.Invoke(() =>
                     {
-                        job.Progress = p;
+                        localJob.Progress = p;
                     });
                 });
-                ShouldItBePriority(job); // Vérifier si le job est prioritaire
-                if (job.isPriorityJob) { 
-                    BackupJob.NumberOfPriorityJobRunning++;
+
+                ShouldItBePriority(localJob);
+                if (localJob.isPriorityJob)
+                {
+                    BackupJob.IncrementPriorityJobCount();
                 }
 
-                await _jobManager.ExecuteBackupJob(job.Id, progress, this.EncryptionKey);
+                var task = Task.Run(async () =>
+                {
+                    try
+                    {
+                        return await _jobManager.ExecuteBackupJob(localJob.Id, progress, EncryptionKey);
+                    }
+                    finally
+                    {
+                        if (localJob.isPriorityJob)
+                            BackupJob.DecrementPriorityJobCount();
+                    }
+                });
 
-                if (job.isPriorityJob)
-                    BackupJob.NumberOfPriorityJobRunning--;
+                tasks.Add(task);
             }
+
+            await Task.WhenAll(tasks);
 
             _ui.ShowToast("✅ Toutes les sauvegardes sont terminées.", 3000);
         }
 
+
         public async Task ExecuteSelectedJobs()
         {
+            var tasks = new List<Task<bool>>();
 
             foreach (var job in Jobs.Where(j => j.IsChecked))
             {
+                var localJob = job; // Capture locale pour éviter les problèmes de closure
                 var progress = new Progress<float>(p =>
                 {
                     Application.Current.Dispatcher.Invoke(() =>
@@ -278,15 +299,32 @@ namespace Core.ViewModel
                         job.Progress = p;
                     });
                 });
-                ShouldItBePriority(job); // Vérifier si le job est prioritaire
+                ShouldItBePriority(job); 
                 if (job.isPriorityJob)
-                    BackupJob.NumberOfPriorityJobRunning++;
+                {
+                    BackupJob.IncrementPriorityJobCount(); // Utiliser la méthode thread-safe
+                }
 
-                await _jobManager.ExecuteBackupJob(job.Id, progress, this.EncryptionKey);
+                // Ajouter la tâche à la liste sans await
+                var jobTask = Task.Run(async () => {
+                    try
+                    {
+                        bool result = await _jobManager.ExecuteBackupJob(job.Id, progress, this.EncryptionKey);
+                        return result;
+                    }
+                    finally
+                    {
+                        if (job.isPriorityJob)
+                            BackupJob.DecrementPriorityJobCount(); // Utiliser la méthode thread-safe
+                    }
+                });
 
-                if (job.isPriorityJob)
-                    BackupJob.NumberOfPriorityJobRunning--;
+                tasks.Add(jobTask);
             }
+
+            // Attendre que toutes les tâches soient terminées
+            await Task.WhenAll(tasks);
+
             _ui.ShowToast("✅ Sauvegardes sélectionnées terminées.", 3000);
         }
 
@@ -386,6 +424,7 @@ namespace Core.ViewModel
                 _ui.ShowToast("🔄 " + Application.Current.Resources["JobAlreadyRunning"] + ".", 3000);
                 return false;
             }
+
             string keyToUse = this.EncryptionKey;
             var progress = new Progress<float>(p =>
             {
@@ -394,27 +433,37 @@ namespace Core.ViewModel
                     CurrentJob.Progress = p;
                 });
             });
+
             _instructionHandler.AddToQueue(CurrentJob, Instruction.Backup);
             ShouldItBePriority(CurrentJob);
-            if (CurrentJob.isPriorityJob)
-            {
-                BackupJob.NumberOfPriorityJobRunning++;
-            }
-            bool result = await _jobManager.ExecuteBackupJob(CurrentJob.Id, progress, keyToUse);
-            if(CurrentJob.isPriorityJob)
-            {
-                BackupJob.NumberOfPriorityJobRunning--;
-            }
-            OnPropertyChanged(nameof(EncryptionStatus));
 
-
-            if (result && CurrentJob.Status == JobStatus.Completed)
+            try
             {
-                _ui.ShowToast("✅ " + Application.Current.Resources["BackupComplete"] as string + "!", 3000);
-            }
+                if (CurrentJob.isPriorityJob)
+                {
+                    BackupJob.IncrementPriorityJobCount();
+                }
 
-            return result;
+                bool result = await _jobManager.ExecuteBackupJob(CurrentJob.Id, progress, keyToUse);
+
+                OnPropertyChanged(nameof(EncryptionStatus));
+
+                if (result && CurrentJob.Status == JobStatus.Completed)
+                {
+                    _ui.ShowToast("✅ " + Application.Current.Resources["BackupComplete"] as string + "!", 3000);
+                }
+
+                return result;
+            }
+            finally
+            {
+                if (CurrentJob.isPriorityJob)
+                {
+                    BackupJob.DecrementPriorityJobCount();
+                }
+            }
         }
+
 
         private void ShouldItBePriority(BackupJob currentJob)
         {

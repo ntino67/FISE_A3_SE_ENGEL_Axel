@@ -5,6 +5,7 @@ using System.Linq;
 using System.Xml.Serialization;
 using Newtonsoft.Json;
 using Core.Model.Interfaces;
+using System.Threading;
 
 namespace Core.Model.Implementations
 {
@@ -12,14 +13,17 @@ namespace Core.Model.Implementations
     {
         private readonly string _logDirectory;
         private readonly XmlSerializer _xmlSerializer;
+        private readonly object _jsonLogLock = new object(); // Verrou pour les fichiers JSON
+        private readonly object _xmlLogLock = new object();  // Verrou pour les fichiers XML
+        private readonly object _warningLogLock = new object(); // Verrou pour le fichier warnings.log
 
         public Logger(string logDirectory)
         {
             _logDirectory = logDirectory;
             Directory.CreateDirectory(logDirectory);
             _xmlSerializer = new XmlSerializer(typeof(List<LogEntry>), new XmlRootAttribute("LogEntries"));
-
         }
+
         public void LogBackupOperation(string jobName, string sourcePath, string destinationPath, long fileSize, long transferTimeMs, string status)
         {
             LogEntry logEntry = new LogEntry
@@ -80,6 +84,7 @@ namespace Core.Model.Implementations
             };
             WriteToLogFile(logEntry);
         }
+
         public void LogEncryptionEnd(BackupJob job, bool success, long duration)
         {
             long encryptionDuration = success ? duration : -1;
@@ -91,24 +96,33 @@ namespace Core.Model.Implementations
                 EncryptedDirectoryPath = job.TargetDirectory,
                 EncryptionDuration = encryptionDuration,
                 Status = success ? "ENCRYPTION_COMPLETED" : "ENCRYPTION_FAILED"
-            }; 
+            };
             WriteToLogFile(logEntry);
         }
+
         public List<LogEntry> GetTodayLogs()
         {
             string logFilePath = GetLogFilePath(DateTime.Now);
 
-            if (!File.Exists(logFilePath))
-                return new List<LogEntry>();
+            lock (_jsonLogLock) // Verrouiller pendant la lecture du fichier JSON
+            {
+                if (!File.Exists(logFilePath))
+                    return new List<LogEntry>();
 
-            string json = File.ReadAllText(logFilePath);
-            try
-            {
-                return JsonConvert.DeserializeObject<List<LogEntry>>(json) ?? new List<LogEntry>();
-            }
-            catch
-            {
-                return new List<LogEntry>();
+                try
+                {
+                    using (FileStream fs = new FileStream(logFilePath, FileMode.Open, FileAccess.Read, FileShare.Read))
+                    using (StreamReader reader = new StreamReader(fs))
+                    {
+                        string json = reader.ReadToEnd();
+                        return JsonConvert.DeserializeObject<List<LogEntry>>(json) ?? new List<LogEntry>();
+                    }
+                }
+                catch (Exception ex)
+                {
+                    LogWarning($"Error reading log file: {ex.Message}");
+                    return new List<LogEntry>();
+                }
             }
         }
 
@@ -140,58 +154,70 @@ namespace Core.Model.Implementations
         {
             string logFilePath = GetJsonLogFilePath(DateTime.Now);
 
-            List<LogEntry> existingEntries = new List<LogEntry>();
-            if (File.Exists(logFilePath))
+            lock (_jsonLogLock) // Verrouiller pendant la lecture/écriture du fichier JSON
             {
-                string json = File.ReadAllText(logFilePath);
+                List<LogEntry> existingEntries = new List<LogEntry>();
+
                 try
                 {
-                    existingEntries = JsonConvert.DeserializeObject<List<LogEntry>>(json) ?? new List<LogEntry>();
+                    if (File.Exists(logFilePath))
+                    {
+                        using (FileStream fs = new FileStream(logFilePath, FileMode.Open, FileAccess.Read, FileShare.Read))
+                        using (StreamReader reader = new StreamReader(fs))
+                        {
+                            string json = reader.ReadToEnd();
+                            existingEntries = JsonConvert.DeserializeObject<List<LogEntry>>(json) ?? new List<LogEntry>();
+                        }
+                    }
+
+                    existingEntries.Add(entry);
+
+                    string updatedJson = JsonConvert.SerializeObject(existingEntries, Formatting.Indented);
+
+                    using (FileStream fs = new FileStream(logFilePath, FileMode.Create, FileAccess.Write, FileShare.None))
+                    using (StreamWriter writer = new StreamWriter(fs))
+                    {
+                        writer.Write(updatedJson);
+                        writer.Flush();
+                    }
                 }
-                catch
+                catch (Exception ex)
                 {
-                    // En cas d'erreur, on continue avec une liste vide
+                    // Log the error but continue execution
+                    Console.WriteLine($"Error writing to JSON log: {ex.Message}");
                 }
             }
-
-            existingEntries.Add(entry);
-
-            string updatedJson = JsonConvert.SerializeObject(existingEntries, Formatting.Indented);
-            File.WriteAllText(logFilePath, updatedJson);
         }
 
         private void WriteToXmlLogFile(LogEntry entry)
         {
             string logFilePath = GetXmlLogFilePath(DateTime.Now);
 
-            List<LogEntry> existingEntries = new List<LogEntry>();
-            if (File.Exists(logFilePath))
+            lock (_xmlLogLock) // Verrouiller pendant la lecture/écriture du fichier XML
             {
+                List<LogEntry> existingEntries = new List<LogEntry>();
+
                 try
                 {
-                    using (FileStream stream = new FileStream(logFilePath, FileMode.Open))
+                    if (File.Exists(logFilePath))
                     {
-                        existingEntries = (List<LogEntry>)_xmlSerializer.Deserialize(stream);
+                        using (FileStream stream = new FileStream(logFilePath, FileMode.Open, FileAccess.Read, FileShare.Read))
+                        {
+                            existingEntries = (List<LogEntry>)_xmlSerializer.Deserialize(stream);
+                        }
+                    }
+
+                    existingEntries.Add(entry);
+
+                    using (FileStream stream = new FileStream(logFilePath, FileMode.Create, FileAccess.Write, FileShare.None))
+                    {
+                        _xmlSerializer.Serialize(stream, existingEntries);
                     }
                 }
-                catch
+                catch (Exception ex)
                 {
-                    // En cas d'erreur, on continue avec une liste vide
+                    LogWarning($"Error writing to XML log file: {ex.Message}");
                 }
-            }
-
-            existingEntries.Add(entry);
-
-            try
-            {
-                using (FileStream stream = new FileStream(logFilePath, FileMode.Create))
-                {
-                    _xmlSerializer.Serialize(stream, existingEntries);
-                }
-            }
-            catch (Exception ex)
-            {
-                LogWarning($"Error writing to XML log file: {ex.Message}");
             }
         }
 
@@ -206,15 +232,22 @@ namespace Core.Model.Implementations
         {
             try
             {
-                string logFilePath = Path.Combine(_logDirectory, fileName);
-                File.AppendAllText(logFilePath, message + Environment.NewLine);
+                lock (_warningLogLock) // Verrouiller pendant l'écriture du fichier d'avertissement
+                {
+                    string logFilePath = Path.Combine(_logDirectory, fileName);
+
+                    using (FileStream fs = new FileStream(logFilePath, FileMode.Append, FileAccess.Write, FileShare.None))
+                    using (StreamWriter writer = new StreamWriter(fs))
+                    {
+                        writer.WriteLine(message);
+                        writer.Flush();
+                    }
+                }
             }
             catch
             {
                 // La journalisation ne doit pas provoquer d'erreur dans l'application
             }
         }
-
     }
 }
-

@@ -17,6 +17,7 @@ namespace Core.Model.Implementations
         private readonly IConfigurationManager _configManager;
         private readonly IUIService _uiService;
         private readonly IResourceService _resourceService;
+        private readonly object _jobsLock = new object();
 
         public JobManager(ILogger logger, IConfigurationManager configManager, IUIService uiService, IResourceService resourceService)
         {
@@ -38,26 +39,33 @@ namespace Core.Model.Implementations
 
         public void UpdateBackupJob(BackupJob job)
         {
-            BackupJob existingJob = _jobs.FirstOrDefault(j => j.Id == job.Id);
-            if (existingJob == null)
-                throw new InvalidOperationException($"Le job avec l'ID {job.Id} n'existe pas.");
-            // Vérifier si le nouveau nom n'est pas déjà utilisé par un autre job
-            if (job.Name != existingJob.Name && _jobs.Any(j => j.Name == job.Name && j.Id != job.Id))
-                throw new InvalidOperationException($"Un job avec le nom {job.Name} existe déjà.");
+            lock (_jobsLock)
+            {
 
-            int index = _jobs.IndexOf(existingJob);
-            _jobs[index] = job;
-            _configManager.SaveJobs(_jobs);
+                BackupJob existingJob = _jobs.FirstOrDefault(j => j.Id == job.Id);
+                if (existingJob == null)
+                    throw new InvalidOperationException($"Le job avec l'ID {job.Id} n'existe pas.");
+                // Vérifier si le nouveau nom n'est pas déjà utilisé par un autre job
+                if (job.Name != existingJob.Name && _jobs.Any(j => j.Name == job.Name && j.Id != job.Id))
+                    throw new InvalidOperationException($"Un job avec le nom {job.Name} existe déjà.");
+
+                int index = _jobs.IndexOf(existingJob);
+                _jobs[index] = job;
+                _configManager.SaveJobs(_jobs);
+            }
         }
 
         public bool DeleteBackupJob(string jobId)
         {
-            BackupJob job = _jobs.FirstOrDefault(j => j.Id == jobId);
-            if (job == null)
-                return false;
-            _jobs.Remove(job);
-            _configManager.SaveJobs(_jobs);
-            return true;
+            lock (_jobsLock)
+            {
+                BackupJob job = _jobs.FirstOrDefault(j => j.Id == jobId);
+                if (job == null)
+                    return false;
+                _jobs.Remove(job);
+                _configManager.SaveJobs(_jobs);
+                return true;
+            }
         }
 
         public List<BackupJob> GetAllJobs()
@@ -427,5 +435,7 @@ namespace Core.Model.Implementations
             job.Status = JobStatus.Completed;
             return true;
         }
+
+
     }
 }
