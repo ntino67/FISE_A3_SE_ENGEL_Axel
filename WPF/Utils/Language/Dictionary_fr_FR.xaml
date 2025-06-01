@@ -37,6 +37,11 @@
     <system:String x:Key="OpenFile">Ouvrir</system:String>
     <system:String x:Key="ShowInFolder">Afficher dans le dossier</system:String>
     
+    <!--  Priority extensions -->
+    <system:String x:Key="PriorityFilesTitle">Extensions de fichiers prioritaires</system:String>
+    <system:String x:Key="PriorityFilesDescription">Les fichiers avec ces extensions seront traités en priorité lors des sauvegardes. Les autres jobs seront mis en pause jusqu'à ce que tous les fichiers prioritaires soient traités.</system:String>
+    <system:String x:Key="Add">Ajouter</system:String>
+
 
     <!-- Buttons -->
     <system:String x:Key="Save">Enregistrer</system:String>

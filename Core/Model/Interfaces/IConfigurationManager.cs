@@ -21,5 +21,8 @@ namespace Core.Model.Interfaces
         void SaveEncryptionFileExtensions(List<string> extensions);
         string GetEncryptionWildcard();
         void SaveEncryptionWildcard(string wildcard);
+        List<string> GetPriorityFileExtensions();
+        void SavePriorityFileExtensions(List<string> extensions);
+
     }
 }

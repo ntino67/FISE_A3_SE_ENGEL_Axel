@@ -80,8 +80,8 @@ namespace WPF.Infrastructure
                 _jobManager = new JobManager(_logger, _configManager, _iuiService, _resourceService);
 
                 _instructionHandlerViewModel = new InstructionHandlerViewModel(_jobManager, _iuiService);
-                _jobViewModel = new JobViewModel(_jobManager, _iuiService, _commandFactory, _instructionHandlerViewModel);
-                _settingsViewModel = new SettingsViewModel(_configManager, _localizationService, _logger);
+                _jobViewModel = new JobViewModel(_jobManager, _iuiService, _commandFactory, _instructionHandlerViewModel, _configManager);
+                _settingsViewModel = new SettingsViewModel(_configManager, _localizationService, _logger, _commandFactory);
 
 
 
