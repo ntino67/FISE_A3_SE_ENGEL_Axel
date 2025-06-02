@@ -1,7 +1,5 @@
 ﻿using System;
 using System.IO;
-using System.Windows;
-using System.Windows.Input;
 using Core.Model.Implementations;
 using Core.Model.Interfaces;
 using Core.ViewModel;
@@ -67,16 +65,6 @@ namespace WPF.Infrastructure
             }
         }
 
-        public static IBackupStatusViewModel BackupStatusViewModel
-        {
-            get
-            {
-                if (_backupStatusViewModel == null)
-                    throw new InvalidOperationException("ViewModelLocator has not been initialized. Call Initialize() first.");
-                return _backupStatusViewModel;
-            }
-        }
-
         public static void Initialize()
         {
             if (_configManager != null)
@@ -99,7 +87,6 @@ namespace WPF.Infrastructure
                 _instructionHandlerViewModel = new InstructionHandlerViewModel(_jobManager, _iuiService);
                 _jobViewModel = new JobViewModel(_jobManager, _iuiService, _commandFactory, _instructionHandlerViewModel, _configManager);
                 _settingsViewModel = new SettingsViewModel(_configManager, _localizationService, _logger, _commandFactory);
-                _backupStatusViewModel = new BackupStatusViewModel((JobViewModel)_jobViewModel);
             }
             catch (Exception ex)
             {

@@ -1,4 +1,6 @@
-/*using System;
+// WARN : Deprecated
+
+using System;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Threading.Tasks;
@@ -214,7 +216,7 @@ namespace Core.ViewModel
         {
             if (item == null || item.JobReference == null) return;
             _jobViewModel.CurrentJob = item.JobReference;
-            _jobViewModel.StopCurrentJob();
+            _jobViewModel.StopCurrentJob(item.JobReference);
         }
     }
-}*/
+}
