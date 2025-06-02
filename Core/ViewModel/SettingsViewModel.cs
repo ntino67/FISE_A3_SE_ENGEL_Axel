@@ -24,8 +24,7 @@ namespace Core.ViewModel
         private ObservableCollection<string> _priorityExtensions;
         private string _newPriorityExtension;
         private long _maxFileSizeKB;
-
-
+        
         /// <summary>
         /// Taille maximale de fichier (en kB) au-delà de laquelle les transferts simultanés sont interdits
         /// </summary>
