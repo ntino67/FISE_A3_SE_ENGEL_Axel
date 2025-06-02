@@ -124,7 +124,7 @@ namespace Tests
             Assert.That(_jobManager.GetJobCount(), Is.EqualTo(1));
         }
         
-                [Test]
+        [Test]
         public async Task ExecuteBackupJob_CopiesFilesAndReportsProgress()
         {
             // Arrange: Create temp source/target dirs and file
@@ -187,6 +187,61 @@ namespace Tests
             Directory.Delete(tempTarget);
             File.Delete(sourceFile);
             Directory.Delete(tempSource);
+        }
+        
+        [Test]
+        public async Task ExecuteBackupJob_CancelsIfBlockingAppDetected()
+        {
+            // Arrange temp dirs/files as before, but NO need for real process
+            string tempSource = Path.Combine(Path.GetTempPath(), Path.GetRandomFileName());
+            string tempTarget = Path.Combine(Path.GetTempPath(), Path.GetRandomFileName());
+            Directory.CreateDirectory(tempSource);
+            Directory.CreateDirectory(tempTarget);
+            File.WriteAllText(Path.Combine(tempSource, "file.txt"), "block me");
+
+            var job = new BackupJob
+            {
+                Name = "BlockedJob",
+                Id = Guid.NewGuid().ToString(),
+                SourceDirectory = tempSource,
+                TargetDirectory = tempTarget,
+                Type = Core.Utils.BackupType.Full
+            };
+
+            var loggerMock = new Mock<ILogger>();
+            var configMock = new Mock<IConfigurationManager>();
+            var uiServiceMock = new Mock<IUIService>();
+            var resourceServiceMock = new Mock<IResourceService>();
+            var processCheckerMock = new Mock<IProcessChecker>();
+
+            configMock.Setup(x => x.LoadJobs()).Returns(new List<BackupJob>());
+            configMock.Setup(x => x.GetBlockingApplications()).Returns(new List<string> { "FakeApp" });
+            configMock.Setup(x => x.GetEncryptionFileExtensions()).Returns(new List<string>());
+            configMock.Setup(x => x.GetEncryptionWildcard()).Returns(string.Empty);
+
+            // Fake "blocking app is running"
+            processCheckerMock.Setup(x => x.IsProcessRunning("FakeApp")).Returns(true);
+
+            var jobManager = new JobManager(
+                loggerMock.Object,
+                configMock.Object,
+                uiServiceMock.Object,
+                resourceServiceMock.Object,
+                processCheckerMock.Object
+            );
+            jobManager.AddBackupJob(job);
+
+            // Act
+            var result = await jobManager.ExecuteBackupJob(job.Id, null, null);
+
+            // Assert
+            Assert.That(result, Is.False);
+            Assert.That(job.Status, Is.EqualTo(JobStatus.Canceled));
+            loggerMock.Verify(x => x.LogWarning(It.Is<string>(msg => msg.Contains("n'a pas pu demarrer"))), Times.Once);
+
+            // Cleanup
+            Directory.Delete(tempTarget, true);
+            Directory.Delete(tempSource, true);
         }
     }
 }

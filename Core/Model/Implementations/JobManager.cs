@@ -19,13 +19,15 @@ namespace Core.Model.Implementations
         private readonly IUIService _uiService;
         private readonly IResourceService _resourceService;
         private readonly object _jobsLock = new object();
+        private readonly IProcessChecker _processChecker;
 
-        public JobManager(ILogger logger, IConfigurationManager configManager, IUIService uiService, IResourceService resourceService)
+        public JobManager(ILogger logger, IConfigurationManager configManager, IUIService uiService, IResourceService resourceService, IProcessChecker processChecker = null)
         {
             _logger = logger;
             _configManager = configManager;
             _uiService = uiService;
             _resourceService = resourceService;
+            _processChecker = processChecker ?? new DefaultProcessChecker();
             _jobs = configManager.LoadJobs();
         }
 
@@ -94,8 +96,7 @@ namespace Core.Model.Implementations
             BackupJob job = _jobs.FirstOrDefault(j => j.Id == jobId);
             if (job == null)
                 return false;
-            await Task.Run(() => ExecuteBackup(job, progress, encryptionKey));
-            return true;
+            return await ExecuteBackup(job, progress, encryptionKey);
         }
 
         public async Task<List<bool>> ExecuteAllBackupJobs(IProgress<float> progress)
@@ -126,19 +127,15 @@ namespace Core.Model.Implementations
             {
                 foreach (string app in blockingApps)
                 {
-                    if (!string.IsNullOrWhiteSpace(app))
+                    if (!string.IsNullOrWhiteSpace(app) && _processChecker.IsProcessRunning(app))
                     {
-                        Process[] processes = Process.GetProcessesByName(app);
-                        if (processes.Length > 0)
-                        {
-                            string message = _resourceService.GetString("BackupBlockedByApp", app);
+                        string message = _resourceService.GetString("BackupBlockedByApp", app);
 
-                            _uiService.ShowToast(message, 5000);
-                            _logger.LogWarning($"Le job {job.Name} n'a pas pu demarrer : l'application bloquante {app} est en cours d'execution.");
-                            job.Status = JobStatus.Canceled;
-                            _configManager.SaveJobs(_jobs);
-                            return false;
-                        }
+                        _uiService.ShowToast(message, 5000);
+                        _logger.LogWarning($"Le job {job.Name} n'a pas pu demarrer : l'application bloquante {app} est en cours d'execution.");
+                        job.Status = JobStatus.Canceled;
+                        _configManager.SaveJobs(_jobs);
+                        return false;
                     }
                 }
             }
