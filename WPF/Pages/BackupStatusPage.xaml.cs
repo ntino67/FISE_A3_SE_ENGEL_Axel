@@ -18,8 +18,6 @@ namespace WPF.Pages
 {
     public partial class BackupStatusPage : Page
     {
-        private readonly BackupStatusViewModel _statusVm;
-
         public BackupStatusPage()
         {
             InitializeComponent();

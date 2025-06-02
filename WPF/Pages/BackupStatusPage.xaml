@@ -82,19 +82,19 @@
             <Setter Property="HorizontalAlignment" Value="Center"/>
             <Setter Property="VerticalAlignment" Value="Center"/>
             <Style.Triggers>
-                <DataTrigger Binding="{Binding Status}" Value="Success">
+                <DataTrigger Binding="{Binding Job.Status}" Value="Success">
                     <Setter Property="Foreground" Value="#cdd6f4"/>
                 </DataTrigger>
-                <DataTrigger Binding="{Binding Status}" Value="Error">
+                <DataTrigger Binding="{Binding Job.Status}" Value="Error">
                     <Setter Property="Foreground" Value="#cdd6f4"/>
                 </DataTrigger>
-                <DataTrigger Binding="{Binding Status}" Value="Paused">
+                <DataTrigger Binding="{Binding Job.Status}" Value="Paused">
                     <Setter Property="Foreground" Value="#cdd6f4"/>
                 </DataTrigger>
-                <DataTrigger Binding="{Binding Status}" Value="Stopped">
+                <DataTrigger Binding="{Binding Job.Status}" Value="Stopped">
                     <Setter Property="Foreground" Value="#cdd6f4"/>
                 </DataTrigger>
-                <DataTrigger Binding="{Binding Status}" Value="Running">
+                <DataTrigger Binding="{Binding Job.Status}" Value="Running">
                     <Setter Property="Foreground" Value="#cdd6f4"/>
                 </DataTrigger>
             </Style.Triggers>
