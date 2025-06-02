@@ -18,7 +18,7 @@ namespace WPF
 {
     public partial class MainWindow : Window
     {
-        private readonly JobViewModel _vm = ViewModelLocator.JobViewModel;
+        private readonly IJobViewModel _vm = ViewModelLocator.JobViewModel;
 
         public MainWindow()
         {

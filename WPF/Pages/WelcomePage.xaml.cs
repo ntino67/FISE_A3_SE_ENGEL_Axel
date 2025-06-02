@@ -2,12 +2,12 @@
 using WPF;
 using SharpVectors;
 
-namespace WPF
+namespace WPF.Pages
 {
     /// <summary>
     /// Logique d'interaction pour LogoPage.xaml
     /// </summary>
-    public partial class WelcomePage : System.Windows.Controls.Page // Fully qualify 'Page' to avoid ambiguity
+    public partial class WelcomePage : System.Windows.Controls.Page 
     {
         public WelcomePage()
         {

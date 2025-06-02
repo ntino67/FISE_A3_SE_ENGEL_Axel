@@ -26,8 +26,8 @@ namespace WPF.Pages
 
             try
             {
-                _viewModel = WPF.Infrastructure.ViewModelLocator.GetSettingsViewModel();
-                _uiService = WPF.Infrastructure.ViewModelLocator.GetUIService();
+                _viewModel = Infrastructure.ViewModelLocator.GetSettingsViewModel();
+                _uiService = Infrastructure.ViewModelLocator.GetUIService();
                 DataContext = _viewModel;
             }
             catch (Exception ex)

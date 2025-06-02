@@ -5,12 +5,13 @@ using Core.Utils;
 using Core.ViewModel;
 using WPF.Infrastructure;
 using WinForms = System.Windows.Forms;
+using Core.Model.Interfaces;
 
 namespace WPF.Pages
 {
     public partial class JobSettingsPage : Page
     {
-        private readonly JobViewModel _vm;
+        private readonly IJobViewModel _vm;
 
         public JobSettingsPage()
         {
