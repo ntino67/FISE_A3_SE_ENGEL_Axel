@@ -16,7 +16,7 @@ namespace WPF.Infrastructure
         private static IConfigurationManager _configManager;
         private static ILogger _logger;
         private static IJobViewModel _jobViewModel;
-        private static SettingsViewModel _settingsViewModel;
+        private static ISettingsViewModel _settingsViewModel;
         private static IUIService _iuiService;
         private static ILocalizationService _localizationService;
         private static ICommandFactory _commandFactory;
@@ -44,7 +44,7 @@ namespace WPF.Infrastructure
             }
         }
         
-        public static SettingsViewModel SettingsViewModel
+        public static ISettingsViewModel SettingsViewModel
         {
             get
             {

@@ -11,7 +11,7 @@ using Core.Utils;
 
 namespace Core.ViewModel
 {
-    public class SettingsViewModel : INotifyPropertyChanged
+    public class SettingsViewModel : ISettingsViewModel, INotifyPropertyChanged
     {
         private readonly IConfigurationManager _configManager;
         private readonly ILocalizationService _localizationService;
