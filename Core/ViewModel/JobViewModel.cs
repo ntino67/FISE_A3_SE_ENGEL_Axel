@@ -424,7 +424,12 @@ namespace Core.ViewModel
                     BackupJob.IncrementPriorityJobCount();
                 }
 
+                CurrentJob.StartTime = DateTime.Now;
+                CurrentJob.EndTime = null;
+
                 bool result = await _jobManager.ExecuteBackupJob(CurrentJob.Id, progress, keyToUse);
+
+                CurrentJob.EndTime = DateTime.Now;
 
                 OnPropertyChanged(nameof(EncryptionStatus));
 

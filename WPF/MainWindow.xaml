@@ -340,17 +340,17 @@
                             <!-- Remplacement ComboBox + bouton Exécuter par 3 boutons côte à côte -->
                             <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Bottom">
                                 <Button x:Name="RunMultipleButton"
-                                        Content="Run multiple"
+                                        Content="{DynamicResource RunMultipleJobs}"
                                         Width="110" Height="36"
                                         Margin="0,0,10,0"
-                                        Command="{Binding RunSelectedBackupsCommand}" />
+                                        Command="{Binding RunSelectedBackupsCommand}" Click="RunMultipleButton_Click" />
                                 <Button x:Name="RunAllButton"
-                                        Content="Run all"
+                                        Content="{DynamicResource RunAllJobs}"
                                         Width="80" Height="36"
                                         Margin="0,0,10,0"
                                         Command="{Binding RunAllBackupsCommand}" />
                                 <Button x:Name="ResetSelectionButton"
-                                        Content="Reset selection"
+                                        Content="{DynamicResource ResetSelection}"
                                         Width="110" Height="36"
                                         Click="ResetSelectionButton_Click"/>
                             </StackPanel>
