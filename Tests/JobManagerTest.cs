@@ -3,6 +3,7 @@ using Moq;
 using Core.Model;
 using Core.Model.Implementations;
 using Core.Model.Interfaces;
+using Core.Utils;
 using System.Collections.Generic;
 
 namespace Tests
@@ -121,6 +122,71 @@ namespace Tests
             Assert.That(_jobManager.GetJobCount(), Is.EqualTo(0));
             _jobManager.AddBackupJob(new BackupJob { Name = "Job1", Id = "1", SourceDirectory = "src", TargetDirectory = "tgt", Type = Core.Utils.BackupType.Full });
             Assert.That(_jobManager.GetJobCount(), Is.EqualTo(1));
+        }
+        
+                [Test]
+        public async Task ExecuteBackupJob_CopiesFilesAndReportsProgress()
+        {
+            // Arrange: Create temp source/target dirs and file
+            string tempSource = Path.Combine(Path.GetTempPath(), Path.GetRandomFileName());
+            string tempTarget = Path.Combine(Path.GetTempPath(), Path.GetRandomFileName());
+            Directory.CreateDirectory(tempSource);
+            Directory.CreateDirectory(tempTarget);
+
+            string sourceFile = Path.Combine(tempSource, "testfile.txt");
+            string fileContents = "EasySave test!";
+            File.WriteAllText(sourceFile, fileContents);
+
+            var job = new BackupJob
+            {
+                Name = "TestJob",
+                Id = Guid.NewGuid().ToString(),
+                SourceDirectory = tempSource,
+                TargetDirectory = tempTarget,
+                Type = BackupType.Full
+            };
+
+            var loggerMock = new Mock<ILogger>();
+            var configMock = new Mock<IConfigurationManager>();
+            var uiServiceMock = new Mock<IUIService>();
+            var resourceServiceMock = new Mock<IResourceService>();
+
+            // Config returns no blocking apps, empty encryption, etc.
+            configMock.Setup(x => x.LoadJobs()).Returns(new List<BackupJob>());
+            configMock.Setup(x => x.GetBlockingApplications()).Returns(new List<string>());
+            configMock.Setup(x => x.GetEncryptionFileExtensions()).Returns(new List<string>());
+            configMock.Setup(x => x.GetEncryptionWildcard()).Returns(string.Empty);
+
+            var progressValues = new List<float>();
+            var progressMock = new Mock<IProgress<float>>();
+            progressMock.Setup(p => p.Report(It.IsAny<float>())).Callback<float>(value => progressValues.Add(value));
+
+            var jobManager = new JobManager(loggerMock.Object, configMock.Object, uiServiceMock.Object, resourceServiceMock.Object);
+            jobManager.AddBackupJob(job);
+
+            // Act: Run the backup job
+            var result = await jobManager.ExecuteBackupJob(job.Id, progressMock.Object, null);
+
+            // Assert: File is copied to target dir
+            string targetFile = Path.Combine(tempTarget, "testfile.txt");
+            Assert.That(File.Exists(targetFile), Is.True);
+            Assert.That(File.ReadAllText(targetFile), Is.EqualTo(fileContents));
+
+            // Assert: Job status is Completed
+            Assert.That(job.Status, Is.EqualTo(JobStatus.Completed));
+
+            // Assert: Progress was reported
+            Assert.That(progressValues, Is.Not.Empty);
+
+            // Assert: Logger and config manager were called
+            configMock.Verify(x => x.SaveJobs(It.IsAny<List<BackupJob>>()), Times.AtLeastOnce);
+            loggerMock.Verify(x => x.LogBackupOperation(job.Name, sourceFile, targetFile, It.IsAny<long>(), It.IsAny<long>(), "SUCCESS"), Times.Once);
+
+            // Clean up temp files/dirs
+            File.Delete(targetFile);
+            Directory.Delete(tempTarget);
+            File.Delete(sourceFile);
+            Directory.Delete(tempSource);
         }
     }
 }
