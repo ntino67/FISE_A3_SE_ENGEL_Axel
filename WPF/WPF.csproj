@@ -15,6 +15,7 @@
     <None Remove="Image\Icon.ico" />
     <None Remove="Image\UserIcon.svg" />
     <None Remove="Image\UserIcon_colored.png" />
+    <None Remove="Utils\Language\Dictionary_en_US.xaml %28additions%29" />
   </ItemGroup>
 
   <ItemGroup>
