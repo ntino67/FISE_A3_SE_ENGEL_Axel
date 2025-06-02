@@ -17,7 +17,7 @@ namespace WPF.Pages
 
     public partial class AppSettingsPage : Page
     {
-        private readonly SettingsViewModel _viewModel;
+        private readonly ISettingsViewModel _viewModel;
         private readonly IUIService _uiService;
 
         public AppSettingsPage()
