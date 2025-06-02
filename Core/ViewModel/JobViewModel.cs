@@ -201,21 +201,21 @@ namespace Core.ViewModel
                 {
                     PauseResumeJob((BackupJob)job);
                 },
-                _ => CurrentJob != null && (CurrentJob.Status == JobStatus.Running || CurrentJob.Status == JobStatus.Paused)
+                job => job != null && (((BackupJob)job).Status == JobStatus.Running || ((BackupJob)job).Status == JobStatus.Paused)
             );
 
             StopBackupCommand = _commandFactory.Create(
-                _ => StopCurrentJob(),
-                _ => CurrentJob != null && (CurrentJob.Status == JobStatus.Running || CurrentJob.Status == JobStatus.Paused)
+                job => StopCurrentJob((BackupJob)job),
+                job => ((BackupJob)job) != null && (((BackupJob)job).Status == JobStatus.Running || ((BackupJob)job).Status == JobStatus.Paused)
             );
         }
 
         private void PauseResumeJob(BackupJob job)
         {
-            if (CurrentJob.Status == JobStatus.Running)
-                PauseCurrentJob((BackupJob)job);
-            else if (CurrentJob.Status == JobStatus.Paused)
-                ResumeCurrentJob((BackupJob)job);
+            if (job.Status == JobStatus.Running)
+                PauseCurrentJob(job);
+            else if (job.Status == JobStatus.Paused)
+                ResumeCurrentJob(job);
         }
 
         public event PropertyChangedEventHandler PropertyChanged; //Ne pas toucher
@@ -252,10 +252,12 @@ namespace Core.ViewModel
 
         public async Task ExecuteAllJobs()
         {
+            var tasks = new List<Task>();
 
             foreach (var job in Jobs)
             {
-                var localJob = job; // Capture locale pour éviter les problèmes de closure
+                var localJob = job;
+
                 var progress = new Progress<float>(p =>
                 {
                     Application.Current.Dispatcher.Invoke(() =>
@@ -264,54 +266,46 @@ namespace Core.ViewModel
                     });
                 });
 
-                ShouldItBePriority(localJob);
-                if (localJob.isPriorityJob)
-                {
-                    BackupJob.IncrementPriorityJobCount();
-                }
-
-
                 _instructionHandler.AddToQueue(localJob, Instruction.Backup);
-                ExecuteCurrentJob(localJob);
+
+                var task = ExecuteCurrentJob(localJob);
+                tasks.Add(task);
             }
 
+            await Task.WhenAll(tasks);
+
+            _ui.ShowToast("✅ Toutes les sauvegardes sont terminées.", 3000);
         }
+
+
 
 
         public async Task ExecuteSelectedJobs()
         {
-            //var tasks = new List<Task<bool>>();
+            var tasks = new List<Task>();
 
             foreach (var job in Jobs.Where(j => j.IsChecked))
             {
-                var localJob = job; // Capture locale pour éviter les problèmes de closure
+                var localJob = job; // éviter les problèmes de closure
+
                 var progress = new Progress<float>(p =>
                 {
-                    Application.Current.Dispatcher.Invoke(() =>
-                    {
-                        job.Progress = p;
-                    });
+                    Application.Current.Dispatcher.Invoke(() => localJob.Progress = p);
                 });
-                ShouldItBePriority(job); 
-                if (job.isPriorityJob)
-                {
-                    BackupJob.IncrementPriorityJobCount(); // Utiliser la méthode thread-safe
-                }
 
-                // Ajouter la tâche à la liste sans await
-                //var jobTask = Task.Run(async () => {
-                _instructionHandler.AddToQueue(job, Instruction.Backup);
-                ExecuteCurrentJob(job);
-                //});
+                _instructionHandler.AddToQueue(localJob, Instruction.Backup);
 
-                //tasks.Add(jobTask);
+                // Créer et stocker la tâche sans attendre ici
+                var task = ExecuteCurrentJob(localJob);
+                tasks.Add(task);
             }
 
             // Attendre que toutes les tâches soient terminées
-            //await Task.WhenAll(tasks);
+            await Task.WhenAll(tasks);
 
             _ui.ShowToast("✅ Sauvegardes sélectionnées terminées.", 3000);
         }
+
 
         public string EncryptionStatus
         {
@@ -529,7 +523,7 @@ namespace Core.ViewModel
             _jobManager.UpdateBackupJob(CurrentJob);
             _ui.ShowToast("▶️ " + Application.Current.Resources["JobResumed"] as string + ".", 3000);
         }
-        public void StopCurrentJob()
+        public void StopCurrentJob(BackupJob CurrentJob)
         {
             if (CurrentJob == null) throw new InvalidOperationException(Application.Current.Resources["NoJobSelected"] as string);
             if (CurrentJob.Status != JobStatus.Running && CurrentJob.Status != JobStatus.Paused)

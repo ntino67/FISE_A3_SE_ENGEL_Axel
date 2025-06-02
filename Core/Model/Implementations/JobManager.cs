@@ -7,6 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Core.Model.Interfaces;
 using Core.Utils;
+using System.Threading;
 
 namespace Core.Model.Implementations
 {
@@ -211,7 +212,7 @@ namespace Core.Model.Implementations
             {
                 DirectoryInfo sourceDir = new DirectoryInfo(job.SourceDirectory);
                 FileInfo[] files = sourceDir.GetFiles("*", SearchOption.AllDirectories);
-                
+
                 bool targetIsEncrypted = false;
                 if (Directory.Exists(job.TargetDirectory))
                 {
@@ -221,57 +222,76 @@ namespace Core.Model.Implementations
                     targetIsEncrypted = hasEncrypted && !hasPlain;
                 }
 
-                foreach (FileInfo file in files)
+                int totalFiles = files.Length;
+                int completedFiles = 0;
+                object lockObj = new object();
+
+                // Optionnel : limite à 4 fichiers traités en parallèle
+                var semaphore = new SemaphoreSlim(4);
+
+                var tasks = files.Select(async file =>
                 {
-                    while (job.Status == JobStatus.Paused || (BackupJob.NumberOfPriorityJobRunning > 0 && job.isPriorityJob == false))
+                    await semaphore.WaitAsync();
+                    try
                     {
-                        // Attendre que le job soit relancé
-                        await Task.Delay(200);
-                    }
-                    if (job.Status == JobStatus.Canceled || job.Status == JobStatus.Stopped)
-                    {
-                        _logger.LogWarning($"Le job {job.Name} a été annulé pendant la sauvegarde.");
-                        return false;
-                    }
-                    string relativePath = file.FullName.Substring(sourceDir.FullName.Length + 1);
-                    string targetPath = Path.Combine(job.TargetDirectory, relativePath);
-
-                    // S'assurer que le répertoire cible existe
-                    Directory.CreateDirectory(Path.GetDirectoryName(targetPath));
-
-                    DateTime startCopy = DateTime.Now;
-                    await CopyFile(file.FullName, targetPath);
-                    long transferTime = (long)(DateTime.Now - startCopy).TotalMilliseconds;
-
-                    _logger.LogBackupOperation(job.Name, file.FullName, targetPath, file.Length, transferTime, "SUCCESS");
-
-                    if (targetIsEncrypted)
-                    {
-                        try
+                        while (job.Status == JobStatus.Paused || (BackupJob.NumberOfPriorityJobRunning > 0 && !job.isPriorityJob))
                         {
-                            byte[] keyBytes = Encoding.UTF8.GetBytes(encryptionKey);
-                            CryptoSoft.XorEncryption.EncryptFile(targetPath, keyBytes);
+                            await Task.Delay(200);
                         }
-                        catch (Exception ex)
-                        {
-                            _logger.LogBackupOperation(job.Name, file.FullName, targetPath, file.Length, transferTime,
-                                $"ENCRYPT_ERROR: {ex.Message}");
-                        }
-                    }
-                    if(job.Status == JobStatus.Running)
-                    {
-                        progress?.Report((float)files.ToList().IndexOf(file) / files.Length * 100);
-                    }
-                }
 
+                        if (job.Status == JobStatus.Canceled || job.Status == JobStatus.Stopped)
+                            return;
+
+                        string relativePath = file.FullName.Substring(sourceDir.FullName.Length + 1);
+                        string targetPath = Path.Combine(job.TargetDirectory, relativePath);
+
+                        Directory.CreateDirectory(Path.GetDirectoryName(targetPath));
+
+                        DateTime startCopy = DateTime.Now;
+                        await CopyFile(file.FullName, targetPath);
+                        long transferTime = (long)(DateTime.Now - startCopy).TotalMilliseconds;
+
+                        _logger.LogBackupOperation(job.Name, file.FullName, targetPath, file.Length, transferTime, "SUCCESS");
+
+                        if (targetIsEncrypted)
+                        {
+                            try
+                            {
+                                byte[] keyBytes = Encoding.UTF8.GetBytes(encryptionKey);
+                                CryptoSoft.XorEncryption.EncryptFile(targetPath, keyBytes);
+                            }
+                            catch (Exception ex)
+                            {
+                                _logger.LogBackupOperation(job.Name, file.FullName, targetPath, file.Length, transferTime,
+                                    $"ENCRYPT_ERROR: {ex.Message}");
+                            }
+                        }
+
+                        if (job.Status == JobStatus.Running)
+                        {
+                            lock (lockObj)
+                            {
+                                completedFiles++;
+                                progress?.Report((float)completedFiles / totalFiles * 100);
+                            }
+                        }
+                    }
+                    finally
+                    {
+                        semaphore.Release();
+                    }
+                });
+
+                await Task.WhenAll(tasks);
                 return true;
             }
             catch (Exception e)
             {
+                _logger.LogWarning($"Erreur dans ExecuteFullBackup: {e}");
                 return false;
-                throw new Exception($"Error : {e}");
             }
         }
+
 
         private async Task<bool> ExecuteDifferentialBackup(BackupJob job, string encryptionKey, IProgress<float> progress)
         {

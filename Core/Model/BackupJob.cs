@@ -151,6 +151,10 @@ namespace Core.Model
                 if (_status != value)
                 {
                     _status = value;
+                    if(_status == JobStatus.Completed)
+                    {
+                        this.Progress = 100;
+                    }
                     OnPropertyChanged();
                 }
             }
