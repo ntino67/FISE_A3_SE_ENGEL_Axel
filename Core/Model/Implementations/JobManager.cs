@@ -134,7 +134,7 @@ namespace Core.Model.Implementations
                             string message = _resourceService.GetString("BackupBlockedByApp", app);
 
                             _uiService.ShowToast(message, 5000);
-                            _logger.LogWarning($"Le job {job.Name} n'a pas pu démarrer : l'application bloquante {app} est en cours d'exécution.");
+                            _logger.LogWarning($"Le job {job.Name} n'a pas pu demarrer : l'application bloquante {app} est en cours d'execution.");
                             job.Status = JobStatus.Canceled;
                             _configManager.SaveJobs(_jobs);
                             return false;
