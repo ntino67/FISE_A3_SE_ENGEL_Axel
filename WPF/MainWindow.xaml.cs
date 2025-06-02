@@ -13,16 +13,36 @@ using WPF.Infrastructure;
 using WPF.Pages;
 using Core.Model.Interfaces;
 using WPF.Services;
+using System.Net.WebSockets;
+using System.Threading;
+using System.Text;
+using System.Text.Json;
+using Timer = System.Timers.Timer;
+using System.Collections.Concurrent;
+using System.Net;
+
 
 namespace WPF
 {
     public partial class MainWindow : Window
     {
         private readonly IJobViewModel _vm = ViewModelLocator.JobViewModel;
+        private WebSocketHost _wsHost;
+        private Timer _jobUpdateTimer;
+
+
 
         public MainWindow()
         {
             InitializeComponent();
+
+            _wsHost = new WebSocketHost();
+            _ = _wsHost.StartAsync(); // héberge le serveur WebSocket
+            _jobUpdateTimer = new Timer(2000); // 2000ms = 2s
+            _jobUpdateTimer.Elapsed += async (s, e) => await BroadcastJobsUpdate();
+            _jobUpdateTimer.AutoReset = true;
+            _jobUpdateTimer.Start();
+
 
             DataContext = _vm;
             MainFrame.Navigate(new WelcomePage());
@@ -40,6 +60,100 @@ namespace WPF
             };
             ToastBridge.ShowToast = ShowToast;
         }
+        private async Task BroadcastJobsUpdate()
+        {
+            if (_wsHost == null)
+                return;
+
+            var jobsToSend = _vm.Jobs
+                .Where(j => !(j.Status == JobStatus.Ready))
+                .ToList();
+
+            foreach (var job in jobsToSend)
+            {
+                await _wsHost.BroadcastJobAsync(job);
+            }
+
+            // Optionnel pour debug
+            Console.WriteLine($"📤 {jobsToSend.Count} jobs envoyés à {DateTime.Now:T}");
+        }
+
+
+        public class WebSocketHost
+    {
+        private readonly HttpListener _listener;
+        private readonly ConcurrentBag<WebSocket> _clients = new ConcurrentBag<WebSocket>();
+
+        public WebSocketHost(string uriPrefix = "http://localhost:5000/ws/")
+        {
+            _listener = new HttpListener();
+            _listener.Prefixes.Add(uriPrefix);
+        }
+
+        public async Task StartAsync()
+        {
+            _listener.Start();
+            while (true)
+            {
+                var context = await _listener.GetContextAsync();
+
+                if (context.Request.IsWebSocketRequest)
+                {
+                    var wsContext = await context.AcceptWebSocketAsync(null);
+                    _clients.Add(wsContext.WebSocket);
+                    _ = Listen(wsContext.WebSocket); // fire-and-forget
+                }
+                else
+                {
+                    context.Response.StatusCode = 400;
+                    context.Response.Close();
+                }
+            }
+        }
+
+        private async Task Listen(WebSocket socket)
+        {
+            var buffer = new byte[1024];
+            while (socket.State == WebSocketState.Open)
+            {
+                try
+                {
+                    await socket.ReceiveAsync(new ArraySegment<byte>(buffer), CancellationToken.None);
+                }
+                catch { break; }
+            }
+
+            _clients.TryTake(out var _);
+        }
+
+        public async Task BroadcastJobAsync(BackupJob job)
+        {
+            var json = JsonSerializer.Serialize(new
+            {
+                id = job.Id,
+                name = job.Name,
+                progress = job.Progress,
+                status = job.Status.ToString(),
+                startTime = job.StartTime,
+                endTime = job.EndTime
+            });
+
+            var buffer = Encoding.UTF8.GetBytes(json);
+            var segment = new ArraySegment<byte>(buffer);
+
+            foreach (var socket in _clients.Where(s => s.State == WebSocketState.Open))
+            {
+                await socket.SendAsync(segment, WebSocketMessageType.Text, true, CancellationToken.None);
+            }
+        }
+}
+        public async Task SendJobUpdate(BackupJob job)
+        {
+            if (_wsHost != null)
+                await _wsHost.BroadcastJobAsync(job);
+        }
+
+
 
         private void TopBar_MouseLeftButtonDown(object sender, System.Windows.Input.MouseButtonEventArgs e)
         {

@@ -405,6 +405,7 @@ namespace Core.ViewModel
             }
 
             string keyToUse = this.EncryptionKey;
+            CurrentJob.Progress = 0;
             var progress = new Progress<float>(p =>
             {
                 Application.Current.Dispatcher.Invoke(() =>
