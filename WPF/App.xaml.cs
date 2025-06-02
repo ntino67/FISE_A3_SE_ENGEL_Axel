@@ -53,7 +53,7 @@ namespace WPF
                 }
 
                 // Utilisation du service de localisation
-                var localizationService = ViewModelLocator.GetLocalizationService();
+                var localizationService = ViewModelLocator.LocalizationService;
                 localizationService.ChangeLanguage(languageCode);
 
             }

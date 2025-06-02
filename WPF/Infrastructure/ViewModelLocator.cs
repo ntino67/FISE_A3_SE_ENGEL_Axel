@@ -23,6 +23,7 @@ namespace WPF.Infrastructure
         private static IResourceService _resourceService;
         private static InstructionHandlerViewModel _instructionHandlerViewModel;
         
+        // Public properties accessible both in WPF and code
         public static IJobViewModel JobViewModel
         {
             get
@@ -50,6 +51,18 @@ namespace WPF.Infrastructure
                 if (_settingsViewModel == null)
                     throw new InvalidOperationException("ViewModelLocator has not been initialized. Call Initialize() first.");
                 return _settingsViewModel;
+            }
+        }
+        
+        public static ILocalizationService LocalizationService
+        {
+            get
+            {
+                if (_localizationService == null)
+                {
+                    _localizationService = new LocalizationService();
+                }
+                return _localizationService;
             }
         }
 
@@ -82,26 +95,9 @@ namespace WPF.Infrastructure
             }
         }
         
-        public static SettingsViewModel GetSettingsViewModel() => SettingsViewModel;
         public static IBackupService GetJobManager() => _jobManager ?? throw new InvalidOperationException("Call Initialize() first.");
         public static IConfigurationManager GetConfigurationManager() => _configManager ?? throw new InvalidOperationException("Call Initialize() first.");
         public static ILogger GetLogger() => _logger ?? throw new InvalidOperationException("Call Initialize() first.");
-        public static ILocalizationService GetLocalizationService()
-        {
-            if (_localizationService == null)
-            {
-                _localizationService = new LocalizationService();
-            }
-            return _localizationService;
-        }
-        public static IUIService GetUIService()
-        {
-            if (_iuiService == null)
-            {
-                _iuiService = new UIService();
-            }
-            return _iuiService;
-        }
 
         public static IResourceService GetResourceService()
         {
@@ -111,7 +107,5 @@ namespace WPF.Infrastructure
             }
             return _resourceService;
         }
-
-
     }
 }
