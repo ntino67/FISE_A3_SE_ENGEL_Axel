@@ -1,32 +1,18 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.ComponentModel;
-using System.Linq;
-using System.Runtime.CompilerServices;
-using System.Threading.Tasks;
-using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Input;
-using Core.Model;
-using Core.ViewModel;
+﻿using System.Windows.Controls;
+using Core.Model.Interfaces;
 using WPF.Infrastructure;
-using WPF.Converter;
 
 namespace WPF.Pages
 {
     public partial class BackupStatusPage : Page
     {
+        private readonly IBackupStatusViewModel _statusVm;
+
         public BackupStatusPage()
         {
             InitializeComponent();
+            _statusVm = ViewModelLocator.BackupStatusViewModel;
             DataContext = ViewModelLocator.JobViewModel;
-        }
-
-        private void DataGrid_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-
         }
     }
 }

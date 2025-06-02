@@ -170,7 +170,7 @@
                       GridLinesVisibility="Horizontal"
                       HorizontalGridLinesBrush="#232334"
                       ColumnHeaderStyle="{StaticResource ColumnHeaderStyle}"
-                      VerticalContentAlignment="Center" SelectionChanged="DataGrid_SelectionChanged">
+                      VerticalContentAlignment="Center">
                 <DataGrid.Resources>
                     <conv:ProgressToWidthConverter x:Key="ProgressToWidthConverter"/>
                 </DataGrid.Resources>

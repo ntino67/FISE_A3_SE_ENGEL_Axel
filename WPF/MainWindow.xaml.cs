@@ -41,27 +41,13 @@ namespace WPF
             ToastBridge.ShowToast = ShowToast;
         }
 
-        private void AddJobButton_Click(object sender, RoutedEventArgs e)
-        {
-            string jobName = SearchBox.Text?.Trim();
-
-            if (!string.IsNullOrWhiteSpace(jobName))
-            {
-                // Utiliser la nouvelle méthode qui gère aussi le vidage du SearchText
-                _vm.CreateNewJobAndClearSearch(jobName);
-
-                // Pas besoin de vider SearchBox directement, il sera mis à jour par le binding
-                // lorsque SearchText dans le ViewModel sera vidé
-            }
-        }
-
         private void TopBar_MouseLeftButtonDown(object sender, System.Windows.Input.MouseButtonEventArgs e)
         {
             if (e.ChangedButton == System.Windows.Input.MouseButton.Left)
                 this.DragMove();
         }
 
-        private void GlobalSettingsButton_Click(object sender, RoutedEventArgs e)
+        private void SettingsButton_Click(object sender, RoutedEventArgs e)
         {
             MainFrame.Navigate(new AppSettingsPage());
         }
@@ -123,12 +109,6 @@ namespace WPF
                 JobList.ItemsSource = _vm.Jobs.Where(j => j.Name.ToLower().Contains(search)).ToList();
             }
         }
-
-        private void RunMultipleButton_Click(object sender, RoutedEventArgs e)
-        {
-            // Ajoutez ici la logique pour exécuter les jobs sélectionnés
-        }
-
 
         private void ResetSelectionButton_Click(object sender, RoutedEventArgs e)
         {
@@ -203,11 +183,6 @@ namespace WPF
 
             await Task.Delay(300);
             ToastHost.Visibility = Visibility.Collapsed;
-        }
-
-        private void SettingsButton_Click(object sender, RoutedEventArgs e)
-        {
-            MainFrame.Navigate(new AppSettingsPage());
         }
     }
 }
