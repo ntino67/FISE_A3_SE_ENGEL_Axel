@@ -4,11 +4,12 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using Core.Model;
+using Core.Model.Interfaces;
 using Core.Utils;
 
 namespace Core.ViewModel
 {
-    public class BackupStatusViewModel : ObservableObject
+    public class BackupStatusViewModel : ObservableObject, IBackupStatusViewModel
     {
         private readonly JobViewModel _jobViewModel;
 

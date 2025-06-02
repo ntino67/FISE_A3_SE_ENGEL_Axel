@@ -22,6 +22,7 @@ namespace WPF.Infrastructure
         private static ICommandFactory _commandFactory;
         private static IResourceService _resourceService;
         private static InstructionHandlerViewModel _instructionHandlerViewModel;
+        private static IBackupStatusViewModel _backupStatusViewModel;
         
         // Public properties accessible both in WPF and code
         public static IJobViewModel JobViewModel
@@ -66,6 +67,16 @@ namespace WPF.Infrastructure
             }
         }
 
+        public static IBackupStatusViewModel BackupStatusViewModel
+        {
+            get
+            {
+                if (_backupStatusViewModel == null)
+                    throw new InvalidOperationException("ViewModelLocator has not been initialized. Call Initialize() first.");
+                return _backupStatusViewModel;
+            }
+        }
+
         public static void Initialize()
         {
             if (_configManager != null)
@@ -88,6 +99,7 @@ namespace WPF.Infrastructure
                 _instructionHandlerViewModel = new InstructionHandlerViewModel(_jobManager, _iuiService);
                 _jobViewModel = new JobViewModel(_jobManager, _iuiService, _commandFactory, _instructionHandlerViewModel, _configManager);
                 _settingsViewModel = new SettingsViewModel(_configManager, _localizationService, _logger, _commandFactory);
+                _backupStatusViewModel = new BackupStatusViewModel((JobViewModel)_jobViewModel);
             }
             catch (Exception ex)
             {
