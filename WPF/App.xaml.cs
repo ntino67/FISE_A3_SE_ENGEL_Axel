@@ -26,6 +26,11 @@ namespace WPF
             }
 
             base.OnStartup(e);
+            ViewModelLocator.Initialize();
+
+            var processMonitor = ViewModelLocator.GetProcessMonitor();
+            processMonitor.StartMonitoring();
+
 
             string configDirectory = AppDomain.CurrentDomain.BaseDirectory;
             ConfigurationManager = new ConfigurationManager(configDirectory);
@@ -35,6 +40,7 @@ namespace WPF
 
 
             ViewModelLocator.Initialize();
+
 
             InitializeLanguage();
         }

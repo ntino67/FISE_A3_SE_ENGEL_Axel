@@ -106,5 +106,6 @@
     <system:String x:Key="BlockingAppRemoved">Application bloquante supprimée: {0}</system:String>
     <system:String x:Key="BlockingAppDetected">⚠️ Application bloquante détectée: {0}</system:String>
     <system:String x:Key="BackupBlockedByApp">⚠️ Sauvegarde bloquée par l'application: {0}</system:String>
-
+    <system:String x:Key="BackupPausedByApp">Sauvegarde mise en pause : l'application {0} est en cours d'exécution</system:String>
+    <system:String x:Key="BackupResumedAutomatically">Sauvegarde reprise automatiquement : aucune application bloquante n'est en cours d'exécution</system:String>
 </ResourceDictionary>

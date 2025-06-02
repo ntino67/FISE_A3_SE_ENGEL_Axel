@@ -29,6 +29,15 @@
     <system:String x:Key="EncryptionWildcard">Wildcard Pattern</system:String>
     <system:String x:Key="EncryptionWildcardDescription">Optional: Specify a wildcard pattern to encrypt all matching files regardless of their extension (e.g. *.* or all for all files).</system:String>
     <system:String x:Key="AddExtension">Add</system:String>
+    
+    <!-- Logs settings section -->
+    <system:String x:Key="LogFilesSection">Log Files</system:String>
+    <system:String x:Key="LogFilesDescription">Access application log files to view backup operation details.</system:String>
+    <system:String x:Key="DailyLogFile">Daily Log</system:String>
+    <system:String x:Key="StateFile">Tasks State</system:String>
+    <system:String x:Key="WarningsLogFile">Warnings Log</system:String>
+    <system:String x:Key="OpenFile">Open</system:String>
+    <system:String x:Key="ShowInFolder">Show in Folder</system:String>
 
     <!-- Priority extensions -->
     <system:String x:Key="PriorityFilesTitle">Priority File Extensions</system:String>
@@ -57,6 +66,9 @@
     <!-- Logs -->
     <system:String x:Key="TextLogsButton">Logs</system:String>
     <system:String x:Key="TextStatusButton">Status</system:String>
+
+
+
 
     <!-- Messages -->
     <system:String x:Key="Error">Error</system:String>
@@ -92,6 +104,11 @@
     <system:String x:Key="JobResumed">Job resumed</system:String>
     <system:String x:Key="JobStopped">Job stopped</system:String>
     <system:String x:Key="BackupStatus">Backup status</system:String>
-
+    <system:String x:Key="BlockingAppAdded">Blocking application added: {0}</system:String>
+    <system:String x:Key="BlockingAppRemoved">Blocking application removed: {0}</system:String>
+    <system:String x:Key="BlockingAppDetected">⚠️ Blocking application detected: {0}</system:String>
+    <system:String x:Key="BackupBlockedByApp">⚠️ Backup blocked by application: {0}</system:String>
+    <system:String x:Key="BackupPausedByApp">Backup paused: application {0} is currently running</system:String>
+    <system:String x:Key="BackupResumedAutomatically">Backup resumed automatically: no blocking application is running</system:String>
 </ResourceDictionary>
 

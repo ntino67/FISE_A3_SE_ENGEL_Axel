@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.IO;
+using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Windows.Input;
 using Core.Model.Interfaces;
@@ -25,9 +26,6 @@ namespace Core.ViewModel
         private string _newPriorityExtension;
         private long _maxFileSizeKB;
         
-        /// <summary>
-        /// Taille maximale de fichier (en kB) au-delà de laquelle les transferts simultanés sont interdits
-        /// </summary>
         public long MaxFileSizeKB
         {
             get => _maxFileSizeKB;
@@ -105,7 +103,7 @@ namespace Core.ViewModel
             _logger = logger;
             _commandFactory = commandFactory;
 
-            _blockingApplications = new ObservableCollection<string>();
+            _blockingApplications = new ObservableCollection<string>(_configManager.GetBlockingApplications() ?? new List<string>());
             _encryptionFileExtensions = new ObservableCollection<string>();
             _languageOptions = _localizationService.GetAvailableLanguages();
             ReloadSettings();
@@ -135,6 +133,31 @@ namespace Core.ViewModel
                     }
                 },
                 _ => true
+            );
+
+            AddBlockingAppCommand = _commandFactory.Create<string>(
+                appName =>
+                {
+                    if (string.IsNullOrWhiteSpace(appName)) return;
+
+                    if (!BlockingApplications.Contains(appName))
+                    {
+                        BlockingApplications.Add(appName);
+                        _configManager.SaveBlockingApplications(BlockingApplications.ToList());
+                    }
+                },
+                appName => !string.IsNullOrWhiteSpace(appName)
+);
+
+            RemoveBlockingAppCommand = _commandFactory.Create<string>(
+                appName =>
+                {
+                    if (string.IsNullOrWhiteSpace(appName)) return;
+
+                    BlockingApplications.Remove(appName);
+                    _configManager.SaveBlockingApplications(BlockingApplications.ToList());
+                },
+                appName => !string.IsNullOrWhiteSpace(appName)
             );
         }
 
@@ -174,6 +197,9 @@ namespace Core.ViewModel
                 }
             }
         }
+
+        public ICommand AddBlockingAppCommand { get; private set; }
+        public ICommand RemoveBlockingAppCommand { get; private set; }
 
         public string SelectedLanguage
         {

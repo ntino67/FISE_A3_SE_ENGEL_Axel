@@ -30,11 +30,10 @@ namespace WPF
         private WebSocketHost _wsHost;
         private Timer _jobUpdateTimer;
 
-
-
         public MainWindow()
         {
             InitializeComponent();
+            
 
             _wsHost = new WebSocketHost();
             _ = _wsHost.StartAsync(); // héberge le serveur WebSocket
@@ -42,7 +41,6 @@ namespace WPF
             _jobUpdateTimer.Elapsed += async (s, e) => await BroadcastJobsUpdate();
             _jobUpdateTimer.AutoReset = true;
             _jobUpdateTimer.Start();
-
 
             DataContext = _vm;
             MainFrame.Navigate(new WelcomePage());
@@ -141,33 +139,31 @@ namespace WPF
 
 
             public async Task BroadcastJobAsync(BackupJob job)
-        {
-            var json = JsonSerializer.Serialize(new
             {
-                id = job.Id,
-                name = job.Name,
-                progress = job.Progress,
-                status = job.Status.ToString(),
-                startTime = job.StartTime,
-                endTime = job.EndTime
-            });
+                var json = JsonSerializer.Serialize(new
+                {
+                    id = job.Id,
+                    name = job.Name,
+                    progress = job.Progress,
+                    status = job.Status.ToString(),
+                    startTime = job.StartTime,
+                    endTime = job.EndTime
+                });
 
-            var buffer = Encoding.UTF8.GetBytes(json);
-            var segment = new ArraySegment<byte>(buffer);
+                var buffer = Encoding.UTF8.GetBytes(json);
+                var segment = new ArraySegment<byte>(buffer);
 
-            foreach (var socket in _clients.Where(s => s.State == WebSocketState.Open))
-            {
-                await socket.SendAsync(segment, WebSocketMessageType.Text, true, CancellationToken.None);
+                foreach (var socket in _clients.Where(s => s.State == WebSocketState.Open))
+                {
+                    await socket.SendAsync(segment, WebSocketMessageType.Text, true, CancellationToken.None);
+                }
             }
         }
-}
         public async Task SendJobUpdate(BackupJob job)
         {
             if (_wsHost != null)
                 await _wsHost.BroadcastJobAsync(job);
         }
-
-
 
         private void TopBar_MouseLeftButtonDown(object sender, System.Windows.Input.MouseButtonEventArgs e)
         {

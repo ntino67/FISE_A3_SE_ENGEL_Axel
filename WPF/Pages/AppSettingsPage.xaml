@@ -141,7 +141,8 @@
                                     Foreground="#232336"
                                     FontWeight="Bold"
                                     BorderThickness="0"
-                                    Click="AddBlockingAppButton_Click"/>
+                                    Command="{Binding AddBlockingAppCommand}"
+                                    CommandParameter="{Binding ElementName=BlockingAppTextBox, Path=Text}"/>
 
                             <!-- Bouton détecter -->
                             <Button x:Name="DetectRunningAppButton"
@@ -200,8 +201,9 @@
                                                     Background="Transparent"
                                                     BorderThickness="0"
                                                     ToolTip="{DynamicResource Delete}"
-                                                    Tag="{Binding}"
-                                                    Click="RemoveBlockingAppButton_Click">
+                                                    Command="{Binding DataContext.RemoveBlockingAppCommand, 
+                                                    RelativeSource={RelativeSource AncestorType=ListView}}"
+                                                    CommandParameter="{Binding}">
                                                 <Viewbox Width="16" Height="16">
                                                     <Canvas Width="24" Height="24">
                                                         <Path Fill="#f38ba8" Data="M19,6.41L17.59,5L12,10.59L6.41,5L5,6.41L10.59,12L5,17.59L6.41,19L12,13.41L17.59,19L19,17.59L13.41,12L19,6.41Z"/>

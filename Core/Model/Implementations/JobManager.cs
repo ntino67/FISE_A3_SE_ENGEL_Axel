@@ -19,14 +19,16 @@ namespace Core.Model.Implementations
         private readonly IResourceService _resourceService;
         private readonly object _jobsLock = new object();
         private readonly IProcessChecker _processChecker;
+        private readonly ProcessMonitor _processMonitor;
 
-        public JobManager(ILogger logger, IConfigurationManager configManager, IUIService uiService, IResourceService resourceService, IProcessChecker processChecker = null)
+        public JobManager(ILogger logger, IConfigurationManager configManager, IUIService uiService, IResourceService resourceService, IProcessChecker processChecker = null, ProcessMonitor processMonitor = null)
         {
             _logger = logger;
             _configManager = configManager;
             _uiService = uiService;
             _resourceService = resourceService;
             _processChecker = processChecker ?? new DefaultProcessChecker();
+            _processMonitor = processMonitor;
             _jobs = configManager.LoadJobs();
         }
 
@@ -95,7 +97,7 @@ namespace Core.Model.Implementations
 
         public List<BackupJob> GetAllJobs()
         {
-            return _jobs;
+            lock (_jobsLock) { return _jobs.ToList(); }
         }
 
         public BackupJob GetJob(string jobId)
@@ -140,94 +142,117 @@ namespace Core.Model.Implementations
 
         private async Task<bool> ExecuteBackup(BackupJob job, IProgress<float> progress, string encryptionKey = null)
         {
-            if (!job.IsValid())
-                return false;
-
-            // Vérifier si l'une des applications bloquantes est en cours d'exécution
-            List<string> blockingApps = _configManager.GetBlockingApplications();
-            if (blockingApps.Count > 0)
+            try
             {
-                foreach (string app in blockingApps)
-                {
-                    if (!string.IsNullOrWhiteSpace(app) && _processChecker.IsProcessRunning(app))
-                    {
-                        string message = _resourceService.GetString("BackupBlockedByApp", app);
+                // Check if any blocking application is running before starting the backup
+                List<string> blockingApps = _configManager.GetBlockingApplications();
+                string detectedApp = null;
 
+                if (blockingApps.Count > 0)
+                {
+                    foreach (string app in blockingApps)
+                    {
+                        if (!string.IsNullOrWhiteSpace(app) && _processChecker.IsProcessRunning(app))
+                        {
+                            detectedApp = app;
+                            break;
+                        }
+                    }
+                    if (detectedApp != null)
+                    {
+                        string message = _resourceService.GetString("BackupBlockedByApp", detectedApp);
                         _uiService.ShowToast(message, 5000);
-                        _logger.LogWarning($"Le job {job.Name} n'a pas pu demarrer : l'application bloquante {app} est en cours d'execution.");
+                        _logger.LogWarning($"Le job {job.Name} n'a pas pu démarrer : l'application bloquante {detectedApp} est en cours d'exécution.");
                         job.Status = JobStatus.Canceled;
                         _configManager.SaveJobs(_jobs);
                         return false;
                     }
                 }
-            }
 
-            DateTime startTime = DateTime.Now;
-            job.Status = JobStatus.Running;
-            _configManager.SaveJobs(_jobs);
+                // Backup can start, add the job to the process monitor
+                _processMonitor?.AddActiveJob(job);
 
-            try
-            {
-                _logger.LogBackupStart(job);
+                if (!job.IsValid())
+                    return false;
 
-                // Créer le répertoire cible s'il n'existe pas
-                Directory.CreateDirectory(job.TargetDirectory);
-
-                bool success = false;
-
-                if (job.Type == BackupType.Full)
-                {
-                    success = await ExecuteFullBackup(job, progress, encryptionKey);
-                }
-                else
-                {
-                    success = await ExecuteDifferentialBackup(job, encryptionKey, progress);
-                }
-
-                // Si le job est configuré pour le chiffrement, exécuter le chiffrement
-                if (success && job.IsEncrypted)
-                {
-                    var encryptProgress = new Progress<float>(value =>
-                    {
-                        // Mise à jour de la progression globale (considérons que le chiffrement représente 20% de la tâche)
-                        progress?.Report(80 + value * 0.2f);
-                    });
-
-                var extensions = _configManager.GetEncryptionFileExtensions();
-                var wildcard = _configManager.GetEncryptionWildcard();
-
-                _logger.LogWarning($"Job {job.Name} - Chiffrement avec extensions: {string.Join(", ", extensions)}");
-                _logger.LogWarning($"Job {job.Name} - Chiffrement avec wildcard: {wildcard}");
-
-                    await CryptoHelper.Encrypt(job.TargetDirectory, extensions, wildcard, encryptionKey, encryptProgress);
-                }
-
-                job.Status = success ? JobStatus.Completed : JobStatus.Failed;
-                job.LastRunTime = DateTime.Now;
+                DateTime startTime = DateTime.Now;
+                job.Status = JobStatus.Running;
                 _configManager.SaveJobs(_jobs);
 
-                TimeSpan duration = DateTime.Now - startTime;
-                _logger.LogBackupEnd(job, success, duration);
-
-                return success;
-            }
-            catch (Exception ex)
-            {
-                job.Status = JobStatus.Failed;
                 try
                 {
-                    _configManager.SaveJobs(_jobs);
+                    _logger.LogBackupStart(job);
+
+                    // Create the target directory if it doesn't exist
+                    Directory.CreateDirectory(job.TargetDirectory);
+
+                    bool success = false;
+
+                    if (job.Type == BackupType.Full)
+                    {
+                        success = await ExecuteFullBackup(job, progress, encryptionKey);
+                    }
+                    else
+                    {
+                        success = await ExecuteDifferentialBackup(job, encryptionKey, progress);
+                    }
+
+                    // If encryption is enabled, execute encryption
+                    if (success && job.IsEncrypted)
+                    {
+                        var encryptProgress = new Progress<float>(value =>
+                        {
+                            // Consider encryption as 20% of the task
+                            progress?.Report(80 + value * 0.2f);
+                        });
+
+                        var extensions = _configManager.GetEncryptionFileExtensions();
+                        var wildcard = _configManager.GetEncryptionWildcard();
+
+                        _logger.LogWarning($"Job {job.Name} - Chiffrement avec extensions: {string.Join(", ", extensions)}");
+                        _logger.LogWarning($"Job {job.Name} - Chiffrement avec wildcard: {wildcard}");
+
+                        await CryptoHelper.Encrypt(job.TargetDirectory, extensions, wildcard, encryptionKey, encryptProgress);
+                    }
+                    // Only update status if not paused
+                    if (job.Status != JobStatus.Paused)
+                    {
+                        job.Status = success ? JobStatus.Completed : JobStatus.Failed;
+                        job.LastRunTime = DateTime.Now;
+                        _configManager.SaveJobs(_jobs);
+                    }
+
+                    TimeSpan duration = DateTime.Now - startTime;
+                    _logger.LogBackupEnd(job, success, duration);
+
+                    return success;
                 }
-                catch (Exception saveEx)
+                catch (Exception ex)
                 {
-                    _logger.LogWarning($"Erreur lors de la tentative de sauvegarde du statut 'Failed' pour le job {job.Name}: {saveEx.Message}");
+                    job.Status = JobStatus.Failed;
+                    try
+                    {
+                        _configManager.SaveJobs(_jobs);
+                    }
+                    catch (Exception saveEx)
+                    {
+                        _logger.LogWarning($"Erreur lors de la tentative de sauvegarde du statut 'Failed' pour le job {job.Name}: {saveEx.Message}");
+                    }
+
+                    TimeSpan duration = DateTime.Now - startTime;
+                    _logger.LogBackupEnd(job, false, duration);
+                    _logger.LogWarning($"Erreur lors de l'exécution du job {job.Name}: {ex.Message}");
+
+                    return false;
                 }
-
-                TimeSpan duration = DateTime.Now - startTime;
-                _logger.LogBackupEnd(job, false, duration);
-                _logger.LogWarning($"Erreur lors de l'exécution du job {job.Name}: {ex.Message}");
-
-                return false;
+            }
+            finally
+            {
+                // Ensure the job is removed from the active jobs list if finished (not paused)
+                if (job.Status != JobStatus.Paused)
+                {
+                    _processMonitor?.RemoveActiveJob(job);
+                }
             }
         }
 
@@ -393,8 +418,8 @@ namespace Core.Model.Implementations
             }
             catch (Exception e)
             {
+                _logger.LogWarning($"Erreur dans ExecuteDifferentialBackup: {e}");
                 return false;
-                throw new Exception($"Error : {e}");
             }
         }
 
@@ -429,6 +454,7 @@ namespace Core.Model.Implementations
                 }
             }
         }
+
 
 
         internal async Task<bool> Encrypt(BackupJob job, string key, IProgress<float> progress)
