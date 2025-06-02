@@ -72,9 +72,6 @@ namespace WPF
             {
                 await _wsHost.BroadcastJobAsync(job);
             }
-
-            // Optionnel pour debug
-            Console.WriteLine($"📤 {jobsToSend.Count} jobs envoyés à {DateTime.Now:T}");
         }
 
 
@@ -253,6 +250,12 @@ namespace WPF
 
         public async void ShowToast(string message, int durationMs = 3000)
         {
+            if (!Dispatcher.CheckAccess())
+            {
+                Dispatcher.Invoke(() => ShowToast(message, durationMs));
+                return;
+            }
+            
             ToastText.Text = message;
             ToastHost.Visibility = Visibility.Visible;
 
