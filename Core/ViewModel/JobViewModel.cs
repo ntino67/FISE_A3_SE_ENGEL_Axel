@@ -493,6 +493,7 @@ namespace Core.ViewModel
             // Notifier les abonnés (ex: BackupStatusPage) de la suppression du job
             JobDeleted?.Invoke(jobId);
         }
+        
         public void PauseCurrentJob(BackupJob CurrentJob)
         {
             if (CurrentJob == null) throw new InvalidOperationException(Application.Current.Resources["NoJobSelected"] as string);
@@ -508,6 +509,7 @@ namespace Core.ViewModel
             _jobManager.UpdateBackupJob(CurrentJob);
             _ui.ShowToast("⏸️ " + Application.Current.Resources["JobPaused"] as string + ".", 3000);
         }
+        
         public void ResumeCurrentJob(BackupJob CurrentJob)
         {
             if (CurrentJob == null) throw new InvalidOperationException(Application.Current.Resources["NoJobSelected"] as string);
@@ -524,6 +526,7 @@ namespace Core.ViewModel
             _jobManager.UpdateBackupJob(CurrentJob);
             _ui.ShowToast("▶️ " + Application.Current.Resources["JobResumed"] as string + ".", 3000);
         }
+        
         public void StopCurrentJob(BackupJob CurrentJob)
         {
             if (CurrentJob == null) throw new InvalidOperationException(Application.Current.Resources["NoJobSelected"] as string);
@@ -537,6 +540,7 @@ namespace Core.ViewModel
             _jobManager.UpdateBackupJob(CurrentJob);
             _ui.ShowToast("🛑 " + Application.Current.Resources["JobStopped"] as string + ".", 3000);
         }
+        
         public async void ToggleEncryption(BackupJob CurrentJob ,string key)
         {
             if (CurrentJob == null) return;
@@ -592,20 +596,6 @@ namespace Core.ViewModel
             OnPropertyChanged(nameof(CurrentJob.Status));
             OnPropertyChanged(nameof(CurrentJob.Progress));
             OnPropertyChanged(nameof(EncryptionStatus));
-        }
-        
-        public bool IsActive
-        {
-            get => CurrentJob?.IsActive ?? false;
-            set
-            {
-                if (CurrentJob != null && CurrentJob.IsActive != value)
-                {
-                    CurrentJob.IsActive = value;
-                    _jobManager.UpdateBackupJob(CurrentJob);
-                    OnPropertyChanged();
-                }
-            }
         }
         
         public string SearchText
