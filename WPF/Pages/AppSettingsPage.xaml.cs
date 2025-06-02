@@ -1,15 +1,11 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Diagnostics;
-using System.Globalization;
 using System.Linq;
 using System.Threading;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
-using System.Windows.Media.Animation;
 using Core.Model.Interfaces;
-using Core.ViewModel;
 using System.IO;
 
 namespace WPF.Pages
@@ -104,26 +100,6 @@ namespace WPF.Pages
                     Application.Current.Resources["BlockingAppRemoved"] as string ??
                     "Application bloquante supprimée: {0}", appName);
                 _uiService.ShowToast(message, 2000);
-            }
-        }
-
-        private void OpenDailyLogButton_Click(object sender, RoutedEventArgs e)
-        {
-            try
-            {
-                string filePath = _viewModel.DailyLogFilePath;
-                if (File.Exists(filePath))
-                {
-                    Process.Start(new ProcessStartInfo(filePath) { UseShellExecute = true });
-                }
-                else
-                {
-                    MessageBox.Show("Le fichier journal n'existe pas encore.", "Information", MessageBoxButton.OK, MessageBoxImage.Information);
-                }
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show($"Erreur lors de l'ouverture du fichier : {ex.Message}", "Erreur", MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
 
@@ -229,11 +205,6 @@ namespace WPF.Pages
             }
         }
 
-        private void ShowXmlLogFolderButton_Click(object sender, RoutedEventArgs e)
-        {
-            OpenFolder(_viewModel.LogsDirectoryPath);
-        }
-
         private void OpenJsonLogButton_Click(object sender, RoutedEventArgs e)
         {
             try
@@ -253,13 +224,7 @@ namespace WPF.Pages
                 MessageBox.Show($"Erreur lors de l'ouverture du fichier : {ex.Message}", "Erreur", MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
-
-        private void ShowJsonLogFolderButton_Click(object sender, RoutedEventArgs e)
-        {
-            OpenFolder(_viewModel.LogsDirectoryPath);
-        }
-
-
+        
         private void DetectRunningAppButton_Click(object sender, RoutedEventArgs e)
         {
             try

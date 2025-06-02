@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace Core.Utils
+﻿namespace Core.Utils
 {
     public enum BackupType
     {

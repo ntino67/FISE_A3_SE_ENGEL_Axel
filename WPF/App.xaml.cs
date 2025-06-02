@@ -1,10 +1,8 @@
 ﻿using System;
 using System.Windows;
-using Core.ViewModel;
 using WPF.Infrastructure;
 using Core.Model.Interfaces;
 using Core.Model.Implementations;
-using WPF.Services;
 using System.Threading;
 
 namespace WPF

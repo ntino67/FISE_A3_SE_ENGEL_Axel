@@ -4,8 +4,6 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Core.Model.Implementations;
-using Core.Model.Interfaces;
 using CryptoSoft;
 
 namespace Core.Model
