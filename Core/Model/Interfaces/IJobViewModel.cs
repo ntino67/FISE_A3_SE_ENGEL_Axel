@@ -28,5 +28,7 @@ namespace Core.Model.Interfaces
         void UpdateTargetPath(string targetPath);
         void FilterJobs(string searchText);
         void ResetAllJobSelections();
+
+        Task ExecuteAllJobs();
     }
 }

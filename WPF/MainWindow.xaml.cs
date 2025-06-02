@@ -110,22 +110,40 @@ namespace WPF
             }
         }
 
-        private async Task Listen(WebSocket socket)
-        {
-            var buffer = new byte[1024];
-            while (socket.State == WebSocketState.Open)
+            private async Task Listen(WebSocket socket)
             {
-                try
+                var buffer = new byte[1024];
+                while (socket.State == WebSocketState.Open)
                 {
-                    await socket.ReceiveAsync(new ArraySegment<byte>(buffer), CancellationToken.None);
+                    try
+                    {
+                        var result = await socket.ReceiveAsync(new ArraySegment<byte>(buffer), CancellationToken.None);
+                        var message = Encoding.UTF8.GetString(buffer, 0, result.Count);
+
+                        if (!string.IsNullOrWhiteSpace(message))
+                        {
+                            Console.WriteLine($"📥 Reçu : {message}");
+
+                            if (message.Contains("run-all"))
+                            {
+                                Application.Current.Dispatcher.Invoke(() =>
+                                {
+                                    ViewModelLocator.JobViewModel.ExecuteAllJobs();
+                                });
+                            }
+                        }
+                    }
+                    catch
+                    {
+                        break;
+                    }
                 }
-                catch { break; }
+
+                _clients.TryTake(out var _);
             }
 
-            _clients.TryTake(out var _);
-        }
 
-        public async Task BroadcastJobAsync(BackupJob job)
+            public async Task BroadcastJobAsync(BackupJob job)
         {
             var json = JsonSerializer.Serialize(new
             {
