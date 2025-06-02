@@ -19,13 +19,15 @@ namespace Core.Model.Implementations
         private readonly IUIService _uiService;
         private readonly IResourceService _resourceService;
         private readonly object _jobsLock = new object();
+        private readonly ProcessMonitor _processMonitor;
 
-        public JobManager(ILogger logger, IConfigurationManager configManager, IUIService uiService, IResourceService resourceService)
+        public JobManager(ILogger logger, IConfigurationManager configManager, IUIService uiService, IResourceService resourceService, ProcessMonitor processMonitor)
         {
             _logger = logger;
             _configManager = configManager;
             _uiService = uiService;
             _resourceService = resourceService;
+            _processMonitor = processMonitor;
             _jobs = configManager.LoadJobs();
         }
 
@@ -117,93 +119,123 @@ namespace Core.Model.Implementations
 
         private async Task<bool> ExecuteBackup(BackupJob job, IProgress<float> progress, string encryptionKey = null)
         {
-            if (!job.IsValid())
-                return false;
-
-            // Vérifier si l'une des applications bloquantes est en cours d'exécution
-            List<string> blockingApps = _configManager.GetBlockingApplications();
-            if (blockingApps.Count > 0)
+            try
             {
-                foreach (string app in blockingApps)
-                {
-                    if (!string.IsNullOrWhiteSpace(app))
-                    {
-                        Process[] processes = Process.GetProcessesByName(app);
-                        if (processes.Length > 0)
-                        {
-                            string message = _resourceService.GetString("BackupBlockedByApp", app);
+                // Vérifier si l'une des applications bloquantes est en cours d'exécution avant de démarrer
+                List<string> blockingApps = _configManager.GetBlockingApplications();
+                bool blockingAppDetected = false;
+                string detectedApp = null;
 
-                            _uiService.ShowToast(message, 5000);
-                            _logger.LogWarning($"Le job {job.Name} n'a pas pu demarrer : l'application bloquante {app} est en cours d'execution.");
-                            job.Status = JobStatus.Canceled;
-                            _configManager.SaveJobs(_jobs);
-                            return false;
+                if (blockingApps.Count > 0)
+                {
+                    foreach (string app in blockingApps)
+                    {
+                        if (!string.IsNullOrWhiteSpace(app))
+                        {
+                            Process[] processes = Process.GetProcessesByName(app);
+                            if (processes.Length > 0)
+                            {
+                                blockingAppDetected = true;
+                                detectedApp = app;
+                                break;
+                            }
                         }
                     }
                 }
-            }
 
-            DateTime startTime = DateTime.Now;
-            job.Status = JobStatus.Running;
-            _configManager.SaveJobs(_jobs);
-
-            try
-            {
-                _logger.LogBackupStart(job);
-
-                // Créer le répertoire cible s'il n'existe pas
-                Directory.CreateDirectory(job.TargetDirectory);
-
-                bool success = false;
-
-                if (job.Type == BackupType.Full)
+                // CAS #1 : Si une application bloquante est détectée avant le démarrage, bloquer la sauvegarde
+                if (blockingAppDetected)
                 {
-                    success = await ExecuteFullBackup(job, progress, encryptionKey);
-                }
-                else
-                {
-                    success = await ExecuteDifferentialBackup(job, encryptionKey, progress);
+                    string message = _resourceService.GetString("BackupBlockedByApp", detectedApp);
+                    _uiService.ShowToast(message, 5000);
+                    _logger.LogWarning($"Le job {job.Name} n'a pas pu démarrer : l'application bloquante {detectedApp} est en cours d'exécution.");
+                    job.Status = JobStatus.Canceled;
+                    _configManager.SaveJobs(_jobs);
+                    return false;
                 }
 
-                // Si le job est configuré pour le chiffrement, exécuter le chiffrement
-                if (success && job.IsEncrypted)
+                // La sauvegarde peut démarrer, ajouter le job au processMonitor pour le CAS #2
+                _processMonitor.AddActiveJob(job);
+
+                if (!job.IsValid())
+                    return false;
+
+                DateTime startTime = DateTime.Now;
+                job.Status = JobStatus.Running;
+                _configManager.SaveJobs(_jobs);
+
+                try
                 {
-                    var encryptProgress = new Progress<float>(value =>
+                    _logger.LogBackupStart(job);
+
+                    // Créer le répertoire cible s'il n'existe pas
+                    Directory.CreateDirectory(job.TargetDirectory);
+
+                    bool success = false;
+
+                    if (job.Type == BackupType.Full)
                     {
-                        // Mise à jour de la progression globale (considérons que le chiffrement représente 20% de la tâche)
-                        progress?.Report(80 + value * 0.2f);
-                    });
+                        success = await ExecuteFullBackup(job, progress, encryptionKey);
+                    }
+                    else
+                    {
+                        success = await ExecuteDifferentialBackup(job, encryptionKey, progress);
+                    }
 
-                var extensions = _configManager.GetEncryptionFileExtensions();
-                var wildcard = _configManager.GetEncryptionWildcard();
+                    // Si le job est configuré pour le chiffrement, exécuter le chiffrement
+                    if (success && job.IsEncrypted)
+                    {
+                        var encryptProgress = new Progress<float>(value =>
+                        {
+                            // Mise à jour de la progression globale (considérons que le chiffrement représente 20% de la tâche)
+                            progress?.Report(80 + value * 0.2f);
+                        });
 
-                _logger.LogWarning($"Job {job.Name} - Chiffrement avec extensions: {string.Join(", ", extensions)}");
-                _logger.LogWarning($"Job {job.Name} - Chiffrement avec wildcard: {wildcard}");
+                        var extensions = _configManager.GetEncryptionFileExtensions();
+                        var wildcard = _configManager.GetEncryptionWildcard();
 
-                    await CryptoHelper.Encrypt(job.TargetDirectory, extensions, wildcard, encryptionKey, encryptProgress);
+                        _logger.LogWarning($"Job {job.Name} - Chiffrement avec extensions: {string.Join(", ", extensions)}");
+                        _logger.LogWarning($"Job {job.Name} - Chiffrement avec wildcard: {wildcard}");
+
+                        await CryptoHelper.Encrypt(job.TargetDirectory, extensions, wildcard, encryptionKey, encryptProgress);
+                    }
+                    // Ne mettre à jour le statut que si le job n'est pas déjà en pause
+                    if (job.Status != JobStatus.Paused)
+                    {
+                        job.Status = success ? JobStatus.Completed : JobStatus.Failed;
+                        job.LastRunTime = DateTime.Now;
+                        _configManager.SaveJobs(_jobs);
+                    }
+
+                    TimeSpan duration = DateTime.Now - startTime;
+                    _logger.LogBackupEnd(job, success, duration);
+
+
+                    return success;
                 }
+                catch (Exception ex)
+                {
+                    job.Status = JobStatus.Failed;
+                    _configManager.SaveJobs(_jobs);
 
-                job.Status = success ? JobStatus.Completed : JobStatus.Failed;
-                job.LastRunTime = DateTime.Now;
-                _configManager.SaveJobs(_jobs);
+                    TimeSpan duration = DateTime.Now - startTime;
+                    _logger.LogBackupEnd(job, false, duration);
+                    _logger.LogWarning($"Erreur lors de l'exécution du job {job.Name}: {ex.Message}");
 
-                TimeSpan duration = DateTime.Now - startTime;
-                _logger.LogBackupEnd(job, success, duration);
-
-                return success;
+                    return false;
+                }
             }
-            catch (Exception ex)
+            finally
             {
-                job.Status = JobStatus.Failed;
-                _configManager.SaveJobs(_jobs);
-
-                TimeSpan duration = DateTime.Now - startTime;
-                _logger.LogBackupEnd(job, false, duration);
-                _logger.LogWarning($"Erreur lors de l'exécution du job {job.Name}: {ex.Message}");
-
-                return false;
+                // S'assurer que le job est retiré de la liste des jobs actifs
+                // mais seulement s'il est vraiment terminé (pas en pause)
+                if (job.Status != JobStatus.Paused)
+                {
+                    _processMonitor.RemoveActiveJob(job);
+                }
             }
         }
+
 
 
         private async Task<bool> ExecuteFullBackup(BackupJob job, IProgress<float> progress, string encryptionKey)

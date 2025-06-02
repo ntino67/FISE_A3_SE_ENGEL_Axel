@@ -5,6 +5,7 @@ using Core.Model.Interfaces;
 using Core.ViewModel;
 using WPF.Services;
 using WPF.Utils;
+using Core.Utils;
 
 namespace WPF.Infrastructure
 {
@@ -20,7 +21,10 @@ namespace WPF.Infrastructure
         private static ICommandFactory _commandFactory;
         private static IResourceService _resourceService;
         private static IInstructionHandlerViewModel _instructionHandlerViewModel;
-        
+        private static ProcessMonitor _processMonitor;
+
+
+
         // Public properties accessible both in WPF and code
         public static IJobViewModel JobViewModel
         {
@@ -81,7 +85,9 @@ namespace WPF.Infrastructure
                 _localizationService = new LocalizationService();
                 _resourceService = new ResourceService();
                 _commandFactory = new WpfCommandFactory();
-                _jobManager = new JobManager(_logger, _configManager, _iuiService, _resourceService);
+                _processMonitor = new ProcessMonitor(_configManager, _iuiService, _resourceService, _logger);
+
+                _jobManager = new JobManager(_logger, _configManager, _iuiService, _resourceService, _processMonitor);
 
                 _instructionHandlerViewModel = new InstructionHandlerViewModel(_jobManager, _iuiService);
                 _jobViewModel = new JobViewModel(_jobManager, _iuiService, _commandFactory, _instructionHandlerViewModel, _configManager);
@@ -105,5 +111,6 @@ namespace WPF.Infrastructure
             }
             return _resourceService;
         }
+        public static ProcessMonitor GetProcessMonitor() => _processMonitor ?? throw new InvalidOperationException("Call Initialize() first.");
     }
 }

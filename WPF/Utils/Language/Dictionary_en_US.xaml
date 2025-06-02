@@ -110,5 +110,8 @@
     <system:String x:Key="BlockingAppRemoved">Blocking application removed: {0}</system:String>
     <system:String x:Key="BlockingAppDetected">⚠️ Blocking application detected: {0}</system:String>
     <system:String x:Key="BackupBlockedByApp">⚠️ Backup blocked by application: {0}</system:String>
+    <system:String x:Key="BackupPausedByApp">Backup paused: application {0} is currently running</system:String>
+    <system:String x:Key="BackupResumedAutomatically">Backup resumed automatically: no blocking application is running</system:String>
+
 </ResourceDictionary>
 
