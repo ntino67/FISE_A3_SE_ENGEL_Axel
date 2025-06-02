@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Diagnostics;
 using System.Text;
 using System.Threading.Tasks;
 using Core.Model.Interfaces;
@@ -37,24 +36,39 @@ namespace Core.Model.Implementations
                 throw new InvalidOperationException($"Un job avec le nom {job.Name} existe déjà.");
 
             _jobs.Add(job);
-            _configManager.SaveJobs(_jobs);
+            try
+            {
+                _configManager.SaveJobs(_jobs);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogWarning($"Erreur lors de l'ajout du job: {ex.Message}");
+                _jobs.Remove(job);
+                throw;
+            }
         }
 
         public void UpdateBackupJob(BackupJob job)
         {
             lock (_jobsLock)
             {
-
                 BackupJob existingJob = _jobs.FirstOrDefault(j => j.Id == job.Id);
                 if (existingJob == null)
                     throw new InvalidOperationException($"Le job avec l'ID {job.Id} n'existe pas.");
-                // Vérifier si le nouveau nom n'est pas déjà utilisé par un autre job
                 if (job.Name != existingJob.Name && _jobs.Any(j => j.Name == job.Name && j.Id != job.Id))
                     throw new InvalidOperationException($"Un job avec le nom {job.Name} existe déjà.");
 
                 int index = _jobs.IndexOf(existingJob);
                 _jobs[index] = job;
-                _configManager.SaveJobs(_jobs);
+                try
+                {
+                    _configManager.SaveJobs(_jobs);
+                }
+                catch (Exception ex)
+                {
+                    _logger.LogWarning($"Erreur lors de la mise à jour du job: {ex.Message}");
+                    throw;
+                }
             }
         }
 
@@ -66,7 +80,15 @@ namespace Core.Model.Implementations
                 if (job == null)
                     return false;
                 _jobs.Remove(job);
-                _configManager.SaveJobs(_jobs);
+                try
+                {
+                    _configManager.SaveJobs(_jobs);
+                }
+                catch (Exception ex)
+                {
+                    _logger.LogWarning($"Erreur lors de la suppression du job: {ex.Message}");
+                    return false;
+                }
                 return true;
             }
         }
@@ -192,7 +214,14 @@ namespace Core.Model.Implementations
             catch (Exception ex)
             {
                 job.Status = JobStatus.Failed;
-                _configManager.SaveJobs(_jobs);
+                try
+                {
+                    _configManager.SaveJobs(_jobs);
+                }
+                catch (Exception saveEx)
+                {
+                    _logger.LogWarning($"Erreur lors de la tentative de sauvegarde du statut 'Failed' pour le job {job.Name}: {saveEx.Message}");
+                }
 
                 TimeSpan duration = DateTime.Now - startTime;
                 _logger.LogBackupEnd(job, false, duration);
