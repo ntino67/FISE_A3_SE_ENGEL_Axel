@@ -19,7 +19,7 @@ namespace WPF.Infrastructure
         private static ILocalizationService _localizationService;
         private static ICommandFactory _commandFactory;
         private static IResourceService _resourceService;
-        private static InstructionHandlerViewModel _instructionHandlerViewModel;
+        private static IInstructionHandlerViewModel _instructionHandlerViewModel;
         private static IBackupStatusViewModel _backupStatusViewModel;
         
         // Public properties accessible both in WPF and code

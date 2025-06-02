@@ -21,7 +21,7 @@ namespace Core.ViewModel
         public event Action<string> JobDeleted;
         public event Action<string, string> InstructionChanged;
 
-        private InstructionHandlerViewModel _instructionHandler;
+        private IInstructionHandlerViewModel _instructionHandler;
         private readonly IBackupService _jobManager;
         private readonly IUIService _ui;
         private readonly ICommandFactory _commandFactory;
@@ -68,7 +68,7 @@ namespace Core.ViewModel
     .Count(ri => ri?.Job.Status == JobStatus.Running) + ")"; }
         }
 
-        public JobViewModel(IBackupService jobManager, IUIService uiService, ICommandFactory commandFactory, InstructionHandlerViewModel instructionHandlerViewModel, IConfigurationManager configManager) 
+        public JobViewModel(IBackupService jobManager, IUIService uiService, ICommandFactory commandFactory, IInstructionHandlerViewModel instructionHandlerViewModel, IConfigurationManager configManager) 
         {
             _jobManager = jobManager;
             _instructionHandler = instructionHandlerViewModel;
