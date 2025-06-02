@@ -16,7 +16,7 @@ using Core.Utils;
 
 namespace Core.ViewModel
 {
-    public class JobViewModel : INotifyPropertyChanged
+    public class JobViewModel : IJobViewModel, INotifyPropertyChanged
     {
         public event Action<string> JobDeleted;
         public event Action<string, string> InstructionChanged;
@@ -103,7 +103,7 @@ namespace Core.ViewModel
                 _ => CurrentJob != null
             );
 
-            DeleteJobCommand = commandFactory.Create<BackupJob>(
+            DeleteJobCommand = _commandFactory.Create<BackupJob>(
                 job =>
                 {
                     if (job == null) return;

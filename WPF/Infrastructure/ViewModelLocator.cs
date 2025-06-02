@@ -15,17 +15,15 @@ namespace WPF.Infrastructure
         private static IBackupService _jobManager;
         private static IConfigurationManager _configManager;
         private static ILogger _logger;
-        private static JobViewModel _jobViewModel;
+        private static IJobViewModel _jobViewModel;
         private static SettingsViewModel _settingsViewModel;
         private static IUIService _iuiService;
         private static ILocalizationService _localizationService;
         private static ICommandFactory _commandFactory;
         private static IResourceService _resourceService;
         private static InstructionHandlerViewModel _instructionHandlerViewModel;
-
-
-
-        public static JobViewModel JobViewModel
+        
+        public static IJobViewModel JobViewModel
         {
             get
             {
@@ -34,7 +32,8 @@ namespace WPF.Infrastructure
                 return _jobViewModel;
             }
         }
-        public static IUIService UIService
+        
+        public static IUIService UiService
         {
             get
             {
@@ -43,6 +42,7 @@ namespace WPF.Infrastructure
                 return _iuiService;
             }
         }
+        
         public static SettingsViewModel SettingsViewModel
         {
             get
@@ -53,16 +53,9 @@ namespace WPF.Infrastructure
             }
         }
 
-        static ViewModelLocator()
-        {
-            // Initialisation de JobViewModel ici selon votre logique d'injection de dépendances
-            // Par exemple :
-            // JobViewModel = new JobViewModel(...);
-        }
-
         public static void Initialize()
         {
-            if (_configManager != null) // Déjà initialisé
+            if (_configManager != null)
                 return;
 
             string appDataPath = Path.Combine(
@@ -82,16 +75,13 @@ namespace WPF.Infrastructure
                 _instructionHandlerViewModel = new InstructionHandlerViewModel(_jobManager, _iuiService);
                 _jobViewModel = new JobViewModel(_jobManager, _iuiService, _commandFactory, _instructionHandlerViewModel, _configManager);
                 _settingsViewModel = new SettingsViewModel(_configManager, _localizationService, _logger, _commandFactory);
-
-
-
             }
             catch (Exception ex)
             {
                 throw new InvalidOperationException("Failed to initialize ViewModelLocator", ex);
             }
         }
-
+        
         public static SettingsViewModel GetSettingsViewModel() => SettingsViewModel;
         public static IBackupService GetJobManager() => _jobManager ?? throw new InvalidOperationException("Call Initialize() first.");
         public static IConfigurationManager GetConfigurationManager() => _configManager ?? throw new InvalidOperationException("Call Initialize() first.");
