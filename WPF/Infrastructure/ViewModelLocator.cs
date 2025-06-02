@@ -20,7 +20,6 @@ namespace WPF.Infrastructure
         private static ICommandFactory _commandFactory;
         private static IResourceService _resourceService;
         private static IInstructionHandlerViewModel _instructionHandlerViewModel;
-        private static IBackupStatusViewModel _backupStatusViewModel;
         
         // Public properties accessible both in WPF and code
         public static IJobViewModel JobViewModel

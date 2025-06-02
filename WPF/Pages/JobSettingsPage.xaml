@@ -138,7 +138,7 @@
                  Background="#CDD6F4"
                  Foreground="#89DCEB"
                  Value="{Binding CurrentJob.Progress}"
-                 ValueChanged="TaskProgressBar_ValueChanged" BorderThickness="1,1,1,1">
+                 BorderThickness="1,1,1,1">
                     </ProgressBar>
 
                     <!-- Texte superposé centré -->

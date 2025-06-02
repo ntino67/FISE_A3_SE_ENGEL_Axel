@@ -5,12 +5,11 @@ using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
 using System.Runtime.CompilerServices;
-using System.Windows;
 using Core.Model.Interfaces;
 
 namespace Core.ViewModel
 {
-    public class InstructionHandlerViewModel : IInstructionHandlerViewModel, INotifyPropertyChanged
+    public class InstructionHandlerViewModel : IInstructionHandlerViewModel
     {
         private readonly IBackupService _backupService;
         private readonly IUIService _uiService;

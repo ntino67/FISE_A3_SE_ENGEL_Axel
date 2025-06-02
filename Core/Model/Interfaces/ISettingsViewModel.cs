@@ -11,16 +11,6 @@ namespace Core.Model.Interfaces
         ObservableCollection<string> EncryptionFileExtensions { get; set; }
         ObservableCollection<string> PriorityExtensions { get; set; }
 
-        string EncryptionWildcard { get; set; }
-        string NewPriorityExtension { get; set; }
-        long MaxFileSizeKB { get; set; }
-
-        string SelectedLanguage { get; set; }
-        List<KeyValuePair<string, string>> LanguageOptions { get; }
-
-        ICommand AddPriorityExtensionCommand { get; }
-        ICommand RemovePriorityExtensionCommand { get; }
-
         // Log paths for display
         string DailyLogFilePath { get; }
         string WarningsLogFilePath { get; }

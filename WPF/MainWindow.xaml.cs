@@ -53,7 +53,6 @@ namespace WPF
                 var currentPage = MainFrame.Content;
                 if (currentPage is AppSettingsPage || currentPage is BackupStatusPage)
                 {
-                    // Ne rien faire si on est déjà sur AppSettingsPage ou BackupStatusPage
                     return;
                 }
                 MainFrame.Navigate(new WelcomePage());
