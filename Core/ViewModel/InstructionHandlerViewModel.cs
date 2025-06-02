@@ -10,7 +10,7 @@ using Core.Model.Interfaces;
 
 namespace Core.ViewModel
 {
-    public class InstructionHandlerViewModel : INotifyPropertyChanged
+    public class InstructionHandlerViewModel : IInstructionHandlerViewModel, INotifyPropertyChanged
     {
         private readonly IBackupService _backupService;
         private readonly IUIService _uiService;
