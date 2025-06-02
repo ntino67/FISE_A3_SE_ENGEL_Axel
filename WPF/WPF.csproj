@@ -1,0 +1,44 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.WindowsDesktop">
+
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+    <RootNamespace>WPF</RootNamespace>
+    <UseWPF>true</UseWPF>
+    <UseWindowsForms>true</UseWindowsForms>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Page Remove="Utils\Language\Dictionary_en_US.xaml" />
+    <Page Remove="Utils\Language\Dictionary_fr_FR.xaml" />
+    <None Remove="Image\EasySave_Logos.png" />
+    <None Remove="Image\Icon.ico" />
+    <None Remove="Image\UserIcon.svg" />
+    <None Remove="Image\UserIcon_colored.png" />
+    <None Remove="Utils\Language\Dictionary_en_US.xaml %28additions%29" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="SharpVectors" Version="1.8.4.2" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Core\Core.csproj" />
+    <ProjectReference Include="..\CryptoSoft\CryptoSoft.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Resource Include="Image\Icon.ico">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Utils\Language\Dictionary_en_US.xaml" />
+    <Resource Include="Utils\Language\Dictionary_fr_FR.xaml" />
+    <Resource Include="Image\EasySave_Logos.png">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Image\UserIcon_colored.png">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Resource>
+  </ItemGroup>
+
+</Project>

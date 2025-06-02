@@ -1,0 +1,114 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:system="clr-namespace:System;assembly=mscorlib">
+
+    <!-- General -->
+    <system:String x:Key="AppTitle">EasySave</system:String>
+
+    <!-- Settings page -->
+    <system:String x:Key="GeneralSettings">Paramètres généraux</system:String>
+    <system:String x:Key="LanguageSettings">Langue de l'application</system:String>
+    <system:String x:Key="ChooseLanguage">Choisissez la langue préférée pour l'interface de l'application</system:String>
+    <system:String x:Key="English">Anglais</system:String>
+    <system:String x:Key="French">Français</system:String>
+    <!-- Blocking apps section -->
+    <system:String x:Key="BlockingApps">Applications bloquantes</system:String>
+    <system:String x:Key="BlockingAppsDescription">Définissez les applications qui bloqueront les tâches de sauvegarde lorsqu'elles sont en cours d'exécution. Dans le cas de tâches séquentielles, le logiciel terminera la tâche en cours et s'arrêtera avant de démarrer la suivante.</system:String>
+    <system:String x:Key="AddApp">Ajouter</system:String>
+    <system:String x:Key="DetectRunningApp">Détecter</system:String>
+    <system:String x:Key="RunningApps">Applications en cours d'exécution</system:String>
+    <system:String x:Key="Select">Sélectionner</system:String>
+    <system:String x:Key="SearchApps">Rechercher...</system:String>
+
+    <!-- Encryption files section -->
+    <system:String x:Key="EncryptionSection">Paramètres de chiffrement</system:String>
+    <system:String x:Key="EncryptionExtensions">Extensions de fichiers à chiffrer</system:String>
+    <system:String x:Key="EncryptionExtensionsDescription">Spécifiez quelles extensions de fichiers doivent être chiffrées lorsque les tâches de sauvegarde sont exécutées avec le chiffrement activé.</system:String>
+    <system:String x:Key="EncryptionWildcard">Motif générique</system:String>
+    <system:String x:Key="EncryptionWildcardDescription">Optionnel: Spécifiez un motif générique pour chiffrer tous les fichiers correspondants quelle que soit leur extension (ex: *.* ou all pour tous les fichiers).</system:String>
+    <system:String x:Key="AddExtension">Ajouter</system:String>
+
+    <!-- Logs section -->
+    <system:String x:Key="LogFilesSection">Fichiers journaux</system:String>
+    <system:String x:Key="LogFilesDescription">Accédez aux fichiers journaux de l'application pour consulter les détails des opérations de sauvegarde.</system:String>
+    <system:String x:Key="DailyLogFile">Journal quotidien</system:String>
+    <system:String x:Key="StateFile">État des tâches</system:String>
+    <system:String x:Key="WarningsLogFile">Journal des avertissements</system:String>
+    <system:String x:Key="OpenFile">Ouvrir</system:String>
+    <system:String x:Key="ShowInFolder">Afficher dans le dossier</system:String>
+    
+    <!--  Priority extensions -->
+    <system:String x:Key="PriorityFilesTitle">Extensions de fichiers prioritaires</system:String>
+    <system:String x:Key="PriorityFilesDescription">Les fichiers avec ces extensions seront traités en priorité lors des sauvegardes. Les autres jobs seront mis en pause jusqu'à ce que tous les fichiers prioritaires soient traités.</system:String>
+    <system:String x:Key="Add">Ajouter</system:String>
+
+    <!--  File size  -->
+    <system:String x:Key="FileSizeLimit">Limite de taille de fichier</system:String>
+    <system:String x:Key="FileSizeLimitDescription">Taille maximale de fichier (en kB) au-delà de laquelle les transferts simultanés sont interdits.</system:String>
+
+
+    <!-- Buttons -->
+    <system:String x:Key="Save">Enregistrer</system:String>
+    <system:String x:Key="Cancel">Annuler</system:String>
+    <system:String x:Key="Delete">Supprimer</system:String>
+
+    <!-- Jobs -->
+    <system:String x:Key="Jobs">Tâches</system:String>
+    <system:String x:Key="NewJob">Nouvelle tâche</system:String>
+    <system:String x:Key="JobName">Nom de la tâche</system:String>
+    <system:String x:Key="BackupType">Type de sauvegarde</system:String>
+    <system:String x:Key="Full">Complète</system:String>
+    <system:String x:Key="Differential">Différentielle</system:String>
+    <system:String x:Key="Run">Exécuter</system:String>
+    <system:String x:Key="Reset">Réinitialiser</system:String>
+    <system:String x:Key="RunAllJobs">Exécuter tous</system:String>
+    <system:String x:Key="RunMultipleJobs">Exécuter select.</system:String>
+    <system:String x:Key="ResetSelection">Reinit. select.</system:String>
+
+    <!-- Logs -->
+    <system:String x:Key="TextLogsButton">Journaux</system:String>
+    <system:String x:Key="TextStatusButton">Statut</system:String>
+
+    <!-- Messages -->
+    <system:String x:Key="Error">Erreur</system:String>
+    <system:String x:Key="Success">Succès</system:String>
+    <system:String x:Key="Warning">Avertissement</system:String>
+    <system:String x:Key="Information">Information</system:String>
+
+    <!-- Pop-Up -->
+    <system:String x:Key="JobAlreadyRunning">Le Job est déjà en cours d'exécution</system:String>
+    <system:String x:Key="JobDeleted">Job supprimé</system:String>
+
+    <system:String x:Key="NoJobSelected">Aucune tâche sélectionnée</system:String>
+    <system:String x:Key="BackupComplete">Sauvegarde terminée</system:String>
+    <system:String x:Key="Source">Source</system:String>
+    <system:String x:Key="Target">Cible</system:String>
+    <system:String x:Key="JobWithName">Une tâche avec le nom</system:String>
+    <system:String x:Key="AlreadyExist">existe déjà</system:String>
+    <system:String x:Key="JobDoesNotExist">La tâche sélectionnée n'existe pas</system:String>
+    <system:String x:Key="DirectoryDoesNotExist">Le répertoire sélectionné n'existe pas</system:String>
+    <system:String x:Key="FilesDecrypted">Fichiers déchiffrés avec succès</system:String>
+    <system:String x:Key="FilesEncrypted">Fichiers chiffrés avec succès</system:String>
+    <system:String x:Key="NotSet">Non défini</system:String>
+    <system:String x:Key="JobCreated">Job créé</system:String>
+    <system:String x:Key="JobReset">Job réinitialisé</system:String>
+
+    <system:String x:Key="Stop">🛑 Stop</system:String>
+    <system:String x:Key="Pause">⏸️ Pause</system:String>
+    <system:String x:Key="Resume">▶️ Reprendre</system:String>
+    <system:String x:Key="JobPaused">Job mis en pause</system:String>
+    <system:String x:Key="JobNotPaused">Job n'est pas en pause</system:String>
+    <system:String x:Key="JobNotRunnningOrPaused">Le Job n'est ni en pause ni en cours</system:String>
+    <system:String x:Key="JobResumed">Job repris</system:String>
+    <system:String x:Key="JobStopped">Job stoppé</system:String>
+    <system:String x:Key="BackupStatus">Statut des jobs</system:String>
+
+    <!-- Toast Messages -->
+    <system:String x:Key="SettingsSaved">Paramètres enregistrés avec succès</system:String>
+    <system:String x:Key="BlockingAppAdded">Application bloquante ajoutée: {0}</system:String>
+    <system:String x:Key="BlockingAppRemoved">Application bloquante supprimée: {0}</system:String>
+    <system:String x:Key="BlockingAppDetected">⚠️ Application bloquante détectée: {0}</system:String>
+    <system:String x:Key="BackupBlockedByApp">⚠️ Sauvegarde bloquée par l'application: {0}</system:String>
+    <system:String x:Key="BackupPausedByApp">Sauvegarde mise en pause : l'application {0} est en cours d'exécution</system:String>
+    <system:String x:Key="BackupResumedAutomatically">Sauvegarde reprise automatiquement : aucune application bloquante n'est en cours d'exécution</system:String>
+</ResourceDictionary>

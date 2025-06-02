@@ -1,0 +1,117 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:system="clr-namespace:System;assembly=mscorlib">
+
+    <!-- General -->
+    <system:String x:Key="AppTitle">EasySave</system:String>
+
+    <!-- Settings page -->
+    <system:String x:Key="GeneralSettings">General Settings</system:String>
+    <system:String x:Key="LanguageSettings">Application Language</system:String>
+    <system:String x:Key="ChooseLanguage">Choose your preferred language for the application interface</system:String>
+    <system:String x:Key="English">English</system:String>
+    <system:String x:Key="French">French</system:String>
+    <system:String x:Key="SettingsSaved">Settings saved</system:String>
+
+    <!-- Blocking apps section -->
+    <system:String x:Key="BlockingApps">Blocking Applications</system:String>
+    <system:String x:Key="BlockingAppsDescription">Define applications that will block backup tasks when running. For sequential backup jobs, the software will complete the current job and stop before starting the next one.</system:String>
+    <system:String x:Key="AddApp">Add</system:String>
+    <system:String x:Key="DetectRunningApp">Detect</system:String>
+    <system:String x:Key="RunningApps">Running Applications</system:String>
+    <system:String x:Key="Select">Select</system:String>
+    <system:String x:Key="SearchApps">Search...</system:String>
+
+    <!-- Encryption files section -->
+    <system:String x:Key="EncryptionSection">Encryption Settings</system:String>
+    <system:String x:Key="EncryptionExtensions">File Extensions to Encrypt</system:String>
+    <system:String x:Key="EncryptionExtensionsDescription">Specify which file extensions should be encrypted when backup jobs are executed with encryption enabled.</system:String>
+    <system:String x:Key="EncryptionWildcard">Wildcard Pattern</system:String>
+    <system:String x:Key="EncryptionWildcardDescription">Optional: Specify a wildcard pattern to encrypt all matching files regardless of their extension (e.g. *.* or all for all files).</system:String>
+    <system:String x:Key="AddExtension">Add</system:String>
+
+    <!-- Logs settings section -->
+    <system:String x:Key="LogFilesDescription">Access application log files to view backup operation details.</system:String>
+    <system:String x:Key="DailyLogFile">Daily Log</system:String>
+    <system:String x:Key="StateFile">Tasks State</system:String>
+    <system:String x:Key="WarningsLogFile">Warnings Log</system:String>
+    <system:String x:Key="OpenFile">Open</system:String>
+    <system:String x:Key="ShowInFolder">Show in Folder</system:String>
+
+    <!-- Priority extensions -->
+    <system:String x:Key="PriorityFilesTitle">Priority File Extensions</system:String>
+    <system:String x:Key="PriorityFilesDescription">Files with these extensions will be processed with priority during backups. Other jobs will be paused until all priority files are processed.</system:String>
+    <system:String x:Key="Add">Add</system:String>
+
+    <!-- File size -->
+    <system:String x:Key="FileSizeLimit">File Size Limit</system:String>
+    <system:String x:Key="FileSizeLimitDescription">Maximum file size (in kB) beyond which simultaneous transfers are prohibited.</system:String>
+
+    <!-- Buttons -->
+    <system:String x:Key="Save">Save</system:String>
+    <system:String x:Key="Cancel">Cancel</system:String>
+    <system:String x:Key="Delete">Delete</system:String>
+
+    <!-- Jobs -->
+    <system:String x:Key="Jobs">Jobs</system:String>
+    <system:String x:Key="NewJob">New Job</system:String>
+    <system:String x:Key="JobName">Job Name</system:String>
+    <system:String x:Key="BackupType">Backup Type</system:String>
+    <system:String x:Key="Full">Full</system:String>
+    <system:String x:Key="Differential">Differential</system:String>
+    <system:String x:Key="Run">Run</system:String>
+    <system:String x:Key="Reset">Reset</system:String>
+    <system:String x:Key="RunAllJobs">Run all</system:String>
+    <system:String x:Key="RunMultipleJobs">Run selected</system:String>
+    <system:String x:Key="ResetSelection">Reset selection</system:String>
+
+    <!-- Logs -->
+    <system:String x:Key="TextLogsButton">Logs</system:String>
+    <system:String x:Key="TextStatusButton">Status</system:String>
+
+
+
+
+    <!-- Messages -->
+    <system:String x:Key="Error">Error</system:String>
+    <system:String x:Key="Success">Success</system:String>
+    <system:String x:Key="Warning">Warning</system:String>
+    <system:String x:Key="Information">Information</system:String>
+
+    <!-- Pop-Up -->
+    <system:String x:Key="JobAlreadyRunning">Job is already running</system:String>
+    <system:String x:Key="JobDeleted">Job deleted</system:String>
+
+    <system:String x:Key="NoJobSelected">No job selected</system:String>
+    <system:String x:Key="BackupComplete">Backup complete</system:String>
+    <system:String x:Key="Source">Source</system:String>
+    <system:String x:Key="Target">Target</system:String>
+    <system:String x:Key="JobWithName">A job with the name</system:String>
+    <system:String x:Key="AlreadyExist">already exists</system:String>
+    <system:String x:Key="JobDoesNotExist">The selected job does not exist</system:String>
+    <system:String x:Key="DirectoryDoesNotExist">The selected directory does not exist</system:String>
+    <system:String x:Key="FilesDecrypted">Files successfully decrypted</system:String>
+    <system:String x:Key="FilesEncrypted">Files successfully encrypted</system:String>
+    <system:String x:Key="NotSet">Not set</system:String>
+    <system:String x:Key="JobCreated">Job Created</system:String>
+    <system:String x:Key="JobReset">Job Reset</system:String>
+
+    <system:String x:Key="Stop">🛑 Stop</system:String>
+    <system:String x:Key="Pause">⏸️ Pause</system:String>
+    <system:String x:Key="Resume">▶️ Resume</system:String>
+    <system:String x:Key="JobPaused">Job paused</system:String>
+    <system:String x:Key="JobNotPaused">Job is not paused</system:String>
+    <system:String x:Key="JobNotRunning">Job is not paused</system:String>
+    <system:String x:Key="JobNotRunnningOrPaused">Job is not paused neither running</system:String>
+    <system:String x:Key="JobResumed">Job resumed</system:String>
+    <system:String x:Key="JobStopped">Job stopped</system:String>
+    <system:String x:Key="BackupStatus">Backup status</system:String>
+
+    <!-- Toast Messages -->
+    <system:String x:Key="BlockingAppAdded">Blocking application added: {0}</system:String>
+    <system:String x:Key="BlockingAppRemoved">Blocking application removed: {0}</system:String>
+    <system:String x:Key="BlockingAppDetected">⚠️ Blocking application detected: {0}</system:String>
+    <system:String x:Key="BackupBlockedByApp">⚠️ Backup blocked by application: {0}</system:String>
+    <system:String x:Key="BackupPausedByApp">Backup paused: application {0} is currently running</system:String>
+    <system:String x:Key="BackupResumedAutomatically">Backup resumed automatically: no blocking application is running</system:String>
+</ResourceDictionary>

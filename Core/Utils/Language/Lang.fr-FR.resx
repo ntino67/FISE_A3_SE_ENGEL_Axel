@@ -1,0 +1,261 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="BackToMainMenu" xml:space="preserve">
+    <value>Retour au menu principal</value>
+  </data>
+  <data name="CreateBackup" xml:space="preserve">
+    <value>Créer une sauvegarde</value>
+  </data>
+  <data name="DefineSaveMode" xml:space="preserve">
+    <value>Définir le mode de sauvegarde</value>
+  </data>
+  <data name="DefineSourcePath" xml:space="preserve">
+    <value>Définir le chemin de source</value>
+  </data>
+  <data name="DefineTargetPath" xml:space="preserve">
+    <value>Définir le chemin cible</value>
+  </data>
+  <data name="Exit" xml:space="preserve">
+    <value>Quitter</value>
+  </data>
+  <data name="JobOptions" xml:space="preserve">
+    <value>Options de sauvegarde du job</value>
+  </data>
+  <data name="Language" xml:space="preserve">
+    <value>Langue</value>
+  </data>
+  <data name="LanguageSelected" xml:space="preserve">
+    <value>Vous avez choisi</value>
+  </data>
+  <data name="LogPath" xml:space="preserve">
+    <value>Chemin d'accès aux daily logs</value>
+  </data>
+  <data name="MainMenu" xml:space="preserve">
+    <value>Menu Principal</value>
+  </data>
+  <data name="No" xml:space="preserve">
+    <value>Non</value>
+  </data>
+  <data name="Options" xml:space="preserve">
+    <value>Options</value>
+  </data>
+  <data name="OptionsMenu" xml:space="preserve">
+    <value>Menu des options</value>
+  </data>
+  <data name="RenameJob" xml:space="preserve">
+    <value>Renommer le job</value>
+  </data>
+  <data name="SelectMultipleJobs" xml:space="preserve">
+    <value>Executer plusieurs job</value>
+  </data>
+  <data name="SelectJob" xml:space="preserve">
+    <value>Selectionner un job</value>
+  </data>
+  <data name="SelectLanguage" xml:space="preserve">
+    <value>Choisissez la langue</value>
+  </data>
+  <data name="Yes" xml:space="preserve">
+    <value>Oui</value>
+  </data>
+  <data name="CurrentFolder" xml:space="preserve">
+    <value>Dossier actuel</value>
+  </data>
+  <data name="WhatJobsList" xml:space="preserve">
+    <value>Êtes vous sûr de vouloir exectuer plusieurs [green]jobs[/] (aucun retour possible) ?</value>
+  </data>
+  <data name="JobsListIndication" xml:space="preserve">
+    <value>[grey](Appuez sur [blue]&lt;espace&gt;[/] pour selectionner une action, [green]&lt;entrer&gt;[/] pour executer les actions séléctionnées)[/]</value>
+  </data>
+  <data name="BackToMainMenuAndDoNothing" xml:space="preserve">
+    <value>Retourner au menu principal et ne rien faire</value>
+  </data>
+  <data name="CreateNewJob" xml:space="preserve">
+    <value>Créer un nouveau job</value>
+  </data>
+  <data name="EnterJobName" xml:space="preserve">
+    <value>Veuillez entrer le nom du job</value>
+  </data>
+  <data name="ResetJob" xml:space="preserve">
+    <value>Réinitialiser cette action /!\</value>
+  </data>
+  <data name="SelectJobPrompt" xml:space="preserve">
+    <value>Selectionner un job</value>
+  </data>
+  <data name="ConfirmReset" xml:space="preserve">
+    <value>Êtes vous sûr de vouloir réinitialiser cette action ? (Toutes les options relatives à l'action seront supprimées)</value>
+  </data>
+  <data name="PressAKeyToContinue" xml:space="preserve">
+    <value>Appuyez sur une touche pour continuer</value>
+  </data>
+  <data name="SuccessfullBackup" xml:space="preserve">
+    <value>Sauvegarde effectuée avec succès</value>
+  </data>
+  <data name="ValidateFolder" xml:space="preserve">
+    <value>Sélectionne ce dossier</value>
+  </data>
+  <data name="Cancel" xml:space="preserve">
+    <value>Annuler</value>
+  </data>
+  <data name="FullBackup" xml:space="preserve">
+    <value>Sauvegarde complète</value>
+  </data>
+  <data name="DifferentialBackup" xml:space="preserve">
+    <value>Sauvegarde Differentielle</value>
+  </data>
+  <data name="DeleteJob" xml:space="preserve">
+    <value>Supprimer le job</value>
+  </data>
+  <data name="ConfirmDelete" xml:space="preserve">
+    <value>Confirmer la suppression (Ceci ne supprimera pas vous fichiers ni dans le chemin Source/Cible)</value>
+  </data>
+  <data name="JobDeleted" xml:space="preserve">
+    <value>Le job {0} a été supprimé</value>
+  </data>
+  <data name="JobCreated" xml:space="preserve">
+    <value>Le job {0} a été créé</value>
+  </data>
+  <data name="StatusPath" xml:space="preserve">
+    <value>Chemin d'accès au fichier log status</value>
+  </data>
+  <data name="FileLocation" xml:space="preserve">
+    <value>Emplacement des fichiers </value>
+  </data>
+  <data name="LogPaths" xml:space="preserve">
+    <value>Voir chemins fichiers de logs</value>
+  </data>
+  <data name="BackupCompleted" xml:space="preserve">
+    <value>Sauvegarde effectué !</value>
+  </data>
+  <data name="RunningBackup" xml:space="preserve">
+    <value>Sauvegarde de vos fichiers...</value>
+  </data>
+  <data name="BackupFailed" xml:space="preserve">
+    <value>Sauvegarde échoue, impossible à effectuer</value>
+  </data>
+  <data name="AskJobName" xml:space="preserve">
+    <value>Entrer le nom du nouveau job</value>
+  </data>
+  <data name="Encrypt/Decrypt" xml:space="preserve">
+    <value>Encrypter/Decrypter</value>
+  </data>
+  <data name="EnterKey" xml:space="preserve">
+    <value>Entrez votre clé secrète</value>
+  </data>
+</root>
