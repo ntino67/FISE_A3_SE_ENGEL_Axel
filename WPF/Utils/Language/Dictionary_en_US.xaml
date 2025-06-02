@@ -53,6 +53,9 @@
     <system:String x:Key="Differential">Differential</system:String>
     <system:String x:Key="Run">Run</system:String>
     <system:String x:Key="Reset">Reset</system:String>
+    <system:String x:Key="RunAllJobs">Run all</system:String>
+    <system:String x:Key="RunMultipleJobs">Run selected</system:String>
+    <system:String x:Key="ResetSelection">Reset selection</system:String>
 
     <!-- Logs -->
     <system:String x:Key="TextLogsButton">Logs</system:String>
@@ -92,6 +95,23 @@
     <system:String x:Key="JobResumed">Job resumed</system:String>
     <system:String x:Key="JobStopped">Job stopped</system:String>
     <system:String x:Key="BackupStatus">Backup status</system:String>
+
+
+    <!-- Logs section -->
+    <system:String x:Key="LogFilesSection">Log Files</system:String>
+    <system:String x:Key="LogFilesDescription">Access application logs to review backup operation details.</system:String>
+    <system:String x:Key="DailyLogFile">Daily Log</system:String>
+    <system:String x:Key="StateFile">Task State</system:String>
+    <system:String x:Key="WarningsLogFile">Warnings Log</system:String>
+    <system:String x:Key="OpenFile">Open</system:String>
+    <system:String x:Key="ShowInFolder">Show in Folder</system:String>
+
+    <!-- Toast Messages -->
+    <system:String x:Key="BlockingAppAdded">Blocking application added: {0}</system:String>
+    <system:String x:Key="BlockingAppRemoved">Blocking application removed: {0}</system:String>
+    <system:String x:Key="BlockingAppDetected">⚠️ Blocking application detected: {0}</system:String>
+    <system:String x:Key="BackupBlockedByApp">⚠️ Backup blocked by application: {0}</system:String>
+
 
 </ResourceDictionary>
 

@@ -216,7 +216,7 @@ namespace Core.Model
             }
         }
 
-        [JsonPropertyName("startTime")]
+        [JsonIgnore]
         public DateTime? StartTime
         {
             get => _startTime;
@@ -230,7 +230,7 @@ namespace Core.Model
             }
         }
 
-        [JsonPropertyName("endTime")]
+        [JsonIgnore]
         public DateTime? EndTime
         {
             get => _endTime;

@@ -318,5 +318,10 @@ namespace WPF
             await Task.Delay(300);
             ToastHost.Visibility = Visibility.Collapsed;
         }
+
+        private void RunMultipleButton_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
     }
 }

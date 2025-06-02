@@ -142,8 +142,8 @@
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
-        
-        <TextBlock Text="Backup Status" 
+
+        <TextBlock Text="{Binding CurrentlyRunningJobs}" 
                    FontSize="28" 
                    FontWeight="Bold" 
                    Foreground="#cdd6f4" 
