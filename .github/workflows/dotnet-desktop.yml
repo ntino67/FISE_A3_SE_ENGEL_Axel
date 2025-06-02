@@ -1,0 +1,32 @@
+name: .NET Tests
+
+on:
+  push:
+    branches: [ main, develop, '**feature/**', '**bugfix/**' ]
+  pull_request:
+    branches: [ main, develop, '**feature/**', '**bugfix/**' ]
+
+jobs:
+  build-and-test:
+    runs-on: windows-latest # You can use ubuntu-latest, but WPF/WinForms need windows-latest!
+
+    steps:
+    - uses: actions/checkout@v4
+
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v4
+      with:
+        dotnet-version: '9.0.x'  # Or whatever version you target
+
+    - name: Restore dependencies
+      run: dotnet restore
+
+    - name: Build
+      run: dotnet build --no-restore --configuration Release
+
+    - name: Test
+      run: dotnet test --no-build --configuration Release --verbosity normal
+
+    # Optional: collect code coverage
+    # - name: Test with coverage
+    #   run: dotnet test --no-build --collect:"XPlat Code Coverage"
